@@ -6,6 +6,25 @@
 	<version>1.0.0</version>
 	<name>Ajah Geographic Library</name>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
