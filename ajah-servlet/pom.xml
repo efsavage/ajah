@@ -5,7 +5,31 @@
 	<artifactId>ajah-servlet</artifactId>
 	<version>1.0.0</version>
 	<name>Ajah Servlet Library</name>
-	<description>Common code for use in a servlet environment	</description>
+	<description>The Ajah Servlet Library serves to provide a place for utilities that are specific to a servlet environment, but not specific to any particular product (Struts, Spring MVC, etc).</description>
+
+	<organization>
+		<name>Eric F. Savage</name>
+		<url>http://efsavage.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>efsavage</id>
+			<name>Eric F. Savage</name>
+			<email>code@efsavage.com</email>
+			<url>http://efsavage.com</url>
+			<organization>Eric F. Savage</organization>
+			<organizationUrl>http://efsavage.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>-5</timezone>
+			<properties>
+				<picUrl>https://secure.gravatar.com/avatar/68a1e80101a5197da8ac433444246014?s=100</picUrl>
+			</properties>
+		</developer>
+	</developers>
 
 	<build>
 		<plugins>
