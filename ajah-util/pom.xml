@@ -4,13 +4,13 @@
   <artifactId>ajah-util</artifactId>
   <version>1.0.0</version>
   <name>Ajah Utility Library</name>
-  <description>Library for lowest-level common code.</description>
 
 	<organization>
 		<name>Eric F. Savage</name>
 		<url>http://efsavage.com</url>
 	</organization>
 
+	<description>The Ajah Utils Library provides a place for the most basic and common utilities.  This code uses very few dependencies and should be suitable for inclusion in any other projects.</description>
 	<developers>
 		<developer>
 			<id>efsavage</id>
