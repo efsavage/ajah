@@ -1,2 +1,2 @@
-Ajah Geographic Library
+Ajah Spring MVC Library
 Copyright 2011 by Eric F. Savage

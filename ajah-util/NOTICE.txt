@@ -1,2 +1,2 @@
-Ajah Geographic Library
+Ajah Utility Library
 Copyright 2011 by Eric F. Savage
