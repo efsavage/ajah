@@ -16,8 +16,9 @@
 package com.ajah.user;
 
 /**
- * All accounts must be in some state, which determines the permitted
- * operations. Common types might be GUEST, ADMIN, ANONYMOUSE, etc.
+ * All accounts must be of some type, which determines the permitted operations.
+ * Common types might be GUEST, ADMIN, ANONYMOUS, etc. This can be further
+ * specified via permissions.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
