@@ -6,7 +6,7 @@ package com.ajah.geo;
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
-public interface State extends Comparable<State> {
+public interface State {
 
 	/**
 	 * The internal ID of the state. Is not dictated by any external/official
