@@ -18,7 +18,7 @@ public interface Country {
 	public String getId();
 
 	/**
-	 * The public abbreviation of the state. Is not dictated by the official
+	 * The public abbreviation of the country. Is not dictated by the official
 	 * nomenclature, but may match one for consistency such as ISO or those
 	 * defined by postal services.
 	 * 
