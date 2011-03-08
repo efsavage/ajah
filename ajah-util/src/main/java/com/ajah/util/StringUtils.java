@@ -15,10 +15,34 @@
  */
 package com.ajah.util;
 
+/**
+ * Utilities for dealing with Strings.
+ * 
+ * @author Eric F. Savage <code@efsavage.com>
+ * 
+ */
 public class StringUtils {
 
+	/**
+	 * Looks for null or empty strings.
+	 * 
+	 * @param string
+	 *            String to be tested, may be null
+	 * @return true if string is null or zero-length
+	 */
 	public static boolean isBlank(String string) {
-		return string==null || string.length()<1;
+		return string == null || string.length() < 1;
+	}
+
+	/**
+	 * Returns length of string, 0 if null.
+	 * 
+	 * @param string
+	 *            String to be tested, may be null.
+	 * @return length of string, 0 if null.
+	 */
+	public static int safeLength(String string) {
+		return string == null ? 0 : string.length();
 	}
 
 }
