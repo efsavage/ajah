@@ -62,7 +62,7 @@ public enum ISOCountry implements Country {
 	AU("au", "AUS", "Australia"),
 	/** Aruba */
 	AW("aw", "ABW", "Aruba"),
-	/** Åland Islands */
+	/** &Aring;land Islands */
 	AX("ax", "ALA", "Åland Islands"),
 	/** Azerbaijan */
 	AZ("az", "AZE", "Azerbaijan"),
@@ -84,7 +84,7 @@ public enum ISOCountry implements Country {
 	BI("bi", "BDI", "Burundi"),
 	/** Benin */
 	BJ("bj", "BEN", "Benin"),
-	/** Saint Barthélemy */
+	/** Saint Barth&eacute;lemy */
 	BL("bl", "BLM", "Saint Barthélemy"),
 	/** Bermuda */
 	BM("bm", "BMU", "Bermuda"),
@@ -118,7 +118,7 @@ public enum ISOCountry implements Country {
 	CG("cg", "COG", "Congo"),
 	/** Switzerland */
 	CH("ch", "CHE", "Switzerland"),
-	/** Côte d'Ivoire */
+	/** C&ocirc;te d'Ivoire */
 	CI("ci", "CIV", "Côte d'Ivoire"),
 	/** Cook Islands */
 	CK("ck", "COK", "Cook Islands"),
