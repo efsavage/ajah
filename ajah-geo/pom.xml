@@ -5,6 +5,7 @@
 	<artifactId>ajah-geo</artifactId>
 	<version>1.0.0</version>
 	<name>Ajah Geographic Library</name>
+	<description>The Ajah Geographic Library serves to provide a place for standardized models of geographic entities and utilities that deal with them.</description>
 
 	<repositories>
 		<repository>
