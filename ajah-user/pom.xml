@@ -7,6 +7,30 @@
 	<name>Ajah User Library</name>
 	<description>Code for projects using Ajah User management and authentication</description>
 
+	<organization>
+		<name>Eric F. Savage</name>
+		<url>http://efsavage.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>efsavage</id>
+			<name>Eric F. Savage</name>
+			<email>code@efsavage.com</email>
+			<url>http://efsavage.com</url>
+			<organization>Eric F. Savage</organization>
+			<organizationUrl>http://efsavage.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>-5</timezone>
+			<properties>
+				<picUrl>https://secure.gravatar.com/avatar/68a1e80101a5197da8ac433444246014?s=100</picUrl>
+			</properties>
+		</developer>
+	</developers>
+
 	<repositories>
 		<repository>
 			<id>projectlombok.org</id>
