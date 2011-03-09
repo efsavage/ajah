@@ -15,6 +15,7 @@
  */
 package com.ajah.user;
 
+
 /**
  * A User corresponds to a person who is using the system. A person should not
  * need to have separate users within the application.
@@ -29,7 +30,7 @@ public interface User {
 	 * 
 	 * @return Unique ID of the user, may be null.
 	 */
-	String getId();
+	UserId getId();
 
 	/**
 	 * Unique username of the user.
@@ -37,5 +38,20 @@ public interface User {
 	 * @return Unique ID of the user, may be null.
 	 */
 	String getUsername();
+
+
+	/**
+	 * The status of the user.
+	 * 
+	 * @return The status of the user. May be null if not saved/complete.
+	 */
+	UserStatus getStatus();
+
+	/**
+	 * The type of the user.
+	 * 
+	 * @return The type of the user. May be null if not saved/complete.
+	 */
+	UserType getType();
 
 }
