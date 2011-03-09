@@ -13,13 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util;
+package com.ajah.util.config;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.ajah.util.StringUtils;
 
 /**
  * Config object. Works kind of like a stripped-down version of commons config,
@@ -70,6 +72,19 @@ public enum Config {
 			return defaultValue;
 		}
 		return retVal;
+	}
+
+	/**
+	 * Returns the value for the specified key, or the default value specified.
+	 * Invokes {@link #get(String, String)} with the values from
+	 * {@link PropertyKey}.
+	 * 
+	 * @param key
+	 *            The key of the property sought.
+	 * @return Returns the value for the specified key, or defaultValue
+	 */
+	public String get(PropertyKey key) {
+		return get(key.getName(), key.getDefaultValue());
 	}
 
 	/**
