@@ -31,6 +31,9 @@ import java.util.logging.Logger;
  */
 public enum Config {
 
+	/**
+	 * Singleton instance of Config.
+	 */
 	i;
 
 	private static final Logger log = Logger.getLogger(Config.class.getName());
@@ -42,7 +45,7 @@ public enum Config {
 		URL url = ClassLoader.getSystemResource(config);
 		if (url != null) {
 			try {
-				properties.load(url.openStream());
+				this.properties.load(url.openStream());
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Loaded properties from " + config);
 			} catch (IOException e) {
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, e.getMessage(), e);
@@ -52,17 +55,36 @@ public enum Config {
 		}
 	}
 
+	/**
+	 * Returns the value for the specified key, or the default value specified.
+	 * 
+	 * @param key
+	 *            The key of the property sought.
+	 * @param defaultValue
+	 *            The value to return if no value is found.
+	 * @return Returns the value for the specified key, or defaultValue
+	 */
 	public String get(String key, String defaultValue) {
-		String retVal = (String) properties.get(key);
+		String retVal = (String) this.properties.get(key);
 		if (StringUtils.isBlank(retVal)) {
 			return defaultValue;
 		}
 		return retVal;
 	}
 
+	/**
+	 * Sets the value for the specified key in the local map.
+	 * 
+	 * <strong>These changes will not be persisted!</strong>
+	 * 
+	 * @param key
+	 *            The key of the property to set.
+	 * @param value
+	 *            The value of the property to set.
+	 */
 	public void set(String key, String value) {
 		log.fine("Property " + key + " set to " + value);
-		properties.put(key, value);
+		this.properties.put(key, value);
 	}
 
 }

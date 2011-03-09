@@ -15,8 +15,28 @@
  */
 package com.ajah.util;
 
+/**
+ * The lowest-of-low level utilities, basically "things I wish were in the JDK".
+ * 
+ * @author Eric F. Savage <code@efsavage.com>
+ * 
+ */
 public class AjahUtils {
 
+	/**
+	 * Check a parameter and throw an exception if its null. Commonly used at
+	 * the very beginning of a method for things that should never be null.
+	 * 
+	 * If the object is a String, it will treat empty String the same as a null.
+	 * 
+	 * @param parameter
+	 *            Object to check.
+	 * @param name
+	 * @throws IllegalArgumentException
+	 *             If parameter is null
+	 * @throws IllegalArgumentException
+	 *             If parameter is a String and is empty
+	 */
 	public static void requireParam(Object parameter, String name) {
 		if (parameter == null) {
 			throw new IllegalArgumentException(name + " cannot be null");
