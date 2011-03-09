@@ -40,11 +40,13 @@ public class CookieUtils {
 	public static void clearAllCookies(HttpServletRequest request, HttpServletResponse response) {
 		AjahUtils.requireParam(request, "request");
 		AjahUtils.requireParam(response, "response");
+		if (request.getCookies() == null) {
+			return;
+		}
 		for (Cookie cookie : request.getCookies()) {
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
 		}
-
 	}
 
 }
