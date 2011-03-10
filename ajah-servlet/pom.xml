@@ -61,6 +61,11 @@
 			<artifactId>ajah-util</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+		</dependency>
 	</dependencies>
 
 </project>
