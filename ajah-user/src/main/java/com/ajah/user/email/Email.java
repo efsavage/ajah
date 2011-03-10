@@ -13,47 +13,48 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user;
+package com.ajah.user.email;
 
-import java.io.Serializable;
+import com.ajah.user.UserId;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * An email address, as associated with a user.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
-
-	private static final long serialVersionUID = 5419973870818857713L;
-
-	private final String id;
+public interface Email {
 
 	/**
-	 * Simple string constructor.
+	 * Sets the unique ID of this email record.
 	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
+	 * @param emailId
+	 *            The unique ID of this email record.
 	 */
-	public UserId(String id) {
-		this.id = id;
-	}
+	void setId(EmailId emailId);
 
 	/**
-	 * Returns the String passed into the constructor.
+	 * Sets the ID of the user to whom this email belongs.
 	 * 
-	 * @return The String passed into the constructor.
+	 * @param userId
+	 *            The ID of the user to whom this email belongs.
 	 */
-	public String getId() {
-		return this.id;
-	}
+	void setUserId(UserId userId);
 
 	/**
-	 * Returns the String passed into the constructor.
+	 * Sets the email address.
+	 * 
+	 * @param address
+	 *            The email address.
 	 */
-	@Override
-	public String toString() {
-		return this.id;
-	}
+	void setAddress(String address);
+
+	/**
+	 * Sets the status of this Email.
+	 * 
+	 * @param emailStatus
+	 *            The status of this Email.
+	 */
+	void setStatus(EmailStatus emailStatus);
 
 }

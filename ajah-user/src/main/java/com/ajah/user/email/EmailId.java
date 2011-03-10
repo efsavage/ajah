@@ -13,19 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user;
-
-import java.io.Serializable;
+package com.ajah.user.email;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * A wrapper around a String for typesafe email IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
-
-	private static final long serialVersionUID = 5419973870818857713L;
+public class EmailId {
 
 	private final String id;
 
@@ -33,9 +29,9 @@ public class UserId implements Serializable {
 	 * Simple string constructor.
 	 * 
 	 * @param id
-	 *            UID of user, cannot be null.
+	 *            UID of email, cannot be null.
 	 */
-	public UserId(String id) {
+	public EmailId(String id) {
 		this.id = id;
 	}
 

@@ -19,7 +19,7 @@ import java.util.Date;
 
 import lombok.Data;
 
-import com.ajah.user.account.AccountId;
+import com.ajah.user.User;
 
 /**
  * A login is a data record of an authentication attempt by a user. It should
@@ -38,13 +38,12 @@ import com.ajah.user.account.AccountId;
 @Data
 public class Login {
 
-	protected AccountId accountId;
 	protected String ip;
 	protected Date created;
 	protected LoginStatus status;
 	protected LoginSource source;
 	protected LoginType type;
-	protected String code;
-	protected String message;
+	protected String username;
+	protected User user;
 
 }

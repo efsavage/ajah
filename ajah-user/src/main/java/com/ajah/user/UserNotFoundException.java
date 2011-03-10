@@ -15,45 +15,29 @@
  */
 package com.ajah.user;
 
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * Thrown when a user is requested that does not exist.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class UserNotFoundException extends Exception {
 
-	private static final long serialVersionUID = 5419973870818857713L;
-
-	private final String id;
+	private static final long serialVersionUID = -1591254351139322758L;
+	private String username;
 
 	/**
-	 * Simple string constructor.
+	 * Thrown when a user is requested that does not exist.
 	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
+	 * @param username
+	 *            Username that was sought.
 	 */
-	public UserId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 */
-	@Override
-	public String toString() {
-		return this.id;
+	public UserNotFoundException(String username) {
+		super("user: " + username + " not found");
+		this.username = username;
 	}
 
 }

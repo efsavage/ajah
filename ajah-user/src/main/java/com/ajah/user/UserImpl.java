@@ -15,45 +15,21 @@
  */
 package com.ajah.user;
 
-import java.io.Serializable;
+import lombok.Data;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * Basic implmentation of User interface.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
+@Data
+public class UserImpl implements User {
 
-	private static final long serialVersionUID = 5419973870818857713L;
-
-	private final String id;
-
-	/**
-	 * Simple string constructor.
-	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
-	 */
-	public UserId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 */
-	@Override
-	public String toString() {
-		return this.id;
-	}
+	protected UserId id;
+	protected String username;
+	protected String password;
+	protected UserStatus status;
+	protected UserType type;
 
 }

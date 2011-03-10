@@ -13,47 +13,63 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user;
-
-import java.io.Serializable;
+package com.ajah.user.login;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * Basic implementations of LoginSource.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
+public enum LoginSourceImpl implements LoginSource {
 
-	private static final long serialVersionUID = 5419973870818857713L;
+	/**
+	 * Website logins
+	 */
+	WEB("1", "web", "Website", "Website");
 
 	private final String id;
 
-	/**
-	 * Simple string constructor.
-	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
-	 */
-	public UserId(String id) {
+	private final String code;
+
+	private final String name;
+
+	private final String description;
+
+	private LoginSourceImpl(String id, String code, String name, String description) {
 		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
+	 * {@inheritDoc}
 	 */
+	@Override
+	public String getCode() {
+		return this.code;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getDescription() {
+		return this.description;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String getId() {
 		return this.id;
 	}
-
 	/**
-	 * Returns the String passed into the constructor.
+	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
-		return this.id;
+	public String getName() {
+		return this.name;
 	}
 
 }

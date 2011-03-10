@@ -16,7 +16,7 @@
 package com.ajah.util.config;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,11 +43,11 @@ public enum Config {
 	private Properties properties = new Properties();
 
 	private Config() {
-		String config = StringUtils.isBlank(System.getProperty("config")) ? "ajah.properties" : System.getProperty("config");
-		URL url = ClassLoader.getSystemResource(config);
-		if (url != null) {
+		String config = StringUtils.isBlank(System.getProperty("config")) ? "/ajah.properties" : System.getProperty("config");
+		InputStream stream = getClass().getResourceAsStream(config);
+		if (stream != null) {
 			try {
-				this.properties.load(url.openStream());
+				this.properties.load(stream);
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Loaded properties from " + config);
 			} catch (IOException e) {
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, e.getMessage(), e);

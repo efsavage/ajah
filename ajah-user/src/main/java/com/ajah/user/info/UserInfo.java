@@ -15,10 +15,6 @@
  */
 package com.ajah.user.info;
 
-import java.util.Date;
-
-import lombok.Data;
-
 import com.ajah.user.UserId;
 
 /**
@@ -28,20 +24,20 @@ import com.ajah.user.UserId;
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
-@Data
-public class UserInfo {
+public interface UserInfo {
 
-	protected UserId userId;
-	protected UserSource source;
-	protected Date created;
-	protected Date passwordChanged;
-	protected String firstName;
-	protected String middleName;
-	protected String lastName;
-	protected String title;
-	protected String gender;
-	protected int birthMonth;
-	protected int birthDay;
-	protected int birthYear;
+	void setUserId(UserId userId);
+
+	void setFirstName(String string);
+
+	void setMiddleName(String string);
+
+	void setLastName(String string);
+
+	void setBirthDay(int int1);
+
+	void setBirthMonth(int int1);
+
+	void setBirthYear(int int1);
 
 }

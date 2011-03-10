@@ -13,47 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user;
+package com.ajah.user.info;
 
-import java.io.Serializable;
+import java.util.Date;
+
+import lombok.Data;
+
+import com.ajah.user.UserId;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * UserInfo is information about a user that is not important for most
+ * operations, but is standard enough that it is not an application-specific
+ * setting/property.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
-public class UserId implements Serializable {
+@Data
+public class UserInfoImpl implements UserInfo {
 
-	private static final long serialVersionUID = 5419973870818857713L;
-
-	private final String id;
-
-	/**
-	 * Simple string constructor.
-	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
-	 */
-	public UserId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 */
-	@Override
-	public String toString() {
-		return this.id;
-	}
+	protected UserId userId;
+	protected UserSource source;
+	protected Date created;
+	protected Date passwordChanged;
+	protected String firstName;
+	protected String middleName;
+	protected String lastName;
+	protected String title;
+	protected String gender;
+	protected int birthMonth;
+	protected int birthDay;
+	protected int birthYear;
 
 }

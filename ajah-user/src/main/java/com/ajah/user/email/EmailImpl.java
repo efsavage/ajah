@@ -13,47 +13,24 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user;
+package com.ajah.user.email;
 
-import java.io.Serializable;
+import lombok.Data;
+
+import com.ajah.user.UserId;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * Simple implementation of Email interface.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
+@Data
+public class EmailImpl implements Email {
 
-	private static final long serialVersionUID = 5419973870818857713L;
-
-	private final String id;
-
-	/**
-	 * Simple string constructor.
-	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
-	 */
-	public UserId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 */
-	@Override
-	public String toString() {
-		return this.id;
-	}
+	protected EmailId id;
+	protected UserId userId;
+	protected String address;
+	protected EmailStatus status;
 
 }

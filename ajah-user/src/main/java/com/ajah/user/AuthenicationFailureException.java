@@ -15,45 +15,37 @@
  */
 package com.ajah.user;
 
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
- * A wrapper around a String for typesafe user IDs.
+ * Thrown when a password or token is wrong.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class AuthenicationFailureException extends Exception {
 
-	private static final long serialVersionUID = 5419973870818857713L;
-
-	private final String id;
+	private static final long serialVersionUID = -6419026421126337952L;
+	private String username;
 
 	/**
-	 * Simple string constructor.
+	 * Calls super with username as message.
 	 * 
-	 * @param id
-	 *            UID of user, cannot be null.
+	 * @param username
+	 *            User that failed to authenticate.
 	 */
-	public UserId(String id) {
-		this.id = id;
+	public AuthenicationFailureException(String username) {
+		super(username);
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
+	 * User that failed to authenticate.
 	 * 
-	 * @return The String passed into the constructor.
+	 * @return Username that failed to authenticate. Should not be null.
 	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
-	 */
-	@Override
-	public String toString() {
-		return this.id;
+	public String getUsername() {
+		return this.username;
 	}
 
 }
