@@ -18,17 +18,36 @@ package com.ajah.spring.mvc.editor;
 import java.beans.PropertyEditorSupport;
 
 import com.ajah.util.crypto.HmacSha1Password;
+import com.ajah.util.crypto.Password;
 
+/**
+ * Property editor for {@link Password} type. Uses {@link HmacSha1Password}
+ * implementation.
+ * 
+ * @author Eric F. Savage <code@efsavage.com>
+ * 
+ */
 public class PasswordEditor extends PropertyEditorSupport {
 
+	/**
+	 * Returns {@link Password#toString()} if not null. Returns null if null.
+	 * 
+	 * @see java.beans.PropertyEditorSupport#getAsText()
+	 */
 	@Override
 	public String getAsText() {
 		return getValue() == null ? null : getValue().toString();
 	}
 
+	/**
+	 * Sets value via {@link HmacSha1Password#HmacSha1Password(String, boolean)
+	 * )} if not null, sets to null if parameter is null.
+	 * 
+	 * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
+	 */
 	@Override
 	public void setAsText(String text) {
-		setValue(new HmacSha1Password(text, false));
+		setValue(text == null ? null : new HmacSha1Password(text, false));
 	}
 
 }

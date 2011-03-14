@@ -127,10 +127,10 @@ public class AutoFormTag extends TagSupport {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
 		}
 		if (field.isAnnotationPresent(NotNull.class)) {
-			log.fine("Not null is present");
+			log.fine("NotNull is present");
 			input.css("required");
 		} else {
-			log.fine("Not null is NOT present");
+			log.fine("NotNull is NOT present");
 		}
 		return input;
 	}

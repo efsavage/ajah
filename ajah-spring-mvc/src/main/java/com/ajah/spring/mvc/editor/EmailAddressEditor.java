@@ -19,16 +19,34 @@ import java.beans.PropertyEditorSupport;
 
 import com.ajah.util.data.format.EmailAddress;
 
+/**
+ * Property editor for {@link EmailAddress} type.
+ * 
+ * @author Eric F. Savage <code@efsavage.com>
+ * 
+ */
 public class EmailAddressEditor extends PropertyEditorSupport {
 
+	/**
+	 * Returns {@link EmailAddress#toString()} if not null. Returns null if
+	 * null.
+	 * 
+	 * @see java.beans.PropertyEditorSupport#getAsText()
+	 */
 	@Override
 	public String getAsText() {
 		return getValue() == null ? null : getValue().toString();
 	}
 
+	/**
+	 * Sets value via {@link EmailAddress#EmailAddress(String)} if not null,
+	 * sets to null if parameter is null.
+	 * 
+	 * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
+	 */
 	@Override
 	public void setAsText(String text) {
-		setValue(new EmailAddress(text));
+		setValue(text == null ? null : new EmailAddress(text));
 	}
 
 }
