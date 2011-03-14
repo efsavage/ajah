@@ -25,13 +25,13 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 import javax.validation.constraints.NotNull;
 
-import com.ajah.html.Checkbox;
-import com.ajah.html.Div;
-import com.ajah.html.Form;
-import com.ajah.html.FormMethod;
-import com.ajah.html.Input;
-import com.ajah.html.InputImpl;
-import com.ajah.html.InputType;
+import com.ajah.html.dtd.FormMethod;
+import com.ajah.html.dtd.InputType;
+import com.ajah.html.element.Checkbox;
+import com.ajah.html.element.Div;
+import com.ajah.html.element.Form;
+import com.ajah.html.element.Input;
+import com.ajah.html.element.InputImpl;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.util.AjahUtils;
@@ -84,7 +84,7 @@ public class AutoFormTag extends TagSupport {
 			Form form = new Form(FormMethod.POST).css("asm-auto");
 			for (Field field : this.autoForm.getClass().getFields()) {
 				log.fine(field.getName());
-				Input input = getInput(field);
+				Input<?> input = getInput(field);
 				form.getInputs().add(input);
 			}
 			String submitText = null;
@@ -94,7 +94,7 @@ public class AutoFormTag extends TagSupport {
 			if (StringUtils.isBlank(submitText)) {
 				submitText = StringUtils.capitalize(StringUtils.splitCamelCase(this.autoForm.getClass().getSimpleName().replaceAll("Form$", "")));
 			}
-			Input input = new InputImpl("submit", submitText, InputType.SUBMIT);
+			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT);
 			form.getInputs().add(input);
 			div.add(form);
 			div.render(out);
@@ -108,8 +108,8 @@ public class AutoFormTag extends TagSupport {
 		return Tag.EVAL_PAGE;
 	}
 
-	private Input getInput(Field field) throws IllegalArgumentException, IllegalAccessException {
-		Input input = null;
+	private Input<?> getInput(Field field) throws IllegalArgumentException, IllegalAccessException {
+		Input<?> input = null;
 		log.fine(field.getType().toString());
 		if (field.getType().equals(String.class)) {
 			input = new InputImpl(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(),
