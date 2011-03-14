@@ -24,6 +24,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Simple skeleton class that adds some logging and implements extra methods.
@@ -53,6 +55,29 @@ public abstract class AjahFilter implements Filter {
 	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
+	}
+
+	/**
+	 * Does nothing except log and
+	 * {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
+	 * 
+	 * @param request
+	 *            The servlet request. Cannot be null.
+	 * @param response
+	 *            The servlet response. Cannot be null.
+	 * @param chain
+	 *            The filter chain. Cannot be null.
+	 * @throws ServletException
+	 *             If thrown by
+	 *             {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
+	 * @throws IOException
+	 *             If thrown by
+	 *             {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
+	 * 
+	 * @see javax.servlet.Filter#init(FilterConfig)
+	 */
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		chain.doFilter(request, response);
 	}
 
