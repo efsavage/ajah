@@ -25,7 +25,7 @@ import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserNotFoundException;
 import com.ajah.user.info.UserInfo;
-import com.ajah.util.crypto.Crypto;
+import com.ajah.util.crypto.Password;
 
 /**
  * Persistence manager for Users.
@@ -55,8 +55,8 @@ public class UserManager {
 	 * @throws UserNotFoundException
 	 *             If no user could be found for the username supplied
 	 */
-	public User getUser(String username, String password) throws AuthenicationFailureException, UserNotFoundException {
-		User user = this.userDao.findUserByUsername(username, Crypto.getHmacSha1Hex(password));
+	public User getUser(String username, Password password) throws AuthenicationFailureException, UserNotFoundException {
+		User user = this.userDao.findUserByUsername(username, password.toString());
 		if (user != null) {
 			log.fine("getUser successful");
 			return user;
