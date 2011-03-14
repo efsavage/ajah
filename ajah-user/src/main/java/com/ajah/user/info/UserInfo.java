@@ -26,18 +26,68 @@ import com.ajah.user.UserId;
  */
 public interface UserInfo {
 
+	/**
+	 * Unique ID of the user.
+	 * 
+	 * @return Unique ID of the user, may be null.
+	 */
+	UserId getUserId();
+
+	/**
+	 * Sets the user ID.
+	 * 
+	 * @param userId
+	 *            The User ID, should not be null.
+	 */
 	void setUserId(UserId userId);
 
-	void setFirstName(String string);
+	/**
+	 * Sets the first name of the user.
+	 * 
+	 * @param firstName
+	 *            The first name of the user.
+	 */
+	void setFirstName(String firstName);
 
-	void setMiddleName(String string);
+	/**
+	 * Sets the middle name of the user.
+	 * 
+	 * @param middleName
+	 *            The middle name of the user.
+	 */
+	void setMiddleName(String middleName);
 
-	void setLastName(String string);
+	/**
+	 * The last name of the user.
+	 * 
+	 * @param lastName
+	 *            The last name of the user.
+	 */
+	void setLastName(String lastName);
 
-	void setBirthDay(int int1);
+	/**
+	 * Sets the birth day of the user.
+	 * 
+	 * @param birthDay
+	 *            The birth day of the user, should be >= 0 and <= 31.
+	 */
+	void setBirthDay(int birthDay);
 
-	void setBirthMonth(int int1);
+	/**
+	 * Sets she birth month of the user.
+	 * 
+	 * @param birthMonth
+	 *            The birth month of the user, should be >=0 and <=12
+	 */
+	void setBirthMonth(int birthMonth);
 
-	void setBirthYear(int int1);
+	/**
+	 * Sets the birth year of the user.
+	 * 
+	 * @param birthYear
+	 *            The birth year of the user, should be 0 or >=1900 and <=
+	 *            current year
+	 */
+	void setBirthYear(int birthYear);
 
 }
