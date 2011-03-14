@@ -15,6 +15,7 @@
  */
 package com.ajah.servlet.util;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +48,43 @@ public class CookieUtils {
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
 		}
+	}
+
+	/**
+	 * Finds a cookie by name and returns it if found.
+	 * 
+	 * @param request
+	 *            Request to look for cookies on, required.
+	 * @param name
+	 *            Name of cookies to look for, required.
+	 * @return Cookie if found, otherwise null.
+	 */
+	public static Cookie getCookie(HttpServletRequest request, String name) {
+		AjahUtils.requireParam(request, "request");
+		AjahUtils.requireParam(name, "name");
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(name)) {
+					return cookie;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Alternate signature for
+	 * {@link CookieUtils#getCookie(HttpServletRequest, String)}.
+	 * 
+	 * @param request
+	 *            Request to look for cookies on, required.
+	 * @param name
+	 *            Name of cookies to look for, required.
+	 * @return Cookie if found, otherwise null.
+	 */
+	public static Cookie getCookie(ServletRequest request, String name) {
+		return getCookie((HttpServletRequest) request, name);
 	}
 
 }
