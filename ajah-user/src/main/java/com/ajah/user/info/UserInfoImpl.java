@@ -20,6 +20,7 @@ import java.util.Date;
 import lombok.Data;
 
 import com.ajah.user.UserId;
+import com.ajah.util.AjahUtils;
 
 /**
  * UserInfo is information about a user that is not important for most
@@ -43,5 +44,16 @@ public class UserInfoImpl implements UserInfo {
 	protected int birthMonth;
 	protected int birthDay;
 	protected int birthYear;
+
+	/**
+	 * Instantiates a userinfo with userId, which should not be null.
+	 * 
+	 * @param userId
+	 *            ID of user, required.
+	 */
+	public UserInfoImpl(UserId userId) {
+		AjahUtils.requireParam(userId, "User ID");
+		this.userId = userId;
+	}
 
 }

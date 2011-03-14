@@ -122,8 +122,7 @@ public class UserDao {
 		 */
 		@Override
 		public UserInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-			UserInfo userInfo = new UserInfoImpl();
-			userInfo.setUserId(new UserId(rs.getString("user_id")));
+			UserInfo userInfo = new UserInfoImpl(new UserId(rs.getString("user_id")));
 			userInfo.setFirstName(rs.getString("first_name"));
 			userInfo.setMiddleName(rs.getString("middle_name"));
 			userInfo.setLastName(rs.getString("last_name"));
@@ -132,7 +131,6 @@ public class UserDao {
 			userInfo.setBirthYear(rs.getInt("birth_year"));
 			return userInfo;
 		}
-
 	}
 
 }

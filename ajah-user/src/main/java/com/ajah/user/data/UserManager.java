@@ -25,6 +25,7 @@ import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserNotFoundException;
 import com.ajah.user.info.UserInfo;
+import com.ajah.user.info.UserInfoImpl;
 import com.ajah.util.crypto.Password;
 
 /**
@@ -65,18 +66,19 @@ public class UserManager {
 	}
 
 	/**
-	 * Find a user info object.
+	 * Find a user info object if possible, otherwise create one.
 	 * 
 	 * @param userId
 	 *            User ID of the user that we want the info about. *
-	 * @return User if found and authenticated correctly, will never return
-	 *         null.
-	 * @throws UserNotFoundException
-	 *             If no user could be found for the username supplied
+	 * @return UserInfo from the database if possible, otherwise a new/empty one
+	 *         will be returned with the UserId set.
 	 */
-	public UserInfo getUserInfo(UserId userId) throws UserNotFoundException {
+	public UserInfo getUserInfo(UserId userId) {
 		UserInfo userInfo = this.userDao.findUserInfo(userId);
-		return userInfo;
+		if (userInfo != null) {
+			return userInfo;
+		}
+		return new UserInfoImpl(userId);
 	}
 
 }
