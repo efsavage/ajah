@@ -22,7 +22,7 @@ package com.ajah.user.login;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface LoginType {
+public interface LogInType {
 
 	/**
 	 * The internal ID of the type.

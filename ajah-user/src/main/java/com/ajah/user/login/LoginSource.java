@@ -22,7 +22,7 @@ package com.ajah.user.login;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface LoginSource {
+public interface LogInSource {
 
 	/**
 	 * The internal ID of the source.

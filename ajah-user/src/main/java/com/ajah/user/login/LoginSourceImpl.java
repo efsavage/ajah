@@ -21,7 +21,7 @@ package com.ajah.user.login;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum LoginSourceImpl implements LoginSource {
+public enum LogInSourceImpl implements LogInSource {
 
 	/**
 	 * Website logins
@@ -36,7 +36,7 @@ public enum LoginSourceImpl implements LoginSource {
 
 	private final String description;
 
-	private LoginSourceImpl(String id, String code, String name, String description) {
+	private LogInSourceImpl(String id, String code, String name, String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

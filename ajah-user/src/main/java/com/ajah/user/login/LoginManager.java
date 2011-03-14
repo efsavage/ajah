@@ -26,6 +26,7 @@ import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserNotFoundException;
 import com.ajah.user.data.UserManager;
+import com.ajah.util.crypto.Password;
 
 /**
  * Manages creation of logins.
@@ -34,9 +35,9 @@ import com.ajah.user.data.UserManager;
  * 
  */
 @Service
-public class LoginManager {
+public class LogInManager {
 
-	private static final Logger log = Logger.getLogger(LoginManager.class.getName());
+	private static final Logger log = Logger.getLogger(LogInManager.class.getName());
 
 	@Autowired
 	private UserManager userManager;
@@ -56,9 +57,9 @@ public class LoginManager {
 	 *            Type of login attempt
 	 * @return Login record, will never return null.
 	 */
-	public Login login(String username, String password, String ip, LoginSource source, LoginType type) {
+	public LogIn login(String username, Password password, String ip, LogInSource source, LogInType type) {
 		log.fine("Login attempt for: " + username);
-		Login login = new Login();
+		LogIn login = new LogIn();
 		login.setIp(ip);
 		login.setCreated(new Date());
 		login.setSource(source);
@@ -66,18 +67,18 @@ public class LoginManager {
 			User user = this.userManager.getUser(username, password);
 			login.setUser(user);
 			login.setUsername(username);
-			login.setStatus(LoginStatus.SUCCESS);
+			login.setStatus(LogInStatus.SUCCESS);
 			log.fine("User " + user.getUsername() + " logged in");
 		} catch (RuntimeException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
-			login.setStatus(LoginStatus.ABORT);
+			login.setStatus(LogInStatus.ABORT);
 		} catch (AuthenicationFailureException e) {
 			log.log(Level.INFO, e.getMessage());
 			login.setUsername(e.getUsername());
-			login.setStatus(LoginStatus.FAIL);
+			login.setStatus(LogInStatus.FAIL);
 		} catch (UserNotFoundException e) {
 			log.log(Level.INFO, e.getMessage());
-			login.setStatus(LoginStatus.FAIL);
+			login.setStatus(LogInStatus.FAIL);
 		}
 		return login;
 	}

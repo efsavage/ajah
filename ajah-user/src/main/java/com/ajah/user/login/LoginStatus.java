@@ -22,7 +22,7 @@ package com.ajah.user.login;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum LoginStatus {
+public enum LogInStatus {
 
 	/** Authentication was indeterminate and login was incomplete */
 	ABORT(4, false, false, false),
@@ -41,7 +41,7 @@ public enum LoginStatus {
 	private final int id;
 	private final boolean succeeded;
 
-	private LoginStatus(int id, boolean succeeded, boolean complete, boolean error) {
+	private LogInStatus(int id, boolean succeeded, boolean complete, boolean error) {
 		this.id = id;
 		this.succeeded = succeeded;
 		this.complete = complete;

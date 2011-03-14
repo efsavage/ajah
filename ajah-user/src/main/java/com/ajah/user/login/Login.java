@@ -36,13 +36,13 @@ import com.ajah.user.User;
  * 
  */
 @Data
-public class Login {
+public class LogIn {
 
 	protected String ip;
 	protected Date created;
-	protected LoginStatus status;
-	protected LoginSource source;
-	protected LoginType type;
+	protected LogInStatus status;
+	protected LogInSource source;
+	protected LogInType type;
 	protected String username;
 	protected User user;
 

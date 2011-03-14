@@ -21,7 +21,7 @@ package com.ajah.user.login;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum LoginTypeImpl implements LoginType {
+public enum LogInTypeImpl implements LogInType {
 
 	/**
 	 * Manual logins
@@ -42,7 +42,7 @@ public enum LoginTypeImpl implements LoginType {
 
 	private final boolean manual;
 
-	private LoginTypeImpl(String id, String code, String name, String description, boolean manual) {
+	private LogInTypeImpl(String id, String code, String name, String description, boolean manual) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
