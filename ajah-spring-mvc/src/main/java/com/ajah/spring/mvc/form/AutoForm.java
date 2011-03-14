@@ -15,6 +15,11 @@
  */
 package com.ajah.spring.mvc.form;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * An autoform is a bean that can be created, pretty much as-is, as a form. The
  * goal is to let the system manage the details and only write the input (the
@@ -25,6 +30,8 @@ package com.ajah.spring.mvc.form;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 public @interface AutoForm {
 	// Empty
 }
