@@ -45,4 +45,35 @@ public class StringUtils {
 		return string == null ? 0 : string.length();
 	}
 
+	/**
+	 * Converts camelCase text to regular text.
+	 * 
+	 * Example: "canOfSoda" converts to "can of soda".
+	 * 
+	 * Source: <a href=
+	 * "http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java"
+	 * >Stack Overflow</a>
+	 * 
+	 * @param string
+	 * @return String, de-camelcased.
+	 */
+	public static String splitCamelCase(String string) {
+		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
+	}
+
+	/**
+	 * Capitalizes first letter of a String.
+	 * 
+	 * @see Character#toTitleCase(char)
+	 * @param string
+	 *            String to capitalized
+	 * @return String, capitalized, may be null if null is passed in.
+	 */
+	public static String capitalize(String string) {
+		if (StringUtils.isBlank(string)) {
+			return string;
+		}
+		return Character.toTitleCase(string.charAt(0)) + string.substring(1);
+	}
+
 }
