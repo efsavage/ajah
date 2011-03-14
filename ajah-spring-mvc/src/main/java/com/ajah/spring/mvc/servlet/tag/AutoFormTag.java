@@ -51,14 +51,14 @@ public class AutoFormTag extends TagSupport {
 
 	private static final long serialVersionUID = -5998541642357295851L;
 
-	private AutoForm autoForm;
+	private Object autoForm;
 
 	/**
 	 * Returns the autoForm for this tag to render.
 	 * 
 	 * @return The autoForm for this tag to render. May be null.
 	 */
-	public AutoForm getAutoForm() {
+	public Object getAutoForm() {
 		return this.autoForm;
 	}
 
@@ -68,8 +68,12 @@ public class AutoFormTag extends TagSupport {
 	 * @param autoForm
 	 *            The autoForm for this tag to render, required.
 	 */
-	public void setAutoForm(AutoForm autoForm) {
-		this.autoForm = autoForm;
+	public void setAutoForm(Object autoForm) {
+		if (autoForm.getClass().isAnnotationPresent(AutoForm.class)) {
+			this.autoForm = autoForm;
+		} else {
+			throw new IllegalArgumentException(autoForm.getClass().getName() + " does not have " + AutoForm.class.getName() + " annotation");
+		}
 	}
 
 	/**
@@ -121,7 +125,7 @@ public class AutoFormTag extends TagSupport {
 			input = new InputImpl(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(),
 					(String) field.get(this.autoForm), InputType.PASSWORD);
 		} else if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
-			input = new Checkbox(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(), field.getName(),
+			input = new Checkbox(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(), "true",
 					field.getBoolean(this.autoForm));
 		} else {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
