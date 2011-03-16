@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.user.User;
 import com.ajah.user.UserType;
 import com.ajah.user.data.UserManager;
 import com.ajah.user.info.UserSource;
@@ -62,6 +63,9 @@ public class SignUpManager {
 		signUp.setIp(ip);
 		signUp.setCreated(new Date());
 		signUp.setSource(source);
+		signUp.setStatus(SignUpStatus.SUCCESS);
+		User user = this.userManager.createUser(emailAddress, password, ip, source, type);
+		log.info(user.getUsername() + " created!");
 		// try {
 		// } catch (RuntimeException e) {
 		// log.log(Level.SEVERE, e.getMessage(), e);

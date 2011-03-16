@@ -16,6 +16,7 @@
 package com.ajah.user.email;
 
 import com.ajah.user.UserId;
+import com.ajah.util.data.format.EmailAddress;
 
 /**
  * An email address, as associated with a user.
@@ -47,7 +48,7 @@ public interface Email {
 	 * @param address
 	 *            The email address.
 	 */
-	void setAddress(String address);
+	void setAddress(EmailAddress address);
 
 	/**
 	 * Sets the status of this Email.
@@ -56,5 +57,19 @@ public interface Email {
 	 *            The status of this Email.
 	 */
 	void setStatus(EmailStatus emailStatus);
+
+	/**
+	 * Gets the ID of the user to whom this email belongs.
+	 * 
+	 * @return userId The ID of the user to whom this email belongs.
+	 */
+	UserId getUserId();
+
+	/**
+	 * Gets the email address.
+	 * 
+	 * @return The email address.
+	 */
+	EmailAddress getAddress();
 
 }

@@ -61,14 +61,6 @@ public interface User {
 	void setId(UserId userId);
 
 	/**
-	 * Set the password.
-	 * 
-	 * @param password
-	 *            The password, encryted, should not null.
-	 */
-	void setPassword(String password);
-
-	/**
 	 * Sets the user status.
 	 * 
 	 * @param status

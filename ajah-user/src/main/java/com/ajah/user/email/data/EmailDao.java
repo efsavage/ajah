@@ -32,6 +32,7 @@ import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailImpl;
 import com.ajah.user.email.EmailStatusImpl;
+import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Data operations on the "user" table.
@@ -66,7 +67,7 @@ public class EmailDao {
 	 */
 	public Email findEmailByAddress(String address) {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT email_id, address, status FROM email WHERE address = ?", new Object[] { address },
+			return this.jdbcTemplate.queryForObject("SELECT email_id, user_id, address, status FROM email WHERE address = ?", new Object[] { address },
 					new EmailRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
@@ -81,12 +82,12 @@ public class EmailDao {
 		 */
 		@Override
 		public Email mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Email user = new EmailImpl();
-			user.setId(new EmailId(rs.getString("email_id")));
-			user.setUserId(new UserId(rs.getString("user_id")));
-			user.setAddress(rs.getString("address"));
-			user.setStatus(EmailStatusImpl.get(rs.getString("status")));
-			return user;
+			Email email = new EmailImpl();
+			email.setId(new EmailId(rs.getString("email_id")));
+			email.setUserId(new UserId(rs.getString("user_id")));
+			email.setAddress(new EmailAddress(rs.getString("address")));
+			email.setStatus(EmailStatusImpl.get(rs.getString("status")));
+			return email;
 		}
 
 	}

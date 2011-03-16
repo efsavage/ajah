@@ -13,25 +13,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.email;
+package com.ajah.user.resetpw;
+
+import java.util.Date;
 
 import lombok.Data;
 
 import com.ajah.user.UserId;
-import com.ajah.util.data.format.EmailAddress;
 
 /**
- * Simple implementation of Email interface.
+ * Represents a password reset request record.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Data
-public class EmailImpl implements Email {
+public class ResetPasswordRequest {
 
-	protected EmailId id;
-	protected UserId userId;
-	protected EmailAddress address;
-	protected EmailStatus status;
+	private ResetPasswordRequestId id;
+	private UserId userId;
+	private ResetPasswordRequestStatus status;
+	private Date created;
+	private Date redeemed;
+	private long code;
 
 }

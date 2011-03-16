@@ -15,18 +15,28 @@
  */
 package com.ajah.user.data;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
+import com.ajah.user.UserImpl;
 import com.ajah.user.UserNotFoundException;
+import com.ajah.user.UserStatusImpl;
+import com.ajah.user.UserType;
+import com.ajah.user.UserTypeImpl;
+import com.ajah.user.email.Email;
+import com.ajah.user.email.data.EmailDao;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
+import com.ajah.user.info.UserSource;
 import com.ajah.util.crypto.Password;
+import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Persistence manager for Users.
@@ -41,6 +51,9 @@ public class UserManager {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private EmailDao emailDao;
 
 	/**
 	 * Attempt to find a user and authenticate.
@@ -79,6 +92,59 @@ public class UserManager {
 			return userInfo;
 		}
 		return new UserInfoImpl(userId);
+	}
+
+	/**
+	 * Creates a new user.
+	 * 
+	 * @param emailAddress
+	 *            Email address, will be used as provisional username, required.
+	 * @param password
+	 *            Password, required.
+	 * @param ip
+	 *            IP of the signup
+	 * @param source
+	 *            source of the signup
+	 * @param type
+	 *            Type of user to create, required.
+	 * @return New user, if save was successful.
+	 */
+	@Transactional
+	public User createUser(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) {
+		User user = new UserImpl();
+		user.setId(new UserId(UUID.randomUUID().toString()));
+		user.setUsername(emailAddress.toString());
+		user.setStatus(UserStatusImpl.NEW);
+		user.setType(UserTypeImpl.NORMAL);
+		this.userDao.insert(user, password);
+		return user;
+	}
+
+	/**
+	 * Finds a user by username or email. Tries by username first, then email.
+	 * 
+	 * @param usernameOrEmail
+	 *            Username or email, as entered by user.
+	 * @return User, if found.
+	 * @throws UserNotFoundException
+	 *             If user is not found.
+	 */
+	public User findUserByUsernameOrEmail(String usernameOrEmail) throws UserNotFoundException {
+		User user = this.userDao.findUserByUsername(usernameOrEmail);
+		if (user != null) {
+			log.fine("Found user by username: " + user.getUsername());
+			return user;
+		}
+		Email email = this.emailDao.findEmailByAddress(usernameOrEmail);
+		if (email != null) {
+			log.fine("Found email " + email.getAddress());
+			user = this.userDao.findUser(email.getUserId());
+		}
+		if (user != null) {
+			log.fine("Found user by email: " + user.getUsername());
+			return user;
+		}
+		throw new UserNotFoundException(usernameOrEmail);
 	}
 
 }

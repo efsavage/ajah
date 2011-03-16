@@ -30,7 +30,11 @@ public enum LogInTypeImpl implements LogInType {
 	/**
 	 * Cookie logins
 	 */
-	COOKIE("2", "cookie", "Cookie", "Automatic cookie login", false);
+	COOKIE("2", "cookie", "Cookie", "Automatic cookie login", false),
+	/**
+	 * Login that occurs as part of signup
+	 */
+	SIGNUP("3", "signup", "Sign Up", "Logged in by signing up", true);
 
 	private final String id;
 
