@@ -24,7 +24,11 @@ package com.ajah.user;
 public enum UserStatusImpl implements UserStatus {
 
 	/**
-	 * Regular user, should be the default.
+	 * New user, unverified/unpaid.
+	 */
+	NEW("0", "New", "New", "New"),
+	/**
+	 * Regular user, should be the normal case.
 	 */
 	ACTIVE("1", "Active", "Active", "Active");
 
