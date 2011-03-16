@@ -44,8 +44,8 @@ public class EmailAddress implements Serializable {
 	 */
 	public EmailAddress(String address) {
 		AjahUtils.requireParam(address, "address");
-		if (Valid.email(address)) {
-			throw new IllegalArgumentException("Invalid email address format");
+		if (!Valid.email(address)) {
+			throw new IllegalArgumentException("Invalid email address format: " + address);
 		}
 		this.address = address;
 	}
