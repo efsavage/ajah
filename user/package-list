@@ -1,0 +1,12 @@
+com.ajah.user
+com.ajah.user.account
+com.ajah.user.account.info
+com.ajah.user.data
+com.ajah.user.email
+com.ajah.user.email.data
+com.ajah.user.info
+com.ajah.user.invitation
+com.ajah.user.login
+com.ajah.user.resetpw
+com.ajah.user.resetpw.data
+com.ajah.user.signup
