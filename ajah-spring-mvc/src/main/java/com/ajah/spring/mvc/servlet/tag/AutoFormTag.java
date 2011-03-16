@@ -33,6 +33,7 @@ import com.ajah.html.element.Form;
 import com.ajah.html.element.Input;
 import com.ajah.html.element.InputImpl;
 import com.ajah.spring.mvc.form.AutoForm;
+import com.ajah.spring.mvc.form.Label;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
@@ -69,6 +70,7 @@ public class AutoFormTag extends TagSupport {
 	 *            The autoForm for this tag to render, required.
 	 */
 	public void setAutoForm(Object autoForm) {
+		AjahUtils.requireParam(autoForm, "autoForm");
 		if (autoForm.getClass().isAnnotationPresent(AutoForm.class)) {
 			this.autoForm = autoForm;
 		} else {
@@ -113,20 +115,24 @@ public class AutoFormTag extends TagSupport {
 	}
 
 	private Input<?> getInput(Field field) throws IllegalArgumentException, IllegalAccessException {
+		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
+		if (field.isAnnotationPresent(Label.class)) {
+			log.fine("@Label is present");
+			label = field.getAnnotation(Label.class).value();
+		}
 		Input<?> input = null;
 		log.fine(field.getType().toString());
 		if (field.getType().equals(String.class)) {
-			input = new InputImpl(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(),
-					(String) field.get(this.autoForm), InputType.TEXT);
+			input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
 		} else if (field.getType().equals(EmailAddress.class)) {
-			input = new InputImpl(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(),
-					((EmailAddress) field.get(this.autoForm)).toString(), InputType.TEXT);
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
 		} else if (field.getType().isAssignableFrom(Password.class)) {
-			input = new InputImpl(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(),
-					(String) field.get(this.autoForm), InputType.PASSWORD);
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.PASSWORD);
 		} else if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
-			input = new Checkbox(StringUtils.capitalize(StringUtils.splitCamelCase(field.getName())), field.getName(), "true",
-					field.getBoolean(this.autoForm));
+			input = new Checkbox(label, field.getName(), "true", field.getBoolean(this.autoForm));
+		} else if (field.getType().equals(Long.class) || field.getType().equals(long.class) || field.getType().equals(Integer.class)
+				|| field.getType().equals(int.class)) {
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
 		} else {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
 		}
@@ -138,5 +144,4 @@ public class AutoFormTag extends TagSupport {
 		}
 		return input;
 	}
-
 }
