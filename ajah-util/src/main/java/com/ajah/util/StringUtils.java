@@ -76,4 +76,20 @@ public class StringUtils {
 		return Character.toTitleCase(string.charAt(0)) + string.substring(1);
 	}
 
+	/**
+	 * Returns toString() for the object passed, if it is not null, otherwise
+	 * returns null.
+	 * 
+	 * @see Object#toString()
+	 * @param object
+	 *            The object to check/toString()
+	 * @return object.toString() or null
+	 */
+	public static String safeToString(Object object) {
+		if (object == null) {
+			return null;
+		}
+		return object.toString();
+	}
+
 }
