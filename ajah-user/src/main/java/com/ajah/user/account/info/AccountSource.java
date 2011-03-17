@@ -19,7 +19,7 @@ package com.ajah.user.account.info;
  * AccountSource is where a account was acquired from. They can be channels (web,
  * email), methods (invite, SEM), or even specific marketing campaigns.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface AccountSource {

@@ -22,7 +22,7 @@ import com.ajah.html.dtd.Direction;
  * Defines attributes that match the core, i18n, and events attributes per the
  * HTML specification.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <T>
  *            Self-reference to type of implementing class, for fluid methods.
  * 

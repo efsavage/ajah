@@ -24,7 +24,7 @@ import com.ajah.util.crypto.Password;
  * Property editor for {@link Password} type. Uses {@link HmacSha1Password}
  * implementation.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class PasswordEditor extends PropertyEditorSupport {

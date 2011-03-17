@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
  * Extension of AbstractHtmlCoreElement that implements Nestable and allows for
  * child elements.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <T>
  *            Type of element (mainly for fluid methods like css())
  * 

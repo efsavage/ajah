@@ -43,7 +43,7 @@ import com.ajah.util.data.format.EmailAddress;
 /**
  * Renders an AutoForm.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class AutoFormTag extends TagSupport {

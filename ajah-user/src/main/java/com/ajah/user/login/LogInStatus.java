@@ -19,7 +19,7 @@ package com.ajah.user.login;
  * All logins will result in one of these four options. Application-specific
  * reasons can go into the code and reason fields.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum LogInStatus {

@@ -18,7 +18,7 @@ package com.ajah.user.email;
 /**
  * A wrapper around a String for typesafe email IDs.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class EmailId {

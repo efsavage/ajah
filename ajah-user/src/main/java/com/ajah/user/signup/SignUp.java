@@ -26,7 +26,7 @@ import com.ajah.user.info.UserSource;
 /**
  * A signUp is a bean used during a registration attempt by a user.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Data

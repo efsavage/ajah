@@ -19,7 +19,7 @@ package com.ajah.user.account;
  * All accounts must be in some state, which determines the permitted
  * operations. Common statuses might be ACTIVE, INACTIVE, SUSPENDED, NEW, etc.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface AccountStatus {

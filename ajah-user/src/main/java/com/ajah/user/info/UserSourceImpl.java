@@ -18,7 +18,7 @@ package com.ajah.user.info;
 /**
  * Basic implementations of UserSource.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum UserSourceImpl implements UserSource {

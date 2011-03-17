@@ -19,7 +19,7 @@ package com.ajah.user;
  * A User corresponds to a person who is using the system. A person should not
  * need to have separate users within the application.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface User {

@@ -3,7 +3,8 @@ package com.ajah.geo;
 /**
  * Represents a country/nation/sovereign state.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public interface Country {
 

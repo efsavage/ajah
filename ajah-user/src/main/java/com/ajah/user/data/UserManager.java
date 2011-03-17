@@ -41,7 +41,7 @@ import com.ajah.util.data.format.EmailAddress;
 /**
  * Persistence manager for Users.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Service

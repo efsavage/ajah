@@ -32,7 +32,7 @@ import com.ajah.user.User;
  * was re-prompted for a password, such as during a password change, that would
  * be recorded.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Data

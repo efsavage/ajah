@@ -19,7 +19,7 @@ package com.ajah.user.email;
  * All email addresses must be in some state, which determines the permitted
  * operations. Common statuses might be ACTIVE, INACTIVE, UNVERIFIED, etc.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface EmailStatus {

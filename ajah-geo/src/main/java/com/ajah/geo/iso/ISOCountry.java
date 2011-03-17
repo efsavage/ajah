@@ -25,9 +25,10 @@ import com.ajah.geo.Country;
  * 
  * It is true that this does duplicate data that already exists in Java's Locale
  * mechanisms, but I don't like the idea of a country being added or removed in
- * a future version breaking my application. * 
+ * a future version breaking my application. *
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum ISOCountry implements Country {
@@ -535,7 +536,7 @@ public enum ISOCountry implements Country {
 
 	private final String name;
 
-	private ISOCountry(String id, String abbr3, String name) {
+	private ISOCountry(final String id, final String abbr3, final String name) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;

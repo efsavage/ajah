@@ -19,7 +19,7 @@ package com.ajah.user.login;
  * LoginSource is where a login was from. They will generally correspond with
  * channels (web, mobile, phone) and/or specific applications.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface LogInSource {

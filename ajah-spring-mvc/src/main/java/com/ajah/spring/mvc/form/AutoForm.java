@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * bean). The UI can be generated from the form and the hints therein, and the
  * simple validation can be enforced without additional code.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)

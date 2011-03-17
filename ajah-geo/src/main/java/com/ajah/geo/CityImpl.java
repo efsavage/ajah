@@ -4,7 +4,8 @@ package com.ajah.geo;
  * Skeleton implementation of City interface. Usable as-is or suitable for
  * extension.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class CityImpl implements City {
 
@@ -45,7 +46,7 @@ public class CityImpl implements City {
 	 * 
 	 * @param id
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -54,7 +55,7 @@ public class CityImpl implements City {
 	 * 
 	 * @param name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -63,7 +64,7 @@ public class CityImpl implements City {
 	 * 
 	 * @param state
 	 */
-	public void setState(State state) {
+	public void setState(final State state) {
 		this.state = state;
 	}
 

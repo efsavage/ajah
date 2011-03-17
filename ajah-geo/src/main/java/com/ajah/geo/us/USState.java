@@ -23,7 +23,8 @@ import com.ajah.geo.iso.ISOCountry;
  * List of 50 US states and Washington D.C. Names and abbreviations match USPS
  * standards.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum USState implements State {
@@ -137,7 +138,7 @@ public enum USState implements State {
 
 	private final String name;
 
-	private USState(String abbr, String name) {
+	private USState(final String abbr, final String name) {
 		this.id = abbr.toLowerCase();
 		this.abbr = abbr;
 		this.name = name;

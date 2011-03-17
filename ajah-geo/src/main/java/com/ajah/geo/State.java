@@ -4,7 +4,8 @@ package com.ajah.geo;
  * The State interface represents a country subdivision, such as state in the US
  * or province in Canada.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public interface State {
 

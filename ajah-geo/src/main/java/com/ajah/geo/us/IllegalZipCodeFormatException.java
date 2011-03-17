@@ -19,7 +19,8 @@ package com.ajah.geo.us;
  * Thrown when there is an attempt to set a ZIP code to an illegal value.
  * 
  * @see ZipCode
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class IllegalZipCodeFormatException extends IllegalArgumentException {
@@ -28,7 +29,7 @@ public class IllegalZipCodeFormatException extends IllegalArgumentException {
 	 * @see IllegalArgumentException#IllegalArgumentException(String)
 	 * @param zip
 	 */
-	public IllegalZipCodeFormatException(String zip) {
+	public IllegalZipCodeFormatException(final String zip) {
 		super(zip + " is not a valid ZIP code");
 	}
 

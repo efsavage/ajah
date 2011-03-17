@@ -18,7 +18,7 @@ package com.ajah.html.attr;
 /**
  * Wraps a string that goes into an on* event.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class ScriptAttribute {

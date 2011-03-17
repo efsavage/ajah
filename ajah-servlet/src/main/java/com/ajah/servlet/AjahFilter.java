@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Simple skeleton class that adds some logging and implements extra methods.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public abstract class AjahFilter implements Filter {

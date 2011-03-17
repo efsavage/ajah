@@ -22,7 +22,8 @@ import com.ajah.util.StringUtils;
  * USPS ZIP Code. Format is ##### or #####-####. When printing this, use
  * toString().
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class ZipCode implements PostalCode {
@@ -43,7 +44,7 @@ public class ZipCode implements PostalCode {
 	 * @param zip
 	 *            5 digit numeric string, or null.
 	 */
-	public void setZip(String zip) {
+	public void setZip(final String zip) {
 		if (zip != null && !zip.matches("\\d{5}")) {
 			throw new IllegalZipCodeFormatException(zip);
 		}
@@ -66,7 +67,7 @@ public class ZipCode implements PostalCode {
 	 * @param zip4
 	 *            4 digit numeric string, or null.
 	 */
-	public void setZip4(String zip4) {
+	public void setZip4(final String zip4) {
 		if (zip4 != null && !zip4.matches("\\d{4}")) {
 			throw new IllegalZipCodeFormatException(zip4);
 		}

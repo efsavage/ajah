@@ -18,6 +18,7 @@ package com.ajah.user.resetpw.data;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ajah.user.User;
@@ -29,11 +30,14 @@ import com.ajah.util.RandomUtils;
 /**
  * Manages the persistence and transport of reset password requests.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Service
 public class ResetPasswordRequestManager {
+
+	@Autowired
+	private ResetPasswordRequestDao resetPasswordRequestDao;
 
 	/**
 	 * Sends a reset password request to the particular user.

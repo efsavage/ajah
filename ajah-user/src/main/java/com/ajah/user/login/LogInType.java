@@ -19,7 +19,7 @@ package com.ajah.user.login;
  * LoginType is the way a user logged in. Common examples would be MANUAL,
  * COOKIE, or TOKEN.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface LogInType {

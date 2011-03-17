@@ -18,7 +18,7 @@ package com.ajah.user.account;
 /**
  * An Account corresponds to a billing or non-person entity.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface Account {

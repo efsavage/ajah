@@ -22,7 +22,7 @@ import com.ajah.user.UserId;
  * operations, but is standard enough that it is not an application-specific
  * setting/property.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public interface UserInfo {
 
