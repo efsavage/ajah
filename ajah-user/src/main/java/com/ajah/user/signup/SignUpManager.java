@@ -64,6 +64,7 @@ public class SignUpManager {
 		signUp.setCreated(new Date());
 		signUp.setSource(source);
 		signUp.setStatus(SignUpStatus.SUCCESS);
+		//TODO signup should be saved
 		User user = this.userManager.createUser(emailAddress, password, ip, source, type);
 		log.info(user.getUsername() + " created!");
 		// try {
