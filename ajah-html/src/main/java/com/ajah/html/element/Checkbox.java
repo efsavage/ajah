@@ -81,14 +81,16 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
-		out.write("<input ");
+		out.write("<input");
 		write(out);
 		write(out, "name", this.name);
 		write(out, "value", this.value);
 		write(out, "type", "checkbox");
 		write(out, "checked", this.checked ? "checked" : null);
 		out.write(" />");
-		out.write("\r\n");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 		this.label.render(out, depth);
 	}
 

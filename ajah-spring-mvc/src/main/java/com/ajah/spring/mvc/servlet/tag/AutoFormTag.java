@@ -125,7 +125,7 @@ public class AutoFormTag extends TagSupport {
 			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT);
 			form.getInputs().add(input);
 			div.add(form);
-			div.render(out, 0);
+			div.render(out, isCompact() ? -1 : 0);
 		} catch (IOException e) {
 			throw new JspException(e);
 		} catch (IllegalArgumentException e) {

@@ -54,13 +54,15 @@ public class Label extends AbstractNestableHtmlCoreElement<Label> {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
-		out.write("<label ");
+		out.write("<label");
 		write(out);
 		write(out, "for", this.input.getId());
 		out.write(">");
 		out.write(this.value);
 		out.write("</label>");
-		out.write("\r\n");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 	}
 
 	/**

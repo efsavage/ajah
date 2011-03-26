@@ -61,18 +61,40 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
-		out.write("<form ");
+		out.write("<form");
 		write(out);
 		write(out, "action", this.action);
 		write(out, "method", this.method.name().toLowerCase());
 		out.write(">");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 		for (Input<?> input : this.inputs) {
+			for (int i = 0; i <= depth; i++) {
+				out.write("\t");
+			}
 			out.write("<div>");
-			input.render(out, depth + 1);
+			if (depth >= 0) {
+				out.write("\r\n");
+				input.render(out, depth + 2);
+			} else {
+				input.render(out, depth);
+			}
+			for (int i = 0; i <= depth; i++) {
+				out.write("\t");
+			}
 			out.write("</div>");
+			if (depth >= 0) {
+				out.write("\r\n");
+			}
+		}
+		for (int i = 0; i < depth; i++) {
+			out.write("\t");
 		}
 		out.write("</form>");
-		out.write("\r\n");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 	}
 
 	/**

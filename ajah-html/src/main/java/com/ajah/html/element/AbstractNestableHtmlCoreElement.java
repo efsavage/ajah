@@ -65,12 +65,22 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		out.write(getName());
 		write(out);
 		out.write(">");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 		for (HtmlElement<?> child : this.children) {
-			child.render(out, depth + 1);
+			if (depth >= 0) {
+				child.render(out, depth + 1);
+			} else {
+				child.render(out, depth);
+			}
 		}
 		out.write("</");
 		out.write(getName());
-		out.write(">\r\n");
+		out.write(">");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 	}
 
 }

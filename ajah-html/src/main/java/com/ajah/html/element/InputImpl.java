@@ -80,19 +80,21 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 	 */
 	@Override
 	public void render(Writer out, int depth) throws IOException {
-		for (int i = 0; i < depth; i++) {
-			out.write("\t");
-		}
 		if (this.label != null) {
 			this.label.render(out, depth);
 		}
-		out.write("<input ");
+		for (int i = 0; i < depth; i++) {
+			out.write("\t");
+		}
+		out.write("<input");
 		write(out);
 		write(out, "name", this.name);
 		write(out, "value", this.value);
 		write(out, "type", this.type.name().toLowerCase());
 		out.write(" />");
-		out.write("\r\n");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 	}
 
 	@Override
