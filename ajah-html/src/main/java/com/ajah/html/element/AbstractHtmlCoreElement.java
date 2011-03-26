@@ -17,6 +17,8 @@ package com.ajah.html.element;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.Data;
 
@@ -69,9 +71,16 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 
 	protected ScriptAttribute onKeyUp;
 
+	private Map<String, String> dataElements;
+
 	protected void write(Writer out) throws IOException {
 		write(out, "id", getId());
 		write(out, "class", getCssClass());
+		if (this.dataElements != null) {
+			for (String key : this.dataElements.keySet()) {
+				write(out, "data-" + key, this.dataElements.get(key));
+			}
+		}
 	}
 
 	protected void write(Writer out, String name, String value) throws IOException {
@@ -105,6 +114,22 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 			setCssClass(_cssClass);
 		}
 		return getThis();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public T data(String key, String value) {
+		addDataElement(key, value);
+		return getThis();
+	}
+
+	private synchronized void addDataElement(String key, String value) {
+		if (this.dataElements == null) {
+			this.dataElements = new HashMap<String, String>();
+		}
+		this.dataElements.put(key, value);
 	}
 
 	/**

@@ -34,8 +34,11 @@ public interface HtmlElement<T> {
 	 * 
 	 * @param out
 	 *            The writer to write to (such as a JspWriter)
+	 * @param depth
+	 *            The level at which this element is nested, for
+	 *            pretty-printing.
 	 * @throws IOException
 	 */
-	void render(Writer out) throws IOException;
+	void render(Writer out, int depth) throws IOException;
 
 }

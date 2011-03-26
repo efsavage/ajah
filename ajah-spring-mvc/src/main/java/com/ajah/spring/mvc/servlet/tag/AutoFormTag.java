@@ -35,6 +35,7 @@ import com.ajah.html.element.InputImpl;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.Label;
 import com.ajah.spring.mvc.form.Submit;
+import com.ajah.spring.mvc.form.validation.Match;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.crypto.Password;
@@ -53,6 +54,27 @@ public class AutoFormTag extends TagSupport {
 	private static final long serialVersionUID = -5998541642357295851L;
 
 	private Object autoForm;
+
+	private boolean compact = false;
+
+	/**
+	 * Denotes if whitespace should be added for readability.
+	 * 
+	 * @return true if whitespace should be removed (default), otherwise false
+	 */
+	public boolean isCompact() {
+		return this.compact;
+	}
+
+	/**
+	 * Denotes if whitespace should be added for readability.
+	 * 
+	 * @param compact
+	 *            true if whitespace should be removed, otherwise false
+	 */
+	public void setCompact(boolean compact) {
+		this.compact = compact;
+	}
 
 	/**
 	 * Returns the autoForm for this tag to render.
@@ -103,7 +125,7 @@ public class AutoFormTag extends TagSupport {
 			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT);
 			form.getInputs().add(input);
 			div.add(form);
-			div.render(out);
+			div.render(out, 0);
 		} catch (IOException e) {
 			throw new JspException(e);
 		} catch (IllegalArgumentException e) {
@@ -122,6 +144,7 @@ public class AutoFormTag extends TagSupport {
 		}
 		Input<?> input = null;
 		log.fine(field.getType().toString());
+		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
 		if (field.getType().equals(String.class)) {
 			input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
 		} else if (field.getType().equals(EmailAddress.class)) {
@@ -137,11 +160,18 @@ public class AutoFormTag extends TagSupport {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
 		}
 		if (field.isAnnotationPresent(NotNull.class)) {
-			log.fine("NotNull is present");
+			log.fine("NotNull is present on " + field.getName());
 			input.css("required");
 		} else {
-			log.fine("NotNull is NOT present");
+			log.fine("NotNull is NOT present on " + field.getName());
+		}
+		if (field.isAnnotationPresent(Match.class)) {
+			log.fine("Match is present on " + field.getName());
+			input.data("match", field.getAnnotation(Match.class).value());
+		} else {
+			log.fine("Match is NOT present on " + field.getName());
 		}
 		return input;
 	}
+
 }

@@ -151,4 +151,20 @@ public interface HtmlCoreElement<T> extends HtmlElement<T> {
 	 */
 	T css(String cssClass);
 
+	/**
+	 * Adds a data-* attribute to the element.
+	 * 
+	 * See <a href=
+	 * "http://dev.w3.org/html5/spec/Overview.html#embedding-custom-non-visible-data-with-the-data-attributes"
+	 * >HTML 5 Spec</a> for more information.
+	 * 
+	 * @param key
+	 *            Key of the value, should be safe to be part of an attribute
+	 *            name (alphanumeric + dashes).
+	 * @param value
+	 *            Value of the attribute to set.
+	 * @return Reference to target object
+	 */
+	T data(String key, String value);
+
 }

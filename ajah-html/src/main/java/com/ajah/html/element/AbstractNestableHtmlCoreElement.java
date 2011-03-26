@@ -20,11 +20,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ajah.html.HtmlElement;
-import com.ajah.html.Nestable;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import com.ajah.html.HtmlElement;
+import com.ajah.html.Nestable;
 
 /**
  * Extension of AbstractHtmlCoreElement that implements Nestable and allows for
@@ -57,13 +57,16 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Writer out) throws IOException {
+	public void render(Writer out, int depth) throws IOException {
+		for (int i = 0; i < depth; i++) {
+			out.write("\t");
+		}
 		out.write("<");
 		out.write(getName());
 		write(out);
 		out.write(">");
 		for (HtmlElement<?> child : this.children) {
-			child.render(out);
+			child.render(out, depth + 1);
 		}
 		out.write("</");
 		out.write(getName());
