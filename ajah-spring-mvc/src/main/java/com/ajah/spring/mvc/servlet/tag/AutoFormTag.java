@@ -105,7 +105,7 @@ public class AutoFormTag extends TagSupport {
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		if(this.autoForm==null) {
+		if (this.autoForm == null) {
 			setAutoForm(this.pageContext.getRequest().getAttribute("ajahAutoForm"));
 		}
 		AjahUtils.requireParam(this.autoForm, "autoForm");
@@ -115,7 +115,7 @@ public class AutoFormTag extends TagSupport {
 			Form form = new Form(FormMethod.POST).css("asm-auto");
 			for (Field field : this.autoForm.getClass().getFields()) {
 				log.fine(field.getName());
-				Input<?> input = getInput(field);
+				Input<?> input = getInput(field, this.autoForm.getClass().getFields());
 				form.getInputs().add(input);
 			}
 			String submitText = null;
@@ -139,12 +139,10 @@ public class AutoFormTag extends TagSupport {
 		return Tag.EVAL_PAGE;
 	}
 
-	private Input<?> getInput(Field field) throws IllegalArgumentException, IllegalAccessException {
-		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
-		if (field.isAnnotationPresent(Label.class)) {
-			log.fine("@Label is present");
-			label = field.getAnnotation(Label.class).value();
-		}
+	private Input<?> getInput(Field field, Field[] allFields) throws IllegalArgumentException, IllegalAccessException {
+
+		String label = getLabel(field);
+
 		Input<?> input = null;
 		log.fine(field.getType().toString());
 		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
@@ -171,10 +169,42 @@ public class AutoFormTag extends TagSupport {
 		if (field.isAnnotationPresent(Match.class)) {
 			log.fine("Match is present on " + field.getName());
 			input.data("match", field.getAnnotation(Match.class).value());
+			input.data("match-name", getLabel(findField(field.getAnnotation(Match.class).value(), allFields)));
 		} else {
 			log.fine("Match is NOT present on " + field.getName());
 		}
 		return input;
+	}
+
+	/**
+	 * @param field
+	 * @return
+	 */
+	private String getLabel(Field field) {
+		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
+		if (field.isAnnotationPresent(Label.class)) {
+			log.fine("@Label is present");
+			label = field.getAnnotation(Label.class).value();
+		}
+		return label;
+	}
+
+	/**
+	 * Finds a field by name.
+	 * 
+	 * @param target
+	 *            The name of the field to target.
+	 * @param allFields
+	 *            The list of fields to search across.
+	 * @return Matching field, if found, otherwise null.
+	 */
+	private Field findField(String target, Field[] allFields) {
+		for (Field field : allFields) {
+			if (field.getName().equals(target)) {
+				return field;
+			}
+		}
+		return null;
 	}
 
 }
