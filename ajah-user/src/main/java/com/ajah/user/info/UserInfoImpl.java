@@ -22,6 +22,7 @@ import lombok.Data;
 import com.ajah.user.UserId;
 import com.ajah.user.email.EmailId;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.data.Month;
 
 /**
  * UserInfo is information about a user that is not important for most
@@ -42,7 +43,7 @@ public class UserInfoImpl implements UserInfo {
 	protected String lastName;
 	protected String title;
 	protected String gender;
-	protected Integer birthMonth;
+	protected Month birthMonth;
 	protected Integer birthDay;
 	protected Integer birthYear;
 	protected EmailId primaryEmailId;

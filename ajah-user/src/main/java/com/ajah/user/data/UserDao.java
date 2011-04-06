@@ -37,6 +37,7 @@ import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.crypto.Password;
+import com.ajah.util.data.Month;
 
 /**
  * Data operations on the "user" table.
@@ -143,7 +144,7 @@ public class UserDao extends AbstractAjahDao {
 			userInfo.setMiddleName(rs.getString("middle_name"));
 			userInfo.setLastName(rs.getString("last_name"));
 			userInfo.setBirthDay(getInteger(rs, "birth_day"));
-			userInfo.setBirthMonth(getInteger(rs, "birth_month"));
+			userInfo.setBirthMonth(Month.get(rs.getInt("birth_month")));
 			userInfo.setBirthYear(getInteger(rs, "birth_year"));
 			return userInfo;
 		}
@@ -216,7 +217,8 @@ public class UserDao extends AbstractAjahDao {
 		this.jdbcTemplate
 				.update("INSERT INTO user_info (user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id) VALUES (?,?,?,?,?,?,?,?)",
 						new Object[] { userInfo.getUserId().getId(), userInfo.getFirstName(), userInfo.getMiddleName(), userInfo.getLastName(),
-								userInfo.getBirthDay(), userInfo.getBirthMonth(), userInfo.getBirthYear(), userInfo.getPrimaryEmailId().getId() });
+								userInfo.getBirthDay(), userInfo.getBirthMonth() == null ? null : Integer.valueOf(userInfo.getBirthMonth().getId()),
+								userInfo.getBirthYear(), userInfo.getPrimaryEmailId().getId() });
 	}
 
 	/**

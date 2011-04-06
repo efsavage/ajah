@@ -18,6 +18,7 @@ package com.ajah.user.info;
 import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
+import com.ajah.util.data.Month;
 
 /**
  * UserInfo is information about a user that is not important for most
@@ -81,7 +82,7 @@ public interface UserInfo {
 	 * @param birthMonth
 	 *            The birth month of the user, should be >=0 and <=12
 	 */
-	void setBirthMonth(Integer birthMonth);
+	void setBirthMonth(Month birthMonth);
 
 	/**
 	 * Sets the birth year of the user.
@@ -142,7 +143,7 @@ public interface UserInfo {
 	 * 
 	 * @return The birth month of the user, may be null.
 	 */
-	Integer getBirthMonth();
+	Month getBirthMonth();
 
 	/**
 	 * Returns the birth year of the user.
