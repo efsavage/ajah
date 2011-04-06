@@ -18,11 +18,14 @@ package com.ajah.user.resetpw.data;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ajah.user.User;
 import com.ajah.user.resetpw.ResetPasswordRequest;
 import com.ajah.user.resetpw.ResetPasswordRequestId;
+import com.ajah.user.resetpw.ResetPasswordRequestNotFoundException;
+import com.ajah.user.resetpw.ResetPasswordRequestStatus;
 import com.ajah.user.resetpw.ResetPasswordRequestStatusImpl;
 import com.ajah.util.RandomUtils;
 
@@ -34,6 +37,9 @@ import com.ajah.util.RandomUtils;
  */
 @Service
 public class ResetPasswordRequestManager {
+
+	@Autowired
+	ResetPasswordRequestDao resetPasswordRequestDao;
 
 	/**
 	 * Sends a reset password request to the particular user.
@@ -50,7 +56,46 @@ public class ResetPasswordRequestManager {
 		rpr.setCode(code);
 		rpr.setCreated(new Date());
 		rpr.setStatus(ResetPasswordRequestStatusImpl.NEW);
+		this.resetPasswordRequestDao.insert(rpr);
 		return rpr;
+	}
+
+	/**
+	 * Finds a {@link ResetPasswordRequest} by it's code.
+	 * 
+	 * @see ResetPasswordRequestDao#findByCode(long)
+	 * @param code
+	 *            The code to query on, required.
+	 * @return The {@link ResetPasswordRequest}, if found.
+	 * @throws ResetPasswordRequestNotFoundException
+	 *             If no {@link ResetPasswordRequest} is found.
+	 */
+	public ResetPasswordRequest getResetPasswordRequestByCode(long code) throws ResetPasswordRequestNotFoundException {
+		ResetPasswordRequest rpr = this.resetPasswordRequestDao.findByCode(code);
+		if (rpr == null) {
+			throw new ResetPasswordRequestNotFoundException(code);
+		}
+		return rpr;
+	}
+
+	/**
+	 * Redeems a request, setting its status and redeemed date, then saving the
+	 * record.
+	 * 
+	 * @see ResetPasswordRequestStatus#isRedeemable()
+	 * @param rpr
+	 *            The {@link ResetPasswordRequest} to redeem.
+	 * @throws IllegalArgumentException
+	 *             If the {@link ResetPasswordRequest} is not in a redeemable
+	 *             state.
+	 */
+	public void redeem(ResetPasswordRequest rpr) {
+		if (!rpr.getStatus().isRedeemable()) {
+			throw new IllegalArgumentException("Request is not redeemable");
+		}
+		rpr.setRedeemed(new Date());
+		rpr.setStatus(ResetPasswordRequestStatusImpl.REDEEMED);
+		this.resetPasswordRequestDao.update(rpr);
 	}
 
 }

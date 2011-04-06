@@ -72,4 +72,18 @@ public interface Email {
 	 */
 	EmailAddress getAddress();
 
+	/**
+	 * The unique, internal ID of this email.
+	 * 
+	 * @return The unique, internal ID of this email.
+	 */
+	EmailId getId();
+
+	/**
+	 * Returns the status of this Email.
+	 * 
+	 * @return The status of this Email.
+	 */
+	EmailStatus getStatus();
+
 }

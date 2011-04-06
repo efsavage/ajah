@@ -32,6 +32,7 @@ import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailImpl;
 import com.ajah.user.email.EmailStatusImpl;
+import com.ajah.util.AjahUtils;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -67,8 +68,8 @@ public class EmailDao {
 	 */
 	public Email findEmailByAddress(String address) {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT email_id, user_id, address, status FROM email WHERE address = ?", new Object[] { address },
-					new EmailRowMapper());
+			return this.jdbcTemplate.queryForObject("SELECT email_id, user_id, address, status FROM email WHERE address = ?",
+					new Object[] { address }, new EmailRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
@@ -90,6 +91,37 @@ public class EmailDao {
 			return email;
 		}
 
+	}
+
+	/**
+	 * INSERTs an {@link Email} entity.
+	 * 
+	 * @param email
+	 *            The {@link Email} to insert.
+	 */
+	public void insert(Email email) {
+		AjahUtils.requireParam(email, "email");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
+				email.getUserId().getId(), email.getAddress().toString(), email.getStatus().getId() });
+	}
+
+	/**
+	 * Finds an email by its unique ID.
+	 * 
+	 * @param emailId
+	 *            The unique ID to search on, required.
+	 * @return The {@link Email}, if found, otherwise null.
+	 */
+	public Email findEmailById(EmailId emailId) {
+		AjahUtils.requireParam(emailId, "emailId");
+		try {
+			return this.jdbcTemplate.queryForObject("SELECT email_id, user_id, address, status FROM email WHERE email_id = ?",
+					new Object[] { emailId.getId() }, new EmailRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
 	}
 
 }

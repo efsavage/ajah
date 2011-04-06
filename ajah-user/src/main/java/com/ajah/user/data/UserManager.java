@@ -31,10 +31,14 @@ import com.ajah.user.UserStatusImpl;
 import com.ajah.user.UserType;
 import com.ajah.user.UserTypeImpl;
 import com.ajah.user.email.Email;
+import com.ajah.user.email.EmailId;
+import com.ajah.user.email.EmailImpl;
+import com.ajah.user.email.EmailStatusImpl;
 import com.ajah.user.email.data.EmailDao;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
 import com.ajah.user.info.UserSource;
+import com.ajah.util.Validate;
 import com.ajah.util.crypto.Password;
 import com.ajah.util.data.format.EmailAddress;
 
@@ -117,11 +121,23 @@ public class UserManager {
 		user.setStatus(UserStatusImpl.NEW);
 		user.setType(UserTypeImpl.NORMAL);
 		this.userDao.insert(user, password);
+
+		Email email = new EmailImpl();
+		email.setId(new EmailId(UUID.randomUUID().toString()));
+		email.setUserId(user.getId());
+		email.setAddress(emailAddress);
+		email.setStatus(EmailStatusImpl.ACTIVE);
+		this.emailDao.insert(email);
+
+		UserInfo userInfo = new UserInfoImpl(user.getId());
+		userInfo.setPrimaryEmailId(email.getId());
+		this.userDao.insert(userInfo);
 		return user;
 	}
 
 	/**
-	 * Finds a user by username or email. Tries by username first, then email.
+	 * Finds a user by username or email. Tries by email if the parameter is a
+	 * valid address, otherwise tries by username.
 	 * 
 	 * @param usernameOrEmail
 	 *            Username or email, as entered by user.
@@ -130,21 +146,58 @@ public class UserManager {
 	 *             If user is not found.
 	 */
 	public User findUserByUsernameOrEmail(String usernameOrEmail) throws UserNotFoundException {
-		User user = this.userDao.findUserByUsername(usernameOrEmail);
+		if (Validate.isEmail(usernameOrEmail)) {
+			return findUserByEmail(usernameOrEmail);
+		}
+		return findUserByUsername(usernameOrEmail);
+	}
+
+	/**
+	 * Finds a user by email.
+	 * 
+	 * @param address
+	 *            Email, as entered by user.
+	 * @return User, if found.
+	 * @throws UserNotFoundException
+	 *             If user is not found.
+	 */
+	public User findUserByEmail(String address) throws UserNotFoundException {
+		Email email = this.emailDao.findEmailByAddress(address);
+		if (email != null) {
+			log.fine("Found email " + email.getAddress());
+			User user = this.userDao.findUser(email.getUserId());
+			if (user != null) {
+				log.fine("Found user by email: " + user.getUsername());
+				return user;
+			}
+		}
+		throw new UserNotFoundException(address);
+	}
+
+	/**
+	 * Finds a user by username.
+	 * 
+	 * @param username
+	 *            Username as entered by user.
+	 * @return User, if found.
+	 * @throws UserNotFoundException
+	 *             If user is not found.
+	 */
+	public User findUserByUsername(String username) throws UserNotFoundException {
+		User user = this.userDao.findUserByUsername(username);
 		if (user != null) {
 			log.fine("Found user by username: " + user.getUsername());
 			return user;
 		}
-		Email email = this.emailDao.findEmailByAddress(usernameOrEmail);
-		if (email != null) {
-			log.fine("Found email " + email.getAddress());
-			user = this.userDao.findUser(email.getUserId());
-		}
-		if (user != null) {
-			log.fine("Found user by email: " + user.getUsername());
-			return user;
-		}
-		throw new UserNotFoundException(usernameOrEmail);
+		throw new UserNotFoundException(username);
+	}
+
+	/**
+	 * @param userId
+	 * @param password
+	 */
+	public void changePassword(UserId userId, Password password) {
+		this.userDao.update(userId, password);
 	}
 
 }

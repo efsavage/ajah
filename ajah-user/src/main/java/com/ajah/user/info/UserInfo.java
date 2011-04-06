@@ -16,6 +16,8 @@
 package com.ajah.user.info;
 
 import com.ajah.user.UserId;
+import com.ajah.user.email.Email;
+import com.ajah.user.email.EmailId;
 
 /**
  * UserInfo is information about a user that is not important for most
@@ -71,7 +73,7 @@ public interface UserInfo {
 	 * @param birthDay
 	 *            The birth day of the user, should be >= 0 and <= 31.
 	 */
-	void setBirthDay(int birthDay);
+	void setBirthDay(Integer birthDay);
 
 	/**
 	 * Sets she birth month of the user.
@@ -79,7 +81,7 @@ public interface UserInfo {
 	 * @param birthMonth
 	 *            The birth month of the user, should be >=0 and <=12
 	 */
-	void setBirthMonth(int birthMonth);
+	void setBirthMonth(Integer birthMonth);
 
 	/**
 	 * Sets the birth year of the user.
@@ -88,6 +90,65 @@ public interface UserInfo {
 	 *            The birth year of the user, should be 0 or >=1900 and <=
 	 *            current year
 	 */
-	void setBirthYear(int birthYear);
+	void setBirthYear(Integer birthYear);
+
+	/**
+	 * Returns the user's primary email. Could be null if the user did not sign
+	 * up by email.
+	 * 
+	 * @return Primary email for the user, may be null. Note that this address
+	 *         may be inactive.
+	 */
+	EmailId getPrimaryEmailId();
+
+	/**
+	 * Sets the primary email address for the user.
+	 * 
+	 * @param id
+	 *            Unique ID of the {@link Email}, may be null.
+	 */
+	void setPrimaryEmailId(EmailId id);
+
+	/**
+	 * Returns the first name of the user.
+	 * 
+	 * @return The first name of the user.
+	 */
+	String getFirstName();
+
+	/**
+	 * Returns the middle name of the user.
+	 * 
+	 * @return The middle name of the user, may be null.
+	 */
+	String getMiddleName();
+
+	/**
+	 * Returns the last name of the user.
+	 * 
+	 * @return The last name of the user, may be null.
+	 */
+	String getLastName();
+
+	/**
+	 * Returns the birth day of the user.
+	 * 
+	 * @return The birth day of the user, may be null.
+	 */
+	Integer getBirthDay();
+
+	/**
+	 * Returns the birth month of the user.
+	 * 
+	 * @return The birth month of the user, may be null.
+	 */
+	Integer getBirthMonth();
+
+	/**
+	 * Returns the birth year of the user.
+	 * 
+	 * @return The birth year of the user, may be null.
+	 */
+	Integer getBirthYear();
 
 }

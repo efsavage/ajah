@@ -26,27 +26,37 @@ public enum ResetPasswordRequestStatusImpl implements ResetPasswordRequestStatus
 	/**
 	 * New user, unverified/unpaid.
 	 */
-	NEW("0", "New", "New", "New"),
+	NEW("0", "New", "New", "New", true),
 	/**
-	 * Regular user, should be the normal case.
+	 * This request was successfully redeemed.
 	 */
-	REDEEMED("1", "Active", "Active", "Active"),
+	REDEEMED("1", "Active", "Active", "Active", false),
 	/**
-	 * Regular user, should be the normal case.
+	 * This request expired and cannot be redeemed.
 	 */
-	EXPIRED("2", "Expired", "Expired", "Expired");
+	EXPIRED("2", "Expired", "Expired", "Expired", false);
 
-	private ResetPasswordRequestStatusImpl(String id, String code, String name, String description) {
+	private ResetPasswordRequestStatusImpl(String id, String code, String name, String description, boolean redeemable) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
+		this.redeemable = redeemable;
 	}
 
 	private final String id;
 	private final String code;
 	private final String name;
 	private final String description;
+	private final boolean redeemable;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isRedeemable() {
+		return this.redeemable;
+	}
 
 	/**
 	 * {@inheritDoc}

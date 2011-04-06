@@ -45,7 +45,7 @@ import com.ajah.util.crypto.Password;
  * 
  */
 @Repository
-public class UserDao {
+public class UserDao extends AbstractAjahDao {
 
 	private static final Logger log = Logger.getLogger(UserDao.class.getName());
 
@@ -142,9 +142,9 @@ public class UserDao {
 			userInfo.setFirstName(rs.getString("first_name"));
 			userInfo.setMiddleName(rs.getString("middle_name"));
 			userInfo.setLastName(rs.getString("last_name"));
-			userInfo.setBirthDay(rs.getInt("birth_day"));
-			userInfo.setBirthMonth(rs.getInt("birth_month"));
-			userInfo.setBirthYear(rs.getInt("birth_year"));
+			userInfo.setBirthDay(getInteger(rs, "birth_day"));
+			userInfo.setBirthMonth(getInteger(rs, "birth_month"));
+			userInfo.setBirthYear(getInteger(rs, "birth_year"));
 			return userInfo;
 		}
 	}
@@ -202,6 +202,36 @@ public class UserDao {
 			log.fine(e.getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * INSERTs a {@link UserInfo} entity.
+	 * 
+	 * @param userInfo
+	 *            UserInfo entity to insert, required.
+	 */
+	public void insert(UserInfo userInfo) {
+		AjahUtils.requireParam(userInfo, "userInfo");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		this.jdbcTemplate
+				.update("INSERT INTO user_info (user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id) VALUES (?,?,?,?,?,?,?,?)",
+						new Object[] { userInfo.getUserId().getId(), userInfo.getFirstName(), userInfo.getMiddleName(), userInfo.getLastName(),
+								userInfo.getBirthDay(), userInfo.getBirthMonth(), userInfo.getBirthYear(), userInfo.getPrimaryEmailId().getId() });
+	}
+
+	/**
+	 * UPDATEs the user table with a new password.
+	 * 
+	 * @param userId
+	 *            ID of user to update, required.
+	 * @param password
+	 *            Password to update to, required.
+	 */
+	public void update(UserId userId, Password password) {
+		AjahUtils.requireParam(userId, "userId");
+		AjahUtils.requireParam(password, "password");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
 	}
 
 }

@@ -20,6 +20,7 @@ import java.util.Date;
 import lombok.Data;
 
 import com.ajah.user.UserId;
+import com.ajah.user.email.EmailId;
 import com.ajah.util.AjahUtils;
 
 /**
@@ -41,9 +42,10 @@ public class UserInfoImpl implements UserInfo {
 	protected String lastName;
 	protected String title;
 	protected String gender;
-	protected int birthMonth;
-	protected int birthDay;
-	protected int birthYear;
+	protected Integer birthMonth;
+	protected Integer birthDay;
+	protected Integer birthYear;
+	protected EmailId primaryEmailId;
 
 	/**
 	 * Instantiates a userinfo with userId, which should not be null.

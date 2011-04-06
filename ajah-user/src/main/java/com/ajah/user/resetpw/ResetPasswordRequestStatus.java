@@ -54,4 +54,11 @@ public interface ResetPasswordRequestStatus {
 	 */
 	String getDescription();
 
+	/**
+	 * Can this request be used to reset the password?
+	 * 
+	 * @return True if this request be used to reset the password, otherwise false.
+	 */
+	boolean isRedeemable();
+
 }
