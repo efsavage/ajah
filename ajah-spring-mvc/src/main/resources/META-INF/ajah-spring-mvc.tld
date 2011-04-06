@@ -9,7 +9,7 @@
 		<tag-class>com.ajah.spring.mvc.servlet.tag.AutoFormTag</tag-class>
 		<attribute>
 			<name>autoForm</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>

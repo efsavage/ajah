@@ -105,6 +105,9 @@ public class AutoFormTag extends TagSupport {
 	 */
 	@Override
 	public int doStartTag() throws JspException {
+		if(this.autoForm==null) {
+			setAutoForm(this.pageContext.getRequest().getAttribute("ajahAutoForm"));
+		}
 		AjahUtils.requireParam(this.autoForm, "autoForm");
 		try {
 			JspWriter out = this.pageContext.getOut();
