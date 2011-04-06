@@ -33,6 +33,7 @@ import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
 import com.ajah.user.UserStatusImpl;
 import com.ajah.user.UserTypeImpl;
+import com.ajah.user.email.EmailId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
 import com.ajah.util.AjahUtils;
@@ -121,9 +122,10 @@ public class UserDao extends AbstractAjahDao {
 	public UserInfo findUserInfo(UserId userId) {
 		AjahUtils.requireParam(userId, "userId");
 		try {
-			return this.jdbcTemplate.queryForObject(
-					"SELECT user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year FROM user_info WHERE user_id = ?",
-					new Object[] { userId.toString() }, new UserInfoRowMapper());
+			return this.jdbcTemplate
+					.queryForObject(
+							"SELECT user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id FROM user_info WHERE user_id = ?",
+							new Object[] { userId.toString() }, new UserInfoRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
@@ -146,6 +148,7 @@ public class UserDao extends AbstractAjahDao {
 			userInfo.setBirthDay(getInteger(rs, "birth_day"));
 			userInfo.setBirthMonth(Month.get(rs.getInt("birth_month")));
 			userInfo.setBirthYear(getInteger(rs, "birth_year"));
+			userInfo.setPrimaryEmailId(rs.getString("primary_email_id") == null ? null : new EmailId(rs.getString("primary_email_id")));
 			return userInfo;
 		}
 	}
