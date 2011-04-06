@@ -38,4 +38,14 @@ public interface PropertyKey {
 	 */
 	String getDefaultValue();
 
+	/**
+	 * This is an optional reference to another PropertyKey, the value
+	 * (including default) of which will be used in place of this properties
+	 * value. This allows properties to be chained together, but be wary of
+	 * circular references!
+	 * 
+	 * @return The fallback property, may be null.
+	 */
+	PropertyKey getFallback();
+
 }

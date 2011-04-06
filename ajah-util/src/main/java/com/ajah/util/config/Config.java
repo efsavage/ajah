@@ -85,6 +85,9 @@ public enum Config {
 	 * @return Returns the value for the specified key, or defaultValue
 	 */
 	public String get(PropertyKey key) {
+		if (key.getFallback() != null) {
+			return get(key.getName(), get(key.getFallback()));
+		}
 		return get(key.getName(), key.getDefaultValue());
 	}
 
