@@ -21,7 +21,7 @@ package com.ajah.util;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class Valid {
+public class Validate {
 
 	/**
 	 * Validates email against a simple pattern. Written against common usage,
@@ -30,7 +30,7 @@ public class Valid {
 	 * @param email
 	 * @return true if email is valid
 	 */
-	public static boolean email(String email) {
+	public static boolean isEmail(String email) {
 		return StringUtils.safeLength(email)>5 && email.matches("[A-Za-z0-9._%+-]+@([a-zA-Z0-9]+\\.)+[a-zA-Z]{2,4}");
 	}
 

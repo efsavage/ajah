@@ -18,7 +18,7 @@ package com.ajah.util.data.format;
 import java.io.Serializable;
 
 import com.ajah.util.AjahUtils;
-import com.ajah.util.Valid;
+import com.ajah.util.Validate;
 
 /**
  * Wrapper class for valid email addresses.
@@ -33,10 +33,10 @@ public class EmailAddress implements Serializable {
 	private final String address;
 
 	/**
-	 * Contructs with an email, calls {@link Valid#email(String)} to validate,
+	 * Contructs with an email, calls {@link Validate#isEmail(String)} to validate,
 	 * throwing {@link IllegalArgumentException} on failure.
 	 * 
-	 * @see Valid#email(String)
+	 * @see Validate#isEmail(String)
 	 * @param address
 	 *            Email address, must be valid and non-null
 	 * @throws IllegalArgumentException
@@ -44,7 +44,7 @@ public class EmailAddress implements Serializable {
 	 */
 	public EmailAddress(String address) {
 		AjahUtils.requireParam(address, "address");
-		if (!Valid.email(address)) {
+		if (!Validate.isEmail(address)) {
 			throw new IllegalArgumentException("Invalid email address format: " + address);
 		}
 		this.address = address;

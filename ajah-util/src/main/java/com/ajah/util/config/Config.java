@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ajah.util.StringUtils;
+import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Config object. Works kind of like a stripped-down version of commons config,
@@ -100,6 +101,20 @@ public enum Config {
 	public void set(String key, String value) {
 		log.fine("Property " + key + " set to " + value);
 		this.properties.put(key, value);
+	}
+
+	/**
+	 * Returns the value as an EmailAddress.
+	 * 
+	 * @see EmailAddress#EmailAddress(String)
+	 * @param key
+	 *            The key of the property sought.
+	 * @return Email address, if valid.
+	 * @throws IllegalArgumentException
+	 *             If the value is not a valid address.
+	 */
+	public EmailAddress getEmailAddress(PropertyKey key) {
+		return new EmailAddress(get(key.getName(), key.getDefaultValue()));
 	}
 
 }

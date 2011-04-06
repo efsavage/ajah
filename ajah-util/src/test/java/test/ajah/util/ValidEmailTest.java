@@ -18,12 +18,12 @@ package test.ajah.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ajah.util.Valid;
+import com.ajah.util.Validate;
 
 /**
  * Tests email validator
  * 
- * @see Valid#email(String)
+ * @see Validate#isEmail(String)
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
@@ -34,7 +34,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void simpleEmail() {
-		Assert.assertTrue(Valid.email("user@domain.com"));
+		Assert.assertTrue(Validate.isEmail("user@domain.com"));
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void strageButTrue() {
-		Assert.assertTrue(Valid.email("++%_@a.bc"));
+		Assert.assertTrue(Validate.isEmail("++%_@a.bc"));
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void subdomain() {
-		Assert.assertTrue(Valid.email("user@sub.domain.com"));
+		Assert.assertTrue(Validate.isEmail("user@sub.domain.com"));
 	}
 
 	/**
@@ -58,14 +58,14 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void shortTLD() {
-		Assert.assertFalse(Valid.email("user@domain.c"));
+		Assert.assertFalse(Validate.isEmail("user@domain.c"));
 	}
 	/**
 	 * Long TLD.
 	 */
 	@Test
 	public void longTLD() {
-		Assert.assertFalse(Valid.email("user@domain.combo"));
+		Assert.assertFalse(Validate.isEmail("user@domain.combo"));
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void alphanumericTLD() {
-		Assert.assertFalse(Valid.email("user@domain.c3"));
+		Assert.assertFalse(Validate.isEmail("user@domain.c3"));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void numericTLD() {
-		Assert.assertFalse(Valid.email("user@domain.334"));
+		Assert.assertFalse(Validate.isEmail("user@domain.334"));
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void badDomain() {
-		Assert.assertFalse(Valid.email("user@domain"));
+		Assert.assertFalse(Validate.isEmail("user@domain"));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void noDomain() {
-		Assert.assertFalse(Valid.email("user@"));
+		Assert.assertFalse(Validate.isEmail("user@"));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void noUser() {
-		Assert.assertFalse(Valid.email("@domain.com"));
+		Assert.assertFalse(Validate.isEmail("@domain.com"));
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void noUserOrDomain() {
-		Assert.assertFalse(Valid.email("@"));
+		Assert.assertFalse(Validate.isEmail("@"));
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void nullEmail() {
-		Assert.assertFalse(Valid.email(null));
+		Assert.assertFalse(Validate.isEmail(null));
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void emptyEmail() {
-		Assert.assertFalse(Valid.email(""));
+		Assert.assertFalse(Validate.isEmail(""));
 	}
 
 }
