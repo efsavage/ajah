@@ -46,4 +46,24 @@ public class AjahUtils {
 		}
 	}
 
+	/**
+	 * Check a parameter and throw an exception if its value is not greater than
+	 * or equal to the required value.Commonly used at the very beginning of a
+	 * method for things that should never be zero or negative.
+	 * 
+	 * @param parameter
+	 *            Object to check.
+	 * @param name
+	 *            Name of the parameter (for the error message)
+	 * @param min
+	 *            Minimum value of the parameter.
+	 * @throws IllegalArgumentException
+	 *             If parameter is below the minimum
+	 */
+	public static void requireParam(long parameter, String name, int min) {
+		if (parameter < min) {
+			throw new IllegalArgumentException(name + " is " + parameter + " but must be at least " + min);
+		}
+	}
+
 }
