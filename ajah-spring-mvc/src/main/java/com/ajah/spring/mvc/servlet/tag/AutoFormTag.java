@@ -169,7 +169,11 @@ public class AutoFormTag extends TagSupport {
 		if (field.isAnnotationPresent(Match.class)) {
 			log.fine("Match is present on " + field.getName());
 			input.data("match", field.getAnnotation(Match.class).value());
-			input.data("match-name", getLabel(findField(field.getAnnotation(Match.class).value(), allFields)));
+			Field target = findField(field.getAnnotation(Match.class).value(), allFields);
+			if (target == null) {
+				throw new IllegalArgumentException("No field called " + field.getAnnotation(Match.class).value() + " found to match on");
+			}
+			input.data("match-name", getLabel(target));
 		} else {
 			log.fine("Match is NOT present on " + field.getName());
 		}
@@ -181,6 +185,7 @@ public class AutoFormTag extends TagSupport {
 	 * @return
 	 */
 	private String getLabel(Field field) {
+		AjahUtils.requireParam(field, "field");
 		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
 		if (field.isAnnotationPresent(Label.class)) {
 			log.fine("@Label is present");
