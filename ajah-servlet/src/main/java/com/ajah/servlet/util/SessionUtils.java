@@ -15,7 +15,9 @@
  */
 package com.ajah.servlet.util;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,6 +78,47 @@ public class SessionUtils {
 		Enumeration<?> names = session.getAttributeNames();
 		while (names.hasMoreElements()) {
 			session.removeAttribute((String) names.nextElement());
+		}
+	}
+
+	/**
+	 * Adds a message to list that is stored in the session context.
+	 * 
+	 * @param message
+	 * @param session
+	 */
+	public static void addConfirmationMessage(String message, HttpSession session) {
+		@SuppressWarnings("unchecked")
+		List<String> confirmationMessages = (List<String>) session.getAttribute("ajahConfirmationMessages");
+		if (confirmationMessages == null) {
+			confirmationMessages = new ArrayList<String>();
+			session.setAttribute("ajahConfirmationMessages", confirmationMessages);
+		}
+		confirmationMessages.add(message);
+	}
+
+	/**
+	 * Returns the list of confirmation messages stored on the session.
+	 * 
+	 * @param session
+	 *            The session to look for messages on, may be null.
+	 * @return The list of confirmation messages stored on the session. May be
+	 *         null or empty.
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<String> getConfirmationMessages(HttpSession session) {
+		if (session != null) {
+			return (List<String>) session.getAttribute("ajahConfirmationMessages");
+		}
+		return null;
+	}
+
+	/**
+	 * @param session
+	 */
+	public static void clearConfirmationMessages(HttpSession session) {
+		if (session != null) {
+			session.removeAttribute("ajahConfirmationMessages");
 		}
 	}
 
