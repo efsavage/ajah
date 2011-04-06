@@ -117,4 +117,17 @@ public enum Config {
 		return new EmailAddress(get(key.getName(), key.getDefaultValue()));
 	}
 
+	/**
+	 * Returns The value as a boolean.
+	 * 
+	 * @param key
+	 *            The property to return
+	 * @param defaultValue
+	 *            The value to return if the property is not found.
+	 * @return Returns true if the value is "true", case-insensitive.
+	 */
+	public boolean getBoolean(String key, boolean defaultValue) {
+		return "true".equalsIgnoreCase(get(key, String.valueOf(defaultValue)));
+	}
+
 }
