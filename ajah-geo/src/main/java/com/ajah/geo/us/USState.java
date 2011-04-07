@@ -106,6 +106,8 @@ public enum USState implements State {
 	OR("OR", "Oregon"),
 	/** Pennsylvania */
 	PA("PA", "Pennsylvania"),
+	/** Puerto Rico */
+	PR("PR", "Puerto Rico"),
 	/** Rhode Island */
 	RI("RI", "Rhode Island"),
 	/** South Carolina */
