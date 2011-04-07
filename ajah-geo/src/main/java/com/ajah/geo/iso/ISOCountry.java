@@ -25,7 +25,7 @@ import com.ajah.geo.Country;
  * 
  * It is true that this does duplicate data that already exists in Java's Locale
  * mechanisms, but I don't like the idea of a country being added or removed in
- * a future version breaking my application. * 
+ * a future version breaking my application.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
