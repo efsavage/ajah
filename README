@@ -1,0 +1,6 @@
+========================================
+Building
+========================================
+This repository is set up as a suite of Maven projects.  The dependencies they
+use vary from few to many, so you may want to import them into your IDE on an
+as-needed basis.
