@@ -57,6 +57,9 @@ public class UserManager {
 	private UserDao userDao;
 
 	@Autowired
+	private UserInfoDao userInfoDao;
+
+	@Autowired
 	private EmailDao emailDao;
 
 	/**
@@ -91,7 +94,7 @@ public class UserManager {
 	 *         will be returned with the UserId set.
 	 */
 	public UserInfo getUserInfo(UserId userId) {
-		UserInfo userInfo = this.userDao.findUserInfo(userId);
+		UserInfo userInfo = this.userInfoDao.findById(userId);
 		if (userInfo != null) {
 			return userInfo;
 		}
@@ -131,7 +134,7 @@ public class UserManager {
 
 		UserInfo userInfo = new UserInfoImpl(user.getId());
 		userInfo.setPrimaryEmailId(email.getId());
-		this.userDao.insert(userInfo);
+		this.userInfoDao.insert(userInfo);
 		return user;
 	}
 
@@ -165,7 +168,7 @@ public class UserManager {
 		Email email = this.emailDao.findEmailByAddress(address);
 		if (email != null) {
 			log.fine("Found email " + email.getAddress());
-			User user = this.userDao.findUser(email.getUserId());
+			User user = this.userDao.findById(email.getUserId());
 			if (user != null) {
 				log.fine("Found user by email: " + user.getUsername());
 				return user;

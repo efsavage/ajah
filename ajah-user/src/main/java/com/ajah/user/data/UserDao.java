@@ -47,9 +47,13 @@ import com.ajah.util.data.Month;
  * 
  */
 @Repository
-public class UserDao extends AbstractAjahDao {
+public class UserDao extends AbstractAjahDao<UserId, User> {
 
 	private static final Logger log = Logger.getLogger(UserDao.class.getName());
+
+	private static final String SELECT_FIELDS = "user_id, username, status, type";
+
+	private static final String TABLE_NAME = "user";
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -87,8 +91,8 @@ public class UserDao extends AbstractAjahDao {
 	 */
 	public User findUserByUsername(String username, String password) {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT " + UserInfoRowMapper.USER_FIELDS + " FROM user WHERE username = ? and password = ?",
-					new Object[] { username, password }, new UserRowMapper());
+			return this.jdbcTemplate.queryForObject("SELECT " + SELECT_FIELDS + " FROM user WHERE username = ? and password = ?", new Object[] {
+					username, password }, new UserRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
@@ -110,47 +114,6 @@ public class UserDao extends AbstractAjahDao {
 			return user;
 		}
 
-	}
-
-	/**
-	 * Finds user info by user id.
-	 * 
-	 * @param userId
-	 *            UserID for user, required.
-	 * @return User info for given ID, or null.
-	 */
-	public UserInfo findUserInfo(UserId userId) {
-		AjahUtils.requireParam(userId, "userId");
-		try {
-			return this.jdbcTemplate
-					.queryForObject(
-							"SELECT user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id FROM user_info WHERE user_id = ?",
-							new Object[] { userId.toString() }, new UserInfoRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
-	}
-
-	static final class UserInfoRowMapper implements RowMapper<UserInfo> {
-
-		static final String USER_FIELDS = "user_id, username, status, type";
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public UserInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-			UserInfo userInfo = new UserInfoImpl(new UserId(rs.getString("user_id")));
-			userInfo.setFirstName(rs.getString("first_name"));
-			userInfo.setMiddleName(rs.getString("middle_name"));
-			userInfo.setLastName(rs.getString("last_name"));
-			userInfo.setBirthDay(getInteger(rs, "birth_day"));
-			userInfo.setBirthMonth(Month.get(rs.getInt("birth_month")));
-			userInfo.setBirthYear(getInteger(rs, "birth_year"));
-			userInfo.setPrimaryEmailId(rs.getString("primary_email_id") == null ? null : new EmailId(rs.getString("primary_email_id")));
-			return userInfo;
-		}
 	}
 
 	/**
@@ -181,47 +144,7 @@ public class UserDao extends AbstractAjahDao {
 	 */
 	public User findUserByUsername(String username) {
 		AjahUtils.requireParam(username, "username");
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT " + UserInfoRowMapper.USER_FIELDS + " FROM user WHERE username = ?",
-					new Object[] { username }, new UserRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
-	}
-
-	/**
-	 * Find a user by unique ID.
-	 * 
-	 * @param userId
-	 *            Value to match against the user.user_id column, required.
-	 * @return User if found, otherwise null.
-	 */
-	public User findUser(UserId userId) {
-		AjahUtils.requireParam(userId, "userId");
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT " + UserInfoRowMapper.USER_FIELDS + " FROM user WHERE user_id = ?",
-					new Object[] { userId.toString() }, new UserRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
-	}
-
-	/**
-	 * INSERTs a {@link UserInfo} entity.
-	 * 
-	 * @param userInfo
-	 *            UserInfo entity to insert, required.
-	 */
-	public void insert(UserInfo userInfo) {
-		AjahUtils.requireParam(userInfo, "userInfo");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate
-				.update("INSERT INTO user_info (user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id) VALUES (?,?,?,?,?,?,?,?)",
-						new Object[] { userInfo.getUserId().getId(), userInfo.getFirstName(), userInfo.getMiddleName(), userInfo.getLastName(),
-								userInfo.getBirthDay(), userInfo.getBirthMonth() == null ? null : Integer.valueOf(userInfo.getBirthMonth().getId()),
-								userInfo.getBirthYear(), userInfo.getPrimaryEmailId().getId() });
+		return findByField("username", username);
 	}
 
 	/**
@@ -237,6 +160,38 @@ public class UserDao extends AbstractAjahDao {
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected JdbcTemplate getJdbcTemplate() {
+		return this.jdbcTemplate;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getSelectFields() {
+		return SELECT_FIELDS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String getTableName() {
+		return TABLE_NAME;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected RowMapper<User> getRowMapper() {
+		return new UserRowMapper();
 	}
 
 }

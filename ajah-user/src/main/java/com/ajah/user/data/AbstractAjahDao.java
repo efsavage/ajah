@@ -17,15 +17,29 @@ package com.ajah.user.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
+
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import com.ajah.util.AjahUtils;
 
 /**
  * This is a basic DAO object. It's in the user library for now, but may move.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @param <K>
+ *            The primary key class. Note that {@link Object#toString()} will be
+ *            invoked on this object.
+ * @param <T>
+ *            The type of entity this DAO exists for.
  * 
  */
-public abstract class AbstractAjahDao {
+public abstract class AbstractAjahDao<K, T> {
+
+	private static final Logger log = Logger.getLogger(AbstractAjahDao.class.getName());
 
 	/**
 	 * This method will return an Integer, functioning like getInt, but with the
@@ -68,5 +82,53 @@ public abstract class AbstractAjahDao {
 		}
 		return Long.valueOf(rs.getLong(field));
 	}
+
+	/**
+	 * Find an entity by unique ID.
+	 * 
+	 * @param id
+	 *            Value to match against the entity.entity_id column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public T findById(K id) {
+		AjahUtils.requireParam(id, "id");
+		try {
+			return getJdbcTemplate().queryForObject(
+					"SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?",
+					new Object[] { id.toString() }, getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * Find an entity by unique ID.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public T findByField(String field, Object value) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(value, "value");
+		try {
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ?",
+					new Object[] { value }, getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
+	}
+
+	protected abstract JdbcTemplate getJdbcTemplate();
+
+	protected abstract String getSelectFields();
+
+	protected abstract String getTableName();
+
+	protected abstract RowMapper<T> getRowMapper();
 
 }
