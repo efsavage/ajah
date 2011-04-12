@@ -133,4 +133,15 @@ public enum Config {
 		return "true".equalsIgnoreCase(get(key, String.valueOf(defaultValue)));
 	}
 
+	/**
+	 * Returns The value as a boolean.
+	 * 
+	 * @param key
+	 *            The property to return
+	 * @return Returns true if the value is "true", case-insensitive.
+	 */
+	public boolean getBoolean(PropertyKey key) {
+		return "true".equalsIgnoreCase(get(key));
+	}
+
 }
