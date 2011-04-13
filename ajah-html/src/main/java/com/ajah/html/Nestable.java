@@ -26,9 +26,13 @@ public interface Nestable {
 	/**
 	 * Nest a child element in this element. Preserves order.
 	 * 
+	 * @param <R>
+	 *            Type of the value being added, and returned.
+	 * 
 	 * @param element
 	 *            Element to be added
+	 * @return Returns the value added for fluid-style coding.
 	 */
-	void add(HtmlElement<?> element);
+	public <R extends HtmlElement<R>> R add(R element);
 
 }

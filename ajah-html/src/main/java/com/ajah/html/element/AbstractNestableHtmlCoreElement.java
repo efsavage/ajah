@@ -40,17 +40,37 @@ import com.ajah.html.Nestable;
 @EqualsAndHashCode(callSuper = false)
 public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCoreElement<T> implements Nestable {
 
+	/**
+	 * Creates an element and a {@link CData} child element with the value
+	 * specified.
+	 * 
+	 * @param cData
+	 *            Value to create the {@link CData} with.
+	 */
+	public AbstractNestableHtmlCoreElement(String cData) {
+		this.children = new ArrayList<HtmlElement<?>>();
+		this.children.add(new CData(cData));
+	}
+
+	/**
+	 * Default no-arg constructor.
+	 */
+	public AbstractNestableHtmlCoreElement() {
+		// Empty
+	}
+
 	protected List<HtmlElement<?>> children = null;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public synchronized void add(HtmlElement<?> element) {
+	public synchronized <R extends HtmlElement<R>> R add(R element) {
 		if (this.children == null) {
 			this.children = new ArrayList<HtmlElement<?>>();
 		}
 		this.children.add(element);
+		return element;
 	}
 
 	/**
@@ -63,16 +83,18 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		}
 		out.write("<");
 		out.write(getName());
-		write(out);
+		writeCore(out);
 		out.write(">");
 		if (depth >= 0) {
 			out.write("\r\n");
 		}
-		for (HtmlElement<?> child : this.children) {
-			if (depth >= 0) {
-				child.render(out, depth + 1);
-			} else {
-				child.render(out, depth);
+		if (this.children != null) {
+			for (HtmlElement<?> child : this.children) {
+				if (depth >= 0) {
+					child.render(out, depth + 1);
+				} else {
+					child.render(out, depth);
+				}
 			}
 		}
 		out.write("</");
