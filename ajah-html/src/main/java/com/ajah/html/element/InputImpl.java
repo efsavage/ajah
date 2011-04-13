@@ -87,7 +87,7 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 			out.write("\t");
 		}
 		out.write("<input");
-		write(out);
+		writeCore(out);
 		write(out, "name", this.name);
 		write(out, "value", this.value);
 		write(out, "type", this.type.name().toLowerCase());

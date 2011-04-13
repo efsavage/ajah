@@ -62,7 +62,7 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 			out.write("\t");
 		}
 		out.write("<form");
-		write(out);
+		writeCore(out);
 		write(out, "action", this.action);
 		write(out, "method", this.method.name().toLowerCase());
 		out.write(">");

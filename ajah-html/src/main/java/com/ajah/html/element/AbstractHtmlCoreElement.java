@@ -73,7 +73,7 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 
 	private Map<String, String> dataElements;
 
-	protected void write(Writer out) throws IOException {
+	protected void writeCore(Writer out) throws IOException {
 		write(out, "id", getId());
 		write(out, "class", getCssClass());
 		if (this.dataElements != null) {

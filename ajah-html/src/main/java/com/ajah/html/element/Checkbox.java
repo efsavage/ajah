@@ -82,7 +82,7 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 			out.write("\t");
 		}
 		out.write("<input");
-		write(out);
+		writeCore(out);
 		write(out, "name", this.name);
 		write(out, "value", this.value);
 		write(out, "type", "checkbox");

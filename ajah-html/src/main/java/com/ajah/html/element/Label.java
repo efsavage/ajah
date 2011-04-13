@@ -55,7 +55,7 @@ public class Label extends AbstractNestableHtmlCoreElement<Label> {
 			out.write("\t");
 		}
 		out.write("<label");
-		write(out);
+		writeCore(out);
 		write(out, "for", this.input.getId());
 		out.write(">");
 		out.write(this.value);
