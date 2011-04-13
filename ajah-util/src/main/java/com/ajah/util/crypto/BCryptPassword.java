@@ -26,6 +26,7 @@ package com.ajah.util.crypto;
 public class BCryptPassword implements Password {
 
 	private final String hash;
+	private final int originalLength;
 
 	/**
 	 * Accepts raw or hashed version of a password.
@@ -41,6 +42,15 @@ public class BCryptPassword implements Password {
 		} else {
 			this.hash = BCrypt.hashpw(value, BCrypt.gensalt());
 		}
+		this.originalLength = value.length();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getOriginalLength() {
+		return this.originalLength;
 	}
 
 	/**

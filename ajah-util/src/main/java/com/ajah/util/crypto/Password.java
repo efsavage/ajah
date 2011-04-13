@@ -24,5 +24,14 @@ import com.ajah.util.ToStringable;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public interface Password extends ToStringable {
-	// Empty
+
+	/**
+	 * This is so we can validate min/max lengths, this is probably not
+	 * available after encrypting/hashing.
+	 * 
+	 * @return Original length of the raw password. If the raw password was null
+	 *         this should return 0.
+	 */
+	public int getOriginalLength();
+
 }

@@ -28,6 +28,7 @@ import com.sun.crypto.provider.HmacSHA1;
 public class HmacSha1Password implements Password {
 
 	private final String hash;
+	private final int originalLength;
 
 	/**
 	 * Accepts raw or hashed version of a password.
@@ -43,6 +44,15 @@ public class HmacSha1Password implements Password {
 		} else {
 			this.hash = Crypto.getHmacSha1Hex(value);
 		}
+		this.originalLength = value.length();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getOriginalLength() {
+		return this.originalLength;
 	}
 
 	/**
