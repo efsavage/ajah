@@ -17,6 +17,8 @@ package com.ajah.spring.mvc.servlet.tag;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Enumeration;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
@@ -25,6 +27,9 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+
 import com.ajah.html.dtd.FormMethod;
 import com.ajah.html.dtd.InputType;
 import com.ajah.html.element.Checkbox;
@@ -32,8 +37,10 @@ import com.ajah.html.element.Div;
 import com.ajah.html.element.Form;
 import com.ajah.html.element.Input;
 import com.ajah.html.element.InputImpl;
+import com.ajah.html.element.ListItem;
+import com.ajah.html.element.UnorderedList;
 import com.ajah.spring.mvc.form.AutoForm;
-import com.ajah.spring.mvc.form.Label;
+import com.ajah.spring.mvc.form.AutoFormUtils;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.spring.mvc.form.validation.Match;
 import com.ajah.util.AjahUtils;
@@ -112,6 +119,29 @@ public class AutoFormTag extends TagSupport {
 		try {
 			JspWriter out = this.pageContext.getOut();
 			Div div = new Div().css("asm-auto");
+
+			@SuppressWarnings("unchecked")
+			Enumeration<String> attributes = this.pageContext.getRequest().getAttributeNames();
+			while (attributes.hasMoreElements()) {
+				String attribute = attributes.nextElement();
+				if (attribute.startsWith("org.springframework.validation.BindingResult.")) {
+					BindingResult result = (BindingResult) this.pageContext.getRequest().getAttribute(attribute);
+					log.fine("Found " + result.getErrorCount() + " global errors");
+					UnorderedList errs = div.add(new UnorderedList().css("asm-err"));
+					for (ObjectError error : result.getAllErrors()) {
+						ResourceBundle rb = ResourceBundle.getBundle("/AutoFormValidation");
+						String message = error.getDefaultMessage();
+						if (message.startsWith("{")) {
+							message = rb.getString(error.getDefaultMessage().substring(1, message.length() - 1));
+						}
+						for (int i = 0; i < (error.getArguments() == null ? 0 : error.getArguments().length); i++) {
+							message = message.replaceAll("\\{" + i + "\\}", error.getArguments()[i].toString());
+						}
+						errs.add(new ListItem(message));
+					}
+				}
+			}
+
 			Form form = new Form(FormMethod.POST).css("asm-auto");
 			for (Field field : this.autoForm.getClass().getFields()) {
 				log.fine(field.getName());
@@ -141,7 +171,7 @@ public class AutoFormTag extends TagSupport {
 
 	private Input<?> getInput(Field field, Field[] allFields) throws IllegalArgumentException, IllegalAccessException {
 
-		String label = getLabel(field);
+		String label = AutoFormUtils.getLabel(field);
 
 		Input<?> input = null;
 		log.fine(field.getType().toString());
@@ -173,25 +203,11 @@ public class AutoFormTag extends TagSupport {
 			if (target == null) {
 				throw new IllegalArgumentException("No field called " + field.getAnnotation(Match.class).value() + " found to match on");
 			}
-			input.data("match-name", getLabel(target));
+			input.data("match-name", AutoFormUtils.getLabel(target));
 		} else {
 			log.fine("Match is NOT present on " + field.getName());
 		}
 		return input;
-	}
-
-	/**
-	 * @param field
-	 * @return
-	 */
-	private String getLabel(Field field) {
-		AjahUtils.requireParam(field, "field");
-		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
-		if (field.isAnnotationPresent(Label.class)) {
-			log.fine("@Label is present");
-			label = field.getAnnotation(Label.class).value();
-		}
-		return label;
 	}
 
 	/**
