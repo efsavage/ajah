@@ -15,6 +15,7 @@
  */
 package com.ajah.user.data;
 
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -81,6 +82,21 @@ public abstract class AbstractAjahDao<K, T> {
 			return null;
 		}
 		return Long.valueOf(rs.getLong(field));
+	}
+
+	/**
+	 * Converts a Java Date into a unix-compatible timestamp (seconds
+	 * precision).
+	 * 
+	 * @param date
+	 *            Date to convert, may be null.
+	 * @return Value of Date in seconds, will return null if null is passed in.
+	 */
+	protected static Long toUnix(Date date) {
+		if (date == null) {
+			return null;
+		}
+		return Long.valueOf(date.getTime() / 1000);
 	}
 
 	/**
