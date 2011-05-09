@@ -15,6 +15,7 @@
  */
 package com.ajah.util;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -39,6 +40,37 @@ public class RandomUtils {
 	 */
 	public static long getRandomNumber(long from, long to) {
 		return from + (long) (random.nextDouble() * (to - from));
+	}
+
+	/**
+	 * Returns a random number between the from and to parameters.
+	 * 
+	 * @see Random#nextDouble()
+	 * @param from
+	 *            The lowest allowable number.
+	 * @param to
+	 *            The highest allowable number.
+	 * @return Random number between from and to.
+	 */
+	public static int getRandomNumber(int from, int to) {
+		return from + (int) (random.nextDouble() * (to - from));
+	}
+
+	/**
+	 * Returns a random element from a list.
+	 * 
+	 * @param <T>
+	 *            Type of element.
+	 * @param list
+	 *            The list to find a random element in.
+	 * @return A random element from the list, or null if the list is null or
+	 *         empty.
+	 */
+	public static <T> T getRandomElement(List<T> list) {
+		if (CollectionUtils.isEmpty(list)) {
+			return null;
+		}
+		return list.get(getRandomNumber(0, list.size()));
 	}
 
 }
