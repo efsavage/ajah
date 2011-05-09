@@ -28,17 +28,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
 import com.ajah.user.UserStatusImpl;
 import com.ajah.user.UserTypeImpl;
-import com.ajah.user.email.EmailId;
-import com.ajah.user.info.UserInfo;
-import com.ajah.user.info.UserInfoImpl;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.crypto.Password;
-import com.ajah.util.data.Month;
 
 /**
  * Data operations on the "user" table.

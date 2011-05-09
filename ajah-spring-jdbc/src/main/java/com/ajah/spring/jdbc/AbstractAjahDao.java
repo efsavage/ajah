@@ -13,11 +13,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.data;
+package com.ajah.spring.jdbc;
 
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,7 +28,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.ajah.util.AjahUtils;
 
 /**
- * This is a basic DAO object. It's in the user library for now, but may move.
+ * This is a basic DAO object.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -56,7 +57,7 @@ public abstract class AbstractAjahDao<K, T> {
 	 * @throws SQLException
 	 *             If thrown by ResultSet.
 	 */
-	protected static Integer getInteger(ResultSet rs, String field) throws SQLException {
+	public static Integer getInteger(ResultSet rs, String field) throws SQLException {
 		if (rs.getObject(field) == null) {
 			return null;
 		}
@@ -134,9 +135,77 @@ public abstract class AbstractAjahDao<K, T> {
 			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ?",
 					new Object[] { value }, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @param orderBy
+	 * @param page
+	 *            Page of results (offset).
+	 * @param count
+	 *            Number of results per page to return.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(String field, Object value, String orderBy, int page, int count) {
+		log.fine("listByField");
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(value, "value");
+		try {
+			return getJdbcTemplate().query(
+					"SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT "
+							+ (page * count) + "," + count, new Object[] { value }, getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * Find an entity by unique ID.
+	 * 
+	 * @param fields
+	 *            Columns to match against, required.
+	 * @param values
+	 *            Values to match against the entity.field column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public T findByFields(String[] fields, Object[] values) {
+		AjahUtils.requireParam(fields, "fields");
+		AjahUtils.requireParam(values, "values");
+		try {
+			// TODO Optimize for single values
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getFieldsClause(fields),
+					values, getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * @param fields
+	 * @return
+	 */
+	private String getFieldsClause(String[] fields) {
+		StringBuffer stringBuffer = new StringBuffer();
+		boolean first = true;
+		for (String field : fields) {
+			if (first) {
+				first = false;
+			} else {
+				stringBuffer.append("AND ");
+			}
+			stringBuffer.append(field);
+			stringBuffer.append("=? ");
+		}
+		return stringBuffer.toString();
 	}
 
 	protected abstract JdbcTemplate getJdbcTemplate();

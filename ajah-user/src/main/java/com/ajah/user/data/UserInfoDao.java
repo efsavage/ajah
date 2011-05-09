@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.UserId;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.info.UserInfo;
