@@ -6,6 +6,7 @@
 	<version>1.0.0</version>
 	<name>Ajah Spring MVC Library</name>
 	<description>Code for use on Spring MVC webapps</description>
+	<packaging>jar</packaging>
 
 	<organization>
 		<name>Eric F. Savage</name>
@@ -60,6 +61,10 @@
 
 		</plugins>
 	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<dependencies>
 		<dependency>
