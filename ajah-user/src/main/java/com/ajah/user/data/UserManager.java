@@ -38,6 +38,7 @@ import com.ajah.user.email.data.EmailDao;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
 import com.ajah.user.info.UserSource;
+import com.ajah.util.AjahUtils;
 import com.ajah.util.Validate;
 import com.ajah.util.crypto.Password;
 import com.ajah.util.data.format.EmailAddress;
@@ -77,7 +78,8 @@ public class UserManager {
 	 *             If no user could be found for the username supplied
 	 */
 	public User getUser(String username, Password password) throws AuthenicationFailureException, UserNotFoundException {
-		User user = this.userDao.findUserByUsername(username, password.toString());
+		AjahUtils.requireParam(username, "username");
+		User user = this.userDao.findByFields(new String[] { "username", "password" }, new String[] { username, password.toString() });
 		if (user != null) {
 			log.fine("getUser successful");
 			return user;
@@ -165,7 +167,7 @@ public class UserManager {
 	 *             If user is not found.
 	 */
 	public User findUserByEmail(String address) throws UserNotFoundException {
-		Email email = this.emailDao.findEmailByAddress(address);
+		Email email = this.emailDao.findByField("address", address);
 		if (email != null) {
 			log.fine("Found email " + email.getAddress());
 			User user = this.userDao.findById(email.getUserId());
@@ -187,7 +189,7 @@ public class UserManager {
 	 *             If user is not found.
 	 */
 	public User findUserByUsername(String username) throws UserNotFoundException {
-		User user = this.userDao.findUserByUsername(username);
+		User user = this.userDao.findByField("username", username);
 		if (user != null) {
 			log.fine("Found user by username: " + user.getUsername());
 			return user;

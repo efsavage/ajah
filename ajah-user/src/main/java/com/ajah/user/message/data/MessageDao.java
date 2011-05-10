@@ -18,24 +18,17 @@ package com.ajah.user.message.data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.AbstractAjahRowMapper;
 import com.ajah.user.UserId;
 import com.ajah.user.message.Message;
 import com.ajah.user.message.MessageId;
-import com.ajah.user.message.MessageImpl;
-import com.ajah.user.message.MessageStatusImpl;
-import com.ajah.user.message.MessageTypeImpl;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
@@ -51,40 +44,17 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 
 	private static final Logger log = Logger.getLogger(MessageDao.class.getName());
 
-	private static final String SELECT_FIELDS = "message_id, created, sender, to, cc, bcc, subject, body, type, status";
-
-	private static final String TABLE_NAME = "message";
-
-	private JdbcTemplate jdbcTemplate;
-
-	/**
-	 * Sets up a new JDBC template with the supplied data source.
-	 * 
-	 * @param dataSource
-	 *            DataSource to use for a new JDBC template.
-	 */
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
-
-	static final class MessageRowMapper implements RowMapper<Message> {
+	static final class MessageRowMapper extends AbstractAjahRowMapper<Message> {
 
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public Message mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Message message = new MessageImpl(new MessageId(rs.getString("message_id")));
-			message.setCreated(new Date(rs.getLong("created") * 1000));
-			message.setSender(new UserId(rs.getString("sender")));
+			Message message = super.mapRow(rs, rowNum);
 			message.setTo(getUserIds(rs.getString("to")));
 			message.setCc(getUserIds(rs.getString("cc")));
 			message.setBcc(getUserIds(rs.getString("bcc")));
-			message.setSubject(rs.getString("subject"));
-			message.setBody(rs.getString("body"));
-			message.setType(MessageTypeImpl.get(rs.getString("type")));
-			message.setStatus(MessageStatusImpl.get(rs.getString("status")));
 			return message;
 		}
 
@@ -117,7 +87,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 	public void insert(Message message) {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("INSERT INTO " + TABLE_NAME + " (" + SELECT_FIELDS + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
+		this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
 				new Object[] { message.getId().getId(), toUnix(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()),
 						fromUserIds(message.getCc()), fromUserIds(message.getBcc()), message.getSubject(), message.getBody(),
 						message.getType().getId(), message.getStatus().getId() });
@@ -147,30 +117,6 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 			stringIds.append(userIds.get(i).getId());
 		}
 		return stringIds.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected JdbcTemplate getJdbcTemplate() {
-		return this.jdbcTemplate;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected String getSelectFields() {
-		return SELECT_FIELDS;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected String getTableName() {
-		return TABLE_NAME;
 	}
 
 	/**

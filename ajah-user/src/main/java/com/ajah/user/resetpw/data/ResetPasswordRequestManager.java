@@ -27,6 +27,7 @@ import com.ajah.user.resetpw.ResetPasswordRequestId;
 import com.ajah.user.resetpw.ResetPasswordRequestNotFoundException;
 import com.ajah.user.resetpw.ResetPasswordRequestStatus;
 import com.ajah.user.resetpw.ResetPasswordRequestStatusImpl;
+import com.ajah.util.AjahUtils;
 import com.ajah.util.RandomUtils;
 
 /**
@@ -63,15 +64,15 @@ public class ResetPasswordRequestManager {
 	/**
 	 * Finds a {@link ResetPasswordRequest} by it's code.
 	 * 
-	 * @see ResetPasswordRequestDao#findByCode(long)
 	 * @param code
-	 *            The code to query on, required.
+	 *            The code to query on, required to be greater than zero.
 	 * @return The {@link ResetPasswordRequest}, if found.
 	 * @throws ResetPasswordRequestNotFoundException
 	 *             If no {@link ResetPasswordRequest} is found.
 	 */
 	public ResetPasswordRequest getResetPasswordRequestByCode(long code) throws ResetPasswordRequestNotFoundException {
-		ResetPasswordRequest rpr = this.resetPasswordRequestDao.findByCode(code);
+		AjahUtils.requireParam(code, "code", 1);
+		ResetPasswordRequest rpr = this.resetPasswordRequestDao.findByField("code", Long.valueOf(code));
 		if (rpr == null) {
 			throw new ResetPasswordRequestNotFoundException(code);
 		}

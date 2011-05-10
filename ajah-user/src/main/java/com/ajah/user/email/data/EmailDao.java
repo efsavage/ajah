@@ -15,25 +15,12 @@
  */
 package com.ajah.user.email.data;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Logger;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.ajah.user.UserId;
+import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
-import com.ajah.user.email.EmailImpl;
-import com.ajah.user.email.EmailStatusImpl;
 import com.ajah.util.AjahUtils;
-import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Data operations on the "user" table.
@@ -42,56 +29,10 @@ import com.ajah.util.data.format.EmailAddress;
  * 
  */
 @Repository
-public class EmailDao {
+public class EmailDao extends AbstractAjahDao<EmailId, Email> {
 
-	private static final Logger log = Logger.getLogger(EmailDao.class.getName());
-
-	private JdbcTemplate jdbcTemplate;
-
-	/**
-	 * Sets up a new JDBC template with the supplied data source.
-	 * 
-	 * @param dataSource
-	 *            DataSource to use for a new JDBC template.
-	 */
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
-
-	/**
-	 * Finds a email by the address field.
-	 * 
-	 * @param address
-	 *            Value to match against email.address column.
-	 * @return Email, if found, or null.
-	 */
-	public Email findEmailByAddress(String address) {
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT email_id, user_id, address, status FROM email WHERE address = ?",
-					new Object[] { address }, new EmailRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
-	}
-
-	static final class EmailRowMapper implements RowMapper<Email> {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Email mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Email email = new EmailImpl();
-			email.setId(new EmailId(rs.getString("email_id")));
-			email.setUserId(new UserId(rs.getString("user_id")));
-			email.setAddress(new EmailAddress(rs.getString("address")));
-			email.setStatus(EmailStatusImpl.get(rs.getString("status")));
-			return email;
-		}
-
-	}
+	// private static final Logger log =
+	// Logger.getLogger(EmailDao.class.getName());
 
 	/**
 	 * INSERTs an {@link Email} entity.
@@ -104,24 +45,6 @@ public class EmailDao {
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
 				email.getUserId().getId(), email.getAddress().toString(), email.getStatus().getId() });
-	}
-
-	/**
-	 * Finds an email by its unique ID.
-	 * 
-	 * @param emailId
-	 *            The unique ID to search on, required.
-	 * @return The {@link Email}, if found, otherwise null.
-	 */
-	public Email findEmailById(EmailId emailId) {
-		AjahUtils.requireParam(emailId, "emailId");
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT email_id, user_id, address, status FROM email WHERE email_id = ?",
-					new Object[] { emailId.getId() }, new EmailRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
 	}
 
 }

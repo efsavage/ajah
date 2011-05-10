@@ -15,25 +15,12 @@
  */
 package com.ajah.user.data;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Logger;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
-import com.ajah.user.UserImpl;
-import com.ajah.user.UserStatusImpl;
-import com.ajah.user.UserTypeImpl;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.crypto.Password;
 
@@ -46,24 +33,7 @@ import com.ajah.util.crypto.Password;
 @Repository
 public class UserDao extends AbstractAjahDao<UserId, User> {
 
-	private static final Logger log = Logger.getLogger(UserDao.class.getName());
-
-	private static final String SELECT_FIELDS = "user_id, username, status, type";
-
-	private static final String TABLE_NAME = "user";
-
-	private JdbcTemplate jdbcTemplate;
-
-	/**
-	 * Sets up a new JDBC template with the supplied data source.
-	 * 
-	 * @param dataSource
-	 *            DataSource to use for a new JDBC template.
-	 */
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
+	// private static final Logger log = Logger.getLogger(UserDao.class.getName());
 
 	// private TransactionTemplate transactionTemplate;
 	//
@@ -77,41 +47,6 @@ public class UserDao extends AbstractAjahDao<UserId, User> {
 	// transactionManager) {
 	// this.transactionTemplate = new TransactionTemplate(transactionManager);
 	// }
-
-	/**
-	 * Finds a user by the username field.
-	 * 
-	 * @param username
-	 *            Value to match against user.username column.
-	 * @param password
-	 * @return User, if found, or null.
-	 */
-	public User findUserByUsername(String username, String password) {
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT " + SELECT_FIELDS + " FROM user WHERE username = ? and password = ?", new Object[] {
-					username, password }, new UserRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
-	}
-
-	static final class UserRowMapper implements RowMapper<User> {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-			User user = new UserImpl();
-			user.setId(new UserId(rs.getString("user_id")));
-			user.setUsername(rs.getString("username"));
-			user.setStatus(UserStatusImpl.get(rs.getString("status")));
-			user.setType(UserTypeImpl.get(rs.getString("type")));
-			return user;
-		}
-
-	}
 
 	/**
 	 * This method is for saving a new user. It includes the password field
@@ -133,18 +68,6 @@ public class UserDao extends AbstractAjahDao<UserId, User> {
 	}
 
 	/**
-	 * Find a user by username.
-	 * 
-	 * @param username
-	 *            Value to match against the user.username column, required.
-	 * @return User if found, otherwise null.
-	 */
-	public User findUserByUsername(String username) {
-		AjahUtils.requireParam(username, "username");
-		return findByField("username", username);
-	}
-
-	/**
 	 * UPDATEs the user table with a new password.
 	 * 
 	 * @param userId
@@ -157,38 +80,6 @@ public class UserDao extends AbstractAjahDao<UserId, User> {
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected JdbcTemplate getJdbcTemplate() {
-		return this.jdbcTemplate;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected String getSelectFields() {
-		return SELECT_FIELDS;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected String getTableName() {
-		return TABLE_NAME;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected RowMapper<User> getRowMapper() {
-		return new UserRowMapper();
 	}
 
 }

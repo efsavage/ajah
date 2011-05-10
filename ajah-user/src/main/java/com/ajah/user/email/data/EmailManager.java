@@ -47,7 +47,7 @@ public class EmailManager {
 	 */
 	public Email getEmail(EmailId emailId) throws EmailNotFoundException {
 		AjahUtils.requireParam(emailId, "emailId");
-		Email email = this.emailDao.findEmailById(emailId);
+		Email email = this.emailDao.findById(emailId);
 		if (email == null) {
 			throw new EmailNotFoundException(emailId);
 		}

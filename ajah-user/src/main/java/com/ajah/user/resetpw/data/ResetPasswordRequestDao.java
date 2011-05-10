@@ -15,24 +15,11 @@
  */
 package com.ajah.user.resetpw.data;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.logging.Logger;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.ajah.user.UserId;
-import com.ajah.user.data.UserDao;
+import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.resetpw.ResetPasswordRequest;
 import com.ajah.user.resetpw.ResetPasswordRequestId;
-import com.ajah.user.resetpw.ResetPasswordRequestStatusImpl;
 import com.ajah.util.AjahUtils;
 
 /**
@@ -43,22 +30,9 @@ import com.ajah.util.AjahUtils;
  * 
  */
 @Repository
-public class ResetPasswordRequestDao {
+public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordRequestId, ResetPasswordRequest> {
 
-	private static final Logger log = Logger.getLogger(UserDao.class.getName());
-
-	private JdbcTemplate jdbcTemplate;
-
-	/**
-	 * Sets up a new JDBC template with the supplied data source.
-	 * 
-	 * @param dataSource
-	 *            DataSource to use for a new JDBC template.
-	 */
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
+	// private static final Logger log = Logger.getLogger(UserDao.class.getName());
 
 	/**
 	 * INSERTs a {@link ResetPasswordRequest}.
@@ -73,45 +47,6 @@ public class ResetPasswordRequestDao {
 				new Object[] { resetPasswordRequest.getId().getId(), resetPasswordRequest.getUserId().getId(),
 						Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
 						resetPasswordRequest.getStatus().getId() });
-	}
-
-	/**
-	 * Finds a {@link ResetPasswordRequest} by it's "code" property.
-	 * 
-	 * @param code
-	 *            The code to query on, required to be greater than zero.
-	 * @return The {@link ResetPasswordRequest}, if found.
-	 */
-	public ResetPasswordRequest findByCode(long code) {
-		AjahUtils.requireParam(code, "code", 1);
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT " + ResetPasswordRequestRowMapper.RPR_FIELDS + " FROM pw_reset WHERE code = ?",
-					new Object[] { Long.valueOf(code) }, new ResetPasswordRequestRowMapper());
-		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
-		}
-	}
-
-	static final class ResetPasswordRequestRowMapper implements RowMapper<ResetPasswordRequest> {
-
-		public static final String RPR_FIELDS = "pw_reset_id, user_id, created, code, redeemed, status";
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public ResetPasswordRequest mapRow(ResultSet rs, int rowNum) throws SQLException {
-			ResetPasswordRequest rpr = new ResetPasswordRequest();
-			rpr.setId(new ResetPasswordRequestId(rs.getString("pw_reset_id")));
-			rpr.setUserId(new UserId(rs.getString("user_id")));
-			rpr.setCreated(new Date(rs.getLong("created") * 1000));
-			rpr.setCode(rs.getLong("code"));
-			rpr.setRedeemed(new Date(rs.getLong("redeemed") * 1000));
-			rpr.setStatus(ResetPasswordRequestStatusImpl.get(rs.getString("status")));
-			return rpr;
-		}
-
 	}
 
 	/**
