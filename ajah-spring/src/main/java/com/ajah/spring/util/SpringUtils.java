@@ -15,7 +15,13 @@
  */
 package com.ajah.spring.util;
 
-
+/**
+ * High-level utilities for Spring.
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
+ */
 public class SpringUtils {
-
+	// Empty
 }
