@@ -59,7 +59,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>
-			<artifactId>ajah-spring</artifactId>
+			<artifactId>ajah-spring-jdbc</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
