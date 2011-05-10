@@ -15,13 +15,19 @@
  */
 package com.ajah.user.invitation;
 
+import java.io.Serializable;
+
+import com.ajah.util.ToStringable;
+
 /**
  * A wrapper around a String for typesafe invitation IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class InvitationId {
+public class InvitationId implements Serializable, ToStringable {
+
+	private static final long serialVersionUID = 2370816880192662392L;
 
 	private final String id;
 

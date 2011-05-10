@@ -17,13 +17,15 @@ package com.ajah.user;
 
 import java.io.Serializable;
 
+import com.ajah.util.ToStringable;
+
 /**
  * A wrapper around a String for typesafe user IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable {
+public class UserId implements Serializable, ToStringable {
 
 	private static final long serialVersionUID = 5419973870818857713L;
 

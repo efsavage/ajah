@@ -15,13 +15,19 @@
  */
 package com.ajah.user.email;
 
+import java.io.Serializable;
+
+import com.ajah.util.ToStringable;
+
 /**
  * A wrapper around a String for typesafe email IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class EmailId {
+public class EmailId implements Serializable, ToStringable {
+
+	private static final long serialVersionUID = 7751132583460887962L;
 
 	private final String id;
 

@@ -15,13 +15,19 @@
  */
 package com.ajah.user.account;
 
+import java.io.Serializable;
+
+import com.ajah.util.ToStringable;
+
 /**
  * A wrapper around a String for typesafe account IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class AccountId {
+public class AccountId implements Serializable, ToStringable {
+
+	private static final long serialVersionUID = 3633490708384436322L;
 
 	private final String id;
 

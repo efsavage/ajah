@@ -17,13 +17,15 @@ package com.ajah.user.message;
 
 import java.io.Serializable;
 
+import com.ajah.util.ToStringable;
+
 /**
  * A wrapper around a String for typesafe message IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class MessageId implements Serializable {
+public class MessageId implements Serializable, ToStringable {
 
 	private static final long serialVersionUID = -8938358157550623613L;
 
