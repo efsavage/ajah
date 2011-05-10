@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.AbstractAjahRowMapper;
+import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.user.UserId;
 import com.ajah.user.message.Message;
 import com.ajah.user.message.MessageId;
@@ -45,6 +46,10 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 	private static final Logger log = Logger.getLogger(MessageDao.class.getName());
 
 	static final class MessageRowMapper extends AbstractAjahRowMapper<Message> {
+
+		protected MessageRowMapper(AjahDao<Message> dao) {
+			super(dao);
+		}
 
 		/**
 		 * {@inheritDoc}
@@ -124,7 +129,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 	 */
 	@Override
 	protected RowMapper<Message> getRowMapper() {
-		return new MessageRowMapper();
+		return new MessageRowMapper(this);
 	}
 
 }

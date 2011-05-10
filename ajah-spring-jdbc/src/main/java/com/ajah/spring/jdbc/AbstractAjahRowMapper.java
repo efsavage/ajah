@@ -29,6 +29,10 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public abstract class AbstractAjahRowMapper<T> implements RowMapper<T> {
 
+	protected AbstractAjahRowMapper(AjahDao<T> dao) {
+		this.dao = dao;
+	}
+
 	private AjahDao<T> dao;
 
 	/**

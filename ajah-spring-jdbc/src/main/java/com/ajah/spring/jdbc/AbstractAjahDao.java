@@ -233,7 +233,7 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 	}
 
 	protected RowMapper<T> getRowMapper() {
-		return new SimpleAjahRowMapper<T>();
+		return new SimpleAjahRowMapper<T>(this);
 	}
 
 	/**

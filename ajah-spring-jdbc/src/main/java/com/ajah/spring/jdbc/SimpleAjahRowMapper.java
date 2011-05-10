@@ -25,5 +25,14 @@ package com.ajah.spring.jdbc;
  * 
  */
 public class SimpleAjahRowMapper<T> extends AbstractAjahRowMapper<T> {
-	// Empty
+
+	/**
+	 * Sets the calling DAO.
+	 * 
+	 * @param dao The calling DAO.
+	 */
+	protected SimpleAjahRowMapper(AjahDao<T> dao) {
+		super(dao);
+	}
+
 }
