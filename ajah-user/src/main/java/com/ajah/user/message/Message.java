@@ -75,72 +75,107 @@ public interface Message {
 	void setType(MessageType type);
 
 	/**
+	 * Sets the creation date of the message.
+	 * 
 	 * @param date
+	 *            The creation date of the message.
 	 */
 	void setCreated(Date date);
 
 	/**
+	 * Sets the message sender's ID.
+	 * 
 	 * @param userId
+	 *            The message sender's ID.
 	 */
 	void setSender(UserId userId);
 
 	/**
+	 * Sets the list of IDs of direct message recipients.
+	 * 
 	 * @param userIds
+	 *            The list of IDs of direct message recipients.
 	 */
 	void setTo(List<UserId> userIds);
 
 	/**
+	 * Sets the list of IDs of copied message recipients.
+	 * 
 	 * @param userIds
+	 *            The list of IDs of copied message recipients.
 	 */
 	void setCc(List<UserId> userIds);
 
 	/**
+	 * Sets the list of IDs of blind-copied message recipients.
+	 * 
 	 * @param userIds
+	 *            The list of IDs of blind-copied message recipients.
 	 */
 	void setBcc(List<UserId> userIds);
 
 	/**
+	 * Sets the message's subject.
+	 * 
 	 * @param string
+	 *            The message's subject.
 	 */
 	void setSubject(String string);
 
 	/**
+	 * Sets the message's body.
+	 * 
 	 * @param string
+	 *            The message's body.
 	 */
 	void setBody(String string);
 
 	/**
-	 * @return
+	 * Gets the message's creation date.
+	 * 
+	 * @return The message's creation date.
 	 */
 	Date getCreated();
 
 	/**
-	 * @return
+	 * Gets the senders ID.
+	 * 
+	 * @return The senders ID.
 	 */
 	UserId getSender();
 
 	/**
-	 * @return
+	 * Gets the list of IDs of direct message recipients.
+	 * 
+	 * @return The list of IDs of direct message recipients.
 	 */
 	List<UserId> getTo();
 
 	/**
-	 * @return
+	 * The list of IDs of copied message recipients.
+	 * 
+	 * @return The list of IDs of copied message recipients.
 	 */
 	List<UserId> getCc();
 
 	/**
-	 * @return
+	 * Gets the list of IDs of blind-copied message recipients.
+	 * 
+	 * @return The list of IDs of blind-copied message recipients.
 	 */
 	List<UserId> getBcc();
 
 	/**
-	 * @return
+	 * Sets the message's subject.
+	 * 
+	 * @return The message's subject.
 	 */
 	String getSubject();
 
 	/**
-	 * @return
+	 * Sets the message's body.
+	 * 
+	 * @return The message's body.
 	 */
 	String getBody();
 
