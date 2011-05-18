@@ -15,6 +15,8 @@
  */
 package com.ajah.user;
 
+import com.ajah.util.Identifiable;
+
 /**
  * A User corresponds to a person who is using the system. A person should not
  * need to have separate users within the application.
@@ -22,7 +24,7 @@ package com.ajah.user;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface User {
+public interface User extends Identifiable<UserId> {
 
 	/**
 	 * Unique ID of the user.

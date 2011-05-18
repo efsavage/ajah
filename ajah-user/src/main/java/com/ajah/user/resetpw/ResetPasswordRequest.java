@@ -20,6 +20,7 @@ import java.util.Date;
 import lombok.Data;
 
 import com.ajah.user.UserId;
+import com.ajah.util.Identifiable;
 
 /**
  * Represents a password reset request record.
@@ -28,7 +29,7 @@ import com.ajah.user.UserId;
  * 
  */
 @Data
-public class ResetPasswordRequest {
+public class ResetPasswordRequest implements Identifiable<ResetPasswordRequestId> {
 
 	private ResetPasswordRequestId id;
 	private UserId userId;

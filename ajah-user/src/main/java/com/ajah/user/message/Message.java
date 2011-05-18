@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ajah.user.UserId;
+import com.ajah.util.Identifiable;
 
 /**
  * A Message corresponds to a person who is using the system. A person should
@@ -27,7 +28,7 @@ import com.ajah.user.UserId;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface Message {
+public interface Message extends Identifiable<MessageId> {
 
 	/**
 	 * Unique ID of the message.

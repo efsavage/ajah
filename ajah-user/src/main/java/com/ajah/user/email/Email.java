@@ -16,6 +16,7 @@
 package com.ajah.user.email;
 
 import com.ajah.user.UserId;
+import com.ajah.util.Identifiable;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -24,7 +25,7 @@ import com.ajah.util.data.format.EmailAddress;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface Email {
+public interface Email extends Identifiable<EmailId> {
 
 	/**
 	 * Sets the unique ID of this email record.

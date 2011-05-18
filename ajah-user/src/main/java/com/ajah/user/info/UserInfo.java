@@ -18,6 +18,7 @@ package com.ajah.user.info;
 import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
+import com.ajah.util.Identifiable;
 import com.ajah.util.data.Month;
 
 /**
@@ -27,14 +28,7 @@ import com.ajah.util.data.Month;
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
-public interface UserInfo {
-
-	/**
-	 * Unique ID of the user.
-	 * 
-	 * @return Unique ID of the user, may be null.
-	 */
-	UserId getUserId();
+public interface UserInfo extends Identifiable<UserId> {
 
 	/**
 	 * Sets the user ID.
@@ -42,7 +36,7 @@ public interface UserInfo {
 	 * @param userId
 	 *            The User ID, should not be null.
 	 */
-	void setUserId(UserId userId);
+	void setId(UserId userId);
 
 	/**
 	 * Sets the first name of the user.
