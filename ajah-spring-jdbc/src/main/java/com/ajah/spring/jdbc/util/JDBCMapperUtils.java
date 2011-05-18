@@ -72,6 +72,8 @@ public class JDBCMapperUtils {
 		columnName = StringUtils.splitCamelCase(field.getName()).replaceAll("\\W+", "_").toLowerCase();
 		if (field.getName().equals("id")) {
 			columnName = tableName + "_id";
+		} else if (field.getType().isEnum()) {
+			// Enums are stored as-is, even if they implement other interfaces
 		} else if (field.getType().isAssignableFrom(Date.class)) {
 			columnName += "_date";
 		} else if (Identifiable.class.isAssignableFrom(field.getType())) {
