@@ -35,4 +35,14 @@ public interface Identifiable<K> {
 	 */
 	public K getId();
 
+	/**
+	 * This is a placeholder for now, until I figure out how to use java
+	 * reflection without needing it, as Java seems to hide this method if the
+	 * class implements this interface, even when it has a setId method.
+	 * 
+	 * @param id
+	 *            The ID to set.
+	 */
+	public void setId(K id);
+
 }
