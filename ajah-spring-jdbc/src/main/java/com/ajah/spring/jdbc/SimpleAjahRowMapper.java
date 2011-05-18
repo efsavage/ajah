@@ -15,6 +15,8 @@
  */
 package com.ajah.spring.jdbc;
 
+import com.ajah.util.Identifiable;
+
 /**
  * Simple version of DAO that will use only default behaviors.
  * 
@@ -24,14 +26,15 @@ package com.ajah.spring.jdbc;
  *            The type of entity managed.
  * 
  */
-public class SimpleAjahRowMapper<T> extends AbstractAjahRowMapper<T> {
+public class SimpleAjahRowMapper<K, T extends Identifiable<K>> extends AbstractAjahRowMapper<K,T> {
 
 	/**
 	 * Sets the calling DAO.
 	 * 
-	 * @param dao The calling DAO.
+	 * @param dao
+	 *            The calling DAO.
 	 */
-	protected SimpleAjahRowMapper(AjahDao<T> dao) {
+	protected SimpleAjahRowMapper(AjahDao<K, T> dao) {
 		super(dao);
 	}
 

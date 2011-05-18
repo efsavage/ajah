@@ -20,6 +20,8 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.ajah.util.Identifiable;
+
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -27,13 +29,13 @@ import org.springframework.jdbc.core.RowMapper;
  *            The type of entity this DAO manages.
  * 
  */
-public abstract class AbstractAjahRowMapper<T> implements RowMapper<T> {
+public abstract class AbstractAjahRowMapper<K, T extends Identifiable<K>> implements RowMapper<T> {
 
-	protected AbstractAjahRowMapper(AjahDao<T> dao) {
+	protected AbstractAjahRowMapper(AjahDao<K, T> dao) {
 		this.dao = dao;
 	}
 
-	private AjahDao<T> dao;
+	private AjahDao<K, T> dao;
 
 	/**
 	 * The DAO that will be calling this mapper.
@@ -41,7 +43,7 @@ public abstract class AbstractAjahRowMapper<T> implements RowMapper<T> {
 	 * @return The DAO that will be calling this mapper.
 	 * 
 	 */
-	public AjahDao<T> getDao() {
+	public AjahDao<K, T> getDao() {
 		return this.dao;
 	}
 
@@ -52,7 +54,7 @@ public abstract class AbstractAjahRowMapper<T> implements RowMapper<T> {
 	 *            The DAO that will be calling this mapper.
 	 * 
 	 */
-	public void setDao(AjahDao<T> dao) {
+	public void setDao(AjahDao<K, T> dao) {
 		this.dao = dao;
 	}
 

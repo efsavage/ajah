@@ -18,6 +18,8 @@ package com.ajah.spring.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.ajah.util.Identifiable;
+
 /**
  * Essential methods for using Ajah Spring JDBC library.
  * 
@@ -27,7 +29,7 @@ import java.sql.SQLException;
  * @param <T>
  *            The type of Entity managed by the DAO.
  */
-public interface AjahDao<T> {
+public interface AjahDao<K, T extends Identifiable<K>> {
 
 	/**
 	 * Returns the class this DAO manages.
@@ -43,7 +45,7 @@ public interface AjahDao<T> {
 	 *            The entity to populate fields on.
 	 * @param resultSet
 	 *            The result set to pull data from.
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	void autoPopulate(T entity, ResultSet resultSet) throws SQLException;
 
