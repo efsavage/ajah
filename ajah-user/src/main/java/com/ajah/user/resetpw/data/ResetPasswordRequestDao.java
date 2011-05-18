@@ -40,9 +40,9 @@ public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordReques
 	 * @param resetPasswordRequest
 	 *            The {@link ResetPasswordRequest} to save, required.
 	 */
-	public void insert(ResetPasswordRequest resetPasswordRequest) {
+	public int insert(ResetPasswordRequest resetPasswordRequest) {
 		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
-		this.jdbcTemplate.update(
+		return this.jdbcTemplate.update(
 				"INSERT INTO pw_reset (pw_reset_id, user_id, created, code, status) VALUES (?,?,?,?,?)",
 				new Object[] { resetPasswordRequest.getId().getId(), resetPasswordRequest.getUserId().getId(),
 						Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
@@ -55,9 +55,9 @@ public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordReques
 	 * @param resetPasswordRequest
 	 *            The {@link ResetPasswordRequest} to save, required.
 	 */
-	public void update(ResetPasswordRequest resetPasswordRequest) {
+	public int update(ResetPasswordRequest resetPasswordRequest) {
 		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
-		this.jdbcTemplate
+		return this.jdbcTemplate
 				.update("UPDATE pw_reset SET user_id = ?, created = ?, code = ?, status = ? WHERE pw_reset_id = ?",
 						new Object[] { resetPasswordRequest.getUserId().getId(), Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000),
 								Long.valueOf(resetPasswordRequest.getCode()), resetPasswordRequest.getStatus().getId(),

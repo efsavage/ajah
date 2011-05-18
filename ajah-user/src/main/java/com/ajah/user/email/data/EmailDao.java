@@ -40,10 +40,10 @@ public class EmailDao extends AbstractAjahDao<EmailId, Email> {
 	 * @param email
 	 *            The {@link Email} to insert.
 	 */
-	public void insert(Email email) {
+	public int insert(Email email) {
 		AjahUtils.requireParam(email, "email");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
+		return this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
 				email.getUserId().getId(), email.getAddress().toString(), email.getStatus().getId() });
 	}
 

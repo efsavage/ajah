@@ -45,9 +45,9 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 
 	private static final Logger log = Logger.getLogger(MessageDao.class.getName());
 
-	static final class MessageRowMapper extends AbstractAjahRowMapper<Message> {
+	static final class MessageRowMapper extends AbstractAjahRowMapper<MessageId, Message> {
 
-		protected MessageRowMapper(AjahDao<Message> dao) {
+		protected MessageRowMapper(AjahDao<MessageId, Message> dao) {
 			super(dao);
 		}
 
@@ -89,14 +89,13 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 	 * @param message
 	 *            Message entity to insert, required.
 	 */
-	public void insert(Message message) {
+	public int insert(Message message) {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
+		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
 				new Object[] { message.getId().getId(), toUnix(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()),
 						fromUserIds(message.getCc()), fromUserIds(message.getBcc()), message.getSubject(), message.getBody(),
 						message.getType().getId(), message.getStatus().getId() });
-		log.fine("Inserted message " + message.getId());
 	}
 
 	/**
