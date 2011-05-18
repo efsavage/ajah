@@ -15,6 +15,8 @@
  */
 package com.ajah.util;
 
+import java.util.Date;
+
 /**
  * The lowest-of-low level utilities, basically "things I wish were in the JDK".
  * 
@@ -64,6 +66,21 @@ public class AjahUtils {
 		if (parameter < min) {
 			throw new IllegalArgumentException(name + " is " + parameter + " but must be at least " + min);
 		}
+	}
+
+	/**
+	 * Converts a Java Date into a unix-compatible timestamp (seconds
+	 * precision).
+	 * 
+	 * @param date
+	 *            Date to convert, may be null.
+	 * @return Value of Date in seconds, will return null if null is passed in.
+	 */
+	public static Long toUnix(Date date) {
+		if (date == null) {
+			return null;
+		}
+		return Long.valueOf(date.getTime() / 1000);
 	}
 
 }
