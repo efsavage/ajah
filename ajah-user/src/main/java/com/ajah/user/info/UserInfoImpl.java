@@ -34,7 +34,7 @@ import com.ajah.util.data.Month;
 @Data
 public class UserInfoImpl implements UserInfo {
 
-	protected UserId userId;
+	protected UserId id;
 	protected UserSource source;
 	protected Date created;
 	protected Date passwordChanged;
@@ -56,7 +56,7 @@ public class UserInfoImpl implements UserInfo {
 	 */
 	public UserInfoImpl(UserId userId) {
 		AjahUtils.requireParam(userId, "User ID");
-		this.userId = userId;
+		this.id = userId;
 	}
 
 }
