@@ -15,7 +15,13 @@
  */
 package com.ajah.spring.jdbc;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,12 +37,16 @@ import javax.persistence.Transient;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.Identifiable;
+import com.ajah.util.reflect.IntrospectionUtils;
+import com.ajah.util.reflect.ReflectionUtils;
 
 /**
  * This is a basic DAO object.
@@ -50,7 +60,7 @@ import com.ajah.util.AjahUtils;
  *            The type of entity this DAO exists for.
  * 
  */
-public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
+public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements AjahDao<K, T> {
 
 	private static final Logger log = Logger.getLogger(AbstractAjahDao.class.getName());
 
@@ -75,21 +85,6 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 		return Long.valueOf(rs.getLong(field));
 	}
 
-	/**
-	 * Converts a Java Date into a unix-compatible timestamp (seconds
-	 * precision).
-	 * 
-	 * @param date
-	 *            Date to convert, may be null.
-	 * @return Value of Date in seconds, will return null if null is passed in.
-	 */
-	protected static Long toUnix(Date date) {
-		if (date == null) {
-			return null;
-		}
-		return Long.valueOf(date.getTime() / 1000);
-	}
-
 	private Map<String, Field> colMap = new HashMap<String, Field>();
 
 	private List<String> columns;
@@ -97,6 +92,14 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 	protected JdbcTemplate jdbcTemplate;
 
 	private String selectFields;
+
+	private String insertFields;
+
+	private String updateFields;
+
+	private List<String> updateFieldsList;
+
+	private String insertPlaceholders;
 
 	private String tableName;
 
@@ -111,22 +114,83 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 	 * @throws SQLException
 	 *             If the {@link ResultSet} throws it.
 	 * 
-	 * @see com.ajah.spring.jdbc.AjahDao#autoPopulate(java.lang.Object,
-	 *      java.sql.ResultSet)
+	 * @see com.ajah.spring.jdbc.AjahDao#autoPopulate(Identifiable, ResultSet)
 	 */
 	@Override
 	public void autoPopulate(T entity, ResultSet rs) throws SQLException {
-		for (String column : getColumns()) {
-			try {
-				Field field = this.colMap.get(column);
-				if (field.getType().isAssignableFrom(String.class)) {
-					field.set(entity, rs.getString(column));
-				}
-			} catch (IllegalArgumentException e) {
-				log.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IllegalAccessException e) {
-				log.log(Level.SEVERE, e.getMessage(), e);
+		try {
+			BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
+			PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
+			for (PropertyDescriptor prop : props) {
+				log.finest("PropertyDescriptor: " + prop.getName());
+				log.finest("setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()));
+				log.finest("getter: " + (prop.getReadMethod() == null ? null : prop.getReadMethod().getName()));
 			}
+			for (String column : getColumns()) {
+				Field field = this.colMap.get(column);
+				if (rs.getObject(column) == null) {
+					propSet(entity, getProp(field, props), null);
+				} else if (IntrospectionUtils.isString(field)) {
+					propSet(entity, getProp(field, props), rs.getString(column));
+				} else if (IntrospectionUtils.isDate(field)) {
+					propSet(entity, getProp(field, props), new Date(rs.getLong(column)));
+				} else if (IntrospectionUtils.isFromStringable(field)) {
+					propSet(entity, getProp(field, props), field.getType().getConstructor(String.class).newInstance(rs.getString(column)));
+				} else if (IntrospectionUtils.isIdentifiableEnum(field)) {
+					propSet(entity, getProp(field, props), ReflectionUtils.findEnumById(field, rs.getObject(column)));
+				} else if (IntrospectionUtils.isInt(field)) {
+					propSet(entity, getProp(field, props), Integer.valueOf(rs.getInt(column)));
+				} else if (IntrospectionUtils.isEnum(field)) {
+					log.warning("Can't handle non-Identifiable enum for column " + column + " [" + field.getType() + "]");
+				} else {
+					log.warning("Can't handle auto-populating of column " + column + " of type " + field.getType());
+				}
+			}
+		} catch (IntrospectionException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		} catch (SecurityException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		} catch (InstantiationException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		} catch (InvocationTargetException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		} catch (NoSuchMethodException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * @param field
+	 * @param props
+	 * @return
+	 */
+	private PropertyDescriptor getProp(Field field, PropertyDescriptor[] props) {
+		for (PropertyDescriptor prop : props) {
+			if (prop.getName().equals(field.getName())) {
+				return prop;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param field
+	 * @param props
+	 * @param string
+	 */
+	private void propSet(T entity, PropertyDescriptor prop, Object value) {
+		try {
+			Method setter = prop.getWriteMethod();
+			if (setter == null) {
+				throw new IllegalArgumentException("No setter found for " + prop.getName());
+			}
+			setter.invoke(entity, value);
+		} catch (IllegalAccessException e) {
+			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
+		} catch (InvocationTargetException e) {
+			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		}
 	}
 
@@ -233,7 +297,7 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 	}
 
 	protected RowMapper<T> getRowMapper() {
-		return new SimpleAjahRowMapper<T>(this);
+		return new SimpleAjahRowMapper<K, T>(this);
 	}
 
 	/**
@@ -283,7 +347,6 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 	 * @return Entity if found, otherwise null.
 	 */
 	public List<T> listByField(String field, Object value, String orderBy, int page, int count) {
-		log.fine("listByField");
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
@@ -301,6 +364,7 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 			this.tableName = JDBCMapperUtils.getTableName(getTargetClass());
 		}
 		List<String> columnList = new ArrayList<String>();
+		List<String> newUpdateFields = new ArrayList<String>();
 		StringBuffer select = new StringBuffer();
 		for (Field field : getTargetClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Transient.class)) {
@@ -313,13 +377,38 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 				select.append(", ");
 			}
 			select.append(colName);
+			if (!field.getName().equals("id")) {
+				newUpdateFields.add(colName);
+			}
 		}
 		if (this.selectFields == null) {
 			this.selectFields = select.toString();
+			this.insertFields = this.selectFields;
 		}
 		if (this.columns == null) {
 			this.columns = columnList;
 		}
+		if (this.updateFields == null) {
+			StringBuffer uf = new StringBuffer();
+			for (String field : newUpdateFields) {
+				if (uf.length() > 0) {
+					uf.append(",");
+				}
+				uf.append(field);
+				uf.append("=?");
+			}
+			this.updateFields = uf.toString();
+			this.updateFieldsList = newUpdateFields;
+		}
+
+		StringBuffer iph = new StringBuffer();
+		for (int i = 0; i < this.columns.size(); i++) {
+			if (i > 0) {
+				iph.append(",");
+			}
+			iph.append("?");
+		}
+		this.insertPlaceholders = iph.toString();
 	}
 
 	/**
@@ -350,6 +439,167 @@ public abstract class AbstractAjahDao<K, T> implements AjahDao<T> {
 	 */
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+
+	protected int now() {
+		return (int) (System.currentTimeMillis() / 1000);
+	}
+
+	protected long count(String sql) {
+		try {
+			return getJdbcTemplate().queryForInt(sql);
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		}
+	}
+
+	/**
+	 * Find an entity by the supplied WHERE clause.
+	 * 
+	 * @param where
+	 *            The WHERE clause to include in the query.
+	 * @return Entity if found, otherwise null.
+	 */
+	public T findByWhere(String where) {
+		AjahUtils.requireParam(where, "where");
+		try {
+			log.finest("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1");
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1", null,
+					getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Inserts the record. May throw an error on duplicate key exceptions.
+	 * 
+	 * @param entity
+	 *            Entity to insert into the table.
+	 * @return Number of rows inserted.
+	 * @throws DatabaseAccessException
+	 *             If an error occurs executing the query.
+	 */
+	public int insert(T entity) throws DatabaseAccessException {
+		AjahUtils.requireParam(entity, "entity");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		try {
+			String sql = "INSERT INTO " + getTableName() + "(" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
+			log.finest(sql);
+			return this.jdbcTemplate.update(sql, getInsertValues(entity));
+		} catch (DataAccessException e) {
+			throw new DatabaseAccessException(e);
+		}
+	}
+
+	/**
+	 * Updates the record. Will not do anything if there are no matching
+	 * records.
+	 * 
+	 * @param entity
+	 *            Entity to update.
+	 * @return Number of rows affected.
+	 * @throws DatabaseAccessException
+	 *             If an error occurs executing the query.
+	 */
+	public int update(T entity) throws DatabaseAccessException {
+		AjahUtils.requireParam(entity, "entity");
+		AjahUtils.requireParam(entity.getId(), "entity.id");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		try {
+			String sql = "UPDATE " + getTableName() + " SET " + getUpdateFields() + " WHERE " + getTableName() + "_id = ?";
+			log.finest(sql);
+			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
+		} catch (DataAccessException e) {
+			throw new DatabaseAccessException(e);
+		}
+	}
+
+	/**
+	 * @param entity
+	 * @return
+	 */
+	private Object[] getInsertValues(T entity) {
+		Object[] values = new Object[getColumns().size()];
+		try {
+			BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
+			PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
+			for (int i = 0; i < values.length; i++) {
+				Field field = this.colMap.get(this.columns.get(i));
+				values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
+			}
+		} catch (IntrospectionException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		}
+		return values;
+	}
+
+	/**
+	 * @param entity
+	 * @return
+	 */
+	private Object[] getUpdateValues(T entity) {
+		Object[] values = new Object[getUpdateFieldsList().size() + 1];
+		try {
+			BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
+			PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
+			for (int i = 0; i < (values.length - 1); i++) {
+				Field field = this.colMap.get(this.updateFieldsList.get(i));
+				if (IntrospectionUtils.isString(field)) {
+					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
+				} else if (IntrospectionUtils.isDate(field)) {
+					values[i] = AjahUtils.toUnix(ReflectionUtils.propGetDateSafe(entity, getProp(field, props)));
+				} else if (IntrospectionUtils.isToStringable(field)) {
+					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props)).toString();
+				} else if (IntrospectionUtils.isIdentifiable(field)) {
+					values[i] = ((Identifiable<?>) ReflectionUtils.propGetSafe(entity, getProp(field, props))).getId().toString();
+				} else if (IntrospectionUtils.isInt(field)) {
+					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
+				} else {
+					log.warning("Can't handle updating of column " + this.updateFieldsList.get(i) + " of type " + field.getType());
+					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
+				}
+			}
+			values[values.length - 1] = entity.getId().toString();
+		} catch (IntrospectionException e) {
+			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
+		}
+		return values;
+	}
+
+	/**
+	 * @return
+	 */
+	private String getInsertPlaceholders() {
+		if (this.insertPlaceholders == null) {
+			loadColumns();
+		}
+		return this.insertPlaceholders;
+	}
+
+	/**
+	 * @return
+	 */
+	private String getInsertFields() {
+		if (this.insertFields == null) {
+			loadColumns();
+		}
+		return this.insertFields;
+	}
+
+	private String getUpdateFields() {
+		if (this.updateFields == null) {
+			loadColumns();
+		}
+		return this.updateFields;
+	}
+
+	private List<String> getUpdateFieldsList() {
+		if (this.updateFieldsList == null) {
+			loadColumns();
+		}
+		return this.updateFieldsList;
 	}
 
 }
