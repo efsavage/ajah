@@ -15,6 +15,9 @@
  */
 package com.ajah.util;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Utility methods for arrays.
  * 
@@ -23,6 +26,8 @@ package com.ajah.util;
  * 
  */
 public class ArrayUtils {
+
+	private static final Logger log = Logger.getLogger(ArrayUtils.class.getName());
 
 	/**
 	 * Sums an array of integers.
@@ -82,7 +87,13 @@ public class ArrayUtils {
 		if (array == null || index < 0 || array.length < (index + 1)) {
 			return null;
 		}
-		return array[index];
+		try {
+			return array[index];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// This should not be able to happen, it's here for emphasis.
+			log.log(Level.SEVERE, e.getMessage(), e);
+		}
+		return null;
 	}
 
 }
