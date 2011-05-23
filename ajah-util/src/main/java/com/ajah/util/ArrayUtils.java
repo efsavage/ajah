@@ -65,4 +65,24 @@ public class ArrayUtils {
 		return index;
 	}
 
+	/**
+	 * Exception-free way to get an element from an array. Will return null if
+	 * the array is null or if the array is not large enough to contain the
+	 * index requested.
+	 * 
+	 * @param <T>
+	 *            The class of object to return.
+	 * @param array
+	 *            The array to look at, may be null.
+	 * @param index
+	 *            The index of the array to return.
+	 * @return The object to return, may be null.
+	 */
+	public static <T> T get(T[] array, int index) {
+		if (array == null || index < 0 || array.length < (index + 1)) {
+			return null;
+		}
+		return array[index];
+	}
+
 }
