@@ -36,6 +36,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param userId
 	 *            The User ID, should not be null.
 	 */
+	@Override
 	void setId(UserId userId);
 
 	/**

@@ -39,8 +39,11 @@ public class EmailDao extends AbstractAjahDao<EmailId, Email> {
 	 * 
 	 * @param email
 	 *            The {@link Email} to insert.
+	 * @return Number of rows affected.
 	 */
+	@Override
 	public int insert(Email email) {
+		//TODO Necessary?
 		AjahUtils.requireParam(email, "email");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		return this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),

@@ -33,6 +33,7 @@ public interface Email extends Identifiable<EmailId> {
 	 * @param emailId
 	 *            The unique ID of this email record.
 	 */
+	@Override
 	void setId(EmailId emailId);
 
 	/**
@@ -72,13 +73,6 @@ public interface Email extends Identifiable<EmailId> {
 	 * @return The email address.
 	 */
 	EmailAddress getAddress();
-
-	/**
-	 * The unique, internal ID of this email.
-	 * 
-	 * @return The unique, internal ID of this email.
-	 */
-	EmailId getId();
 
 	/**
 	 * Returns the status of this Email.

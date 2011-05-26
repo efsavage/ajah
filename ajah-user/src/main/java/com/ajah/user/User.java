@@ -27,13 +27,6 @@ import com.ajah.util.Identifiable;
 public interface User extends Identifiable<UserId> {
 
 	/**
-	 * Unique ID of the user.
-	 * 
-	 * @return Unique ID of the user, may be null.
-	 */
-	UserId getId();
-
-	/**
 	 * The status of the user.
 	 * 
 	 * @return The status of the user. May be null if not saved/complete.
@@ -60,6 +53,7 @@ public interface User extends Identifiable<UserId> {
 	 * @param userId
 	 *            The User ID, should not be null.
 	 */
+	@Override
 	void setId(UserId userId);
 
 	/**

@@ -39,8 +39,11 @@ public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordReques
 	 * 
 	 * @param resetPasswordRequest
 	 *            The {@link ResetPasswordRequest} to save, required.
+	 * @return The number of rows affected.
 	 */
+	@Override
 	public int insert(ResetPasswordRequest resetPasswordRequest) {
+		//TODO Necessary?
 		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
 		return this.jdbcTemplate.update(
 				"INSERT INTO pw_reset (pw_reset_id, user_id, created, code, status) VALUES (?,?,?,?,?)",
@@ -54,8 +57,11 @@ public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordReques
 	 * 
 	 * @param resetPasswordRequest
 	 *            The {@link ResetPasswordRequest} to save, required.
+	 * @return The number of rows affected.
 	 */
+	@Override
 	public int update(ResetPasswordRequest resetPasswordRequest) {
+		//TODO Necessary?
 		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
 		return this.jdbcTemplate
 				.update("UPDATE pw_reset SET user_id = ?, created = ?, code = ?, status = ? WHERE pw_reset_id = ?",

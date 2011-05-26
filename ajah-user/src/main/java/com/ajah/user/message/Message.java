@@ -31,13 +31,6 @@ import com.ajah.util.Identifiable;
 public interface Message extends Identifiable<MessageId> {
 
 	/**
-	 * Unique ID of the message.
-	 * 
-	 * @return Unique ID of the message, may be null.
-	 */
-	MessageId getId();
-
-	/**
 	 * The status of the message.
 	 * 
 	 * @return The status of the message. May be null if not saved/complete.
@@ -57,6 +50,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param messageId
 	 *            The Message ID, should not be null.
 	 */
+	@Override
 	void setId(MessageId messageId);
 
 	/**

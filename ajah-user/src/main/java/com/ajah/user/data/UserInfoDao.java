@@ -39,6 +39,7 @@ public class UserInfoDao extends AbstractAjahDao<UserId, UserInfo> {
 	 * @param userInfo
 	 *            UserInfo entity to insert, required.
 	 */
+	@Override
 	public int insert(UserInfo userInfo) {
 		AjahUtils.requireParam(userInfo, "userInfo");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
