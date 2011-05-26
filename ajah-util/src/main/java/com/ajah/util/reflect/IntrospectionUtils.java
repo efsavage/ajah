@@ -121,6 +121,18 @@ public class IntrospectionUtils {
 	}
 
 	/**
+	 * Checks to see if the field's type is a long.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a long
+	 */
+	public static boolean isLong(Field field) {
+		AjahUtils.requireParam(field, "field");
+		return long.class.isAssignableFrom(field.getType());
+	}
+
+	/**
 	 * Checks to see if the field's type implements {@link Identifiable} and is
 	 * an {@link Enum}.
 	 * 
