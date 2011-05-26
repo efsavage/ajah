@@ -45,6 +45,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.ToStringable;
 import com.ajah.util.reflect.IntrospectionUtils;
 import com.ajah.util.reflect.ReflectionUtils;
 
@@ -140,6 +141,8 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 					propSet(entity, getProp(field, props), ReflectionUtils.findEnumById(field, rs.getObject(column)));
 				} else if (IntrospectionUtils.isInt(field)) {
 					propSet(entity, getProp(field, props), Integer.valueOf(rs.getInt(column)));
+				} else if (IntrospectionUtils.isLong(field)) {
+					propSet(entity, getProp(field, props), Long.valueOf(rs.getLong(column)));
 				} else if (IntrospectionUtils.isEnum(field)) {
 					log.warning("Can't handle non-Identifiable enum for column " + column + " [" + field.getType() + "]");
 				} else {
@@ -346,7 +349,25 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 	 *            Number of results per page to return.
 	 * @return Entity if found, otherwise null.
 	 */
-	public List<T> listByField(String field, Object value, String orderBy, int page, int count) {
+	public List<T> listByField(String field, ToStringable value, String orderBy, int page, int count) {
+		return listByField(field, value.toString(), orderBy, page, count);
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @param orderBy
+	 * @param page
+	 *            Page of results (offset).
+	 * @param count
+	 *            Number of results per page to return.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(String field, String value, String orderBy, int page, int count) {
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
@@ -527,7 +548,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 			PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < values.length; i++) {
 				Field field = this.colMap.get(this.columns.get(i));
-				values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
+				values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
 			}
 		} catch (IntrospectionException e) {
 			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
@@ -546,20 +567,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 			PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < (values.length - 1); i++) {
 				Field field = this.colMap.get(this.updateFieldsList.get(i));
-				if (IntrospectionUtils.isString(field)) {
-					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
-				} else if (IntrospectionUtils.isDate(field)) {
-					values[i] = AjahUtils.toUnix(ReflectionUtils.propGetDateSafe(entity, getProp(field, props)));
-				} else if (IntrospectionUtils.isToStringable(field)) {
-					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props)).toString();
-				} else if (IntrospectionUtils.isIdentifiable(field)) {
-					values[i] = ((Identifiable<?>) ReflectionUtils.propGetSafe(entity, getProp(field, props))).getId().toString();
-				} else if (IntrospectionUtils.isInt(field)) {
-					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
-				} else {
-					log.warning("Can't handle updating of column " + this.updateFieldsList.get(i) + " of type " + field.getType());
-					values[i] = ReflectionUtils.propGetSafe(entity, getProp(field, props));
-				}
+				values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
 			}
 			values[values.length - 1] = entity.getId().toString();
 		} catch (IntrospectionException e) {
