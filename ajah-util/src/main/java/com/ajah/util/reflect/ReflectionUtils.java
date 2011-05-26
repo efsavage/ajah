@@ -109,4 +109,23 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	public static Object propGetSafeAuto(Object object, Field field, PropertyDescriptor propertyDescriptor) {
+		if (IntrospectionUtils.isString(field)) {
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else if (IntrospectionUtils.isDate(field)) {
+			return AjahUtils.toUnix(ReflectionUtils.propGetDateSafe(object, propertyDescriptor));
+		} else if (IntrospectionUtils.isToStringable(field)) {
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor).toString();
+		} else if (IntrospectionUtils.isIdentifiable(field)) {
+			return ((Identifiable<?>) ReflectionUtils.propGetSafe(object, propertyDescriptor)).getId().toString();
+		} else if (IntrospectionUtils.isInt(field)) {
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else if (IntrospectionUtils.isLong(field)) {
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else {
+			log.warning("Can't handle property getting of type " + field.getType());
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		}
+	}
+
 }
