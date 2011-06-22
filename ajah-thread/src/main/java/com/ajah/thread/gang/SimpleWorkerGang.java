@@ -29,6 +29,10 @@ public class SimpleWorkerGang {
 
 	private boolean autoStart;
 
+	public SimpleWorkerGang(boolean autoStart) {
+		this.autoStart = autoStart;
+	}
+
 	/**
 	 * Invokes go on all workers in this gang. This isn't necessary if autoStart
 	 * is true.
