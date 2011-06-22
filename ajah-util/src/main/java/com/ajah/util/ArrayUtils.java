@@ -37,7 +37,7 @@ public class ArrayUtils {
 	 * @return The sum of the values of the array. Returns 0 if the array is 0
 	 *         or empty.
 	 */
-	public static int sum(int[] array) {
+	public static long sum(int[] array) {
 		if (array == null || array.length == 0) {
 			return 0;
 		}
@@ -94,6 +94,25 @@ public class ArrayUtils {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return null;
+	}
+
+	/**
+	 * Sums an array of bytes.
+	 * 
+	 * @param array
+	 *            Byte array.
+	 * @return The sum of the values of the array. Returns 0 if the array is 0
+	 *         or empty.
+	 */
+	public static long sum(byte[] array) {
+		if (array == null || array.length == 0) {
+			return 0;
+		}
+		int retVal = array[0];
+		for (int i = 1; i < array.length; i++) {
+			retVal += array[i];
+		}
+		return retVal;
 	}
 
 }
