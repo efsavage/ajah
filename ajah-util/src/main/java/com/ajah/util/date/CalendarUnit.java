@@ -29,6 +29,8 @@ import java.util.Calendar;
  */
 public enum CalendarUnit {
 
+	/** Calendar.SECOND */
+	SECOND(1000L, "Minute", "Minutes", Calendar.SECOND),
 	/** Calendar.MINUTE */
 	MINUTE(60 * 1000L, "Minute", "Minutes", Calendar.MINUTE),
 	/** Calendar.HOUR */
