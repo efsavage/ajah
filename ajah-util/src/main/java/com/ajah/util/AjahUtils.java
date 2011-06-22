@@ -26,6 +26,12 @@ import java.util.Date;
 public class AjahUtils {
 
 	/**
+	 * Array of lowercase characters (a-z).
+	 */
+	public static final char[] LOWER_CHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+			'u', 'v', 'w', 'x', 'y', 'z' };
+
+	/**
 	 * Check a parameter and throw an exception if its null. Commonly used at
 	 * the very beginning of a method for things that should never be null.
 	 * 
