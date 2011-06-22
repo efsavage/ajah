@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.date.DateUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
@@ -113,7 +114,7 @@ public class ReflectionUtils {
 		if (IntrospectionUtils.isString(field)) {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isDate(field)) {
-			return AjahUtils.toUnix(ReflectionUtils.propGetDateSafe(object, propertyDescriptor));
+			return DateUtils.safeToLong(ReflectionUtils.propGetDateSafe(object, propertyDescriptor));
 		} else if (IntrospectionUtils.isToStringable(field)) {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor).toString();
 		} else if (IntrospectionUtils.isIdentifiable(field)) {

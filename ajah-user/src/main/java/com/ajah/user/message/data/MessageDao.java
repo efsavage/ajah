@@ -32,6 +32,7 @@ import com.ajah.user.message.MessageId;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
+import com.ajah.util.date.DateUtils;
 
 /**
  * Data operations on the "message" table.
@@ -42,7 +43,8 @@ import com.ajah.util.StringUtils;
 @Repository
 public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 
-	// private static final Logger log = Logger.getLogger(MessageDao.class.getName());
+	// private static final Logger log =
+	// Logger.getLogger(MessageDao.class.getName());
 
 	static final class MessageRowMapper extends AbstractAjahRowMapper<MessageId, Message> {
 
@@ -93,7 +95,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)", new Object[] {
-				message.getId().getId(), AjahUtils.toUnix(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()),
+				message.getId().getId(), DateUtils.safeToLong(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()),
 				fromUserIds(message.getCc()), fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(),
 				message.getStatus().getId() });
 	}
