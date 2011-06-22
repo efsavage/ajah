@@ -231,8 +231,14 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		AjahUtils.requireParam(values, "values");
 		try {
 			// TODO Optimize for single values
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getFieldsClause(fields),
-					values, getRowMapper());
+			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getFieldsClause(fields);
+			if (log.isLoggable(Level.FINEST)) {
+				log.finer(sql);
+				for (Object value : values) {
+					log.finer(value.toString());
+				}
+			}
+			return getJdbcTemplate().queryForObject(sql, values, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
