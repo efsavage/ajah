@@ -15,6 +15,9 @@
  */
 package com.ajah.spring.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * High-level utilities for Spring.
  * 
