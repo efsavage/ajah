@@ -1,2 +1,5 @@
 target
-surefire-reports
+.classpath
+.settings
+.factorypath
+.project
