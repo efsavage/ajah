@@ -17,7 +17,6 @@ package com.ajah.util.io.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -42,40 +41,33 @@ public class Report {
 	 */
 	public static final String HYPEN35 = "-----------------------------------";
 
-	private List<PrintWriter> writers = new ArrayList<PrintWriter>();
+	private List<PrintWriter> writers = new ArrayList<>();
 
 	private Logger log;
 
-	public void println(String line) throws IOException {
+	public void println(String line) {
 		println(0, line);
 	}
 
-	public void print(String line) throws IOException {
-		log.info(line);
-		for (PrintWriter out : writers) {
+	public void print(String line) {
+		this.log.info(line);
+		for (PrintWriter out : this.writers) {
 			out.print(line);
 		}
 	}
 
-	public void println(int depth, String line) throws IOException {
+	public void println(int depth, String line) {
 		if (this.writers.size() < 1) {
 			throw new IllegalArgumentException();
 		}
-		log.info(line);
-		for (PrintWriter out : writers) {
+		this.log.info(line);
+		for (PrintWriter out : this.writers) {
 			if (depth > 0) {
 				out.print(tabs(depth));
 			}
 			out.println(line);
 		}
 	}
-
-	// private void print(char[] chars) {
-	// log.info(new String(chars));
-	// for (PrintWriter writer : writers) {
-	// writer.write(chars);
-	// }
-	// }
 
 	public void add(PrintWriter writer) {
 		this.writers.add(writer);
@@ -85,7 +77,7 @@ public class Report {
 		this.writers.add(new PrintWriter(file));
 	}
 
-	public void rule() throws IOException {
+	public void rule() {
 		println(EQUAL_40);
 	}
 
@@ -99,12 +91,12 @@ public class Report {
 		this.writers.add(new PrintWriter(out));
 	}
 
-	public void add(Logger log) {
-		this.log = log;
+	public void add(Logger _log) {
+		this.log = _log;
 	}
 
 	public void close() {
-		for (PrintWriter out : writers) {
+		for (PrintWriter out : this.writers) {
 			out.close();
 		}
 	}

@@ -40,9 +40,8 @@ public class FileScan {
 	private long emptyDirectories;
 	private final File root;
 	private Report report;
-	private static long[] ranges = new long[] { 0, 1, DataSizeUnit.KIBIBYTE.getBytes() - 1, DataSizeUnit.KIBIBYTE.getAsBytes(10),
-			DataSizeUnit.KIBIBYTE.getAsBytes(100), DataSizeUnit.MEBIBYTE.getAsBytes(1), DataSizeUnit.MEBIBYTE.getAsBytes(10),
-			DataSizeUnit.MEBIBYTE.getAsBytes(100), Long.MAX_VALUE };
+	private static long[] ranges = new long[] { 0, 1, DataSizeUnit.KIBIBYTE.getBytes() - 1, DataSizeUnit.KIBIBYTE.getAsBytes(10), DataSizeUnit.KIBIBYTE.getAsBytes(100),
+			DataSizeUnit.MEBIBYTE.getAsBytes(1), DataSizeUnit.MEBIBYTE.getAsBytes(10), DataSizeUnit.MEBIBYTE.getAsBytes(100), Long.MAX_VALUE };
 	private static long[][] rangeCountSizes = new long[ranges.length][2];
 
 	public long getFiles() {
@@ -141,7 +140,7 @@ public class FileScan {
 		}
 	}
 
-	private void report(int depth) throws IOException {
+	private void report(int depth) {
 		this.report.println(depth, "Files: " + NumberFormat.getInstance().format(getFiles()));
 		this.report.println(depth, "Directories: " + NumberFormat.getInstance().format(getDirectories()));
 		this.report.println(depth, "Empty Directories: " + NumberFormat.getInstance().format(getEmptyDirectories()));

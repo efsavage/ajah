@@ -83,9 +83,8 @@ public class MathUtils {
 				if (array2.length < i) {
 					// Shouldn't happen
 					continue;
-				} else {
-					continue;
 				}
+				continue;
 			} else if (array2.length < i) {
 				continue;
 			} else {

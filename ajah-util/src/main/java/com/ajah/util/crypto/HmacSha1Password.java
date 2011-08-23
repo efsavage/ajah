@@ -25,6 +25,7 @@ import com.sun.crypto.provider.HmacSHA1;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@SuppressWarnings("restriction")
 public class HmacSha1Password implements Password {
 
 	private final String hash;
