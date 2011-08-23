@@ -19,9 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.UserId;
-import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
-import com.ajah.util.AjahUtils;
 
 /**
  * Data operations on the "user" table.
