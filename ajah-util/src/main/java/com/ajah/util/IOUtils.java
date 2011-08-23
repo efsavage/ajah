@@ -39,11 +39,11 @@ public class IOUtils {
 	 * @param closeable
 	 *            Closeable object, may be null.
 	 */
-	public static void safeClose(Closeable closeable) {
+	public static void safeClose(AutoCloseable closeable) {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 		}
