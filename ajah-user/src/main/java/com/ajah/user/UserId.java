@@ -17,6 +17,7 @@ package com.ajah.user;
 
 import java.io.Serializable;
 
+import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
 /**
@@ -25,7 +26,7 @@ import com.ajah.util.ToStringable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable, ToStringable {
+public class UserId implements Serializable, ToStringable, FromStringable {
 
 	private static final long serialVersionUID = 5419973870818857713L;
 

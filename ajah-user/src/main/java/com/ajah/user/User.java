@@ -47,6 +47,8 @@ public interface User extends Identifiable<UserId> {
 	 */
 	String getUsername();
 
+	UserId getId();
+
 	/**
 	 * Sets the user ID.
 	 * 
