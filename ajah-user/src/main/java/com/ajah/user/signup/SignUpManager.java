@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.User;
 import com.ajah.user.UserType;
 import com.ajah.user.data.UserManager;
@@ -56,15 +57,17 @@ public class SignUpManager {
 	 * @param type
 	 *            Type of signUp attempt
 	 * @return SignUp record, will never return null.
+	 * @throws DatabaseAccessException
+	 *             If the queries could not be completed.
 	 */
-	public SignUp signUp(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) {
+	public SignUp signUp(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) throws DatabaseAccessException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		SignUp signUp = new SignUp();
 		signUp.setIp(ip);
 		signUp.setCreated(new Date());
 		signUp.setSource(source);
 		signUp.setStatus(SignUpStatus.SUCCESS);
-		//TODO signup should be saved
+		// TODO signup should be saved
 		User user = this.userManager.createUser(emailAddress, password, ip, source, type);
 		log.info(user.getUsername() + " created!");
 		// try {

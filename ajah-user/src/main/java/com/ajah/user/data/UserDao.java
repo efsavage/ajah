@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
+import com.ajah.user.UserImpl;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.crypto.Password;
 
@@ -31,7 +32,7 @@ import com.ajah.util.crypto.Password;
  * 
  */
 @Repository
-public class UserDao extends AbstractAjahDao<UserId, User> {
+public class UserDao extends AbstractAjahDao<UserId, UserImpl> {
 
 	// private static final Logger log = Logger.getLogger(UserDao.class.getName());
 

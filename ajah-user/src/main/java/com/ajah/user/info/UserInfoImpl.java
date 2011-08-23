@@ -48,6 +48,10 @@ public class UserInfoImpl implements UserInfo {
 	protected Integer birthYear;
 	protected EmailId primaryEmailId;
 
+	public UserInfoImpl() {
+
+	}
+
 	/**
 	 * Instantiates a userinfo with userId, which should not be null.
 	 * 

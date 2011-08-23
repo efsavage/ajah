@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
+import com.ajah.user.info.UserInfoImpl;
 import com.ajah.util.AjahUtils;
 
 /**
@@ -29,25 +30,26 @@ import com.ajah.util.AjahUtils;
  * 
  */
 @Repository
-public class UserInfoDao extends AbstractAjahDao<UserId, UserInfo> {
+public class UserInfoDao extends AbstractAjahDao<UserId, UserInfoImpl> {
 
-	// private static final Logger log = Logger.getLogger(UserDao.class.getName());
+	// private static final Logger log =
+	// Logger.getLogger(UserDao.class.getName());
 
-	/**
-	 * INSERTs a {@link UserInfo} entity.
-	 * 
-	 * @param userInfo
-	 *            UserInfo entity to insert, required.
-	 */
-	@Override
-	public int insert(UserInfo userInfo) {
-		AjahUtils.requireParam(userInfo, "userInfo");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate
-				.update("INSERT INTO user_info (user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id) VALUES (?,?,?,?,?,?,?,?)",
-						new Object[] { userInfo.getId().getId(), userInfo.getFirstName(), userInfo.getMiddleName(), userInfo.getLastName(),
-								userInfo.getBirthDay(), userInfo.getBirthMonth() == null ? null : Integer.valueOf(userInfo.getBirthMonth().getId()),
-								userInfo.getBirthYear(), userInfo.getPrimaryEmailId().getId() });
-	}
+//	/**
+//	 * INSERTs a {@link UserInfo} entity.
+//	 * 
+//	 * @param userInfo
+//	 *            UserInfo entity to insert, required.
+//	 */
+//	@Override
+//	public int insert(UserInfo userInfo) {
+//		AjahUtils.requireParam(userInfo, "userInfo");
+//		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+//		return this.jdbcTemplate
+//				.update("INSERT INTO user_info (user_id, first_name, middle_name, last_name, birth_day, birth_month, birth_year, primary_email_id) VALUES (?,?,?,?,?,?,?,?)",
+//						new Object[] { userInfo.getId().getId(), userInfo.getFirstName(), userInfo.getMiddleName(), userInfo.getLastName(),
+//								userInfo.getBirthDay(), userInfo.getBirthMonth() == null ? null : Integer.valueOf(userInfo.getBirthMonth().getId()),
+//								userInfo.getBirthYear(), userInfo.getPrimaryEmailId().getId() });
+//	}
 
 }

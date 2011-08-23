@@ -22,14 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
 import com.ajah.user.UserNotFoundException;
-import com.ajah.user.UserStatusImpl;
+import com.ajah.user.UserStatus;
 import com.ajah.user.UserType;
-import com.ajah.user.UserTypeImpl;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailImpl;
@@ -117,14 +117,16 @@ public class UserManager {
 	 * @param type
 	 *            Type of user to create, required.
 	 * @return New user, if save was successful.
+	 * @throws DatabaseAccessException
+	 *             If the queries could not be completed.
 	 */
 	@Transactional
-	public User createUser(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) {
+	public User createUser(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) throws DatabaseAccessException {
 		User user = new UserImpl();
 		user.setId(new UserId(UUID.randomUUID().toString()));
 		user.setUsername(emailAddress.toString());
-		user.setStatus(UserStatusImpl.NEW);
-		user.setType(UserTypeImpl.NORMAL);
+		user.setStatus(UserStatus.NEW);
+		user.setType(UserType.NORMAL);
 		this.userDao.insert(user, password);
 
 		Email email = new EmailImpl();
@@ -134,7 +136,7 @@ public class UserManager {
 		email.setStatus(EmailStatusImpl.ACTIVE);
 		this.emailDao.insert(email);
 
-		UserInfo userInfo = new UserInfoImpl(user.getId());
+		UserInfoImpl userInfo = new UserInfoImpl(user.getId());
 		userInfo.setPrimaryEmailId(email.getId());
 		this.userInfoDao.insert(userInfo);
 		return user;

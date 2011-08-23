@@ -15,22 +15,42 @@
  */
 package com.ajah.user;
 
+import com.ajah.util.Identifiable;
+
 /**
- * All accounts must be of some type, which determines the permitted operations.
- * Common types might be GUEST, ADMIN, ANONYMOUS, etc. This can be further
- * specified via permissions.
+ * Basic implementations of UserType.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface UserType {
+public enum UserType implements Identifiable<String> {
+
+	/**
+	 * Regular user, should be the default.
+	 */
+	NORMAL("1", "Normal", "Normal", "Normal");
+
+	private UserType(String id, String code, String name, String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+	}
+
+	private final String id;
+	private final String code;
+	private final String name;
+	private final String description;
 
 	/**
 	 * The internal ID of the type.
 	 * 
 	 * @return The internal ID of the type. Cannot be null.
 	 */
-	String getId();
+	@Override
+	public String getId() {
+		return this.id;
+	}
 
 	/**
 	 * The short, display-friendly code of the type. If no code is applicable,
@@ -38,7 +58,9 @@ public interface UserType {
 	 * 
 	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
-	String getCode();
+	public String getCode() {
+		return this.code;
+	}
 
 	/**
 	 * The display-friendly name of the type. If no name is applicable, it
@@ -46,13 +68,38 @@ public interface UserType {
 	 * 
 	 * @return The display-friendly name of the type. Cannot be null.
 	 */
-	String getName();
+	public String getName() {
+		return this.name;
+	}
 
 	/**
 	 * The display-friendly description of the type.
 	 * 
 	 * @return The display-friendly description of the type. May be null.
 	 */
-	String getDescription();
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * Finds a UserType that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching UserType, or null.
+	 */
+	public static UserType get(String id) {
+		for (UserType type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void setId(String id) {
+		throw new UnsupportedOperationException();
+	}
 
 }

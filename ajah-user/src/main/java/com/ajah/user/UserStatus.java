@@ -15,21 +15,46 @@
  */
 package com.ajah.user;
 
+import com.ajah.util.Identifiable;
+
 /**
- * All accounts must be in some state, which determines the permitted
- * operations. Common statuses might be ACTIVE, INACTIVE, SUSPENDED, NEW, etc.
+ * Basic implementations of UserStatus.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface UserStatus {
+public enum UserStatus implements Identifiable<String> {
+
+	/**
+	 * New user, unverified/unpaid.
+	 */
+	NEW("0", "New", "New", "New"),
+	/**
+	 * Regular user, should be the normal case.
+	 */
+	ACTIVE("1", "Active", "Active", "Active");
+
+	private UserStatus(String id, String code, String name, String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+	}
+
+	private final String id;
+	private final String code;
+	private final String name;
+	private final String description;
 
 	/**
 	 * The internal ID of the status.
 	 * 
 	 * @return The internal ID of the status. Cannot be null.
 	 */
-	String getId();
+	@Override
+	public String getId() {
+		return this.id;
+	}
 
 	/**
 	 * The short, display-friendly code of the status. If no code is applicable,
@@ -37,7 +62,9 @@ public interface UserStatus {
 	 * 
 	 * @return The short, display-friendly code of the status. Cannot be null.
 	 */
-	String getCode();
+	public String getCode() {
+		return this.code;
+	}
 
 	/**
 	 * The display-friendly name of the status. If no name is applicable, it
@@ -45,13 +72,38 @@ public interface UserStatus {
 	 * 
 	 * @return The display-friendly name of the status. Cannot be null.
 	 */
-	String getName();
+	public String getName() {
+		return this.name;
+	}
 
 	/**
 	 * The display-friendly description of the status.
 	 * 
 	 * @return The display-friendly description of the status. May be null.
 	 */
-	String getDescription();
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * Finds a UserStatus that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching UserStatus, or null.
+	 */
+	public static UserStatus get(String id) {
+		for (UserStatus type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void setId(String id) {
+		throw new UnsupportedOperationException();
+	}
 
 }
