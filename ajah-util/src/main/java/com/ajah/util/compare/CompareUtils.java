@@ -87,4 +87,19 @@ public class CompareUtils {
 		return 0;
 	}
 
+	public static int compare(String first, String second) {
+		if (first == null) {
+			if (second == null) {
+				throw new IllegalArgumentException("Both values are null");
+			}
+			System.err.println("Null!");
+			return -1;
+		}
+		if (second == null) {
+			System.err.println("Null!");
+			return 1;
+		}
+		return first.compareTo(second);
+	}
+
 }
