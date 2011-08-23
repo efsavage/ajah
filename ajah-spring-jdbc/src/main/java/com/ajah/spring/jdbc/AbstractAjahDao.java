@@ -232,7 +232,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		try {
 			// TODO Optimize for single values
 			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getFieldsClause(fields);
-			if (log.isLoggable(Level.FINEST)) {
+			if (log.isLoggable(Level.FINE)) {
 				log.finer(sql);
 				for (Object value : values) {
 					log.finer(value.toString());
@@ -387,12 +387,15 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 	}
 
 	private void loadColumns() {
+		log.fine("Loading columns");
 		if (this.tableName == null) {
 			this.tableName = JDBCMapperUtils.getTableName(getTargetClass());
 		}
+		log.fine("Table set to : " + this.tableName);
 		List<String> columnList = new ArrayList<String>();
 		List<String> newUpdateFields = new ArrayList<String>();
 		StringBuffer select = new StringBuffer();
+		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (Field field : getTargetClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Transient.class)) {
 				continue;
@@ -415,6 +418,8 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		if (this.columns == null) {
 			this.columns = columnList;
 		}
+		log.finest(this.columns.size() + " columns");
+
 		if (this.updateFields == null) {
 			StringBuffer uf = new StringBuffer();
 			for (String field : newUpdateFields) {
