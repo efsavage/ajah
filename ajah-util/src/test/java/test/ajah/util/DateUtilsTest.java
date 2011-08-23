@@ -35,8 +35,8 @@ public class DateUtilsTest {
 	 */
 	@Test
 	public void goodGet() {
-		Assert.assertEquals("8 milliseconds ago", DateUtils.formatInterval(8));
-		Assert.assertEquals("59 seconds ago", DateUtils.formatInterval(59000));
+		Assert.assertEquals("8 milliseconds", DateUtils.formatInterval(8));
+		Assert.assertEquals("59 seconds", DateUtils.formatInterval(59000));
 	}
 
 }
