@@ -47,4 +47,58 @@ public class MathUtils {
 		return value - reduction;
 	}
 
+	/**
+	 * Divides a divident by divisor , with a default value if the divisor is
+	 * zero.
+	 * 
+	 * @param dividend
+	 *            The dividen.
+	 * @param divisor
+	 *            The divisor.
+	 * @param defaultDivisor
+	 *            The defaultDivisor, if the divisor is zero.
+	 * @return divident/divisor or divident/defaultDivisor
+	 */
+	public static long divideZero(long dividend, long divisor, long defaultDivisor) {
+		if (divisor == 0) {
+			return dividend / defaultDivisor;
+		}
+		return dividend / divisor;
+	}
+
+	/**
+	 * Adds an array of longs to another array of longs. The resulting array
+	 * will be as long as the longer of the two parameters.
+	 * 
+	 * @param array1
+	 * @param array2
+	 * @return
+	 */
+	public static long[] add(long[] array1, long[] array2) {
+		AjahUtils.requireParam(array1, "array1");
+		AjahUtils.requireParam(array2, "array2");
+		long[] result = new long[array1.length > array2.length ? array1.length : array2.length];
+		for (int i = 0; i < result.length; i++) {
+			if (array1.length < i) {
+				if (array2.length < i) {
+					// Shouldn't happen
+					continue;
+				} else {
+					continue;
+				}
+			} else if (array2.length < i) {
+				continue;
+			} else {
+				result[i] = array1[i] + array2[i];
+			}
+		}
+		return result;
+	}
+
+	public static void addTo(final long[] to, final long[] from) {
+		for (int i = 0; i < to.length; i++) {
+			to[i] = to[i] + from[i];
+		}
+	}
+
 }
