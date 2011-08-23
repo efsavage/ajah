@@ -37,6 +37,8 @@ public class JDBCMapperUtils {
 	 * Converts a class name to a table name, per standard database naming
 	 * convention.
 	 * 
+	 * Will ignore "Impl" at the end of class names.
+	 * 
 	 * @param clazz
 	 *            Class to derive name from.
 	 * @return Table name
@@ -45,7 +47,11 @@ public class JDBCMapperUtils {
 		if (tableNameCache.get(clazz) != null) {
 			return tableNameCache.get(clazz);
 		}
-		String name = StringUtils.splitCamelCase(clazz.getSimpleName()).replaceAll("\\W+", "_").toLowerCase();
+		String simpleName = clazz.getSimpleName();
+		if (simpleName.endsWith("Impl")) {
+			simpleName = simpleName.substring(0, simpleName.length() - 4);
+		}
+		String name = StringUtils.splitCamelCase(simpleName).replaceAll("\\W+", "_").toLowerCase();
 		tableNameCache.put(clazz, name);
 		return name;
 	}
@@ -76,7 +82,7 @@ public class JDBCMapperUtils {
 			// Enums are stored as-is, even if they implement other interfaces
 		} else if (field.getType().isAssignableFrom(Date.class)) {
 			columnName += "_date";
-		} else if (Identifiable.class.isAssignableFrom(field.getType())) {
+		} else if (!field.getType().isEnum() && Identifiable.class.isAssignableFrom(field.getType())) {
 			columnName += "_id";
 		}
 		columnNameCache.get(tableName).put(field, columnName);
