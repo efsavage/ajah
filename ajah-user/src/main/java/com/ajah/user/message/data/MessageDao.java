@@ -71,8 +71,8 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 		 *            The list of IDs, separated by commas.
 		 * @return A list of user ids, may be empty but will not be null.
 		 */
-		private List<UserId> getUserIds(String string) {
-			List<UserId> userIds = new ArrayList<UserId>();
+		private static List<UserId> getUserIds(String string) {
+			List<UserId> userIds = new ArrayList<>();
 			if (StringUtils.isBlank(string)) {
 				return userIds;
 			}
@@ -108,7 +108,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 	 * @return Comma-separated list of User IDs. If a null or empty list is
 	 *         passed in, will return null.
 	 */
-	private String fromUserIds(List<UserId> userIds) {
+	private static String fromUserIds(List<UserId> userIds) {
 		if (CollectionUtils.isEmpty(userIds)) {
 			return null;
 		}

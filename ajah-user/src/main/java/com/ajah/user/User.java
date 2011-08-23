@@ -47,6 +47,7 @@ public interface User extends Identifiable<UserId> {
 	 */
 	String getUsername();
 
+	@Override
 	UserId getId();
 
 	/**

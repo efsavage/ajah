@@ -99,7 +99,7 @@ public class LogInManager {
 	 *            Password object for user to include in the token.
 	 * @return Token that can be used to authenticate.
 	 */
-	public String getTokenValue(User user, Password password) {
+	public static String getTokenValue(User user, Password password) {
 		return Crypto.toAES(user.getUsername() + "|" + password.toString());
 	}
 
