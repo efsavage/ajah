@@ -211,13 +211,7 @@ public enum DataSizeUnit {
 	 * @return The formatted string for the number of bytes.
 	 */
 	public static String format(long bytes) {
-		DataSizeUnit[] autoFormatOrder = new DataSizeUnit[] { EXBIBYTE, PEBIBYTE, TEBIBYTE, GIBIBYTE, MEBIBYTE, KIBIBYTE };
-		for (DataSizeUnit unit : autoFormatOrder) {
-			if (bytes > unit.bytes) {
-				return String.format("%.2f %s", Double.valueOf((double) (bytes) / unit.bytes), unit.getAbbreviation());
-			}
-		}
-		return bytes + " " + BYTE.getAbbreviation();
+		return format(bytes, 2);
 	}
 
 	/**
@@ -231,5 +225,20 @@ public enum DataSizeUnit {
 	 */
 	public double fromBytes(long actualBytes) {
 		return (double) actualBytes / this.bytes;
+	}
+
+	/**
+	 * @param chunkSize
+	 * @param i
+	 * @return
+	 */
+	public static String format(long bytes, int precision) {
+		DataSizeUnit[] autoFormatOrder = new DataSizeUnit[] { PEBIBYTE, TEBIBYTE, GIBIBYTE, MEBIBYTE, KIBIBYTE };
+		for (DataSizeUnit unit : autoFormatOrder) {
+			if (bytes > unit.bytes) {
+				return String.format("%." + precision + "f %s", Double.valueOf((double) (bytes) / unit.bytes), unit.getAbbreviation());
+			}
+		}
+		return bytes + " " + BYTE.getAbbreviation();
 	}
 }
