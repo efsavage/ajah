@@ -19,7 +19,6 @@ package com.ajah.util;
  * Utilities for dealing with Strings.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class StringUtils {
 
@@ -30,7 +29,7 @@ public class StringUtils {
 	 *            String to be tested, may be null
 	 * @return true if string is null or zero-length
 	 */
-	public static boolean isBlank(String string) {
+	public static boolean isBlank(final String string) {
 		return string == null || string.length() < 1;
 	}
 
@@ -41,23 +40,20 @@ public class StringUtils {
 	 *            String to be tested, may be null.
 	 * @return length of string, 0 if null.
 	 */
-	public static int safeLength(String string) {
+	public static int safeLength(final String string) {
 		return string == null ? 0 : string.length();
 	}
 
 	/**
-	 * Converts camelCase text to regular text.
-	 * 
-	 * Example: "canOfSoda" converts to "can of soda".
-	 * 
-	 * Source: <a href=
+	 * Converts camelCase text to regular text. Example: "canOfSoda" converts to
+	 * "can of soda". Source: <a href=
 	 * "http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java"
 	 * >Stack Overflow</a>
 	 * 
 	 * @param string
 	 * @return String, de-camelcased.
 	 */
-	public static String splitCamelCase(String string) {
+	public static String splitCamelCase(final String string) {
 		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 
@@ -69,7 +65,7 @@ public class StringUtils {
 	 *            String to capitalized
 	 * @return String, capitalized, may be null if null is passed in.
 	 */
-	public static String capitalize(String string) {
+	public static String capitalize(final String string) {
 		if (StringUtils.isBlank(string)) {
 			return string;
 		}
@@ -85,11 +81,59 @@ public class StringUtils {
 	 *            The object to check/toString()
 	 * @return object.toString() or null
 	 */
-	public static String safeToString(Object object) {
+	public static String safeToString(final Object object) {
 		if (object == null) {
 			return null;
 		}
 		return object.toString();
+	}
+
+	/**
+	 * Joins an array of Strings into a single String with the specified
+	 * delimeter.
+	 * 
+	 * @param array
+	 *            Array of Strings, may be empty or null.
+	 * @param delimiter
+	 *            The delimiter to put between the joined Strings, may be empty
+	 *            or null.
+	 * @return The joined array with delimiter in between joined Strings. If
+	 *         array was null or empty or contained only null or empty Strings,
+	 *         returns null.
+	 */
+	public static String join(final String[] array, final String delimiter) {
+		if (array == null || array.length == 0) {
+			return null;
+		} else if (array.length == 1) {
+			return array[0];
+		}
+		final StringBuffer buf = new StringBuffer();
+		boolean first = delimiter != null;
+		for (int i = 0; i < array.length; i++) {
+			if (!StringUtils.isBlank(array[i])) {
+				if (!first) {
+					buf.append(delimiter);
+				} else {
+					first = false;
+				}
+				buf.append(array[i]);
+			}
+		}
+		if (buf.length() > 0) {
+			return buf.toString();
+		}
+		return null;
+	}
+
+	/**
+	 * Calls {@link #join(String[], String)} with null for a delimiter. Array of
+	 * Strings, may be empty or null.
+	 * 
+	 * @return The joined array. If array was null or empty or contained only
+	 *         null or empty Strings, returns null.
+	 */
+	public static String join(final String[] array) {
+		return join(array, null);
 	}
 
 }
