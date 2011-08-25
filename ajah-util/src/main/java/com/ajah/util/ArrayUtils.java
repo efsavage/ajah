@@ -23,7 +23,6 @@ import java.util.logging.Logger;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class ArrayUtils {
 
@@ -37,7 +36,7 @@ public class ArrayUtils {
 	 * @return The sum of the values of the array. Returns 0 if the array is 0
 	 *         or empty.
 	 */
-	public static long sum(int[] array) {
+	public static long sum(final int[] array) {
 		if (array == null || array.length == 0) {
 			return 0;
 		}
@@ -58,10 +57,10 @@ public class ArrayUtils {
 	 * @throws IllegalArgumentException
 	 *             if values is null.
 	 */
-	public static int indexOfLargest(int[] values) {
+	public static int indexOfLargest(final int[] values) {
 		AjahUtils.requireParam(values, "values");
 		int index = 0;
-		int largest = values[0];
+		final int largest = values[0];
 		for (int i = 1; i < values.length; i++) {
 			if (values[i] > largest) {
 				index = i;
@@ -83,13 +82,13 @@ public class ArrayUtils {
 	 *            The index of the array to return.
 	 * @return The object to return, may be null.
 	 */
-	public static <T> T get(T[] array, int index) {
-		if (array == null || index < 0 || array.length < (index + 1)) {
+	public static <T> T get(final T[] array, final int index) {
+		if (array == null || index < 0 || array.length < index + 1) {
 			return null;
 		}
 		try {
 			return array[index];
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (final ArrayIndexOutOfBoundsException e) {
 			// This should not be able to happen, it's here for emphasis.
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
@@ -104,7 +103,7 @@ public class ArrayUtils {
 	 * @return The sum of the values of the array. Returns 0 if the array is 0
 	 *         or empty.
 	 */
-	public static long sum(byte[] array) {
+	public static long sum(final byte[] array) {
 		if (array == null || array.length == 0) {
 			return 0;
 		}

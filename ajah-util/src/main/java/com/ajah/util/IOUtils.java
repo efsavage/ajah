@@ -21,12 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * 
  * I/O Utilities.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class IOUtils {
 
@@ -39,11 +37,11 @@ public class IOUtils {
 	 * @param closeable
 	 *            Closeable object, may be null.
 	 */
-	public static void safeClose(AutoCloseable closeable) {
+	public static void safeClose(final AutoCloseable closeable) {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 		}

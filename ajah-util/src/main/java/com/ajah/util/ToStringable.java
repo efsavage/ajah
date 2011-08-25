@@ -16,13 +16,11 @@
 package com.ajah.util;
 
 /**
- * 
  * This marker interface means that the object's toString() value is equivalent
  * to it's meaningful value. Most likely used on type-safe String wrappers.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public interface ToStringable {
 	// Empty

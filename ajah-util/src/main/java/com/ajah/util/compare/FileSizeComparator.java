@@ -23,7 +23,6 @@ import java.util.Comparator;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class FileSizeComparator implements Comparator<File> {
 
@@ -45,8 +44,8 @@ public class FileSizeComparator implements Comparator<File> {
 	 *             along to a comparator even though they are "equal".
 	 */
 	@Override
-	public int compare(File first, File second) {
-		int retVal = CompareUtils.compareNulls(first, second);
+	public int compare(final File first, final File second) {
+		final int retVal = CompareUtils.compareNulls(first, second);
 		if (retVal != 0) {
 			return retVal;
 		}

@@ -24,7 +24,6 @@ import java.math.BigInteger;
  * 
  * @author <a href("http://efsavage.com">Eric F. Savage</a>, <a
  *         href("mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public enum LargeDataSizeUnit {
 
@@ -175,7 +174,7 @@ public enum LargeDataSizeUnit {
 
 	private final String name;
 
-	private LargeDataSizeUnit(BigInteger bits, String name, String abbreviation) {
+	private LargeDataSizeUnit(final BigInteger bits, final String name, final String abbreviation) {
 		this.bits = bits;
 		this.bytes = bits.divide(BigInteger.valueOf(8));
 		if (this.bits.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) <= 0) {
@@ -213,10 +212,9 @@ public enum LargeDataSizeUnit {
 	private final String abbreviation;
 
 	/**
-	 * Return the number of bits for this unit.
-	 * 
-	 * Note that due to long being a 64-bit number, this will throw an
-	 * UnsupportedOperationException for very large units.
+	 * Return the number of bits for this unit. Note that due to long being a
+	 * 64-bit number, this will throw an UnsupportedOperationException for very
+	 * large units.
 	 * 
 	 * @return The number of bits for this unit.
 	 * @throws UnsupportedOperationException
@@ -229,10 +227,9 @@ public enum LargeDataSizeUnit {
 	}
 
 	/**
-	 * Return the number of bytes for this unit.
-	 * 
-	 * Note that due to long being a 64-bit number, this will throw an illegal
-	 * argument exception for very large units.
+	 * Return the number of bytes for this unit. Note that due to long being a
+	 * 64-bit number, this will throw an illegal argument exception for very
+	 * large units.
 	 * 
 	 * @return The number of bytes for this unit.
 	 * @throws IllegalArgumentException

@@ -28,7 +28,6 @@ import com.ajah.util.ToStringable;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class IntrospectionUtils {
 
@@ -39,7 +38,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type is a String
 	 */
-	public static boolean isString(Field field) {
+	public static boolean isString(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return String.class.isAssignableFrom(field.getType());
 	}
@@ -51,7 +50,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type is a Date
 	 */
-	public static boolean isDate(Field field) {
+	public static boolean isDate(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return Date.class.isAssignableFrom(field.getType());
 	}
@@ -63,7 +62,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type implements ToStringable
 	 */
-	public static boolean isToStringable(Field field) {
+	public static boolean isToStringable(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return ToStringable.class.isAssignableFrom(field.getType());
 	}
@@ -75,23 +74,21 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type implements Identifiable
 	 */
-	public static boolean isIdentifiable(Field field) {
+	public static boolean isIdentifiable(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return Identifiable.class.isAssignableFrom(field.getType());
 	}
 
 	/**
-	 * Checks to see if the field's type is an {@link Enum}.
-	 * 
-	 * Note: There is an easier method that does this already,
-	 * {@link Class#isEnum()}, this method is just included here for
-	 * consistency.
+	 * Checks to see if the field's type is an {@link Enum}. Note: There is an
+	 * easier method that does this already, {@link Class#isEnum()}, this method
+	 * is just included here for consistency.
 	 * 
 	 * @param field
 	 *            The field to check the type of, required.
 	 * @return true if the field's type is an Enum
 	 */
-	public static boolean isEnum(Field field) {
+	public static boolean isEnum(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return field.getType().isEnum();
 	}
@@ -103,7 +100,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type implements FromStringable
 	 */
-	public static boolean isFromStringable(Field field) {
+	public static boolean isFromStringable(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return FromStringable.class.isAssignableFrom(field.getType());
 	}
@@ -115,7 +112,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type is an int
 	 */
-	public static boolean isInt(Field field) {
+	public static boolean isInt(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return int.class.isAssignableFrom(field.getType());
 	}
@@ -127,7 +124,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type is a long
 	 */
-	public static boolean isLong(Field field) {
+	public static boolean isLong(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return long.class.isAssignableFrom(field.getType());
 	}
@@ -140,7 +137,7 @@ public class IntrospectionUtils {
 	 *            The field to check the type of, required.
 	 * @return true if the field's type implements Identifiable and is an Enum
 	 */
-	public static boolean isIdentifiableEnum(Field field) {
+	public static boolean isIdentifiableEnum(final Field field) {
 		return isIdentifiable(field) && isEnum(field);
 	}
 

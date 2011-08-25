@@ -20,18 +20,14 @@ package com.ajah.util;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class MathUtils {
 
 	/**
 	 * Reduces a value by a percentage, with a minimum change. Examples:
-	 * 
-	 * Reducing 100 by 5% with a minimum of 1 would yield 95.
-	 * 
-	 * Reducing 100 by 7% with a minimum of 10 would yield 90.
-	 * 
-	 * Reducing 1 by 10% with a minimum of 2 would yield -2.
+	 * Reducing 100 by 5% with a minimum of 1 would yield 95. Reducing 100 by 7%
+	 * with a minimum of 10 would yield 90. Reducing 1 by 10% with a minimum of
+	 * 2 would yield -2.
 	 * 
 	 * @param value
 	 * @param percentageChange
@@ -39,8 +35,8 @@ public class MathUtils {
 	 * @return The lesser of the value minus the value * percentage, or the
 	 *         value minus the minChange.
 	 */
-	public static int reduce(int value, double percentageChange, int minChange) {
-		int reduction = (int) (value * percentageChange);
+	public static int reduce(final int value, final double percentageChange, final int minChange) {
+		final int reduction = (int) (value * percentageChange);
 		if (reduction > minChange) {
 			return value - minChange;
 		}
@@ -52,14 +48,14 @@ public class MathUtils {
 	 * zero.
 	 * 
 	 * @param dividend
-	 *            The dividen.
+	 *            The dividend.
 	 * @param divisor
 	 *            The divisor.
 	 * @param defaultDivisor
 	 *            The defaultDivisor, if the divisor is zero.
 	 * @return divident/divisor or divident/defaultDivisor
 	 */
-	public static long divideZero(long dividend, long divisor, long defaultDivisor) {
+	public static long divideZero(final long dividend, final long divisor, final long defaultDivisor) {
 		if (divisor == 0) {
 			return dividend / defaultDivisor;
 		}
@@ -71,13 +67,21 @@ public class MathUtils {
 	 * will be as long as the longer of the two parameters.
 	 * 
 	 * @param array1
+	 *            The first array to add
 	 * @param array2
-	 * @return
+	 *            The second array to add
+	 * @param strict
+	 *            If true, will throw an {@link IllegalArgumentException} if the
+	 *            arrays are a different length.
+	 * @return The aggregate array,
 	 */
-	public static long[] add(long[] array1, long[] array2) {
+	public static long[] add(final long[] array1, final long[] array2, boolean strict) {
 		AjahUtils.requireParam(array1, "array1");
 		AjahUtils.requireParam(array2, "array2");
-		long[] result = new long[array1.length > array2.length ? array1.length : array2.length];
+		if (strict && array1.length != array2.length) {
+			throw new IllegalArgumentException("Strict mode enabled: the two arrays must be of the same length");
+		}
+		final long[] result = new long[array1.length > array2.length ? array1.length : array2.length];
 		for (int i = 0; i < result.length; i++) {
 			if (array1.length < i) {
 				if (array2.length < i) {

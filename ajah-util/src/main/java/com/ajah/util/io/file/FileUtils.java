@@ -38,7 +38,6 @@ import com.ajah.util.IOUtils;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class FileUtils {
 
@@ -47,9 +46,8 @@ public class FileUtils {
 	/**
 	 * Reads a file and returns the lines of it as a list of strings. Handles
 	 * opening a closing the file. If there are any errors other than that the
-	 * file does not exist, will return an empty or partial list.
-	 * 
-	 * Will ignore any line that starts with "#".
+	 * file does not exist, will return an empty or partial list. Will ignore
+	 * any line that starts with "#".
 	 * 
 	 * @param fileName
 	 *            The name of the file to load, required.
@@ -71,7 +69,7 @@ public class FileUtils {
 			in = new BufferedReader(new FileReader(file));
 			while (in.ready()) {
 				final String line = in.readLine();
-				if (!line.startsWith("#") && line.length() > 0) {
+				if (line != null && !line.startsWith("#") && line.length() > 0) {
 					data.add(line);
 				}
 			}
@@ -109,7 +107,7 @@ public class FileUtils {
 		return readFile(file);
 	}
 
-	public static String readFile(File file) throws FileNotFoundException {
+	public static String readFile(final File file) throws FileNotFoundException {
 		AjahUtils.requireParam(file, "file");
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.getAbsolutePath());
@@ -137,7 +135,7 @@ public class FileUtils {
 		return data.toString();
 	}
 
-	public static long copyFile(File file, File newFile) {
+	public static long copyFile(final File file, final File newFile) {
 		InputStream in = null;
 		OutputStream out = null;
 		long bytes = 0;
@@ -146,7 +144,7 @@ public class FileUtils {
 			out = new FileOutputStream(newFile);
 			int read;
 			do {
-				byte[] block = new byte[1024];
+				final byte[] block = new byte[1024];
 				read = in.read(block);
 				if (read < 0) {
 					break;
@@ -156,7 +154,7 @@ public class FileUtils {
 			} while (read >= 0);
 			log.fine("Copied " + bytes + " bytes");
 			return bytes;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			if (e.getMessage().endsWith("(Access is denied)")) {
 				// log.info(e.getMessage());
 			} else if (e.getMessage().equals("The process cannot access the file because another process has locked a portion of the file")) {
@@ -172,12 +170,12 @@ public class FileUtils {
 		}
 	}
 
-	public static int write(File file, List<String> lines) throws IOException {
+	public static int write(final File file, final List<String> lines) throws IOException {
 		BufferedOutputStream out = null;
 		try {
 			file.getParentFile().mkdirs();
 			out = new BufferedOutputStream(new FileOutputStream(file));
-			for (String line : lines) {
+			for (final String line : lines) {
 				out.write(line.getBytes());
 				out.write('\n');
 			}
@@ -188,7 +186,7 @@ public class FileUtils {
 		}
 	}
 
-	public static int write(File file, String string) throws IOException {
+	public static int write(final File file, final String string) throws IOException {
 		BufferedOutputStream out = null;
 		try {
 			file.getParentFile().mkdirs();
@@ -201,13 +199,13 @@ public class FileUtils {
 		}
 	}
 
-	public static Long readFileAsLong(File file, Long defaultValue) {
+	public static Long readFileAsLong(final File file, final Long defaultValue) {
 		try {
 			return Long.valueOf(readFile(file));
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
 		}

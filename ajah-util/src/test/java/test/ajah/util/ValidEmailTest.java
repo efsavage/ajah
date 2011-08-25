@@ -25,7 +25,6 @@ import com.ajah.util.Validate;
  * 
  * @see Validate#isEmail(String)
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class ValidEmailTest {
 
@@ -60,6 +59,7 @@ public class ValidEmailTest {
 	public void shortTLD() {
 		Assert.assertFalse(Validate.isEmail("user@domain.c"));
 	}
+
 	/**
 	 * Long TLD.
 	 */

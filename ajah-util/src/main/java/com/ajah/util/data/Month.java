@@ -21,7 +21,6 @@ package com.ajah.util.data;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public enum Month {
 	/**
@@ -80,8 +79,8 @@ public enum Month {
 	 *            ID/ordinal value of the month.
 	 * @return Month if found, otherwise null.
 	 */
-	public static Month get(int id) {
-		for (Month month : values()) {
+	public static Month get(final int id) {
+		for (final Month month : values()) {
 			if (month.id == id) {
 				return month;
 			}
@@ -95,7 +94,7 @@ public enum Month {
 
 	private final String shortName;
 
-	private Month(int id, String name, String shortName) {
+	private Month(final int id, final String name, final String shortName) {
 		this.id = id;
 		this.name = name;
 		this.shortName = shortName;

@@ -37,7 +37,6 @@ import java.util.Collection;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class CollectionUtils {
 
@@ -48,7 +47,7 @@ public class CollectionUtils {
 	 *            Collection to test, may be null.
 	 * @return true if the collection is null or empty, otherwise false.
 	 */
-	public static boolean isEmpty(Collection<?> collection) {
+	public static boolean isEmpty(final Collection<?> collection) {
 		return collection == null || collection.size() < 1;
 	}
 

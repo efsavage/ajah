@@ -22,7 +22,6 @@ import java.util.Random;
  * Utilities for creating random data.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class RandomUtils {
 
@@ -38,7 +37,7 @@ public class RandomUtils {
 	 *            The highest allowable number.
 	 * @return Random number between from and to.
 	 */
-	public static long getRandomNumber(long from, long to) {
+	public static long getRandomNumber(final long from, final long to) {
 		return from + (long) (random.nextDouble() * (to - from));
 	}
 
@@ -52,7 +51,7 @@ public class RandomUtils {
 	 *            The highest allowable number.
 	 * @return Random number between from and to.
 	 */
-	public static int getRandomNumber(int from, int to) {
+	public static int getRandomNumber(final int from, final int to) {
 		return from + (int) (random.nextDouble() * (to - from));
 	}
 
@@ -66,7 +65,7 @@ public class RandomUtils {
 	 * @return A random element from the list, or null if the list is null or
 	 *         empty.
 	 */
-	public static <T> T getRandomElement(List<T> list) {
+	public static <T> T getRandomElement(final List<T> list) {
 		if (CollectionUtils.isEmpty(list)) {
 			return null;
 		}

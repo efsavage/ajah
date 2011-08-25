@@ -23,7 +23,7 @@ import com.ajah.util.Validate;
 /**
  * Wrapper class for valid email addresses.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author Eric F. Savage, code@efsavage.com
  * 
  */
 public class EmailAddress implements Serializable {
@@ -33,8 +33,8 @@ public class EmailAddress implements Serializable {
 	private final String address;
 
 	/**
-	 * Contructs with an email, calls {@link Validate#isEmail(String)} to validate,
-	 * throwing {@link IllegalArgumentException} on failure.
+	 * Contructs with an email, calls {@link Validate#isEmail(String)} to
+	 * validate, throwing {@link IllegalArgumentException} on failure.
 	 * 
 	 * @see Validate#isEmail(String)
 	 * @param address
@@ -42,7 +42,7 @@ public class EmailAddress implements Serializable {
 	 * @throws IllegalArgumentException
 	 *             for an invalid or null email
 	 */
-	public EmailAddress(String address) {
+	public EmailAddress(final String address) {
 		AjahUtils.requireParam(address, "address");
 		if (!Validate.isEmail(address)) {
 			throw new IllegalArgumentException("Invalid email address format: " + address);

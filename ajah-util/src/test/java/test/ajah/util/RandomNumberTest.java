@@ -24,7 +24,6 @@ import com.ajah.util.RandomUtils;
  * Tests {@link RandomUtils#getRandomNumber(long, long)}
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class RandomNumberTest {
 
@@ -33,10 +32,10 @@ public class RandomNumberTest {
 	 */
 	@Test
 	public void testAThousand() {
-		long lower = 1000000;
-		long upper = 10000000;
+		final long lower = 1000000;
+		final long upper = 10000000;
 		for (int attempts = 0; attempts < 1000; attempts++) {
-			long random = RandomUtils.getRandomNumber(lower, upper);
+			final long random = RandomUtils.getRandomNumber(lower, upper);
 			Assert.assertTrue(random >= lower);
 			Assert.assertTrue(random <= upper);
 		}

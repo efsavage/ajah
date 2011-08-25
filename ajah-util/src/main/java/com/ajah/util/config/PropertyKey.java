@@ -20,7 +20,6 @@ package com.ajah.util.config;
  * can be referenced more succinctly.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public interface PropertyKey {
 

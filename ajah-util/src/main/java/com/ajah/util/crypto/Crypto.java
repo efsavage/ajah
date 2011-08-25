@@ -22,6 +22,7 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -39,9 +40,10 @@ import com.ajah.util.config.Config;
  * Crypto/hash utilities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class Crypto {
+
+	private static final Logger log = Logger.getLogger(Crypto.class.getName());
 
 	/**
 	 * Returns HmacSHA1 of input.
@@ -50,20 +52,20 @@ public class Crypto {
 	 *            String to process.
 	 * @return Digest of hash.
 	 */
-	public static byte[] getHmacSha1(byte[] secret) {
+	public static byte[] getHmacSha1(final byte[] secret) {
 		try {
-			String keyString = Config.i.get("crypto.key.hmacsha1", null);
+			final String keyString = Config.i.get("crypto.key.hmacsha1", null);
 			if (StringUtils.isBlank(keyString)) {
 				throw new IllegalArgumentException("crypto.key.hmacsha1 not defined");
 			}
-			SecretKey key = new SecretKeySpec(keyString.getBytes(), "HmacSHA1");
-			Mac m = Mac.getInstance("HmacSHA1");
+			final SecretKey key = new SecretKeySpec(keyString.getBytes(), "HmacSHA1");
+			final Mac m = Mac.getInstance("HmacSHA1");
 			m.init(key);
 			m.update(secret);
 			return m.doFinal();
-		} catch (NoSuchAlgorithmException e) {
+		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (InvalidKeyException e) {
+		} catch (final InvalidKeyException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
@@ -75,7 +77,7 @@ public class Crypto {
 	 *            String to process.
 	 * @return Digest of hash.
 	 */
-	public static String getHmacSha1Hex(String secret) {
+	public static String getHmacSha1Hex(final String secret) {
 		AjahUtils.requireParam(secret, "secret");
 		return new BigInteger(getHmacSha1(secret.getBytes())).toString(16);
 	}
@@ -90,23 +92,23 @@ public class Crypto {
 	 * @throws UnsupportedOperationException
 	 *             If there is a cryptographic error.
 	 */
-	public static String toAES(String secret) {
-		String keyString = Config.i.get("crypto.key.aes", null);
-		SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
+	public static String toAES(final String secret) {
+		final String keyString = Config.i.get("crypto.key.aes", null);
+		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
-			Cipher cipher = Cipher.getInstance("AES");
+			final Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-			byte[] encrypted = cipher.doFinal(secret.getBytes());
+			final byte[] encrypted = cipher.doFinal(secret.getBytes());
 			return new BigInteger(encrypted).toString(16);
-		} catch (InvalidKeyException e) {
+		} catch (final InvalidKeyException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (IllegalBlockSizeException e) {
+		} catch (final IllegalBlockSizeException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (BadPaddingException e) {
+		} catch (final BadPaddingException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (NoSuchPaddingException e) {
+		} catch (final NoSuchPaddingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 
@@ -122,23 +124,23 @@ public class Crypto {
 	 * @throws UnsupportedOperationException
 	 *             If there is a cryptographic error.
 	 */
-	public static String fromAES(String encrypted) {
-		String keyString = Config.i.get("crypto.key.aes", null);
-		SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
+	public static String fromAES(final String encrypted) {
+		final String keyString = Config.i.get("crypto.key.aes", null);
+		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
-			Cipher cipher = Cipher.getInstance("AES");
+			final Cipher cipher = Cipher.getInstance("AES");
 
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 			return new String(cipher.doFinal(new BigInteger(encrypted, 16).toByteArray()));
-		} catch (InvalidKeyException e) {
+		} catch (final InvalidKeyException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (IllegalBlockSizeException e) {
+		} catch (final IllegalBlockSizeException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (BadPaddingException e) {
+		} catch (final BadPaddingException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
-		} catch (NoSuchPaddingException e) {
+		} catch (final NoSuchPaddingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
@@ -150,7 +152,7 @@ public class Crypto {
 	 *            No args, program is interactive.
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		if (args.length < 1) {
 			return;
 		}
@@ -160,35 +162,34 @@ public class Crypto {
 		} else if ("keygen".equals(args[0])) {
 			keyGen();
 		} else if ("to-aes".equals(args[0])) {
-			String secret = "turtle";
-			String encrypted = toAES(secret);
+			final String secret = "turtle";
+			final String encrypted = toAES(secret);
 			System.out.println(encrypted);
-			String decrypted = fromAES(encrypted);
+			final String decrypted = fromAES(encrypted);
 			System.out.println(decrypted);
 		}
 	}
 
 	private static void keyGen() {
-		SecureRandom sr = new SecureRandom();
-		byte[] keyBytes = new byte[128];
+		final SecureRandom sr = new SecureRandom();
+		final byte[] keyBytes = new byte[128];
 		sr.nextBytes(keyBytes);
-		System.out.println(new BigInteger(keyBytes).toString(16));
 
-		Scanner scanner = new Scanner(System.in);
+		final Scanner scanner = new Scanner(System.in);
 		System.out.print("Algorithm: [HmacSHA1] ");
-		String algorithm = scanner.nextLine();
+		final String algorithm = scanner.nextLine();
 		if (StringUtils.isBlank(algorithm) || algorithm.equals("HmacSHA1")) {
 			System.out.print("Secret: ");
-			String secret = scanner.nextLine();
+			final String secret = scanner.nextLine();
 			System.out.print(getHmacSha1Hex(secret));
 		}
 	}
 
 	private static void listProviders() {
-		System.out.println("Supported providers:");
-		for (Provider provider : Security.getProviders()) {
+		log.info("Supported providers:");
+		for (final Provider provider : Security.getProviders()) {
 			System.out.println("\t" + provider);
-			for (Provider.Service service : provider.getServices()) {
+			for (final Provider.Service service : provider.getServices()) {
 				System.out.println("\t\t" + service.getAlgorithm());
 			}
 		}

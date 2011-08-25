@@ -30,7 +30,6 @@ import com.ajah.util.date.DateUtils;
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class ReflectionUtils {
 
@@ -45,20 +44,20 @@ public class ReflectionUtils {
 	 * @return The value of the objects read method for the property specified
 	 *         (which may be null), or null if an error occurs.
 	 */
-	public static Object propGetSafe(Object instance, PropertyDescriptor propertyDescriptor) {
+	public static Object propGetSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
 		AjahUtils.requireParam(instance, "instance");
 		AjahUtils.requireParam(propertyDescriptor, "propertyDescriptor");
 		try {
-			Method getter = propertyDescriptor.getReadMethod();
+			final Method getter = propertyDescriptor.getReadMethod();
 			if (getter != null) {
 				return getter.invoke(instance);
 			}
 			log.log(Level.SEVERE, "No read method found for " + propertyDescriptor.getName() + " on class " + instance.getClass().getName());
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
 		}
 		return null;
@@ -76,8 +75,8 @@ public class ReflectionUtils {
 	 * @return The value of the objects read method for the property specified
 	 *         (which may be null), or null if an error occurs.
 	 */
-	public static Date propGetDateSafe(Object instance, PropertyDescriptor propertyDescriptor) {
-		Object value = ReflectionUtils.propGetSafe(instance, propertyDescriptor);
+	public static Date propGetDateSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
+		final Object value = ReflectionUtils.propGetSafe(instance, propertyDescriptor);
 		if (value == null || !(value instanceof Date)) {
 			return null;
 		}
@@ -94,15 +93,15 @@ public class ReflectionUtils {
 	 *            The value of the field.
 	 * @return The value, null if the field value is null, also null on error.
 	 */
-	public static Object findEnumById(Field field, Object value) {
+	public static Object findEnumById(final Field field, final Object value) {
 		if (!IntrospectionUtils.isIdentifiableEnum(field)) {
 			throw new IllegalArgumentException("Field " + field.getName() + " is not an Identifiable enum");
 		}
 		if (value == null) {
 			return null;
 		}
-		Object[] elements = field.getType().getEnumConstants();
-		for (Object element : elements) {
+		final Object[] elements = field.getType().getEnumConstants();
+		for (final Object element : elements) {
 			if (((Identifiable<?>) element).getId().equals(value)) {
 				return element;
 			}
@@ -110,7 +109,7 @@ public class ReflectionUtils {
 		return null;
 	}
 
-	public static Object propGetSafeAuto(Object object, Field field, PropertyDescriptor propertyDescriptor) {
+	public static Object propGetSafeAuto(final Object object, final Field field, final PropertyDescriptor propertyDescriptor) {
 		if (IntrospectionUtils.isString(field)) {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isDate(field)) {

@@ -16,7 +16,6 @@
 package com.ajah.util;
 
 /**
- * 
  * This marker interface means that the object's has a getId() method, useful
  * for persitence mechanisms.
  * 
@@ -24,7 +23,6 @@ package com.ajah.util;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
  *            ID type.
- * 
  */
 public interface Identifiable<K> {
 
@@ -33,7 +31,7 @@ public interface Identifiable<K> {
 	 * 
 	 * @return The unique Identifier for the entity.
 	 */
-	public K getId();
+	K getId();
 
 	/**
 	 * This is a placeholder for now, until I figure out how to use java
@@ -43,6 +41,6 @@ public interface Identifiable<K> {
 	 * @param id
 	 *            The ID to set.
 	 */
-	public void setId(K id);
+	void setId(K id);
 
 }

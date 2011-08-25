@@ -26,7 +26,6 @@ import com.ajah.util.date.DateUtils;
  * 
  * @see Validate#isEmail(String)
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class DateUtilsTest {
 

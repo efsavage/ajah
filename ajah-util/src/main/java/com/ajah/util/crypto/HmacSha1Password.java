@@ -18,12 +18,10 @@ package com.ajah.util.crypto;
 import com.sun.crypto.provider.HmacSHA1;
 
 /**
- * {@link HmacSHA1} implementation of {@link Password}.
- * 
- * Note: Does not store the raw password.
+ * {@link HmacSHA1} implementation of {@link Password}. Note: Does not store the
+ * raw password.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 @SuppressWarnings("restriction")
 public class HmacSha1Password implements Password {
@@ -39,7 +37,7 @@ public class HmacSha1Password implements Password {
 	 * @param hashed
 	 *            true if the value is hashed (will not be re-hashed)
 	 */
-	public HmacSha1Password(String value, boolean hashed) {
+	public HmacSha1Password(final String value, final boolean hashed) {
 		if (hashed) {
 			this.hash = value;
 		} else {

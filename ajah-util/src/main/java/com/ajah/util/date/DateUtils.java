@@ -24,7 +24,6 @@ import com.ajah.util.AjahUtils;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class DateUtils {
 
@@ -36,7 +35,7 @@ public class DateUtils {
 	 *            Date to convert to UTC.
 	 * @return The date in UTC milliseconds, or zero if date is null.
 	 */
-	public static Long safeToLong(Date date) {
+	public static Long safeToLong(final Date date) {
 		if (date == null) {
 			return Long.valueOf(0);
 		}
@@ -47,7 +46,6 @@ public class DateUtils {
 	 * Formats a date, relative to the current time, in a "nice" format, such as
 	 * "3 minutes ago" or "in two years". Note that this method uses integer
 	 * division without fractions so it will appear to round down aggressively.
-	 * 
 	 * If the largestUnit parameter is used, no units representing longer
 	 * periods of time will be used. For example, if the interval is 30 months,
 	 * and largestUnit is {@link CalendarUnit#YEAR}, "2 years" will be returned.
@@ -60,9 +58,9 @@ public class DateUtils {
 	 *            The largest unit to use as the format unit.
 	 * @return The formatted date.
 	 */
-	public static String niceFormat(Date date, CalendarUnit largestUnit) {
+	public static String niceFormat(final Date date, final CalendarUnit largestUnit) {
 		AjahUtils.requireParam(date, "date");
-		long interval = System.currentTimeMillis() - date.getTime();
+		final long interval = System.currentTimeMillis() - date.getTime();
 		if (interval > 0) {
 			if (interval < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 				return interval / CalendarUnit.SECOND.getMillis() + " seconds ago";
@@ -105,7 +103,7 @@ public class DateUtils {
 	 *            Date for format, required.
 	 * @return The formatted date.
 	 */
-	public static String niceFormat(Date date) {
+	public static String niceFormat(final Date date) {
 		return niceFormat(date, null);
 	}
 
@@ -117,19 +115,18 @@ public class DateUtils {
 	 *            Interval for format, required.
 	 * @return The formatted date.
 	 */
-	public static String formatInterval(long intervalInMillis) {
+	public static String formatInterval(final long intervalInMillis) {
 		return formatInterval(intervalInMillis, CalendarUnit.YEAR);
 	}
 
 	/**
 	 * Formats an interval in a "nice" format, such as "3 minutes" or
 	 * "two years". Note that this method uses integer division without
-	 * fractions so it will appear to round down aggressively.
-	 * 
-	 * If the largestUnit parameter is used, no units representing longer
-	 * periods of time will be used. For example, if the interval is 30 months,
-	 * and largestUnit is {@link CalendarUnit#YEAR}, "2 years" will be returned.
-	 * If the largestUnit is {@link CalendarUnit#MONTH}, "30 months" will be
+	 * fractions so it will appear to round down aggressively. If the
+	 * largestUnit parameter is used, no units representing longer periods of
+	 * time will be used. For example, if the interval is 30 months, and
+	 * largestUnit is {@link CalendarUnit#YEAR}, "2 years" will be returned. If
+	 * the largestUnit is {@link CalendarUnit#MONTH}, "30 months" will be
 	 * returned.
 	 * 
 	 * @param intervalInMillis
@@ -138,7 +135,7 @@ public class DateUtils {
 	 *            The largest unit to use as the format unit.
 	 * @return The formatted date.
 	 */
-	public static String formatInterval(long intervalInMillis, CalendarUnit largestUnit) {
+	public static String formatInterval(final long intervalInMillis, final CalendarUnit largestUnit) {
 		if (intervalInMillis < CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 			return intervalInMillis + " milliseconds";
 		} else if (intervalInMillis < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {

@@ -16,20 +16,14 @@
 package com.ajah.util;
 
 /**
- * 
  * This marker interface means that the object's has a constructor that takes
  * one String. We can't actually enforce that in Java, so we're doing it by
- * convention.
- * 
- * <strong>Anything referencing entities as {@link FromStringable} should
- * include very clear error messages.</strong>
- * 
- * Most likely used on type-safe String wrappers. Complements
- * {@link ToStringable}.
+ * convention. <strong>Anything referencing entities as {@link FromStringable}
+ * should include very clear error messages.</strong> Most likely used on
+ * type-safe String wrappers. Complements {@link ToStringable}.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public interface FromStringable {
 	// Empty

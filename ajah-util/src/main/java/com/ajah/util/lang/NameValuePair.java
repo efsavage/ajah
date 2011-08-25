@@ -25,7 +25,6 @@ import java.util.Map;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <T>
  *            The type of the value.
- * 
  */
 public class NameValuePair<T> {
 

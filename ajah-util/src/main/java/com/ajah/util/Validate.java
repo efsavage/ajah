@@ -19,7 +19,6 @@ package com.ajah.util;
  * Contains validator methods for simple cases.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class Validate {
 
@@ -30,8 +29,8 @@ public class Validate {
 	 * @param email
 	 * @return true if email is valid
 	 */
-	public static boolean isEmail(String email) {
-		return StringUtils.safeLength(email)>5 && email.matches("[A-Za-z0-9._%+-]+@([a-zA-Z0-9]+\\.)+[a-zA-Z]{2,4}");
+	public static boolean isEmail(final String email) {
+		return StringUtils.safeLength(email) > 5 && email.matches("[A-Za-z0-9._%+-]+@([a-zA-Z0-9]+\\.)+[a-zA-Z]{2,4}");
 	}
 
 }

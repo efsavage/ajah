@@ -16,12 +16,10 @@
 package com.ajah.util.compare;
 
 /**
- * 
  * Utility methods for comparisons.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class CompareUtils {
 
@@ -34,7 +32,7 @@ public class CompareUtils {
 	 *            Second value.
 	 * @return -1 if first < second, 1 if first > second, 0 if equal.
 	 */
-	public static int compare(long first, long second) {
+	public static int compare(final long first, final long second) {
 		if (first < second) {
 			return -1;
 		} else if (first > second) {
@@ -56,7 +54,7 @@ public class CompareUtils {
 	 *             If Both values are null, as this means it cannot be passed
 	 *             along to a comparator even though they are "equal".
 	 */
-	public static int compareNulls(Object first, Object second) {
+	public static int compareNulls(final Object first, final Object second) {
 		if (first == null) {
 			if (second == null) {
 				throw new IllegalArgumentException("Both values are null");
@@ -78,7 +76,7 @@ public class CompareUtils {
 	 *            Second value.
 	 * @return -1 if first < second, 1 if first > second, 0 if equal.
 	 */
-	public static int compare(double first, double second) {
+	public static int compare(final double first, final double second) {
 		if (first < second) {
 			return -1;
 		} else if (first > second) {
@@ -87,16 +85,14 @@ public class CompareUtils {
 		return 0;
 	}
 
-	public static int compare(String first, String second) {
+	public static int compare(final String first, final String second) {
 		if (first == null) {
 			if (second == null) {
 				throw new IllegalArgumentException("Both values are null");
 			}
-			System.err.println("Null!");
 			return -1;
 		}
 		if (second == null) {
-			System.err.println("Null!");
 			return 1;
 		}
 		return first.compareTo(second);

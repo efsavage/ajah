@@ -30,7 +30,6 @@ import com.ajah.util.data.format.EmailAddress;
  * singleton pattern.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public enum Config {
 
@@ -41,16 +40,16 @@ public enum Config {
 
 	private static final Logger log = Logger.getLogger(Config.class.getName());
 
-	private Properties properties = new Properties();
+	private final Properties properties = new Properties();
 
 	private Config() {
-		String config = StringUtils.isBlank(System.getProperty("config")) ? "/ajah.properties" : System.getProperty("config");
-		InputStream stream = getClass().getResourceAsStream(config);
+		final String config = StringUtils.isBlank(System.getProperty("config")) ? "/ajah.properties" : System.getProperty("config");
+		final InputStream stream = getClass().getResourceAsStream(config);
 		if (stream != null) {
 			try {
 				this.properties.load(stream);
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Loaded properties from " + config);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, e.getMessage(), e);
 			}
 		} else {
@@ -67,8 +66,8 @@ public enum Config {
 	 *            The value to return if no value is found.
 	 * @return Returns the value for the specified key, or defaultValue
 	 */
-	public String get(String key, String defaultValue) {
-		String retVal = (String) this.properties.get(key);
+	public String get(final String key, final String defaultValue) {
+		final String retVal = (String) this.properties.get(key);
 		if (StringUtils.isBlank(retVal)) {
 			return defaultValue;
 		}
@@ -84,7 +83,7 @@ public enum Config {
 	 *            The key of the property sought.
 	 * @return Returns the value for the specified key, or defaultValue
 	 */
-	public String get(PropertyKey key) {
+	public String get(final PropertyKey key) {
 		if (key.getFallback() != null) {
 			return get(key.getName(), get(key.getFallback()));
 		}
@@ -92,16 +91,15 @@ public enum Config {
 	}
 
 	/**
-	 * Sets the value for the specified key in the local map.
-	 * 
-	 * <strong>These changes will not be persisted!</strong>
+	 * Sets the value for the specified key in the local map. <strong>These
+	 * changes will not be persisted!</strong>
 	 * 
 	 * @param key
 	 *            The key of the property to set.
 	 * @param value
 	 *            The value of the property to set.
 	 */
-	public void set(String key, String value) {
+	public void set(final String key, final String value) {
 		log.fine("Property " + key + " set to " + value);
 		this.properties.put(key, value);
 	}
@@ -116,7 +114,7 @@ public enum Config {
 	 * @throws IllegalArgumentException
 	 *             If the value is not a valid address.
 	 */
-	public EmailAddress getEmailAddress(PropertyKey key) {
+	public EmailAddress getEmailAddress(final PropertyKey key) {
 		return new EmailAddress(get(key.getName(), key.getDefaultValue()));
 	}
 
@@ -129,7 +127,7 @@ public enum Config {
 	 *            The value to return if the property is not found.
 	 * @return Returns true if the value is "true", case-insensitive.
 	 */
-	public boolean getBoolean(String key, boolean defaultValue) {
+	public boolean getBoolean(final String key, final boolean defaultValue) {
 		return "true".equalsIgnoreCase(get(key, String.valueOf(defaultValue)));
 	}
 
@@ -140,7 +138,7 @@ public enum Config {
 	 *            The property to return
 	 * @return Returns true if the value is "true", case-insensitive.
 	 */
-	public boolean getBoolean(PropertyKey key) {
+	public boolean getBoolean(final PropertyKey key) {
 		return "true".equalsIgnoreCase(get(key));
 	}
 

@@ -26,7 +26,6 @@ import com.ajah.util.Validate;
  * 
  * @see Validate#isEmail(String)
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class ArrayUtilsTest {
 
@@ -35,7 +34,7 @@ public class ArrayUtilsTest {
 	 */
 	@Test
 	public void goodGet() {
-		String[] array = new String[] { "foo", "bar" };
+		final String[] array = new String[] { "foo", "bar" };
 		Assert.assertTrue(ArrayUtils.get(array, 1).equals("bar"));
 	}
 
@@ -44,7 +43,7 @@ public class ArrayUtilsTest {
 	 */
 	@Test
 	public void badGet() {
-		String[] array = new String[] { "foo", "bar" };
+		final String[] array = new String[] { "foo", "bar" };
 		Assert.assertNull(ArrayUtils.get(array, 10));
 	}
 
@@ -53,7 +52,7 @@ public class ArrayUtilsTest {
 	 */
 	@Test
 	public void badGet2() {
-		String[] array = new String[] { "foo", "bar" };
+		final String[] array = new String[] { "foo", "bar" };
 		Assert.assertNull(ArrayUtils.get(array, -1));
 	}
 
@@ -70,7 +69,7 @@ public class ArrayUtilsTest {
 	 */
 	@Test
 	public void nullGet2() {
-		String[] array = new String[] { "foo", null };
+		final String[] array = new String[] { "foo", null };
 		Assert.assertNull(ArrayUtils.get(array, 1));
 	}
 
@@ -79,7 +78,7 @@ public class ArrayUtilsTest {
 	 */
 	@Test
 	public void nullGet3() {
-		String[] array = new String[] {};
+		final String[] array = new String[] {};
 		Assert.assertNull(ArrayUtils.get(array, 1));
 	}
 

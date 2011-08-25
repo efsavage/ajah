@@ -16,12 +16,10 @@
 package com.ajah.util.crypto;
 
 /**
- * {@link BCrypt} implementation of {@link Password}.
- * 
- * Note: Does not store the raw password.
+ * {@link BCrypt} implementation of {@link Password}. Note: Does not store the
+ * raw password.
  * 
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 public class BCryptPassword implements Password {
 
@@ -36,7 +34,7 @@ public class BCryptPassword implements Password {
 	 * @param hashed
 	 *            true if the value is hashed (will not be re-hashed)
 	 */
-	public BCryptPassword(String value, boolean hashed) {
+	public BCryptPassword(final String value, final boolean hashed) {
 		if (hashed) {
 			this.hash = value;
 		} else {
