@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util.io.file;
+package com.ajah.util.log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
 public class Report {
 
@@ -41,27 +40,27 @@ public class Report {
 	 */
 	public static final String HYPEN35 = "-----------------------------------";
 
-	private List<PrintWriter> writers = new ArrayList<>();
+	private final List<PrintWriter> writers = new ArrayList<>();
 
 	private Logger log;
 
-	public void println(String line) {
+	public void println(final String line) {
 		println(0, line);
 	}
 
-	public void print(String line) {
+	public void print(final String line) {
 		this.log.info(line);
-		for (PrintWriter out : this.writers) {
+		for (final PrintWriter out : this.writers) {
 			out.print(line);
 		}
 	}
 
-	public void println(int depth, String line) {
+	public void println(final int depth, final String line) {
 		if (this.writers.size() < 1) {
 			throw new IllegalArgumentException();
 		}
 		this.log.info(line);
-		for (PrintWriter out : this.writers) {
+		for (final PrintWriter out : this.writers) {
 			if (depth > 0) {
 				out.print(tabs(depth));
 			}
@@ -69,11 +68,11 @@ public class Report {
 		}
 	}
 
-	public void add(PrintWriter writer) {
+	public void add(final PrintWriter writer) {
 		this.writers.add(writer);
 	}
 
-	public void add(File file) throws FileNotFoundException {
+	public void add(final File file) throws FileNotFoundException {
 		this.writers.add(new PrintWriter(file));
 	}
 
@@ -81,22 +80,22 @@ public class Report {
 		println(EQUAL_40);
 	}
 
-	public static char[] tabs(int depth) {
-		char[] tabs = new char[depth];
+	public static char[] tabs(final int depth) {
+		final char[] tabs = new char[depth];
 		Arrays.fill(tabs, '\t');
 		return tabs;
 	}
 
-	public void add(OutputStream out) {
+	public void add(final OutputStream out) {
 		this.writers.add(new PrintWriter(out));
 	}
 
-	public void add(Logger _log) {
+	public void add(final Logger _log) {
 		this.log = _log;
 	}
 
 	public void close() {
-		for (PrintWriter out : this.writers) {
+		for (final PrintWriter out : this.writers) {
 			out.close();
 		}
 	}
