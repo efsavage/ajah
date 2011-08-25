@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ajah</groupId>
+	<artifactId>ajah-base</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Ajah Base Project</name>
+
+	<organization>
+		<name>Eric F. Savage</name>
+		<url>http://efsavage.com</url>
+	</organization>
+
+	<scm>
+		<connection>scm:git:git@github.com:efsavage/ajah.git</connection>
+		<url>scm:git:git@github.com:efsavage/ajah.git</url>
+		<developerConnection>scm:git:git@github.com:efsavage/ajah.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>efsavage</id>
+			<name>Eric F. Savage</name>
+			<email>code@efsavage.com</email>
+			<url>http://efsavage.com</url>
+			<organization>Eric F. Savage</organization>
+			<organizationUrl>http://efsavage.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>-5</timezone>
+			<properties>
+				<picUrl>https://secure.gravatar.com/avatar/68a1e80101a5197da8ac433444246014?s=100</picUrl>
+			</properties>
+		</developer>
+	</developers>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<configLocation>http://ajah.com/checkstyle.xml</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId> org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
