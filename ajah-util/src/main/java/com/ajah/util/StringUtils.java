@@ -129,6 +129,8 @@ public class StringUtils {
 	 * Calls {@link #join(String[], String)} with null for a delimiter. Array of
 	 * Strings, may be empty or null.
 	 * 
+	 * @param array
+	 *            The array to be joined, may be empty or null.
 	 * @return The joined array. If array was null or empty or contained only
 	 *         null or empty Strings, returns null.
 	 */

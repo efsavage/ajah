@@ -230,6 +230,8 @@ public enum DataSizeUnit {
 	 * 
 	 * @param bytes
 	 *            The number of bytes to format.
+	 * @param precision
+	 *            The number of decimal places to format the result to.
 	 * @return The formatted string for the number of bytes.
 	 */
 	public static String format(final long bytes, final int precision) {
