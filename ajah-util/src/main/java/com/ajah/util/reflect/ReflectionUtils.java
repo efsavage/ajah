@@ -109,6 +109,18 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * Returns the value of a property descriptor, or null if an error occurs.
+	 * 
+	 * @param object
+	 *            The object instance to invoke the property descriptor on
+	 * @param field
+	 *            The field of the class of the object that corresponds with the
+	 *            property descriptor.
+	 * @param propertyDescriptor
+	 *            The property descriptor to invoke on the object.
+	 * @return The value of a property descriptor, or null if an error occurs.
+	 */
 	public static Object propGetSafeAuto(final Object object, final Field field, final PropertyDescriptor propertyDescriptor) {
 		if (IntrospectionUtils.isString(field)) {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);

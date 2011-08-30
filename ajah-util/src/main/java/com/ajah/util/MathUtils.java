@@ -98,6 +98,16 @@ public class MathUtils {
 		return result;
 	}
 
+	/**
+	 * Adds one array to another.
+	 * 
+	 * @param to
+	 *            The array to add to. This array will be changed by this
+	 *            method.
+	 * @param from
+	 *            The array to add from. This array will not be changed by this
+	 *            method.
+	 */
 	public static void addTo(final long[] to, final long[] from) {
 		for (int i = 0; i < to.length; i++) {
 			to[i] = to[i] + from[i];
