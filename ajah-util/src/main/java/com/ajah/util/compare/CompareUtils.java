@@ -85,15 +85,22 @@ public class CompareUtils {
 		return 0;
 	}
 
+	/**
+	 * Compares two strings, checking for nulls first.
+	 * 
+	 * @param first
+	 *            The first string, may be null.
+	 * @param second
+	 *            The second string, may be null.
+	 * @return The comparison of the two Strings.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null, as this means it cannot be passed
+	 *             along to a comparator even though they are "equal".
+	 */
 	public static int compare(final String first, final String second) {
-		if (first == null) {
-			if (second == null) {
-				throw new IllegalArgumentException("Both values are null");
-			}
-			return -1;
-		}
-		if (second == null) {
-			return 1;
+		int retVal = compareNulls(first, second);
+		if (retVal != 0) {
+			return retVal;
 		}
 		return first.compareTo(second);
 	}
