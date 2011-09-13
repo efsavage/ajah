@@ -26,6 +26,7 @@ import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
@@ -138,7 +140,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 				} else if (IntrospectionUtils.isFromStringable(field)) {
 					propSet(entity, getProp(field, props), field.getType().getConstructor(String.class).newInstance(rs.getString(column)));
 				} else if (IntrospectionUtils.isIdentifiableEnum(field)) {
-					propSet(entity, getProp(field, props), ReflectionUtils.findEnumById(field, rs.getObject(column)));
+					propSet(entity, getProp(field, props), ReflectionUtils.findEnumById(field, rs.getString(column)));
 				} else if (IntrospectionUtils.isInt(field)) {
 					propSet(entity, getProp(field, props), Integer.valueOf(rs.getInt(column)));
 				} else if (IntrospectionUtils.isLong(field)) {
@@ -169,7 +171,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 	 * @param props
 	 * @return
 	 */
-	private PropertyDescriptor getProp(Field field, PropertyDescriptor[] props) {
+	private static PropertyDescriptor getProp(Field field, PropertyDescriptor[] props) {
 		for (PropertyDescriptor prop : props) {
 			if (prop.getName().equals(field.getName())) {
 				return prop;
@@ -210,8 +212,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ?",
-					new Object[] { value }, getRowMapper());
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ?", new Object[] { value }, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -232,10 +233,10 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		try {
 			// TODO Optimize for single values
 			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getFieldsClause(fields);
-			if (log.isLoggable(Level.FINE)) {
-				log.finer(sql);
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
 				for (Object value : values) {
-					log.finer(value.toString());
+					log.finest(value.toString());
 				}
 			}
 			return getJdbcTemplate().queryForObject(sql, values, getRowMapper());
@@ -255,9 +256,46 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 	public T findById(K id) {
 		AjahUtils.requireParam(id, "id");
 		try {
-			return getJdbcTemplate().queryForObject(
-					"SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?",
-					new Object[] { id.toString() }, getRowMapper());
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }, getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * Find a collections of entities by their unique ID.
+	 * 
+	 * @param ids
+	 *            Values to match against the entity.entity_id column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> findByIds(Collection<K> ids) {
+		AjahUtils.requireParam(ids, "ids");
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE ");
+			boolean first = true;
+			for (K id : ids) {
+				if (first) {
+					first = false;
+				} else {
+					sql.append(" OR ");
+				}
+				sql.append(getTableName() + "_id = ?");
+			}
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql.toString());
+				for (Object value : ids) {
+					log.finest(value.toString());
+				}
+			}
+			String[] idArray = new String[ids.size()];
+			int i = 0;
+			for (K id : ids) {
+				idArray[i++] = id.toString();
+			}
+			return getJdbcTemplate().query(sql.toString(), idArray, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
@@ -377,9 +415,13 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
-			return getJdbcTemplate().query(
-					"SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT "
-							+ (page * count) + "," + count, new Object[] { value }, getRowMapper());
+			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
+			if (log.isLoggable(Level.FINEST)) {
+				log.finer(sql);
+				log.finer(value.toString());
+			}
+
+			return getJdbcTemplate().query(sql, new Object[] { value }, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
@@ -398,6 +440,8 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (Field field : getTargetClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Transient.class)) {
+				continue;
+			} else if (field.isAnnotationPresent(ManyToMany.class)) {
 				continue;
 			}
 			String colName = JDBCMapperUtils.getColumnName(this.tableName, field);
@@ -497,8 +541,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		AjahUtils.requireParam(where, "where");
 		try {
 			log.finest("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1");
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1", null,
-					getRowMapper());
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1", null, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -560,6 +603,9 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 			for (int i = 0; i < values.length; i++) {
 				Field field = this.colMap.get(this.columns.get(i));
 				values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
+				if (log.isLoggable(Level.FINEST)) {
+					log.finest(field.getName() + " set to " + values[i]);
+				}
 			}
 		} catch (IntrospectionException e) {
 			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
