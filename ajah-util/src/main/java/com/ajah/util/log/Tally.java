@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Tally<T> {
 
-	protected final ConcurrentMap<T, Long> map = new ConcurrentHashMap<>();
+	protected final ConcurrentMap<T, Long> map = new ConcurrentHashMap<T, Long>();
 	protected final AtomicLong errors = new AtomicLong();
 	protected final AtomicLong successes = new AtomicLong();
 	protected PrintStream out;

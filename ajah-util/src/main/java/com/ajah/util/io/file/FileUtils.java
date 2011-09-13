@@ -63,7 +63,7 @@ public class FileUtils {
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
-		final List<String> data = new ArrayList<>();
+		final List<String> data = new ArrayList<String>();
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new FileReader(file));

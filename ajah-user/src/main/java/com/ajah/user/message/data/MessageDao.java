@@ -72,7 +72,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 		 * @return A list of user ids, may be empty but will not be null.
 		 */
 		private static List<UserId> getUserIds(String string) {
-			List<UserId> userIds = new ArrayList<>();
+			List<UserId> userIds = new ArrayList<UserId>();
 			if (StringUtils.isBlank(string)) {
 				return userIds;
 			}
@@ -94,10 +94,9 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 	public int insert(Message message) {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)", new Object[] {
-				message.getId().getId(), DateUtils.safeToLong(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()),
-				fromUserIds(message.getCc()), fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(),
-				message.getStatus().getId() });
+		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
+				new Object[] { message.getId().getId(), DateUtils.safeToLong(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()), fromUserIds(message.getCc()),
+						fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(), message.getStatus().getId() });
 	}
 
 	/**
