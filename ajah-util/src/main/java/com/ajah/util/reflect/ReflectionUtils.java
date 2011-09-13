@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.StringUtils;
 import com.ajah.util.date.DateUtils;
 
 /**
@@ -103,8 +104,14 @@ public class ReflectionUtils {
 		final Object[] elements = field.getType().getEnumConstants();
 		for (final Object element : elements) {
 			if (((Identifiable<?>) element).getId().equals(value)) {
+				if (log.isLoggable(Level.FINEST)) {
+					log.finest("Matched: " + element.toString());
+				}
 				return element;
 			}
+		}
+		if (log.isLoggable(Level.FINEST)) {
+			log.finest("No Match for " + value);
 		}
 		return null;
 	}
@@ -127,9 +134,13 @@ public class ReflectionUtils {
 		} else if (IntrospectionUtils.isDate(field)) {
 			return DateUtils.safeToLong(ReflectionUtils.propGetDateSafe(object, propertyDescriptor));
 		} else if (IntrospectionUtils.isToStringable(field)) {
-			return ReflectionUtils.propGetSafe(object, propertyDescriptor).toString();
+			return StringUtils.safeToString(ReflectionUtils.propGetSafe(object, propertyDescriptor));
 		} else if (IntrospectionUtils.isIdentifiable(field)) {
-			return ((Identifiable<?>) ReflectionUtils.propGetSafe(object, propertyDescriptor)).getId().toString();
+			Identifiable<?> identifiable = ((Identifiable<?>) ReflectionUtils.propGetSafe(object, propertyDescriptor));
+			if (identifiable == null) {
+				return null;
+			}
+			return StringUtils.safeToString(identifiable.getId());
 		} else if (IntrospectionUtils.isInt(field)) {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isLong(field)) {
