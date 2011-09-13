@@ -44,7 +44,6 @@ public class StringSizeValidator implements Validator {
 	 * 
 	 * @return Always returns true
 	 */
-	@Override
 	public boolean supports(Class<?> clazz) {
 		return true;
 	}
@@ -56,7 +55,6 @@ public class StringSizeValidator implements Validator {
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object,
 	 *      org.springframework.validation.Errors)
 	 */
-	@Override
 	public void validate(Object target, Errors errors) {
 		log.finest("Validating " + target.getClass().getName());
 		for (Field field : target.getClass().getFields()) {
@@ -91,7 +89,7 @@ public class StringSizeValidator implements Validator {
 		}
 	}
 
-	private Object[] getArgs(Field field, StringSize stringSize) {
+	private static Object[] getArgs(Field field, StringSize stringSize) {
 		return new Object[] { AutoFormUtils.getLabel(field), Integer.valueOf(stringSize.min()), Integer.valueOf(stringSize.max()) };
 	}
 

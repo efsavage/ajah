@@ -120,7 +120,6 @@ public class AutoFormTag extends TagSupport {
 			JspWriter out = this.pageContext.getOut();
 			Div div = new Div().css("asm-auto");
 
-			@SuppressWarnings("unchecked")
 			Enumeration<String> attributes = this.pageContext.getRequest().getAttributeNames();
 			while (attributes.hasMoreElements()) {
 				String attribute = attributes.nextElement();
@@ -219,7 +218,7 @@ public class AutoFormTag extends TagSupport {
 	 *            The list of fields to search across.
 	 * @return Matching field, if found, otherwise null.
 	 */
-	private Field findField(String target, Field[] allFields) {
+	private static Field findField(String target, Field[] allFields) {
 		for (Field field : allFields) {
 			if (field.getName().equals(target)) {
 				return field;
