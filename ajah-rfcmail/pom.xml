@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ajah-rfcmail-fetch</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Ajah Mail Fetch Library</name>
+	<description>Library for fetching email from various sources and a simple framework for acting on the results.</description>
+	<url>http://efsavage.github.com/ajah/mail-fetch/</url>
+
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- jsoup HTML parser library @ http://jsoup.org/ -->
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>0.10.0</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+</project>
