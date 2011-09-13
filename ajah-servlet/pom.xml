@@ -1,80 +1,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ajah</groupId>
 	<artifactId>ajah-servlet</artifactId>
-	<version>1.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>Ajah Servlet Library</name>
 	<description>The Ajah Servlet Library serves to provide a place for utilities that are specific to a servlet environment, but not specific to any particular product (Struts, Spring MVC, etc).</description>
 
-	<organization>
-		<name>Eric F. Savage</name>
-		<url>http://efsavage.com</url>
-	</organization>
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
-	<developers>
-		<developer>
-			<id>efsavage</id>
-			<name>Eric F. Savage</name>
-			<email>code@efsavage.com</email>
-			<url>http://efsavage.com</url>
-			<organization>Eric F. Savage</organization>
-			<organizationUrl>http://efsavage.com</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-5</timezone>
-			<properties>
-				<picUrl>https://secure.gravatar.com/avatar/68a1e80101a5197da8ac433444246014?s=100</picUrl>
-			</properties>
-		</developer>
-	</developers>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<links>
-						<link>http://download.oracle.com/javase/6/docs/api/</link>
-						<link>http://efsavage.github.com/ajah/util/apidocs/</link>
-						<link>http://efsavage.github.com/ajah/spring/apidocs/</link>
-					</links>
-					<detectLinks>true</detectLinks>
-					<detectJavaApiLink>true</detectJavaApiLink>
-					<notimestamp>true</notimestamp>
-				</configuration>
-			</plugin>
-
-		</plugins>
-	</build>
+	<repositories>
+		<repository>
+			<id>projectlombok.org</id>
+			<url>http://projectlombok.org/mavenrepo</url>
+		</repository>
+		<repository>
+			<id>java.net2</id>
+			<name>Repository hosting the jee6 artifacts</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>1.0.0</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
 			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>8.0.0.RC0</version>
 		</dependency>
 	</dependencies>
 
