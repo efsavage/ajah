@@ -8,6 +8,12 @@
 	<packaging>pom</packaging>
 	<name>Ajah Base Project</name>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<org.slf4j.version>1.6.1</org.slf4j.version>
+		<ch.qos.logback.version>0.9.28</ch.qos.logback.version>
+	</properties>
+
 	<organization>
 		<name>Eric F. Savage</name>
 		<url>http://efsavage.com</url>
@@ -77,7 +83,6 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId> org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
