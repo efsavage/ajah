@@ -15,6 +15,9 @@
  */
 package com.ajah.util.date;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.ajah.util.AjahUtils;
@@ -26,6 +29,22 @@ import com.ajah.util.AjahUtils;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class DateUtils {
+
+	/**
+	 * Milliseconds in a day (86,400,000)
+	 */
+	public static final long DAY_IN_MILLIS = 86400 * 1000L;
+	/**
+	 * Milliseconds in a week (604,800,000)
+	 */
+	public static final long WEEK_IN_MILLIS = 7 * DAY_IN_MILLIS;
+	/**
+	 * Formatter that only returns the name of the day, e.g. "Friday"
+	 */
+	public static final DateFormat DAY_OF_WEEK_FORMAT = new SimpleDateFormat("EEEE");
+
+	private static final DateFormat NICE_ABSOLUTE_DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
+	private static final DateFormat NICE_ABSOLUTE_TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT);
 
 	/**
 	 * Returns a {@link Long} of the result of {@link Date#getTime()}. If the
@@ -58,7 +77,7 @@ public class DateUtils {
 	 *            The largest unit to use as the format unit.
 	 * @return The formatted date.
 	 */
-	public static String niceFormat(final Date date, final CalendarUnit largestUnit) {
+	public static String niceFormatRelative(final Date date, final CalendarUnit largestUnit) {
 		AjahUtils.requireParam(date, "date");
 		final long interval = System.currentTimeMillis() - date.getTime();
 		if (interval > 0) {
@@ -96,20 +115,59 @@ public class DateUtils {
 	}
 
 	/**
-	 * Alias for {@link DateUtils#niceFormat(Date, CalendarUnit)} with null for
-	 * the largestUnit parameter.
+	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
+	 * null for the largestUnit parameter.
 	 * 
 	 * @param date
 	 *            Date for format, required.
 	 * @return The formatted date.
 	 */
-	public static String niceFormat(final Date date) {
-		return niceFormat(date, null);
+	public static String niceFormatRelative(final Date date) {
+		return niceFormatRelative(date, null);
 	}
 
 	/**
-	 * Alias for {@link DateUtils#niceFormat(Date, CalendarUnit)} with null for
-	 * the largestUnit parameter.
+	 * Formats a date, adjusting based on the current time, in a "nice" format,
+	 * such as "tomorrow" or "next Tuesday".
+	 * 
+	 * @param date
+	 *            Date to format, required.
+	 * @return The formatted date.
+	 */
+	public static String niceFormatAbsolute(final Date date) {
+		StringBuffer string = new StringBuffer();
+		Calendar then = Calendar.getInstance();
+		then.setTime(date);
+		Calendar now = Calendar.getInstance();
+		long interval = System.currentTimeMillis() - date.getTime();
+
+		if (now.get(Calendar.DAY_OF_MONTH) == then.get(Calendar.DAY_OF_MONTH)) {
+			string.append("Today");
+		} else if ((now.get(Calendar.DAY_OF_MONTH) + 1) == then.get(Calendar.DAY_OF_MONTH)) {
+			string.append("Tomorrow");
+		} else if ((now.get(Calendar.DAY_OF_MONTH) - 1) == then.get(Calendar.DAY_OF_MONTH)) {
+			string.append("Yesterday");
+		} else if (interval < 0 && interval > -WEEK_IN_MILLIS) {
+			// Within the next week
+			// TODO handle the case of it being 9:00 am on tuesday and the date
+			// is 9:01 the following tuesday
+			string.append("Next " + DAY_OF_WEEK_FORMAT.format(date));
+		} else if (interval > 0 && interval < WEEK_IN_MILLIS) {
+			// Within the past week
+			// TODO handle the case of it being 9:00 am on tuesday and the date
+			// is 8:59 the previous tuesday
+			string.append("Last " + DAY_OF_WEEK_FORMAT.format(date));
+		} else {
+			string.append(NICE_ABSOLUTE_DATE_FORMAT.format(date));
+		}
+		string.append(" at ");
+		string.append(NICE_ABSOLUTE_TIME_FORMAT.format(date));
+		return string.toString();
+	}
+
+	/**
+	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
+	 * null for the largestUnit parameter.
 	 * 
 	 * @param intervalInMillis
 	 *            Interval for format, required.
@@ -153,6 +211,38 @@ public class DateUtils {
 		} else {
 			return intervalInMillis / CalendarUnit.YEAR.getMillis() + " years";
 		}
+	}
+
+	/**
+	 * Returns the date for the day after the current one, at midnight.
+	 * 
+	 * @return The date for the day after the current one, at midnight.
+	 */
+	public static Date tomorrow() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.roll(Calendar.DAY_OF_MONTH, true);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
+	}
+
+	/**
+	 * Adds a number of hours to a date, rolling over other fields as necessary.
+	 * 
+	 * @see Calendar#add(int, int)
+	 * @param date
+	 *            The date to add the hours to.
+	 * @param hours
+	 *            The number of hours to add to the date.
+	 * @return The date, with the specified number of hours added to it.
+	 */
+	public static Date addHours(Date date, int hours) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR, hours);
+		return calendar.getTime();
 	}
 
 }
