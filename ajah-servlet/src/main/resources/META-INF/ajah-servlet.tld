@@ -14,4 +14,20 @@
 		</attribute>
 	</tag>
 
+	<function>
+		<name>niceFormatRel</name>
+		<function-class>com.ajah.util.date.DateUtils</function-class>
+		<function-signature>
+			java.lang.String niceFormatRelative( java.util.Date )
+		</function-signature>
+	</function>
+
+	<function>
+		<name>niceFormatAbs</name>
+		<function-class>com.ajah.util.date.DateUtils</function-class>
+		<function-signature>
+			java.lang.String niceFormatAbsolute( java.util.Date )
+		</function-signature>
+	</function>
+
 </taglib>
