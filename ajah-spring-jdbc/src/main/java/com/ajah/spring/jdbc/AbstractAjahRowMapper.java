@@ -29,7 +29,7 @@ import com.ajah.util.Identifiable;
  *            The type of entity this DAO manages.
  * 
  */
-public abstract class AbstractAjahRowMapper<K, T extends Identifiable<K>> implements RowMapper<T> {
+public abstract class AbstractAjahRowMapper<K extends Comparable<K>, T extends Identifiable<K>> implements RowMapper<T> {
 
 	protected AbstractAjahRowMapper(AjahDao<K, T> dao) {
 		this.dao = dao;

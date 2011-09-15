@@ -23,7 +23,7 @@ import java.io.Serializable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class ResetPasswordRequestId implements Serializable {
+public class ResetPasswordRequestId implements Serializable, Comparable<ResetPasswordRequestId> {
 
 	private static final long serialVersionUID = -6971666508360294979L;
 
@@ -54,6 +54,36 @@ public class ResetPasswordRequestId implements Serializable {
 	@Override
 	public String toString() {
 		return this.id;
+	}
+
+	/**
+	 * Compares the wrapped string values.
+	 * 
+	 * @param other
+	 *            The other UserId
+	 * @return The results of {@link String#compareTo(String)}
+	 */
+	public boolean equals(ResetPasswordRequestId other) {
+		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns consistent hashcode based on (but different from) the wrapped
+	 * string.
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return 9525 + this.id.hashCode();
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(ResetPasswordRequestId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 }

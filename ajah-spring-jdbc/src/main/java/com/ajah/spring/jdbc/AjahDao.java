@@ -25,11 +25,12 @@ import com.ajah.util.Identifiable;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * @param <K>
+ *            The type of Key the Entity uses for a unique ID. *
  * @param <T>
  *            The type of Entity managed by the DAO.
  */
-public interface AjahDao<K, T extends Identifiable<K>> {
+public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 
 	/**
 	 * Returns the class this DAO manages.

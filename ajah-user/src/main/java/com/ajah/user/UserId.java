@@ -26,7 +26,7 @@ import com.ajah.util.ToStringable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable, ToStringable, FromStringable {
+public class UserId implements Serializable, ToStringable, FromStringable , Comparable<UserId>{
 
 	private static final long serialVersionUID = 5419973870818857713L;
 
@@ -57,6 +57,36 @@ public class UserId implements Serializable, ToStringable, FromStringable {
 	@Override
 	public String toString() {
 		return this.id;
+	}
+
+	/**
+	 * Compares the wrapped string values.
+	 * 
+	 * @param other
+	 *            The other UserId
+	 * @return The results of {@link String#compareTo(String)}
+	 */
+	public boolean equals(UserId other) {
+		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns consistent hashcode based on (but different from) the wrapped
+	 * string.
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return 9525 + this.id.hashCode();
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(UserId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 }

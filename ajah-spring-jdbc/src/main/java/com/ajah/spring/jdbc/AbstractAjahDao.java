@@ -63,7 +63,7 @@ import com.ajah.util.reflect.ReflectionUtils;
  *            The type of entity this DAO exists for.
  * 
  */
-public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements AjahDao<K, T> {
+public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>> implements AjahDao<K, T> {
 
 	private static final Logger log = Logger.getLogger(AbstractAjahDao.class.getName());
 
@@ -88,7 +88,7 @@ public abstract class AbstractAjahDao<K, T extends Identifiable<K>> implements A
 		return Long.valueOf(rs.getLong(field));
 	}
 
-	private Map<String, Field> colMap = new HashMap<String, Field>();
+	private Map<String, Field> colMap = new HashMap<>();
 
 	private List<String> columns;
 

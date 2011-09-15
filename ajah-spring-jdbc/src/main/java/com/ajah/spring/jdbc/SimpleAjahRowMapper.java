@@ -26,7 +26,7 @@ import com.ajah.util.Identifiable;
  *            The type of entity managed.
  * 
  */
-public class SimpleAjahRowMapper<K, T extends Identifiable<K>> extends AbstractAjahRowMapper<K,T> {
+public class SimpleAjahRowMapper<K extends Comparable<K>, T extends Identifiable<K>> extends AbstractAjahRowMapper<K,T> {
 
 	/**
 	 * Sets the calling DAO.

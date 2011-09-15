@@ -24,7 +24,7 @@ package com.ajah.util;
  * @param <K>
  *            ID type.
  */
-public interface Identifiable<K> {
+public interface Identifiable<K extends Comparable<K>> {
 
 	/**
 	 * Returns the unique Identifier for the entity.
