@@ -31,6 +31,10 @@ import com.ajah.util.AjahUtils;
 public class DateUtils {
 
 	/**
+	 * Milliseconds in a minute (60,000)
+	 */
+	public static final long MINUTE_IN_MILLIS = 60000L;
+	/**
 	 * Milliseconds in a day (86,400,000)
 	 */
 	public static final long DAY_IN_MILLIS = 86400 * 1000L;
@@ -174,7 +178,22 @@ public class DateUtils {
 	 * @return The formatted date.
 	 */
 	public static String formatInterval(final long intervalInMillis) {
-		return formatInterval(intervalInMillis, CalendarUnit.YEAR);
+		return formatInterval(intervalInMillis, CalendarUnit.YEAR, false);
+	}
+
+	/**
+	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
+	 * null for the largestUnit parameter.
+	 * 
+	 * @param intervalInMillis
+	 *            Interval for format, required.
+	 * @param veryShortFormat
+	 *            True if the shortest possible format is desired. This will
+	 *            return values like "1d" or "3y".
+	 * @return The formatted date.
+	 */
+	public static String formatInterval(final long intervalInMillis, boolean veryShortFormat) {
+		return formatInterval(intervalInMillis, CalendarUnit.YEAR, veryShortFormat);
 	}
 
 	/**
@@ -191,25 +210,29 @@ public class DateUtils {
 	 *            Interval to format, required.
 	 * @param largestUnit
 	 *            The largest unit to use as the format unit.
+	 * @param veryShortFormat
+	 *            True if the shortest possible format is desired. This will
+	 *            return values like "1d" or "3y".
 	 * @return The formatted date.
 	 */
-	public static String formatInterval(final long intervalInMillis, final CalendarUnit largestUnit) {
+	public static String formatInterval(final long intervalInMillis, final CalendarUnit largestUnit, boolean veryShortFormat) {
+
 		if (intervalInMillis < CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
-			return intervalInMillis + " milliseconds";
+			return intervalInMillis + (veryShortFormat ? "ms" : " milliseconds");
 		} else if (intervalInMillis < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
-			return intervalInMillis / CalendarUnit.SECOND.getMillis() + " seconds";
+			return intervalInMillis / CalendarUnit.SECOND.getMillis() + (veryShortFormat ? "s" : " seconds");
 		} else if (intervalInMillis < 100 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
-			return intervalInMillis / CalendarUnit.MINUTE.getMillis() + " minutes";
+			return intervalInMillis / CalendarUnit.MINUTE.getMillis() + (veryShortFormat ? "m" : " minutes");
 		} else if (intervalInMillis < 36 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
-			return intervalInMillis / CalendarUnit.HOUR.getMillis() + " hours";
+			return intervalInMillis / CalendarUnit.HOUR.getMillis() + (veryShortFormat ? "h" : " hours");
 		} else if (intervalInMillis < 10 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
-			return intervalInMillis / CalendarUnit.DAY.getMillis() + " days";
+			return intervalInMillis / CalendarUnit.DAY.getMillis() + (veryShortFormat ? "d" : " days");
 		} else if (intervalInMillis < 36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
-			return intervalInMillis / CalendarUnit.WEEK.getMillis() + " weeks";
-		} else if (intervalInMillis < 36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH) {
+			return intervalInMillis / CalendarUnit.WEEK.getMillis() + (veryShortFormat ? "w" : " weeks");
+		} else if (!veryShortFormat && (intervalInMillis < 36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH)) {
 			return intervalInMillis / CalendarUnit.HOUR.getMillis() + " months";
 		} else {
-			return intervalInMillis / CalendarUnit.YEAR.getMillis() + " years";
+			return intervalInMillis / CalendarUnit.YEAR.getMillis() + (veryShortFormat ? "y" : " years");
 		}
 	}
 
@@ -245,4 +268,29 @@ public class DateUtils {
 		return calendar.getTime();
 	}
 
+	/**
+	 * Formats a date with a very short formatted version of the difference
+	 * between the date and now.
+	 * 
+	 * This will return values like "1d" or "3y".
+	 * 
+	 * @param date
+	 *            The date to format.
+	 * @return Very short formatted version of the date, values like "1d" or
+	 *         "3y".
+	 */
+	public static String veryShortFormatRelative(Date date) {
+		return formatInterval(Math.abs(System.currentTimeMillis() - date.getTime()), true);
+	}
+
+	/**
+	 * Adds a number of minutes to the current time.
+	 * 
+	 * @param minutes
+	 *            The number of minutes to add, may be negative.
+	 * @return The current time plus the the number of minutes specified.
+	 */
+	public static Date addMinutes(int minutes) {
+		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
+	}
 }
