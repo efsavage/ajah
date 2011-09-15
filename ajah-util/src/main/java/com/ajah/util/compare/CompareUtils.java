@@ -88,6 +88,7 @@ public class CompareUtils {
 	/**
 	 * Compares two strings, checking for nulls first.
 	 * 
+	 * @see String#compareTo(String)
 	 * @param first
 	 *            The first string, may be null.
 	 * @param second
@@ -103,6 +104,27 @@ public class CompareUtils {
 			return retVal;
 		}
 		return first.compareTo(second);
+	}
+
+	/**
+	 * Compares two strings, checking for nulls first, and ignoring case.
+	 * 
+	 * @see String#compareToIgnoreCase(String)
+	 * @param first
+	 *            The first string, may be null.
+	 * @param second
+	 *            The second string, may be null.
+	 * @return The comparison of the two Strings.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null, as this means it cannot be passed
+	 *             along to a comparator even though they are "equal".
+	 */
+	public static int compareIgnoreCase(String first, String second) {
+		int retVal = compareNulls(first, second);
+		if (retVal != 0) {
+			return retVal;
+		}
+		return first.compareToIgnoreCase(second);
 	}
 
 }
