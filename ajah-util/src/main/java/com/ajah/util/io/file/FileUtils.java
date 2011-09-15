@@ -118,7 +118,7 @@ public class FileUtils {
 			in = new BufferedReader(new FileReader(file));
 			while (in.ready()) {
 				final String line = in.readLine();
-				data.append(line);
+				data.append(line).append("\n");
 			}
 		} catch (final IOException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
