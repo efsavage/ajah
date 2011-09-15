@@ -30,7 +30,7 @@ public class StringUtils {
 	 * @return true if string is null or zero-length
 	 */
 	public static boolean isBlank(final String string) {
-		return string == null || string.length() < 1;
+		return string == null || string.length() < 1 || string.trim().length() < 1;
 	}
 
 	/**
