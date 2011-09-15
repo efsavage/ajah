@@ -30,4 +30,12 @@
 		</function-signature>
 	</function>
 
+	<function>
+		<name>veryShortFormatRel</name>
+		<function-class>com.ajah.util.date.DateUtils</function-class>
+		<function-signature>
+			java.lang.String veryShortFormatRelative( java.util.Date )
+		</function-signature>
+	</function>
+
 </taglib>
