@@ -142,4 +142,16 @@ public enum Config {
 		return "true".equalsIgnoreCase(get(key));
 	}
 
+	/**
+	 * Returns the value, split on commas. Whitespace around the commas is
+	 * permitted and removed.
+	 * 
+	 * @param key
+	 *            The property to return.
+	 * @return The values as delimited by commas in the property value.
+	 */
+	public String[] getStrings(PropertyKey key) {
+		return get(key).split("\\s*,\\s*");
+	}
+
 }
