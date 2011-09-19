@@ -50,4 +50,25 @@ public class IdentifiableUtils {
 		target.removeAll(idMatches);
 	}
 
+	/**
+	 * Removes a matching entity as determined by its IDs.
+	 * 
+	 * @param target
+	 *            The collection to remove from.
+	 * @param toRemove
+	 *            The item to remove.
+	 */
+	public static <K extends Comparable<K>, I extends Identifiable<K>> void remove(Collection<I> target, I toRemove) {
+		if (target == null || toRemove == null) {
+			return;
+		}
+		List<I> idMatches = new ArrayList<>();
+		for (I idCandidate : target) {
+			if (idCandidate.getId().compareTo(toRemove.getId()) == 0) {
+				idMatches.add(idCandidate);
+			}
+		}
+		target.removeAll(idMatches);
+	}
+
 }
