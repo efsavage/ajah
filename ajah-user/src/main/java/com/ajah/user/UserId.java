@@ -26,7 +26,7 @@ import com.ajah.util.ToStringable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class UserId implements Serializable, ToStringable, FromStringable , Comparable<UserId>{
+public class UserId implements Serializable, ToStringable, FromStringable, Comparable<UserId> {
 
 	private static final long serialVersionUID = 5419973870818857713L;
 
