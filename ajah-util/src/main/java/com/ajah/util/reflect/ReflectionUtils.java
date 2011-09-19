@@ -145,6 +145,8 @@ public class ReflectionUtils {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isLong(field)) {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else if (IntrospectionUtils.isBoolean(field)) {
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else {
 			log.warning("Can't handle property getting of type " + field.getType());
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);

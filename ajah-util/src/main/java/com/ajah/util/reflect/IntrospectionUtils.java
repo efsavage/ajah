@@ -141,4 +141,16 @@ public class IntrospectionUtils {
 		return isIdentifiable(field) && isEnum(field);
 	}
 
+	/**
+	 * Checks to see if the field's type is a boolean.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a long
+	 */
+	public static boolean isBoolean(Field field) {
+		AjahUtils.requireParam(field, "field");
+		return boolean.class.isAssignableFrom(field.getType());
+	}
+
 }
