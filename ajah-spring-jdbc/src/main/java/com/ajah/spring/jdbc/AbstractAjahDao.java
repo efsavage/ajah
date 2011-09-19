@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -145,6 +146,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					propSet(entity, getProp(field, props), Integer.valueOf(rs.getInt(column)));
 				} else if (IntrospectionUtils.isLong(field)) {
 					propSet(entity, getProp(field, props), Long.valueOf(rs.getLong(column)));
+				} else if (IntrospectionUtils.isBoolean(field)) {
+					propSet(entity, getProp(field, props), Boolean.valueOf(rs.getBoolean(column)));
 				} else if (IntrospectionUtils.isEnum(field)) {
 					log.warning("Can't handle non-Identifiable enum for column " + column + " [" + field.getType() + "]");
 				} else {
@@ -276,6 +279,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			StringBuffer sql = new StringBuffer();
 			sql.append("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE ");
 			boolean first = true;
+			String[] idArray = new String[ids.size()];
+			int i = 0;
 			for (K id : ids) {
 				if (first) {
 					first = false;
@@ -283,17 +288,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					sql.append(" OR ");
 				}
 				sql.append(getTableName() + "_id = ?");
+				idArray[i++] = id.toString();
 			}
 			if (log.isLoggable(Level.FINEST)) {
 				log.finest(sql.toString());
 				for (Object value : ids) {
 					log.finest(value.toString());
 				}
-			}
-			String[] idArray = new String[ids.size()];
-			int i = 0;
-			for (K id : ids) {
-				idArray[i++] = id.toString();
 			}
 			return getJdbcTemplate().query(sql.toString(), idArray, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
@@ -315,10 +316,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return this.columns;
 	}
 
-	/**
-	 * @param fields
-	 * @return
-	 */
 	private String getFieldsClause(String[] fields) {
 		StringBuffer stringBuffer = new StringBuffer();
 		boolean first = true;
@@ -344,7 +341,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	protected RowMapper<T> getRowMapper() {
-		return new SimpleAjahRowMapper<K, T>(this);
+		return new SimpleAjahRowMapper<>(this);
 	}
 
 	/**
@@ -377,6 +374,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	@SuppressWarnings("unchecked")
 	public Class<T> getTargetClass() {
 		return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(String field, ToStringable value) {
+		AjahUtils.requireParam(value, "value");
+		return listByField(field, value.toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -424,7 +435,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return getJdbcTemplate().query(sql, new Object[] { value }, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
-			return null;
+			return Collections.emptyList();
 		}
 	}
 
@@ -434,8 +445,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			this.tableName = JDBCMapperUtils.getTableName(getTargetClass());
 		}
 		log.fine("Table set to : " + this.tableName);
-		List<String> columnList = new ArrayList<String>();
-		List<String> newUpdateFields = new ArrayList<String>();
+		List<String> columnList = new ArrayList<>();
+		List<String> newUpdateFields = new ArrayList<>();
 		StringBuffer select = new StringBuffer();
 		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (Field field : getTargetClass().getDeclaredFields()) {
@@ -558,6 +569,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 */
 	public int insert(T entity) throws DatabaseAccessException {
 		AjahUtils.requireParam(entity, "entity");
+		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
 			String sql = "INSERT INTO " + getTableName() + "(" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
@@ -591,10 +603,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	/**
-	 * @param entity
-	 * @return
-	 */
 	private Object[] getInsertValues(T entity) {
 		Object[] values = new Object[getColumns().size()];
 		try {
@@ -613,10 +621,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return values;
 	}
 
-	/**
-	 * @param entity
-	 * @return
-	 */
 	private Object[] getUpdateValues(T entity) {
 		Object[] values = new Object[getUpdateFieldsList().size() + 1];
 		try {
@@ -633,9 +637,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return values;
 	}
 
-	/**
-	 * @return
-	 */
 	private String getInsertPlaceholders() {
 		if (this.insertPlaceholders == null) {
 			loadColumns();
@@ -643,9 +644,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return this.insertPlaceholders;
 	}
 
-	/**
-	 * @return
-	 */
 	private String getInsertFields() {
 		if (this.insertFields == null) {
 			loadColumns();
