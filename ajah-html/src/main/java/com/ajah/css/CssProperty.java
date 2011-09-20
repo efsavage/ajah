@@ -176,6 +176,18 @@ public enum CssProperty {
 	 */
 	PADDING_RIGHT("padding-right"),
 	/**
+	 * padding-top
+	 */
+	PADDING_TOP("padding-top"),
+	/**
+	 * padding-left
+	 */
+	PADDING_LEFT("padding-left"),
+	/**
+	 * padding-bottom
+	 */
+	PADDING_BOTTOM("padding-bottom"),
+	/**
 	 * position
 	 */
 	POSITION("position"),
