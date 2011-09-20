@@ -87,11 +87,11 @@ public class DateUtils {
 		if (interval > 0) {
 			if (interval < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 				return interval / CalendarUnit.SECOND.getMillis() + " seconds ago";
-			} else if (interval < 100 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
+			} else if (interval < 120 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
 				return interval / CalendarUnit.MINUTE.getMillis() + " minutes ago";
-			} else if (interval < 36 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
+			} else if (interval < 48 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
 				return interval / CalendarUnit.HOUR.getMillis() + " hours ago";
-			} else if (interval < 10 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
+			} else if (interval < 14 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
 				return interval / CalendarUnit.DAY.getMillis() + " days ago";
 			} else if (interval < 36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
 				return interval / CalendarUnit.WEEK.getMillis() + " weeks ago";
@@ -103,11 +103,11 @@ public class DateUtils {
 		}
 		if (interval > -100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 			return "in " + -interval / CalendarUnit.SECOND.getMillis() + " seconds";
-		} else if (interval > -100 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
+		} else if (interval > -120 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
 			return "in " + -interval / CalendarUnit.MINUTE.getMillis() + " minutes";
-		} else if (interval > -36 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
+		} else if (interval > -48 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
 			return "in " + -interval / CalendarUnit.HOUR.getMillis() + " hours";
-		} else if (interval > -10 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
+		} else if (interval > -14 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
 			return "in " + -interval / CalendarUnit.DAY.getMillis() + " days";
 		} else if (interval > -36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
 			return "in " + -interval / CalendarUnit.WEEK.getMillis() + " weeks";
