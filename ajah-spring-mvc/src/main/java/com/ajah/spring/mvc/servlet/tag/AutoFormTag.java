@@ -38,9 +38,11 @@ import com.ajah.html.element.Form;
 import com.ajah.html.element.Input;
 import com.ajah.html.element.InputImpl;
 import com.ajah.html.element.ListItem;
+import com.ajah.html.element.TextArea;
 import com.ajah.html.element.UnorderedList;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.AutoFormUtils;
+import com.ajah.spring.mvc.form.LongText;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.spring.mvc.form.validation.Match;
 import com.ajah.util.AjahUtils;
@@ -176,15 +178,24 @@ public class AutoFormTag extends TagSupport {
 		log.fine(field.getType().toString());
 		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
 		if (field.getType().equals(String.class)) {
-			input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
+			if (field.isAnnotationPresent(LongText.class)) {
+				// A textarea input
+				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
+			} else {
+				// A normal text input
+				input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
+			}
 		} else if (field.getType().equals(EmailAddress.class)) {
+			// An email input
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
 		} else if (field.getType().isAssignableFrom(Password.class)) {
+			// A password input
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.PASSWORD);
 		} else if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
+			// A checkbox input
 			input = new Checkbox(label, field.getName(), "true", field.getBoolean(this.autoForm));
-		} else if (field.getType().equals(Long.class) || field.getType().equals(long.class) || field.getType().equals(Integer.class)
-				|| field.getType().equals(int.class)) {
+		} else if (field.getType().equals(Long.class) || field.getType().equals(long.class) || field.getType().equals(Integer.class) || field.getType().equals(int.class)) {
+			// An integer input
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
 		} else {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
