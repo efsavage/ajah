@@ -47,6 +47,7 @@ public class CssRule {
 	private final CssRule parent;
 	private final List<CssRule> children = new ArrayList<>();
 	private final SortedSet<CssDeclaration> declarations = new TreeSet<>();
+	private final List<CssSelector> selectors = new ArrayList<>();
 
 	/**
 	 * Public constructor.
@@ -78,6 +79,15 @@ public class CssRule {
 	}
 
 	/**
+	 * Add a selector to this Rule.
+	 * 
+	 * @param cssSelector
+	 */
+	public void add(CssSelector cssSelector) {
+		this.selectors.add(cssSelector);
+	}
+
+	/**
 	 * Returns the valid, usable version of this rule with {@link Compact#NONE}.
 	 * 
 	 * @see #toString(Compact)
@@ -106,6 +116,7 @@ public class CssRule {
 		string.append(' ', Compact.MED);
 		string.append("{");
 		string.append(' ', Compact.MED);
+		string.append('\n', Compact.LOW);
 		for (CssDeclaration declaration : this.declarations) {
 			string.append(Report.tabs(depth + 1), Compact.LOW);
 			string.append(declaration.toString());
