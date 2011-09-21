@@ -14,6 +14,21 @@
 		</attribute>
 	</tag>
 
+	<tag>
+		<name>table</name>
+		<tag-class>com.ajah.servlet.tag.table.TableTag</tag-class>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
 	<function>
 		<name>niceFormatRel</name>
 		<function-class>com.ajah.util.date.DateUtils</function-class>

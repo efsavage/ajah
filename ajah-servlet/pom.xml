@@ -41,6 +41,11 @@
 			<artifactId>jetty-servlet</artifactId>
 			<version>8.0.0.RC0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok.lombok.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>
