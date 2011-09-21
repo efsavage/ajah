@@ -124,6 +124,10 @@ public enum CssProperty {
 	 */
 	LEFT("left"),
 	/**
+	 * height
+	 */
+	HEIGHT("height"),
+	/**
 	 * letter-spacing
 	 */
 	LETTER_SPACING("letter-spacing"),
