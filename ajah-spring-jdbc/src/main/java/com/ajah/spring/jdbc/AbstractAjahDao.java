@@ -126,9 +126,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
 			PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor prop : props) {
-				log.finest("PropertyDescriptor: " + prop.getName());
-				log.finest("setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()));
-				log.finest("getter: " + (prop.getReadMethod() == null ? null : prop.getReadMethod().getName()));
+				log.finest("PropertyDescriptor: " + prop.getName() + ", Setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()) + " Getter: "
+						+ (prop.getReadMethod() == null ? null : prop.getReadMethod().getName()));
 			}
 			for (String column : getColumns()) {
 				Field field = this.colMap.get(column);
@@ -316,7 +315,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return this.columns;
 	}
 
-	private String getFieldsClause(String[] fields) {
+	private static String getFieldsClause(String[] fields) {
 		StringBuffer stringBuffer = new StringBuffer();
 		boolean first = true;
 		for (String field : fields) {
@@ -573,7 +572,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
 			String sql = "INSERT INTO " + getTableName() + "(" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
-			log.finest(sql);
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
+			}
 			return this.jdbcTemplate.update(sql, getInsertValues(entity));
 		} catch (DataAccessException e) {
 			throw new DatabaseAccessException(e);
@@ -596,11 +597,71 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
 			String sql = "UPDATE " + getTableName() + " SET " + getUpdateFields() + " WHERE " + getTableName() + "_id = ?";
-			log.finest(sql);
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
+			}
 			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
 		} catch (DataAccessException e) {
 			throw new DatabaseAccessException(e);
 		}
+	}
+
+	/**
+	 * Increments the field of the record by a certain amount.
+	 * 
+	 * @param entity
+	 *            Entity to update.
+	 * @param field
+	 *            The field to increase.
+	 * @param amount
+	 *            The amount to increase the field by.
+	 * @return Number of rows affected.
+	 * @throws DatabaseAccessException
+	 *             If an error occurs executing the query.
+	 */
+	public int increment(T entity, String field, int amount) throws DatabaseAccessException {
+		AjahUtils.requireParam(entity, "entity");
+		AjahUtils.requireParam(entity.getId(), "entity.id");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		try {
+			String sql = "UPDATE " + getTableName() + " SET " + field + "=" + field + " + " + amount + " WHERE " + getTableName() + "_id = ?";
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
+			}
+			return this.jdbcTemplate.update(sql, entity.getId().toString());
+		} catch (DataAccessException e) {
+			throw new DatabaseAccessException(e);
+		}
+	}
+
+	/**
+	 * Increments the field of the record by 1.
+	 * 
+	 * @param entity
+	 *            Entity to update.
+	 * @param field
+	 *            The field to increase.
+	 * @return Number of rows affected.
+	 * @throws DatabaseAccessException
+	 *             If an error occurs executing the query.
+	 */
+	public int increment(T entity, String field) throws DatabaseAccessException {
+		return increment(entity, field, 1);
+	}
+
+	/**
+	 * Decrements the field of the record by 1.
+	 * 
+	 * @param entity
+	 *            Entity to update.
+	 * @param field
+	 *            The field to decrease.
+	 * @return Number of rows affected.
+	 * @throws DatabaseAccessException
+	 *             If an error occurs executing the query.
+	 */
+	public int decrement(T entity, String field) throws DatabaseAccessException {
+		return increment(entity, field, -1);
 	}
 
 	private Object[] getInsertValues(T entity) {
