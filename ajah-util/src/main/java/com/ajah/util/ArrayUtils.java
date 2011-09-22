@@ -114,4 +114,26 @@ public class ArrayUtils {
 		return retVal;
 	}
 
+	/**
+	 * Checks to see if an array contains a given object.
+	 * 
+	 * @see Object#equals(Object)
+	 * @param array
+	 *            The array to check.
+	 * @param member
+	 *            The object to look for in the array.
+	 * @return true if the parameters are not null and the object was found,
+	 *         otherwise false.
+	 */
+	public static <T> boolean contains(T[] array, T member) {
+		if (array == null || array.length == 0 || member == null) {
+			return false;
+		}
+		for (T t : array) {
+			if (t.equals(member)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
