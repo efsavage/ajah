@@ -25,6 +25,7 @@ import lombok.EqualsAndHashCode;
 
 import com.ajah.html.HtmlElement;
 import com.ajah.html.Nestable;
+import com.ajah.util.StringUtils;
 
 /**
  * Extension of AbstractHtmlCoreElement that implements Nestable and allows for
@@ -48,7 +49,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	 *            Value to create the {@link CData} with.
 	 */
 	public AbstractNestableHtmlCoreElement(String cData) {
-		this.children = new ArrayList<HtmlElement<?>>();
+		this.children = new ArrayList<>();
 		this.children.add(new CData(cData));
 	}
 
@@ -67,7 +68,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	@Override
 	public synchronized <R extends HtmlElement<R>> R add(R element) {
 		if (this.children == null) {
-			this.children = new ArrayList<HtmlElement<?>>();
+			this.children = new ArrayList<>();
 		}
 		this.children.add(element);
 		return element;
@@ -84,10 +85,14 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		out.write("<");
 		out.write(getName());
 		writeCore(out);
+		if (!StringUtils.isBlank(getStyle())) {
+			out.write(" style=\"" + getStyle() + "\"");
+		}
 		out.write(">");
-		if (depth >= 0) {
+		if (depth >= 0 && this.children != null) {
 			out.write("\r\n");
 		}
+		renderBeforeChildren(out);
 		if (this.children != null) {
 			for (HtmlElement<?> child : this.children) {
 				if (depth >= 0) {
@@ -97,12 +102,21 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 				}
 			}
 		}
+		if (depth >= 0 && this.children != null) {
+			out.write("\r\n");
+			for (int i = 0; i < depth; i++) {
+				out.write("\t");
+			}
+		}
 		out.write("</");
 		out.write(getName());
 		out.write(">");
 		if (depth >= 0) {
 			out.write("\r\n");
 		}
+	}
+
+	protected void renderBeforeChildren(Writer out) throws IOException {
 	}
 
 }
