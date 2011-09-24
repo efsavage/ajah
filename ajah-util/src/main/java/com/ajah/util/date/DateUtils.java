@@ -60,7 +60,7 @@ public class DateUtils {
 	 */
 	public static Long safeToLong(final Date date) {
 		if (date == null) {
-			return Long.valueOf(0);
+			return null;
 		}
 		return Long.valueOf(date.getTime());
 	}
