@@ -88,6 +88,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		if (!StringUtils.isBlank(getStyle())) {
 			out.write(" style=\"" + getStyle() + "\"");
 		}
+		renderAttributes(out);
 		out.write(">");
 		if (depth >= 0 && this.children != null) {
 			out.write("\r\n");
@@ -116,7 +117,12 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		}
 	}
 
+	protected void renderAttributes(Writer out) throws IOException {
+		// Empty
+	}
+
 	protected void renderBeforeChildren(Writer out) throws IOException {
+		// Empty
 	}
 
 }
