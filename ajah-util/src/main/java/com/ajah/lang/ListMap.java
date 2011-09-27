@@ -44,7 +44,7 @@ public class ListMap<K, V> extends HashMap<K, List<V>> {
 	public void putValue(K key, V value) {
 		List<V> list = get(key);
 		if (list == null) {
-			list = new ArrayList<V>();
+			list = new ArrayList<>();
 			put(key, list);
 		}
 		list.add(value);

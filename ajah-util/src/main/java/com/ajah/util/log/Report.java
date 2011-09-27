@@ -40,7 +40,7 @@ public class Report {
 	 */
 	public static final String HYPEN35 = "-----------------------------------";
 
-	private final List<PrintWriter> writers = new ArrayList<PrintWriter>();
+	private final List<PrintWriter> writers = new ArrayList<>();
 
 	private Logger log;
 
