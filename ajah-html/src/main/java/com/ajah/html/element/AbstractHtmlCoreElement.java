@@ -127,7 +127,7 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 
 	private synchronized void addDataElement(String key, String value) {
 		if (this.dataElements == null) {
-			this.dataElements = new HashMap<String, String>();
+			this.dataElements = new HashMap<>();
 		}
 		this.dataElements.put(key, value);
 	}

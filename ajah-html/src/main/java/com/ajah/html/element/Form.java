@@ -38,7 +38,7 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 
 	private String action;
 	private FormMethod method = FormMethod.GET;
-	private List<Input<?>> inputs = new ArrayList<Input<?>>();
+	private List<Input<?>> inputs = new ArrayList<>();
 
 	/**
 	 * Public constructor.

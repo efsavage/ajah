@@ -64,7 +64,7 @@ public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 
 	@Override
 	protected void renderAttributes(Writer out) throws IOException {
-		out.write(" href=\"" + href + "\"");
+		out.write(" href=\"" + this.href + "\"");
 	}
 
 }

@@ -117,10 +117,28 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		}
 	}
 
+	/**
+	 * Called after the standard attributes are written, while still in the
+	 * opening tag. Does nothing unless overridden.
+	 * 
+	 * @param out
+	 *            The writer to write to.
+	 * @throws IOException
+	 *             If the writer cannot be written to.
+	 */
 	protected void renderAttributes(Writer out) throws IOException {
 		// Empty
 	}
 
+	/**
+	 * Called immediately after the opening tag is completed. Does nothing
+	 * unless overridden.
+	 * 
+	 * @param out
+	 *            The writer to write to.
+	 * @throws IOException
+	 *             If the writer cannot be written to.
+	 */
 	protected void renderBeforeChildren(Writer out) throws IOException {
 		// Empty
 	}
