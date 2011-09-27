@@ -197,6 +197,9 @@ public class AutoFormTag extends TagSupport {
 		} else if (field.getType().equals(Long.class) || field.getType().equals(long.class) || field.getType().equals(Integer.class) || field.getType().equals(int.class)) {
 			// An integer input
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
+		} else if (field.getType().equals(Double.class)) {
+			// An floating point input
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
 		} else {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
 		}
