@@ -47,6 +47,10 @@ public enum CssProperty {
 	 * border-bottom
 	 */
 	BORDER_BOTTOM("border-bottom"),
+	/** border-bottom-right-radius */
+	BORDER_BOTTOM_RIGHT_RADIUS("border-bottom-right-radius"),
+	/** border-bottom-left-radius */
+	BORDER_BOTTOM_LEFT_RADIUS("border-bottom-left-radius"),
 	/**
 	 * border-collapse
 	 */
@@ -63,9 +67,9 @@ public enum CssProperty {
 	 * border-spacing
 	 */
 	BORDER_SPACING("border-spacing"),
-	/**
-	 * border-width
-	 */
+	/** border-top */
+	BORDER_TOP("border-top"),
+	/** border-width */
 	BORDER_WIDTH("border-width"),
 	/**
 	 * box-shadow
@@ -159,9 +163,9 @@ public enum CssProperty {
 	 * margin-left
 	 */
 	MARGIN_LEFT("margin-left"),
-	/**
-	 * -moz-box-shadow
-	 */
+	/** min-width */
+	MIN_WIDTH("min-width"),
+	/** -moz-box-shadow */
 	MOZ_BOX_SHADOW("-moz-box-shadow"),
 	/**
 	 * opacity
@@ -195,13 +199,11 @@ public enum CssProperty {
 	 * position
 	 */
 	POSITION("position"),
-	/**
-	 * text-align
-	 */
+	/** right */
+	RIGHT("right"),
+	/** text-align */
 	TEXT_ALIGN("text-align"),
-	/**
-	 * text-shadow
-	 */
+	/** text-shadow */
 	TEXT_SHADOW("text-shadow"),
 	/**
 	 * top
