@@ -114,7 +114,7 @@ public class IntrospectionUtils {
 	 */
 	public static boolean isInt(final Field field) {
 		AjahUtils.requireParam(field, "field");
-		return int.class.isAssignableFrom(field.getType());
+		return int.class.isAssignableFrom(field.getType()) || Integer.class.isAssignableFrom(field.getType());
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class IntrospectionUtils {
 	 */
 	public static boolean isLong(final Field field) {
 		AjahUtils.requireParam(field, "field");
-		return long.class.isAssignableFrom(field.getType());
+		return long.class.isAssignableFrom(field.getType()) || Long.class.isAssignableFrom(field.getType());
 	}
 
 	/**
