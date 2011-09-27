@@ -114,4 +114,20 @@ public class MathUtils {
 		}
 	}
 
+	/**
+	 * Multiplies an object number by a primitive int and returns a Long.
+	 * 
+	 * @param operand1
+	 *            The first operand, required.
+	 * @param operand2
+	 *            The second operand.
+	 * @return The result of the multiplication as a Long.
+	 */
+	public static Long multiplyForLong(Number operand1, int operand2) {
+		if (operand1 instanceof Double) {
+			return Long.valueOf(Math.round(operand1.doubleValue() * operand2));
+		}
+		throw new IllegalArgumentException(operand1.getClass() + " not supported");
+	}
+
 }
