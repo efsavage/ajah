@@ -93,7 +93,7 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 		writeCore(out);
 		write(out, "name", this.name);
 		out.write(">");
-		write(out, "value", this.value);
+		out.write(this.value);
 		out.write("</textarea>");
 	}
 
