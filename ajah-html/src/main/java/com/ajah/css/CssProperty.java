@@ -175,9 +175,9 @@ public enum CssProperty {
 	 * outline
 	 */
 	OUTLINE("outline"),
-	/**
-	 * padding
-	 */
+	/** overflow-y */
+	OVERFLOW_Y("overflow-y"),
+	/** padding */
 	PADDING("padding"),
 	/**
 	 * padding-right
@@ -195,10 +195,10 @@ public enum CssProperty {
 	 * padding-bottom
 	 */
 	PADDING_BOTTOM("padding-bottom"),
-	/**
-	 * position
-	 */
+	/** position */
 	POSITION("position"),
+	/** resize */
+	RESIZE("resize"),
 	/** right */
 	RIGHT("right"),
 	/** text-align */
