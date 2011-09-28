@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 import com.ajah.html.dtd.InputType;
 
 /**
- * Textarea. May become obsolete as other Input classes are implmented.
+ * Textarea.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -34,6 +34,12 @@ import com.ajah.html.dtd.InputType;
 @EqualsAndHashCode(callSuper = false)
 public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implements Input<TextArea> {
 
+	private final String name;
+	private Label label;
+	private final InputType type;
+	private String value;
+	private final boolean html;
+
 	/**
 	 * @param name
 	 *            Name attribute.
@@ -41,12 +47,15 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	 *            Value attribute.
 	 * @param type
 	 *            Type attribute.
+	 * @param html
+	 *            Should this textarea allow HTML?
 	 */
-	public TextArea(String name, String value, InputType type) {
+	public TextArea(String name, String value, InputType type, boolean html) {
 		this.id = name;
 		this.name = name;
 		this.value = value;
 		this.type = type;
+		this.html = html;
 		setCssClass(type.name().toLowerCase());
 	}
 
@@ -61,16 +70,13 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	 *            Value attribute.
 	 * @param type
 	 *            Type attribute.
+	 * @param html
+	 *            Should this textarea allow HTML?
 	 */
-	public TextArea(String label, String name, String value, InputType type) {
-		this(name, value, type);
+	public TextArea(String label, String name, String value, InputType type, boolean html) {
+		this(name, value, type, html);
 		this.label = new Label(this, label).css(type.name().toLowerCase());
 	}
-
-	private final String name;
-	private Label label;
-	private final InputType type;
-	private String value;
 
 	/**
 	 * Renders attributes and also the sibling Label.
