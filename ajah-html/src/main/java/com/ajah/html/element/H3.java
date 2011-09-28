@@ -15,6 +15,9 @@
  */
 package com.ajah.html.element;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,6 +31,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class H3 extends AbstractNestableHtmlCoreElement<H3> {
+
+	private String text;
 
 	/**
 	 * Returns "h3"
@@ -43,5 +48,10 @@ public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 	H3 getThis() {
 		return this;
 	}
-	
+
+	@Override
+	protected void renderBeforeChildren(Writer out) throws IOException {
+		out.write(this.text);
+	}
+
 }
