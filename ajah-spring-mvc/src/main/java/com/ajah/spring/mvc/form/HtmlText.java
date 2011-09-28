@@ -23,10 +23,8 @@ import java.lang.annotation.Target;
 import com.ajah.html.element.TextArea;
 
 /**
- * Denote a {@link String} as expecting a long value. Generally means that the
- * input should be rendered as a {@link TextArea}.
- * 
- * If the value should be HTML, use {@link HtmlText}.
+ * Denote a {@link String} as expecting a richtext value. Generally means that
+ * the input should be rendered as an HTML Editor over a {@link TextArea}.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -34,6 +32,6 @@ import com.ajah.html.element.TextArea;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface LongText {
+public @interface HtmlText {
 	// Empty
 }

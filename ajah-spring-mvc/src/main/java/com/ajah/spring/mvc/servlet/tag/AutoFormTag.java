@@ -38,10 +38,12 @@ import com.ajah.html.element.Form;
 import com.ajah.html.element.Input;
 import com.ajah.html.element.InputImpl;
 import com.ajah.html.element.ListItem;
+import com.ajah.html.element.Script;
 import com.ajah.html.element.TextArea;
 import com.ajah.html.element.UnorderedList;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.AutoFormUtils;
+import com.ajah.spring.mvc.form.HtmlText;
 import com.ajah.spring.mvc.form.LongText;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.spring.mvc.form.validation.Match;
@@ -149,6 +151,7 @@ public class AutoFormTag extends TagSupport {
 				Input<?> input = getInput(field, this.autoForm.getClass().getFields());
 				form.getInputs().add(input);
 			}
+
 			String submitText = null;
 			if (this.autoForm.getClass().isAnnotationPresent(Submit.class)) {
 				submitText = this.autoForm.getClass().getAnnotation(Submit.class).value();
@@ -159,6 +162,21 @@ public class AutoFormTag extends TagSupport {
 			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT);
 			form.getInputs().add(input);
 			div.add(form);
+
+			Script script = new Script();
+			StringBuffer code = new StringBuffer();
+			code.append("\n$(document).ready(function() {\n");
+			code.append("\t$(\"#" + form.getInputs().get(0).getId() + "\").focus();\n");
+			for (Input<?> child : form.getInputs()) {
+				if (child instanceof TextArea && ((TextArea) child).isHtml()) {
+					this.pageContext.getRequest().setAttribute("jjScriptHtmlEditor", Boolean.TRUE);
+					code.append("\t$(\"#" + child.getId() + "\").cleditor({width:\"95%\", height:\"100%\", controls: \"style bold italic strikethrough | bullets numbering | outdent indent | rule image link unlink | removeformat source\"});\n");
+				}
+			}
+			code.append("});\n");
+			script.setText(code.toString());
+			div.add(script);
+
 			div.render(out, isCompact() ? -1 : 0);
 		} catch (IOException e) {
 			throw new JspException(e);
@@ -178,9 +196,12 @@ public class AutoFormTag extends TagSupport {
 		log.fine(field.getType().toString());
 		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
 		if (field.getType().equals(String.class)) {
-			if (field.isAnnotationPresent(LongText.class)) {
+			if (field.isAnnotationPresent(HtmlText.class)) {
+				// An HTML-enabled textarea input
+				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT, true);
+			} else if (field.isAnnotationPresent(LongText.class)) {
 				// A textarea input
-				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
+				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT, false);
 			} else {
 				// A normal text input
 				input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
