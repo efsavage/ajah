@@ -509,16 +509,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	/**
-	 * Sets the Spring JDBC Template.
-	 * 
-	 * @param jdbcTemplate
-	 *            The Spring JDBC Template.
-	 */
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
-	/**
 	 * Sets the table name. This will override any auto-discovered settings.
 	 * 
 	 * @param tableName
