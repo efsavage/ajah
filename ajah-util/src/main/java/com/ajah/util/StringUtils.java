@@ -138,4 +138,27 @@ public class StringUtils {
 		return join(array, null);
 	}
 
+	/**
+	 * Checks a string with {@link String#endsWith(String)} against an array of
+	 * candidate strings.
+	 * 
+	 * @param string
+	 *            The string to check.
+	 * @param suffixes
+	 *            The array of suffixes to use.
+	 * @return true if the string ends with any of the suffixes, otherwise
+	 *         false.
+	 */
+	public static boolean endsWith(String string, String[] suffixes) {
+		if (isBlank(string) || suffixes == null || suffixes.length == 0) {
+			return false;
+		}
+		for (String suffix : suffixes) {
+			if (string.endsWith(suffix)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
