@@ -80,7 +80,7 @@ public class JDBCMapperUtils {
 			columnName = tableName + "_id";
 		} else if (field.getType().isEnum()) {
 			// Enums are stored as-is, even if they implement other interfaces
-		} else if (field.getType().isAssignableFrom(Date.class)) {
+		} else if (Date.class.isAssignableFrom(field.getType())) {
 			columnName += "_date";
 		} else if (!field.getType().isEnum() && Identifiable.class.isAssignableFrom(field.getType())) {
 			columnName += "_id";
