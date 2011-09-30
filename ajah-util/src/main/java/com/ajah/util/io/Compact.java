@@ -77,4 +77,17 @@ public enum Compact {
 	public boolean le(Compact other) {
 		return this.level <= other.level;
 	}
+
+	/**
+	 * Tell whether the specified Compact argument is more or equally compact as
+	 * this one.
+	 * 
+	 * @param other
+	 *            The compact to compare to.
+	 * @return true if this compact is less or equally compact than the
+	 *         parameter.
+	 */
+	public boolean ge(Compact other) {
+		return this.level >= other.level;
+	}
 }
