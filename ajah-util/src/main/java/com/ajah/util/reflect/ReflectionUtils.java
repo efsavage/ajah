@@ -130,25 +130,32 @@ public class ReflectionUtils {
 	 */
 	public static Object propGetSafeAuto(final Object object, final Field field, final PropertyDescriptor propertyDescriptor) {
 		if (IntrospectionUtils.isString(field)) {
+			// It's a string
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isDate(field)) {
+			// It's a date
 			return DateUtils.safeToLong(ReflectionUtils.propGetDateSafe(object, propertyDescriptor));
 		} else if (IntrospectionUtils.isToStringable(field)) {
+			// It's toStringable
 			return StringUtils.safeToString(ReflectionUtils.propGetSafe(object, propertyDescriptor));
 		} else if (IntrospectionUtils.isIdentifiable(field)) {
+			// It's identifiable
 			Identifiable<?> identifiable = ((Identifiable<?>) ReflectionUtils.propGetSafe(object, propertyDescriptor));
 			if (identifiable == null) {
 				return null;
 			}
 			return StringUtils.safeToString(identifiable.getId());
 		} else if (IntrospectionUtils.isInt(field)) {
+			// It's an int
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isLong(field)) {
+			// It's a long
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isBoolean(field)) {
+			// It's a boolean
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else {
-			log.warning("Can't handle property getting of type " + field.getType());
+			log.warning("Can't handle property getting of type " + field.getType() + " for field " + field.getName());
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		}
 	}
