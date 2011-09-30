@@ -243,7 +243,7 @@ public class DateUtils {
 	 */
 	public static Date tomorrow() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.roll(Calendar.DAY_OF_MONTH, true);
+		calendar.roll(Calendar.DAY_OF_YEAR, true);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
