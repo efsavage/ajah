@@ -205,41 +205,25 @@ public enum CssProperty {
 	TEXT_ALIGN("text-align"),
 	/** text-shadow */
 	TEXT_SHADOW("text-shadow"),
-	/**
-	 * top
-	 */
+	/** top */
 	TOP("top"),
-	/**
-	 * vertical-align
-	 */
+	/** vertical-align */
 	VERTICAL_ALIGN("vertical-align"),
-	/**
-	 * -webkit-animation-duration
-	 */
+	/** -webkit-animation-duration */
 	WEBKIT_ANIMATION_DURATION("-webkit-animation-duration"),
-	/**
-	 * -webkit-animation-iteration-count
-	 */
+	/** -webkit-animation-iteration-count */
 	WEBKIT_ANIMATION_ITERATION_COUNT("-webkit-animation-iteration-count"),
-	/**
-	 * -webkit-animation-name
-	 */
+	/** -webkit-animation-name */
 	WEBKIT_ANIMATION_NAME("-webkit-animation-name"),
-	/**
-	 * -webkit-box-shadow
-	 */
+	/** -webkit-box-shadow */
 	WEBKIT_BOX_SHADOW("-webkit-box-shadow"),
-	/**
-	 * width
-	 */
+	/** width */
 	WIDTH("width"),
-	/**
-	 * word-spacing
-	 */
+	/** word-spacing */
 	WORD_SPACING("word-spacing"),
-	/**
-	 * zoom
-	 */
+	/** z-index */
+	Z_INDEX("z-index"),
+	/** zoom */
 	ZOOM("zoom");
 
 	/**
