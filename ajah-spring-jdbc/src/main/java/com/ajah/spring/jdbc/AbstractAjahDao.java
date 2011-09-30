@@ -427,8 +427,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		try {
 			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
 			if (log.isLoggable(Level.FINEST)) {
-				log.finer(sql);
-				log.finer(value.toString());
+				log.finest(sql);
+				log.finest(value.toString());
 			}
 
 			return getJdbcTemplate().query(sql, new Object[] { value }, getRowMapper());
@@ -439,11 +439,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	private void loadColumns() {
-		log.fine("Loading columns");
+		log.finest("Loading columns");
 		if (this.tableName == null) {
 			this.tableName = JDBCMapperUtils.getTableName(getTargetClass());
 		}
-		log.fine("Table set to : " + this.tableName);
+		log.finest("Table set to : " + this.tableName);
 		List<String> columnList = new ArrayList<>();
 		List<String> newUpdateFields = new ArrayList<>();
 		StringBuffer select = new StringBuffer();
