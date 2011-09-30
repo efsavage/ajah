@@ -70,7 +70,7 @@ public class CssDocument {
 		AjahStringBuilder string = new AjahStringBuilder(compact);
 		for (CssRule rule : this.rules) {
 			string.append(rule.toString(compact));
-			string.append('\n', Compact.MAX);
+			string.append('\n', Compact.HIGH);
 		}
 		return string.toString();
 	}

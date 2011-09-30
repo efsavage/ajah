@@ -51,11 +51,22 @@ public class CssDeclaration implements Comparable<CssDeclaration> {
 	/**
 	 * Returns the valid, usable version of this declaration.
 	 * 
+	 * @param semicolon
+	 *            Append a semicolon at the end?
+	 * @return The valid, usable version of this document
+	 */
+	public String toString(boolean semicolon) {
+		return this.property.getName() + ':' + this.value + (semicolon ? ";" : "");
+	}
+
+	/**
+	 * Returns the valid, usable version of this declaration.
+	 * 
 	 * @return The valid, usable version of this document
 	 */
 	@Override
 	public String toString() {
-		return this.property.getName() + ':' + this.value + ';';
+		return toString(true);
 	}
 
 	@Override

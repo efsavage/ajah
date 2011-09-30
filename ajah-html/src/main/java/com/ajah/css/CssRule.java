@@ -117,9 +117,14 @@ public class CssRule {
 		string.append("{");
 		string.append(' ', Compact.MED);
 		string.append('\n', Compact.LOW);
+		int i = 1;
 		for (CssDeclaration declaration : this.declarations) {
 			string.append(Report.tabs(depth + 1), Compact.LOW);
-			string.append(declaration.toString());
+			if (i++ == this.declarations.size() && compact.ge(Compact.MAX)) {
+				string.append(declaration.toString(false));
+			} else {
+				string.append(declaration.toString());
+			}
 			string.append('\n', Compact.MED);
 		}
 		for (CssRule child : this.children) {
