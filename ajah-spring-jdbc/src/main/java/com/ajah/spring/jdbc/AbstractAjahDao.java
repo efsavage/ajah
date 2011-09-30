@@ -557,11 +557,24 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *             If an error occurs executing the query.
 	 */
 	public int insert(T entity) throws DatabaseAccessException {
+		return insert(entity, false);
+	}
+
+	/**
+	 * Inserts the record. May throw an error on duplicate key exceptions.
+	 * 
+	 * @param entity
+	 *            Entity to insert into the table.
+	 * @return Number of rows inserted.
+	 * @throws DatabaseAccessException
+	 *             If an error occurs executing the query.
+	 */
+	public int insert(T entity, boolean delayed) throws DatabaseAccessException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			String sql = "INSERT INTO " + getTableName() + "(" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
+			String sql = "INSERT " + (delayed ? "DELAYED " : "") + "INTO " + getTableName() + "(" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
 			if (log.isLoggable(Level.FINEST)) {
 				log.finest(sql);
 			}
