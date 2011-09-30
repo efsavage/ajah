@@ -28,8 +28,6 @@ import com.ajah.util.ToStringable;
  */
 public class UserId implements Serializable, ToStringable, FromStringable, Comparable<UserId> {
 
-	private static final long serialVersionUID = 5419973870818857713L;
-
 	private final String id;
 
 	/**
