@@ -132,13 +132,28 @@ public class DateUtils {
 
 	/**
 	 * Formats a date, adjusting based on the current time, in a "nice" format,
-	 * such as "tomorrow" or "next Tuesday".
+	 * such as "tomorrow" or "next Tuesday" without capitalization.
 	 * 
 	 * @param date
 	 *            Date to format, required.
 	 * @return The formatted date.
 	 */
 	public static String niceFormatAbsolute(final Date date) {
+		return niceFormatAbsolute(date, false);
+	}
+
+	/**
+	 * Formats a date, adjusting based on the current time, in a "nice" format,
+	 * such as "tomorrow" or "next Tuesday".
+	 * 
+	 * @param date
+	 *            Date to format, required.
+	 * @param capitalize
+	 *            If true, the first word will be capitalized if it is not a
+	 *            proper noun. Date and month names will always be capitalized.
+	 * @return The formatted date.
+	 */
+	public static String niceFormatAbsolute(final Date date, boolean capitalize) {
 		StringBuffer string = new StringBuffer();
 		Calendar then = Calendar.getInstance();
 		then.setTime(date);
@@ -146,21 +161,21 @@ public class DateUtils {
 		long interval = System.currentTimeMillis() - date.getTime();
 
 		if (now.get(Calendar.DAY_OF_MONTH) == then.get(Calendar.DAY_OF_MONTH)) {
-			string.append("Today");
+			string.append("today");
 		} else if ((now.get(Calendar.DAY_OF_MONTH) + 1) == then.get(Calendar.DAY_OF_MONTH)) {
-			string.append("Tomorrow");
+			string.append("tomorrow");
 		} else if ((now.get(Calendar.DAY_OF_MONTH) - 1) == then.get(Calendar.DAY_OF_MONTH)) {
-			string.append("Yesterday");
+			string.append("yesterday");
 		} else if (interval < 0 && interval > -WEEK_IN_MILLIS) {
 			// Within the next week
 			// TODO handle the case of it being 9:00 am on tuesday and the date
 			// is 9:01 the following tuesday
-			string.append("Next " + DAY_OF_WEEK_FORMAT.format(date));
+			string.append("next " + DAY_OF_WEEK_FORMAT.format(date));
 		} else if (interval > 0 && interval < WEEK_IN_MILLIS) {
 			// Within the past week
 			// TODO handle the case of it being 9:00 am on tuesday and the date
 			// is 8:59 the previous tuesday
-			string.append("Last " + DAY_OF_WEEK_FORMAT.format(date));
+			string.append("last " + DAY_OF_WEEK_FORMAT.format(date));
 		} else {
 			string.append(NICE_ABSOLUTE_DATE_FORMAT.format(date));
 		}
