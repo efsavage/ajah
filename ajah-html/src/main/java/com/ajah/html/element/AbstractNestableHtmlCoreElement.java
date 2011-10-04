@@ -16,9 +16,12 @@
 package com.ajah.html.element;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +43,8 @@ import com.ajah.util.StringUtils;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCoreElement<T> implements Nestable {
+
+	private static final Logger log = Logger.getLogger(AbstractNestableHtmlCoreElement.class.getName());
 
 	/**
 	 * Creates an element and a {@link CData} child element with the value
@@ -114,6 +119,23 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		out.write(">");
 		if (depth >= 0) {
 			out.write("\r\n");
+		}
+	}
+
+	/**
+	 * Returns a rendering of this element (and children) as a string.
+	 * 
+	 * @see AbstractNestableHtmlCoreElement#render(Writer, int)
+	 * @return A rendering of this element (and children) as a string.
+	 */
+	public String render() {
+		try {
+			Writer writer = new StringWriter();
+			render(writer, 0);
+			return writer.toString();
+		} catch (IOException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+			return null;
 		}
 	}
 
