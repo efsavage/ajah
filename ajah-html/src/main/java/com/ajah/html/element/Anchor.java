@@ -17,6 +17,7 @@ package com.ajah.html.element;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,6 +39,19 @@ public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 
 	private String href;
 	private String text;
+
+	/**
+	 * Public constructor.
+	 * 
+	 * @param url
+	 *            The URL for the links href, nullable.
+	 * @param text
+	 *            The text of the link, nullable.
+	 */
+	public Anchor(URL url, String text) {
+		this.href = url.toExternalForm();
+		this.text = text;
+	}
 
 	/**
 	 * Returns "a"
