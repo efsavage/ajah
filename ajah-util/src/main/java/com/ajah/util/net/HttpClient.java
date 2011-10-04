@@ -34,16 +34,42 @@ public class HttpClient {
 	/**
 	 * Get an {@link InputStream} of the target URL.
 	 * 
-	 * @param cssFile
+	 * @param url
+	 *            The URL to fetch.
 	 * @return The results of the URL, if possible, or null.
 	 * @throws IOException
+	 *             If the file could not be fetched.
 	 */
-	public static InputStream stream(String cssFile) throws IOException {
+	public static InputStream stream(String url) throws IOException {
 		try {
-			URL ur = new URL(cssFile);
+			URL ur = new URL(url);
 			URLConnection conn;
 			conn = ur.openConnection();
 			return conn.getInputStream();
+		} catch (MalformedURLException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Get a string version of the target URL.
+	 * 
+	 * @param url
+	 *            The URL to fetch.
+	 * @return The results of the URL, if possible, or null.
+	 * @throws IOException
+	 *             If the file could not be fetched.
+	 */
+	public static String getString(String url) throws IOException {
+		try {
+			URL ur = new URL(url);
+			URLConnection conn;
+			conn = ur.openConnection();
+			Object content = conn.getContent();
+			if (content instanceof String) {
+				return (String) content;
+			}
+			return content.toString();
 		} catch (MalformedURLException e) {
 			return null;
 		}
