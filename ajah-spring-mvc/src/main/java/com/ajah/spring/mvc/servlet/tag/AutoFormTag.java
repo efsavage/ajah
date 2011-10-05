@@ -62,8 +62,6 @@ public class AutoFormTag extends TagSupport {
 
 	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
 
-	private static final long serialVersionUID = -5998541642357295851L;
-
 	private Object autoForm;
 
 	private boolean compact = false;
@@ -146,6 +144,9 @@ public class AutoFormTag extends TagSupport {
 			}
 
 			Form form = new Form(FormMethod.POST).css("asm-auto");
+			if (!StringUtils.isBlank(getId())) {
+				form.setId(getId());
+			}
 			for (Field field : this.autoForm.getClass().getFields()) {
 				log.fine(field.getName());
 				Input<?> input = getInput(field, this.autoForm.getClass().getFields());
@@ -166,13 +167,15 @@ public class AutoFormTag extends TagSupport {
 			Script script = new Script();
 			StringBuffer code = new StringBuffer();
 			code.append("\n$(document).ready(function() {\n");
-			code.append("\t$(\"#" + form.getInputs().get(0).getId() + "\").focus();\n");
 			for (Input<?> child : form.getInputs()) {
 				if (child instanceof TextArea && ((TextArea) child).isHtml()) {
 					this.pageContext.getRequest().setAttribute("jjScriptHtmlEditor", Boolean.TRUE);
-					code.append("\t$(\"#" + child.getId() + "\").cleditor({width:\"95%\", height:\"100%\", controls: \"style bold italic strikethrough | bullets numbering | outdent indent | rule image link unlink | removeformat source\"});\n");
+					code.append("\t$(\".rich-text"
+							+ "\").cleditor({width:\"95%\", height:\"100%\", controls: \"style bold italic strikethrough | bullets numbering | outdent indent | rule image link unlink | removeformat source\"});\n");
+					break;
 				}
 			}
+			code.append("\t$(\"#" + form.getInputs().get(0).getId() + "\").focus();\n");
 			code.append("});\n");
 			script.setText(code.toString());
 			div.add(script);
