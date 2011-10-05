@@ -76,6 +76,9 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	public TextArea(String label, String name, String value, InputType type, boolean html) {
 		this(name, value, type, html);
 		this.label = new Label(this, label).css(type.name().toLowerCase());
+		if(html) {
+			css("rich-text");
+		}
 	}
 
 	/**
