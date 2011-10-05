@@ -21,11 +21,11 @@ import java.io.Writer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
 /**
  * h3 element
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Data
@@ -52,6 +52,18 @@ public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 	@Override
 	protected void renderBeforeChildren(Writer out) throws IOException {
 		out.write(this.text);
+	}
+
+	/**
+	 * Fluent alias to {@link #setText(String)}.
+	 * 
+	 * @param newText
+	 *            The text to set.
+	 * @return The current instance.
+	 */
+	public H3 text(String newText) {
+		this.setText(newText);
+		return this;
 	}
 
 }

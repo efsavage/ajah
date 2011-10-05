@@ -53,4 +53,17 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 	protected void renderBeforeChildren(Writer out) throws IOException {
 		out.write(this.text);
 	}
+
+	/**
+	 * Fluent alias to {@link #setText(String)}.
+	 * 
+	 * @param newText
+	 *            The text to set.
+	 * @return The current instance.
+	 */
+	public Paragraph text(String newText) {
+		this.setText(newText);
+		return this;
+	}
+
 }
