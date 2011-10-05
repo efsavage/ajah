@@ -48,9 +48,14 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-html</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>
