@@ -69,4 +69,9 @@
 		</function-signature>
 	</function>
 
+	<tag-file>
+		<name>forEach</name>
+		<path>/META-INF/tags/ajah-servlet/forEach.tag</path>
+	</tag-file>
+	
 </taglib>
