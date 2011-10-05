@@ -51,4 +51,18 @@ public class CollectionUtils {
 		return collection == null || collection.size() < 1;
 	}
 
+	/**
+	 * Returns null if the supplied collection is empty.
+	 * 
+	 * @param collection
+	 *            The collection to test.
+	 * @return The original collection if not empty, otherwise null.
+	 */
+	public static <T, C extends Collection<T>> C nullIfEmpty(final C collection) {
+		if (isEmpty(collection)) {
+			return null;
+		}
+		return collection;
+	}
+
 }
