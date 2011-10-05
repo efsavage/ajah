@@ -27,7 +27,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +46,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.CollectionUtils;
 import com.ajah.util.Identifiable;
 import com.ajah.util.ToStringable;
 import com.ajah.util.reflect.IntrospectionUtils;
@@ -431,10 +431,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				log.finest(value.toString());
 			}
 
-			return getJdbcTemplate().query(sql, new Object[] { value }, getRowMapper());
+			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, new Object[] { value }, getRowMapper()));
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
-			return Collections.emptyList();
+			return null;
 		}
 	}
 
