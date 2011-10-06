@@ -15,6 +15,7 @@
  */
 package com.ajah.spring.mvc.form.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -32,9 +33,10 @@ import com.ajah.spring.mvc.form.AutoForm;
  */
 public class AutoFormValidator implements Validator {
 
+	@Autowired
 	private Validator standardValidator;
 
-	private Validator[] customValidators = new Validator[] { new MatchValidator(), new StringSizeValidator() };
+	private final Validator[] customValidators = new Validator[] { new MatchValidator(), new StringSizeValidator() };
 
 	/**
 	 * Returns the "standard" validator, i.e. the one that will handle standard
