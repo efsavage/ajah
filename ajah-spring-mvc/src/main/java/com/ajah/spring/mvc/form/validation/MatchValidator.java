@@ -70,10 +70,10 @@ public class MatchValidator implements Validator {
 					if (!field.getType().equals(matchTargetField.getType())) {
 						throw new IllegalArgumentException("Target field is different type");
 					}
-					boolean valid;
+					boolean valid = false;
 					if (field.getType().isAssignableFrom(Comparable.class)) {
 						valid = ((Comparable) field.get(target)).compareTo(matchTargetField.get(target)) == 0;
-					} else {
+					} else if (field.get(target) != null) {
 						valid = field.get(target).equals(matchTargetField.get(target));
 					}
 					log.fine("Valid: " + valid);
