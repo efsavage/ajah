@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.IterationTag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import lombok.Data;
@@ -42,7 +41,7 @@ import com.ajah.util.StringUtils;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ForEachTag extends TagSupport implements IterationTag {
+public class ForEachTag extends TagSupport {
 
 	private static final Logger log = Logger.getLogger(ForEachTag.class.getName());
 
@@ -68,22 +67,23 @@ public class ForEachTag extends TagSupport implements IterationTag {
 					Paragraph p = new Paragraph().text(this.ifEmpty);
 					p.render(this.pageContext.getOut(), 0);
 				}
-			} else {
-				if (this.items instanceof Iterable) {
-					this.iterator = ((Iterable<?>) this.items).iterator();
-					if (this.iterator.hasNext()) {
-						Object item = this.iterator.next();
-						if (!StringUtils.isBlank(this.var)) {
-							this.pageContext.setAttribute(this.var, item);
-						}
-						log.finest("Var " + this.var + " is a " + this.pageContext.getAttribute(this.var).getClass().getName());
+				return SKIP_BODY;
+			}
+			if (this.items instanceof Iterable) {
+				this.iterator = ((Iterable<?>) this.items).iterator();
+				if (this.iterator.hasNext()) {
+					Object item = this.iterator.next();
+					if (!StringUtils.isBlank(this.var)) {
+						this.pageContext.setAttribute(this.var, item);
 					}
+					log.finest("Var " + this.var + " is a " + this.pageContext.getAttribute(this.var).getClass().getName());
+					return EVAL_BODY_INCLUDE;
 				}
 			}
+			return SKIP_BODY;
 		} catch (IOException e) {
 			throw new JspException(e);
 		}
-		return EVAL_BODY_INCLUDE;
 	}
 
 	@Override
