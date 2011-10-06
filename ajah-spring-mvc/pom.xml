@@ -2,23 +2,27 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ajah</groupId>
 	<artifactId>ajah-spring-mvc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Ajah Spring MVC Library</name>
 	<description>Code for use on Spring MVC webapps</description>
 	<packaging>jar</packaging>
 
-	<organization>
-		<name>Eric F. Savage</name>
-		<url>http://efsavage.com</url>
-	</organization>
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
 	<repositories>
 		<repository>
 			<id>repository.springframework.milestone</id>
 			<name>Spring Framework Maven Milestone Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
+		</repository>
+		<repository>
+			<id>projectlombok.org</id>
+			<url>http://projectlombok.org/mavenrepo</url>
 		</repository>
 	</repositories>
 
@@ -59,13 +63,13 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.8.3</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 	</dependencies>
 </project>
