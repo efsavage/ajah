@@ -8,6 +8,12 @@
 	<description>Code for projects using Ajah User management and authentication</description>
 	<url>http://efsavage.github.com/ajah/user/</url>
 
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -22,10 +28,5 @@
 		</dependency>
 	</dependencies>
 
-	<parent>
-		<groupId>com.ajah</groupId>
-		<artifactId>ajah-base</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
 
 </project>

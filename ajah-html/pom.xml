@@ -10,17 +10,10 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>

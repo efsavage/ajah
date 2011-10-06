@@ -1,15 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ajah</groupId>
 	<artifactId>ajah-base</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>Ajah Base Project</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
-		<ch.qos.logback.version>0.9.29</ch.qos.logback.version>
+		<ch.qos.logback.version>0.9.30</ch.qos.logback.version>
 		<org.projectlombok.lombok.version>0.10.0</org.projectlombok.lombok.version>
 	</properties>
 
@@ -68,14 +70,6 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.8</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<pushChanges>false</pushChanges>
-				</configuration>
-			</plugin>
 		</plugins>
 	</reporting>
 
@@ -114,6 +108,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<pushChanges>false</pushChanges>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -186,5 +188,19 @@
 			<url>s3://repo.efsavage.com/release</url>
 		</repository>
 	</distributionManagement>
+
+	<modules>
+		<module>../ajah-util</module>
+		<module>../ajah-geo</module>
+		<module>../ajah-html</module>
+		<module>../ajah-servlet</module>
+		<module>../ajah-event</module>
+		<module>../ajah-thread</module>
+		<module>../ajah-log-http</module>
+		<module>../ajah-spring</module>
+		<module>../ajah-spring-jdbc</module>
+		<module>../ajah-spring-mvc</module>
+		<module>../ajah-user</module>
+	</modules>
 
 </project>

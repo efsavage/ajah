@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<dependencies>

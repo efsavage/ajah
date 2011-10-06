@@ -10,20 +10,8 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
-
-	<repositories>
-		<repository>
-			<id>projectlombok.org</id>
-			<url>http://projectlombok.org/mavenrepo</url>
-		</repository>
-		<repository>
-			<id>java.net2</id>
-			<name>Repository hosting the jee6 artifacts</name>
-			<url>http://download.java.net/maven/2</url>
-		</repository>
-	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -31,6 +19,7 @@
 			<artifactId>ajah-util</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
