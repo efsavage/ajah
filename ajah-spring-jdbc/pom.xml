@@ -15,18 +15,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<repositories>
-		<repository>
-			<id>repository.springframework.milestone</id>
-			<name>Spring Framework Maven Milestone Repository</name>
-			<url>http://maven.springframework.org/milestone</url>
-		</repository>
-		<repository>
-			<id>projectlombok.org</id>
-			<url>http://projectlombok.org/mavenrepo</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.ajah</groupId>
