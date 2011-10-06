@@ -21,9 +21,9 @@
 	</organization>
 
 	<scm>
-		<connection>scm:git:git@github.com:efsavage/ajah.git</connection>
-		<url>scm:git:git@github.com:efsavage/ajah.git</url>
-		<developerConnection>scm:git:git@github.com:efsavage/ajah.git</developerConnection>
+		<connection>scm:git:git://github.com/efsavage/ajah.git</connection>
+		<url>scm:git:git://github.com/efsavage/ajah.git</url>
+		<developerConnection>scm:git:git://github.com/efsavage/ajah.git</developerConnection>
 	</scm>
 
 	<developers>
@@ -73,6 +73,13 @@
 	</reporting>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.springframework.build.aws</groupId>
+				<artifactId>org.springframework.build.aws.maven</artifactId>
+				<version>3.0.0.RELEASE</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -104,6 +111,49 @@
 		</plugins>
 	</build>
 
+	<repositories>
+
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<id>efsavage-s3repo-snap</id>
+			<name>efsavage public s3 snapshot repository</name>
+			<url>http://repo.efsavage.com.s3.amazonaws.com/snapshot</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<id>efsavage-s3repo-snap</id>
+			<name>efsavage public s3 release repository</name>
+			<url>http://repo.efsavage.com.s3.amazonaws.com/release</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>s3repo</id>
+			<name>efsavage public s3 repository</name>
+			<url>http://repo.efsavage.com.s3.amazonaws.com/snapshot</url>
+		</repository>
+		<repository>
+			<id>repository.springframework.milestone</id>
+			<name>Spring Framework Maven Milestone Repository</name>
+			<url>http://maven.springframework.org/milestone</url>
+		</repository>
+		<repository>
+			<id>projectlombok.org</id>
+			<url>http://projectlombok.org/mavenrepo</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -111,6 +161,24 @@
 			<version>4.9</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.build.aws</groupId>
+			<artifactId>org.springframework.build.aws.maven</artifactId>
+			<version>3.0.0.RELEASE</version>
+		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>efsavage-s3-repo-snap</id>
+			<name>efsavage public s3 repository</name>
+			<url>s3://repo.efsavage.com/snapshot</url>
+		</snapshotRepository>
+		<repository>
+			<id>efsavage-s3-repo</id>
+			<name>efsavage public s3 repository</name>
+			<url>s3://repo.efsavage.com/release</url>
+		</repository>
+	</distributionManagement>
 
 </project>
