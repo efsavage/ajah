@@ -41,4 +41,9 @@ public class UserAgent implements FromStringable, ToStringable {
 	public String toString() {
 		return this.raw;
 	}
+
+	public Browser getBrowser() {
+		return Browser.get(this.raw);
+	}
+
 }
