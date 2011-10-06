@@ -17,6 +17,7 @@ package com.ajah.spring.mvc.editor;
 
 import java.beans.PropertyEditorSupport;
 
+import com.ajah.util.StringUtils;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -46,7 +47,7 @@ public class EmailAddressEditor extends PropertyEditorSupport {
 	 */
 	@Override
 	public void setAsText(String text) {
-		setValue(text == null ? null : new EmailAddress(text));
+		setValue(StringUtils.isBlank(text) ? null : new EmailAddress(text));
 	}
 
 }

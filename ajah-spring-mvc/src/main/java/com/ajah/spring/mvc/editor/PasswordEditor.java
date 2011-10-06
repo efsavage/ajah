@@ -17,6 +17,7 @@ package com.ajah.spring.mvc.editor;
 
 import java.beans.PropertyEditorSupport;
 
+import com.ajah.util.StringUtils;
 import com.ajah.util.crypto.HmacSha1Password;
 import com.ajah.util.crypto.Password;
 
@@ -47,7 +48,7 @@ public class PasswordEditor extends PropertyEditorSupport {
 	 */
 	@Override
 	public void setAsText(String text) {
-		setValue(text == null ? null : new HmacSha1Password(text, false));
+		setValue(StringUtils.isBlank(text) ? null : new HmacSha1Password(text, false));
 	}
 
 }
