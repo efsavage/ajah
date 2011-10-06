@@ -67,7 +67,7 @@ public class StringSizeValidator implements Validator {
 					value = field.get(target);
 				} catch (IllegalAccessException e) {
 					log.log(Level.SEVERE, e.getMessage(), e);
-					errors.rejectValue(fieldName, fieldName + "." + StringSize.class.getSimpleName(), getArgs(field, stringSize),
+					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize),
 							stringSize.message());
 					return;
 				}
@@ -78,11 +78,11 @@ public class StringSizeValidator implements Validator {
 				}
 				log.fine("Value is " + len + " chars [min=" + stringSize.min() + ", max=" + stringSize.max() + "]");
 				if (len < stringSize.min()) {
-					errors.rejectValue(fieldName, fieldName + "." + StringSize.class.getSimpleName(), getArgs(field, stringSize),
+					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize),
 							stringSize.message());
 				}
 				if (len > stringSize.min()) {
-					errors.rejectValue(fieldName, fieldName + "." + StringSize.class.getSimpleName(), getArgs(field, stringSize),
+					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize),
 							stringSize.message());
 				}
 			}
