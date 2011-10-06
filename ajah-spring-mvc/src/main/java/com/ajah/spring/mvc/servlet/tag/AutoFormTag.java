@@ -18,13 +18,11 @@ package com.ajah.spring.mvc.servlet.tag;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.Tag;
-import javax.servlet.jsp.tagext.TagSupport;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.BindingResult;
@@ -58,7 +56,7 @@ import com.ajah.util.data.format.EmailAddress;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class AutoFormTag extends TagSupport {
+public class AutoFormTag extends SpringTag {
 
 	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
 
@@ -130,15 +128,7 @@ public class AutoFormTag extends TagSupport {
 					log.fine("Found " + result.getErrorCount() + " global errors");
 					UnorderedList errs = div.add(new UnorderedList().css("asm-err"));
 					for (ObjectError error : result.getAllErrors()) {
-						ResourceBundle rb = ResourceBundle.getBundle("/AutoFormValidation");
-						String message = error.getDefaultMessage();
-						if (message.startsWith("{")) {
-							message = rb.getString(error.getDefaultMessage().substring(1, message.length() - 1));
-						}
-						for (int i = 0; i < (error.getArguments() == null ? 0 : error.getArguments().length); i++) {
-							message = message.replaceAll("\\{" + i + "\\}", error.getArguments()[i].toString());
-						}
-						errs.add(new ListItem(message));
+						errs.add(new ListItem(getMessage(error)));
 					}
 				}
 			}
