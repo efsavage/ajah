@@ -8,13 +8,6 @@
 	<name>Ajah Syndication Library</name>
 	<description>The Ajah Syndication Library serves to provide a place for dealing with feeds, broadcasts, and subscriptions.</description>
 
-	<repositories>
-		<repository>
-			<id>projectlombok.org</id>
-			<url>http://projectlombok.org/mavenrepo</url>
-		</repository>
-	</repositories>
-
 	<organization>
 		<name>Eric F. Savage</name>
 		<url>http://efsavage.com</url>
@@ -59,20 +52,6 @@
 	</build>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>0.10.0</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>com.ajah</groupId>

@@ -16,12 +16,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>0.10.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-jdbc</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

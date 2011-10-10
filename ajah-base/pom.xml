@@ -13,6 +13,7 @@
 		<org.slf4j.version>1.6.1</org.slf4j.version>
 		<ch.qos.logback.version>0.9.30</ch.qos.logback.version>
 		<org.projectlombok.lombok.version>0.10.0</org.projectlombok.lombok.version>
+		<mysql.connector.version>5.1.18</mysql.connector.version>
 	</properties>
 
 	<organization>
@@ -117,6 +118,19 @@
 					<pushChanges>false</pushChanges>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.6</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.build.aws</groupId>
+						<artifactId>org.springframework.build.aws.maven</artifactId>
+						<version>3.0.0.RELEASE</version>
+						<scope></scope>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -169,11 +183,14 @@
 			<version>4.9</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework.build.aws</groupId>
-			<artifactId>org.springframework.build.aws.maven</artifactId>
-			<version>3.0.0.RELEASE</version>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>0.10.0</version>
+			<scope>provided</scope>
 		</dependency>
+
 	</dependencies>
 
 	<distributionManagement>
