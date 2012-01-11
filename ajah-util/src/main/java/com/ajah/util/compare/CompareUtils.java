@@ -15,6 +15,8 @@
  */
 package com.ajah.util.compare;
 
+import java.util.Date;
+
 /**
  * Utility methods for comparisons.
  * 
@@ -42,7 +44,9 @@ public class CompareUtils {
 	}
 
 	/**
-	 * Compares two objects, with null being considered lesser than not-null.
+	 * Compares objects for null via
+	 * {@link #compareNulls(Object, Object, boolean)}, with nullsEqual set to
+	 * false.
 	 * 
 	 * @param first
 	 *            First value.
@@ -55,8 +59,30 @@ public class CompareUtils {
 	 *             along to a comparator even though they are "equal".
 	 */
 	public static int compareNulls(final Object first, final Object second) {
+		return compareNulls(first, second, false);
+	}
+
+	/**
+	 * Compares two objects, with null being considered lesser than not-null.
+	 * 
+	 * @param first
+	 *            First value.
+	 * @param second
+	 *            Second value.
+	 * @param nullsEqual
+	 * @return -1 if first is null and second is not, 1 if first is not null and
+	 *         second is, 0 if both are not-null.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static int compareNulls(final Object first, final Object second, boolean nullsEqual) {
 		if (first == null) {
 			if (second == null) {
+				if (nullsEqual) {
+					return 0;
+				}
 				throw new IllegalArgumentException("Both values are null");
 			}
 			return -1;
@@ -86,7 +112,8 @@ public class CompareUtils {
 	}
 
 	/**
-	 * Compares two strings, checking for nulls first.
+	 * Compares two strings via {@link #compare(String, String, boolean)}, with
+	 * nullsEqual set to false.
 	 * 
 	 * @see String#compareTo(String)
 	 * @param first
@@ -99,7 +126,31 @@ public class CompareUtils {
 	 *             along to a comparator even though they are "equal".
 	 */
 	public static int compare(final String first, final String second) {
-		int retVal = compareNulls(first, second);
+		return compare(first, second, false);
+	}
+
+	/**
+	 * Compares two strings, checking for nulls first.
+	 * 
+	 * @see String#compareTo(String)
+	 * @param first
+	 *            The first string, may be null.
+	 * @param second
+	 *            The second string, may be null.
+	 * @param nullsEqual
+	 *            Should two null objects be treated as equal (true) or throw an
+	 *            exception (false)?
+	 * @return The comparison of the two Strings.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static int compare(final String first, final String second, boolean nullsEqual) {
+		int retVal = compareNulls(first, second, nullsEqual);
+		if (nullsEqual && retVal == 0 && first == null) {
+			return retVal;
+		}
 		if (retVal != 0) {
 			return retVal;
 		}
@@ -125,6 +176,34 @@ public class CompareUtils {
 			return retVal;
 		}
 		return first.compareToIgnoreCase(second);
+	}
+
+	/**
+	 * Compares two {@link Date}, checking for nulls first.
+	 * 
+	 * @see Date#compareTo(Date)
+	 * @param first
+	 *            The first date, may be null.
+	 * @param second
+	 *            The second date, may be null.
+	 * @param nullsEqual
+	 *            Should two null objects be treated as equal (true) or throw an
+	 *            exception (false)?
+	 * @return The comparison of the two Dates.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static int compare(Date first, Date second, boolean nullsEqual) {
+		int retVal = compareNulls(first, second, nullsEqual);
+		if (nullsEqual && retVal == 0 && first == null) {
+			return retVal;
+		}
+		if (retVal != 0) {
+			return retVal;
+		}
+		return first.compareTo(second);
 	}
 
 }
