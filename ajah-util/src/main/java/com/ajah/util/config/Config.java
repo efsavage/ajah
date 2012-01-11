@@ -154,4 +154,15 @@ public enum Config {
 		return get(key).split("\\s*,\\s*");
 	}
 
+	/**
+	 * Calls {@link #get(String, String)} with a default value of null.
+	 * 
+	 * @param key
+	 *            The key to fetch.
+	 * @return The value of the key, or null.
+	 */
+	public String get(String key) {
+		return get(key, null);
+	}
+
 }
