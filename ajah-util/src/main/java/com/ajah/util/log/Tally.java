@@ -100,6 +100,20 @@ public class Tally<T> {
 	}
 
 	/**
+	 * Generates a report only if the {@link #getTotal()} evenly divides by the
+	 * interval, and is greater than zero.
+	 * 
+	 * @param interval
+	 *            The interval to space reports by
+	 * @see #report()
+	 */
+	public void report(int interval) {
+		if (getTotal() > 0 && (getTotal() % interval) == 0) {
+			report();
+		}
+	}
+
+	/**
 	 * Write a report with totals to the configured output.
 	 */
 	public void report() {
