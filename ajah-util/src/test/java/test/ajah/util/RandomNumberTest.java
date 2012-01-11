@@ -40,4 +40,26 @@ public class RandomNumberTest {
 			Assert.assertTrue(random <= upper);
 		}
 	}
+
+	/**
+	 * Test a random distribution within a range for both staying within that
+	 * range and being reasonably distributed throughout it.
+	 */
+	@Test
+	public void testRange() {
+		final int lower = 10;
+		final int upper = 20;
+		final int[] array = new int[upper + 1];
+		for (int attempts = 0; attempts < 10000; attempts++) {
+			array[RandomUtils.getRandomNumber(lower, upper)]++;
+		}
+		for (int i = 0; i < lower; i++) {
+			Assert.assertEquals(0, array[i]);
+		}
+		for (int i = lower; i <= upper; i++) {
+			System.out.println("array[" + i + "] = " + array[i]);
+			// Should be extremely improbable that we had less than 5%
+			Assert.assertTrue(array[i] > 500);
+		}
+	}
 }
