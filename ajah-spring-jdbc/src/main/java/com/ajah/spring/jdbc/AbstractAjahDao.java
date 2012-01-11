@@ -44,6 +44,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.ajah.spring.jdbc.criteria.Criteria;
+import com.ajah.spring.jdbc.criteria.Where;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
@@ -196,6 +198,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			setter.invoke(entity, value);
 		} catch (IllegalAccessException e) {
 			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
+		} catch (IllegalArgumentException e) {
+			// TODO See if we're trying to set a null on a primitive
+			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		} catch (InvocationTargetException e) {
 			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		}
@@ -260,7 +265,22 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		try {
 			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
+			log.finest(e.getMessage());
+			return null;
+		}
+	}
+
+	public T find(Criteria criteria) {
+		return find(criteria.getWhere());
+	}
+
+	public T find(Where where) {
+		AjahUtils.requireParam(where, "where");
+		try {
+			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where.getSql() + " LIMIT 1";
+			log.finest(sql);
+			return getJdbcTemplate().queryForObject(sql, where.getValues().toArray(), getRowMapper());
+		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
@@ -396,6 +416,36 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *            Column to match against, required.
 	 * @param value
 	 *            Value to match against the entity.field column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(String field, String value) {
+		AjahUtils.requireParam(value, "value");
+		return listByField(field, value, getTableName() + "_id", 0, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @param count
+	 *            The maximum number of rows to fetch.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(String field, String value, int count) {
+		AjahUtils.requireParam(value, "value");
+		return listByField(field, value, getTableName() + "_id", 0, count);
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
 	 * @param orderBy
 	 * @param page
 	 *            Page of results (offset).
@@ -413,7 +463,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param field
 	 *            Column to match against, required.
 	 * @param value
-	 *            Value to match against the entity.field column, required.
+	 *            Value to match against the entity.field column, required. If
+	 *            matching on "IS NULL", set this parameter to "NULL".
 	 * @param orderBy
 	 * @param page
 	 *            Page of results (offset).
@@ -425,12 +476,15 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
+			if (value.equals("NULL")) {
+				String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " IS NULL ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
+				return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, getRowMapper()));
+			}
 			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
 			if (log.isLoggable(Level.FINEST)) {
 				log.finest(sql);
 				log.finest(value.toString());
 			}
-
 			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, new Object[] { value }, getRowMapper()));
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
@@ -450,8 +504,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (Field field : getTargetClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Transient.class)) {
+				log.finest("Ignoring Transient field " + field.getName());
 				continue;
 			} else if (field.isAnnotationPresent(ManyToMany.class)) {
+				log.finest("Ignoring ManyToMany field " + field.getName());
+				continue;
+			} else if (Collection.class.isAssignableFrom(field.getType())) {
+				log.finest("Ignoring Collection field " + field.getName());
 				continue;
 			}
 			String colName = JDBCMapperUtils.getColumnName(this.tableName, field);
@@ -540,8 +599,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public T findByWhere(String where) {
 		AjahUtils.requireParam(where, "where");
 		try {
-			log.finest("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1");
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + where + " LIMIT 1", null, getRowMapper());
+			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where + " LIMIT 1";
+			log.finest(sql);
+			return getJdbcTemplate().queryForObject(sql, null, getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -565,6 +625,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * 
 	 * @param entity
 	 *            Entity to insert into the table.
+	 * @param delayed
+	 *            Use a DELAYED insert.
 	 * @return Number of rows inserted.
 	 * @throws DatabaseAccessException
 	 *             If an error occurs executing the query.
