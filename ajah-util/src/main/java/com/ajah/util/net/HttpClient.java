@@ -21,9 +21,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import com.ajah.util.data.XmlString;
+
 /**
  * Simple HTTP client that depends only on JDK libraries. For production-level
- * code, use a more robust solution.
+ * code, use a more robust solution like the ajah-http library.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -73,6 +75,19 @@ public class HttpClient {
 		} catch (MalformedURLException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Fetches a URL that is expected to be an XML response.
+	 * 
+	 * @param url
+	 *            The URL to fetch, required.
+	 * @return An {@link XmlString} wrapped string version of the response body.
+	 * @throws IOException
+	 *             If the URL could not be fetched.
+	 */
+	public static XmlString getXml(String url) throws IOException {
+		return new XmlString(getString(url));
 	}
 
 }
