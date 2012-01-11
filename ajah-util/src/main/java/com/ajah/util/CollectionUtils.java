@@ -30,7 +30,10 @@
  */
 package com.ajah.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Utilities for dealing with members of the Collections API.
@@ -63,6 +66,47 @@ public class CollectionUtils {
 			return null;
 		}
 		return collection;
+	}
+
+	/**
+	 * Removes the entries of a map that have null values.
+	 * 
+	 * @param map
+	 *            The map to strip.
+	 * @return The map that was passed in.
+	 */
+	public static <K, V> Map<K, V> stripNulls(Map<K, V> map) {
+		List<Object> toRemove = null;
+		for (Object key : map.keySet()) {
+			if (map.get(key) == null) {
+				toRemove = safeAdd(toRemove, key);
+			}
+		}
+		if (toRemove != null) {
+			for (Object key : toRemove) {
+				map.remove(key);
+			}
+		}
+		return map;
+	}
+
+	/**
+	 * Shorthand method for adding an item to a list, and creating that list if
+	 * necessary.
+	 * 
+	 * @param list
+	 *            The list to add to.
+	 * @param item
+	 *            The item to add.
+	 * @return The original list that was passed in, or a new list.
+	 */
+	private static <T> List<T> safeAdd(List<T> list, T item) {
+		List<T> retVal = list;
+		if (retVal == null) {
+			retVal = new ArrayList<>();
+		}
+		retVal.add(item);
+		return retVal;
 	}
 
 }
