@@ -52,7 +52,7 @@ public class RandomUtils {
 	 * @return Random number between from and to.
 	 */
 	public static int getRandomNumber(final int from, final int to) {
-		return from + (int) (random.nextDouble() * (to - from));
+		return from + (int) Math.floor(random.nextDouble() * ((to + 1) - from));
 	}
 
 	/**
@@ -72,4 +72,11 @@ public class RandomUtils {
 		return list.get(getRandomNumber(0, list.size()));
 	}
 
+	public static String getRandomAlphaString(int minLength, int maxLength) {
+		char[] chars = new char[getRandomNumber(minLength, maxLength)];
+		for (int i = 0; i < chars.length; i++) {
+			chars[i] = (char) ('a' + getRandomNumber(0, 26));
+		}
+		return String.valueOf(chars);
+	}
 }
