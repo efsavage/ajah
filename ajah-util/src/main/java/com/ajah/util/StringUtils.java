@@ -161,4 +161,27 @@ public class StringUtils {
 		return false;
 	}
 
+	/**
+	 * Truncates a string if it is longer than desired.
+	 * 
+	 * @param string
+	 *            The string to truncate.
+	 * @param maxLength
+	 *            The maximum length of the string, must be greater than 1.
+	 * @return The string truncated to maxLength characters if necessary,
+	 *         otherwise will return the original string, including null.
+	 */
+	public static String truncate(String string, int maxLength) {
+		if (StringUtils.isBlank(string)) {
+			return string;
+		}
+		if (maxLength < 1) {
+			throw new IllegalArgumentException("maxLength must be greater than 0");
+		}
+		if (string.length() > maxLength) {
+			return string.substring(0, maxLength);
+		}
+		return string;
+	}
+
 }
