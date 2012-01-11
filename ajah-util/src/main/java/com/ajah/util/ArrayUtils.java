@@ -136,4 +136,24 @@ public class ArrayUtils {
 		}
 		return false;
 	}
+
+	/**
+	 * Joins the result of calling {@link #toString()} on each element of an
+	 * array.
+	 * 
+	 * @param array
+	 *            The array, may be null or empty.
+	 * @return The joined result of calling {@link #toString()} on each element
+	 *         of an array, or null if the supplied array was null or empty.
+	 */
+	public static String joinToString(Object[] array) {
+		if (array == null || array.length == 0) {
+			return null;
+		}
+		StringBuilder string = new StringBuilder();
+		for (Object object : array) {
+			string.append(object.toString());
+		}
+		return string.toString();
+	}
 }
