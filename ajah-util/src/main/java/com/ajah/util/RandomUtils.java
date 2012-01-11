@@ -72,6 +72,17 @@ public class RandomUtils {
 		return list.get(getRandomNumber(0, list.size()));
 	}
 
+	/**
+	 * Returns a randomized, lowercased String consisting of only a-z characters,
+	 * all with equal weighting.
+	 * 
+	 * @param minLength
+	 *            The minimum length of the desired string.
+	 * @param maxLength
+	 *            The maximum length of the desired string.
+	 * @return A string within the minimum and maximum lengths specified
+	 *         consisting of random alphabetical characters.
+	 */
 	public static String getRandomAlphaString(int minLength, int maxLength) {
 		char[] chars = new char[getRandomNumber(minLength, maxLength)];
 		for (int i = 0; i < chars.length; i++) {
