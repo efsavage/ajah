@@ -27,6 +27,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashUtils {
 
+	/**
+	 * Creates a SHA-1 digest of string and returns it as a hexadecimal number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
 	public static String sha1Hex(final String string) {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -41,6 +48,13 @@ public class HashUtils {
 		}
 	}
 
+	/**
+	 * Creates an MD5 digest of string and returns it as a hexadecimal number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
 	public static String md5Hex(final String string) {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
@@ -53,6 +67,47 @@ public class HashUtils {
 		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
+	}
+
+	/**
+	 * Calls {@link #getHashedFileName(String, int, int)} with depth of 3 and
+	 * breadth of 2, which should provide enough separation for most
+	 * applications.
+	 * 
+	 * @param name
+	 *            The name to hash.
+	 * @return The hashed name with directory path.
+	 */
+	public static String getHashedFileName(final String name) {
+		return getHashedFileName(name, 3, 2);
+	}
+
+	/**
+	 * Creates a hashed name with directory path for a given name.
+	 * 
+	 * Example: abcdefghijklmnop with depth of 3 and breadth of 2 would return
+	 * "ab/cd/ef/abcdefghijklmnop". Example: abcdefghijklmnop with depth of 2
+	 * and breadth of 5 would return "abcde/efghi/abcdefghijklmnop".
+	 * 
+	 * @param name
+	 *            The name to hash.
+	 * @param depth
+	 *            The number of subdirectories to split. A higher number will
+	 *            yield more directories but fewer files within each directory.
+	 * @param breadth
+	 *            The number of characters to use when creating the
+	 *            subdirectories. A higher number will yield fewer directories
+	 *            but more files within each directory.
+	 * @return The hashed name with directory path.
+	 */
+	public static String getHashedFileName(final String name, final int depth, final int breadth) {
+		final StringBuilder hashed = new StringBuilder();
+		for (int i = 0; i < depth; i++) {
+			hashed.append(name.substring(i * breadth, (i + 1) * breadth));
+			hashed.append("/");
+		}
+		hashed.append(name);
+		return hashed.toString();
 	}
 
 }
