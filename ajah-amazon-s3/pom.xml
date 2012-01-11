@@ -1,0 +1,30 @@
+<project xmlns="amazon-s3://maven.apache.org/POM/4.0.0" xmlns:xsi="amazon-s3://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="amazon-s3://maven.apache.org/POM/4.0.0 amazon-s3://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ajah-amazon-s3</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Ajah Amazon S3 Library</name>
+	<description>This library provides a wrapper for dealing with Amazon's S3 service.</description>
+	<url>http://efsavage.github.com/ajah/amazon/s3/</url>
+
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jets3t</groupId>
+			<artifactId>jets3t</artifactId>
+			<version>0.8.1</version>
+		</dependency>
+	</dependencies>
+
+</project>
