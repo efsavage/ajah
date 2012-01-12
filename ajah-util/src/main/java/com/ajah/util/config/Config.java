@@ -55,6 +55,13 @@ public enum Config {
 		} else {
 			Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "No resource " + config + " found.");
 		}
+		for (Object propKey : this.properties.keySet()) {
+			String sysProp = System.getProperty((String) propKey);
+			if (!StringUtils.isBlank(sysProp)) {
+				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Overriding property " + (String) propKey + " with System property value of " + sysProp);
+				this.properties.setProperty((String) propKey, sysProp);
+			}
+		}
 	}
 
 	/**
