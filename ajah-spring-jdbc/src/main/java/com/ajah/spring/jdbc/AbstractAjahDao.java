@@ -45,12 +45,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.ajah.spring.jdbc.criteria.Criteria;
+import com.ajah.spring.jdbc.criteria.Limit;
 import com.ajah.spring.jdbc.criteria.Where;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.Identifiable;
 import com.ajah.util.ToStringable;
+import com.ajah.util.data.Audited;
 import com.ajah.util.reflect.IntrospectionUtils;
 import com.ajah.util.reflect.ReflectionUtils;
 
@@ -270,14 +272,37 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	/**
+	 * Finds a single object by the Criteria specified.
+	 * 
+	 * @param criteria
+	 *            The criteria to use to find the object.
+	 * @return The object, if found.
+	 */
 	public T find(Criteria criteria) {
-		return find(criteria.getWhere());
+		if (criteria.getLimit().getCount() > 1) {
+			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
+		}
+		criteria.rowCount(1);
+		return find(criteria.getWhere(), criteria.getLimit());
 	}
 
-	public T find(Where where) {
+	/**
+	 * Finds a single object by the Where and Limit specified.
+	 * 
+	 * @param where
+	 *            The Object to create the WHERE statement.
+	 * @param limit
+	 *            The Object to create the LIMIT statement.
+	 * @return The object, if found, otherwise null.
+	 */
+	public T find(Where where, Limit limit) {
 		AjahUtils.requireParam(where, "where");
+		if (limit != null && limit.getCount() > 1) {
+			throw new IllegalArgumentException("Cannot use singular find method with a limit greater than 1 (" + limit.getCount() + ")");
+		}
 		try {
-			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where.getSql() + " LIMIT 1";
+			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where.getSql() + (limit == null ? " LIMIT 1" : " " + limit.getSql());
 			log.finest(sql);
 			return getJdbcTemplate().queryForObject(sql, where.getValues().toArray(), getRowMapper());
 		} catch (EmptyResultDataAccessException e) {
@@ -523,6 +548,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (!field.getName().equals("id")) {
 				newUpdateFields.add(colName);
 			}
+
+			if (field.isAnnotationPresent(Audited.class)) {
+				log.finest(field.getName() + " is audited");
+				// TODO Audit it!
+			}
 		}
 		if (this.selectFields == null) {
 			this.selectFields = select.toString();
@@ -554,6 +584,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			iph.append("?");
 		}
 		this.insertPlaceholders = iph.toString();
+
 	}
 
 	/**

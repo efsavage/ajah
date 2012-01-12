@@ -34,6 +34,8 @@ public class Criteria {
 
 	private List<NameValuePair<String>> eqs = null;
 	private List<NameValuePair<Order>> orderBys = null;
+	private int offset = 0;
+	private int rowCount = 0;
 
 	/**
 	 * A field match. Supports nulls (as "IS NULL").
@@ -127,6 +129,29 @@ public class Criteria {
 			}
 		}
 		return new Where(where.toString(), values);
+	}
+
+	/**
+	 * Returns the LIMIT number of this Criteria. The default value is 0, which
+	 * will yield a query without a LIMIT clause.
+	 * 
+	 * @return The number of records this criteria should yield, or 0 which
+	 *         means unlimited.
+	 */
+	public Limit getLimit() {
+		return new Limit(this.offset, this.rowCount);
+	}
+
+	/**
+	 * Set the LIMIT number of this Criteria. Setting this to 0 will yield a
+	 * query without a LIMIT clause.
+	 * 
+	 * @param newRowCount
+	 *            The number of records this criteria should yield, or 0 which
+	 *            means unlimited.
+	 */
+	public void rowCount(int newRowCount) {
+		this.rowCount = newRowCount;
 	}
 
 }
