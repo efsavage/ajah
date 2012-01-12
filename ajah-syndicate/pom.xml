@@ -2,54 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ajah</groupId>
 	<artifactId>ajah-syndicate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Ajah Syndication Library</name>
 	<description>The Ajah Syndication Library serves to provide a place for dealing with feeds, broadcasts, and subscriptions.</description>
 
-	<organization>
-		<name>Eric F. Savage</name>
-		<url>http://efsavage.com</url>
-	</organization>
-
-	<developers>
-		<developer>
-			<id>efsavage</id>
-			<name>Eric F. Savage</name>
-			<email>code@efsavage.com</email>
-			<url>http://efsavage.com</url>
-			<organization>Eric F. Savage</organization>
-			<organizationUrl>http://efsavage.com</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-5</timezone>
-			<properties>
-				<picUrl>https://secure.gravatar.com/avatar/68a1e80101a5197da8ac433444246014?s=100</picUrl>
-			</properties>
-		</developer>
-	</developers>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>
-
-		</plugins>
-	</build>
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>1.0.0</version>
+	</parent>
 
 	<dependencies>
 
@@ -59,6 +21,16 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.rometools</groupId>
+			<artifactId>rome-opml</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-html</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>
