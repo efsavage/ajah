@@ -134,4 +134,39 @@ public class AjahUtils {
 		return new String[0];
 	}
 
+	/**
+	 * Parses a String for an integer value via {@link #safeInt(String, int)}
+	 * with defaultValue of zero. Returns 0 if the string is null or empty or a
+	 * parsing error occurs.
+	 * 
+	 * @param string
+	 *            The string to parse.
+	 * @return The parsed integer, or 0.
+	 */
+	public static int safeInt(String string) {
+		return safeInt(string, 0);
+	}
+
+	/**
+	 * Parses a String for an integer value. Returns a defaultValue if the
+	 * string is null or empty or a parsing error occurs.
+	 * 
+	 * @param string
+	 *            The string to parse.
+	 * @param defaultValue
+	 *            The value to return if a number cannot be parsed from the
+	 *            String.
+	 * @return The parsed integer, or the defaultValue.
+	 */
+	public static int safeInt(String string, int defaultValue) {
+		if (StringUtils.isBlank(string)) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(string);
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+
 }
