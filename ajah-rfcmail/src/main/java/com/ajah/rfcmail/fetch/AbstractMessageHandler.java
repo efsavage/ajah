@@ -18,22 +18,31 @@ package com.ajah.rfcmail.fetch;
 import javax.mail.MessagingException;
 
 import com.ajah.lang.ListMap;
+import com.ajah.rfcmail.AjahMessage;
+import com.ajah.util.AjahUtils;
 
 /**
+ * Basic implementation of {@link MessageHandler} that can handle chained
+ * handlers.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public abstract class AbstractMessageHandler implements MessageHandler {
 
-	ListMap<MessageHandlerResult, MessageHandler> messageHandlers = new ListMap<MessageHandlerResult, MessageHandler>();
+	ListMap<MessageHandlerResult, MessageHandler> messageHandlers = new ListMap<>();
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.ajah.rfcmail.fetch.MessageHandler#handle(javax.mail.Message)
+	/**
+	 * Handle the message via {@link #innerHandle(AjahMessage)} and then call
+	 * handle on child handlers.
+	 * 
+	 * @see com.ajah.rfcmail.fetch.MessageHandler#handle(AjahMessage)
 	 */
 	@Override
 	public final MessageHandlerResponse handle(AjahMessage message) throws MessagingException {
+		AjahUtils.requireParam(message, "message");
+		AjahUtils.requireParam(message.getId(), "message.id");
 		MessageHandlerResponse response = innerHandle(message);
 		for (MessageHandler messageHandler : this.messageHandlers.getList(response.getResult())) {
 			messageHandler.handle(message);

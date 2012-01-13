@@ -17,6 +17,8 @@ package com.ajah.rfcmail.fetch;
 
 import javax.mail.MessagingException;
 
+import com.ajah.rfcmail.AjahMessage;
+
 /**
  * An interface for defining an operation to be performed on a message handler.
  * These handlers can be chained with the
