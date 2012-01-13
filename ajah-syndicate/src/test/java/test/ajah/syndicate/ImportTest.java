@@ -51,7 +51,7 @@ public class ImportTest {
 	 */
 	@Test
 	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException {
-		Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/scoble.opml"));
+		Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/scoble.opml"));
 		Opml opml = OpmlUtils.parse(doc);
 		printOutlines(opml.getOutlines());
 	}
