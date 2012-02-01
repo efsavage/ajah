@@ -20,6 +20,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.ajah.util.AjahUtils;
+
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -35,6 +37,7 @@ public class HashUtils {
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String sha1Hex(final String string) {
+		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
 			byte[] bytes = new byte[40];
@@ -56,6 +59,7 @@ public class HashUtils {
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String md5Hex(final String string) {
+		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] bytes = new byte[32];
@@ -101,6 +105,7 @@ public class HashUtils {
 	 * @return The hashed name with directory path.
 	 */
 	public static String getHashedFileName(final String name, final int depth, final int breadth) {
+		AjahUtils.requireParam(name, "name");
 		final StringBuilder hashed = new StringBuilder();
 		for (int i = 0; i < depth; i++) {
 			hashed.append(name.substring(i * breadth, (i + 1) * breadth));
