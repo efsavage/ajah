@@ -3,7 +3,7 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-servlet</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Ajah Servlet Library</name>
 	<description>The Ajah Servlet Library serves to provide a place for utilities that are specific to a servlet environment, but not specific to any particular product (Struts, Spring MVC, etc).</description>
 
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -36,8 +36,15 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-html</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-http</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

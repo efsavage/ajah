@@ -3,7 +3,7 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-event</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Ajah Event Library</name>
 	<description>The Ajah Event Library provides basic definitions and functionality for tracking application events.  The intent is that specific event types will be built for specific needs, such as an HTTP Request or a SQL query.</description>
 
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 

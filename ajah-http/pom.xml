@@ -3,7 +3,7 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-http</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Ajah HTTP Library</name>
 	<description>This library provides a wrapper for dealing with things over HTTP.</description>
 	<url>http://efsavage.github.com/ajah/http/</url>
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
