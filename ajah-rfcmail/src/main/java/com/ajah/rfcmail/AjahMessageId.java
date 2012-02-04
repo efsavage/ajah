@@ -17,6 +17,7 @@ package com.ajah.rfcmail;
 
 import java.io.Serializable;
 
+import com.ajah.util.AjahUtils;
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
@@ -37,6 +38,7 @@ public class AjahMessageId implements Serializable, ToStringable, FromStringable
 	 *            UID of message, cannot be null.
 	 */
 	public AjahMessageId(String id) {
+		AjahUtils.requireParam(id, "id");
 		this.id = id;
 	}
 
