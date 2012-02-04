@@ -18,7 +18,7 @@ package test.ajah.servlet;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ajah.servlet.Browser;
+import com.ajah.http.Browser;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
@@ -709,9 +709,13 @@ public class BrowserTests {
 			"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_6; en-US) AppleWebKit/530.6 (KHTML, like Gecko) Chrome/ Safari/530.6",
 			"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_6; en-US) AppleWebKit/530.5 (KHTML, like Gecko) Chrome/ Safari/530.5" };
 
+	/**
+	 * Tests for Chrome against a fairly comprehensive list of user agent
+	 * strings.
+	 */
 	@Test
 	public void testChrome() {
-		for (String userAgent : CHROME_USER_AGENTS) {
+		for (String userAgent : this.CHROME_USER_AGENTS) {
 			try {
 				Assert.assertEquals(Browser.CHROME, Browser.get(userAgent));
 			} catch (AssertionError e) {
