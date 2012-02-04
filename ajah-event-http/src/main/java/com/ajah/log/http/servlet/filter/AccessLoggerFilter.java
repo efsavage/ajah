@@ -59,11 +59,14 @@ public class AccessLoggerFilter extends AjahFilter {
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		RequestEvent requestEvent = new RequestEvent(request);
 		request.setAttribute("ajahRequestEvent", requestEvent);
-		chain.doFilter(request, response);
-		requestEvent.complete();
-		log.finest(requestEvent.getUri() + " took " + requestEvent.getDuration() + "ms");
-		AjahUtils.requireParam(this.taskExecutor, "taskExecutor");
-		this.taskExecutor.execute(new RequestEventHandler(requestEvent, this.requestEventManager));
+		try {
+			chain.doFilter(request, response);
+		} finally {
+			requestEvent.complete();
+			log.finest(requestEvent.getUri() + " took " + requestEvent.getDuration() + "ms");
+			AjahUtils.requireParam(this.taskExecutor, "taskExecutor");
+			this.taskExecutor.execute(new RequestEventHandler(requestEvent, this.requestEventManager));
+		}
 	}
 
 }

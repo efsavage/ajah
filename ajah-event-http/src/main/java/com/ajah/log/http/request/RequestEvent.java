@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.Data;
 
 import com.ajah.event.Event;
-import com.ajah.servlet.HttpMethod;
-import com.ajah.servlet.UserAgent;
+import com.ajah.http.HttpMethod;
+import com.ajah.http.UserAgent;
 
 /**
  * Represents an HTTP request.
@@ -44,6 +44,11 @@ public class RequestEvent implements Event<RequestEventId> {
 	private String ip;
 	private UserAgent userAgent;
 
+	/**
+	 * Populates a RequestEvent from a servlet request.
+	 * 
+	 * @param request
+	 */
 	public RequestEvent(HttpServletRequest request) {
 		this.id = new RequestEventId(UUID.randomUUID().toString());
 		this.start = System.currentTimeMillis();
@@ -51,15 +56,30 @@ public class RequestEvent implements Event<RequestEventId> {
 		this.uri = request.getRequestURI();
 		this.queryString = request.getQueryString();
 		this.ip = request.getRemoteAddr();
-		this.userAgent = UserAgent.from(request);
+		this.userAgent = UserAgent.from(request.getHeader("User-Agent"));
 	}
 
+	/**
+	 * Invoked when the request is completed, establishing the end time.
+	 * 
+	 * @see com.ajah.event.Event#complete()
+	 */
+	@Override
 	public void complete() {
 		this.end = System.currentTimeMillis();
 	}
 
+	/**
+	 * Returns the duration of the request in milliseconds. If the request has
+	 * not been completed, will base it on the current timestamp.
+	 * 
+	 * @return The duration of the request in milliseconds.
+	 */
 	public long getDuration() {
-		return this.end - start;
+		if (this.end == 0) {
+			return System.currentTimeMillis() - this.start;
+		}
+		return this.end - this.start;
 	}
 
 }

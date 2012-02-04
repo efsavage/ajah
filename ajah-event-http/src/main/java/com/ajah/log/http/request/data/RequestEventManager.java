@@ -13,42 +13,41 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.log.http;
+package com.ajah.log.http.request.data;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ajah.log.http.request.RequestEvent;
-import com.ajah.log.http.request.data.RequestEventManager;
-import com.ajah.log.http.servlet.filter.AccessLoggerFilter;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 
 /**
- * A simple async task that saves the request event.
+ * Persistence management for {@link RequestEvent}s.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public class RequestEventHandler implements Runnable {
+@Service
+public class RequestEventManager {
 
-	private static final Logger log = Logger.getLogger(AccessLoggerFilter.class.getName());
+	private static final Logger log = Logger.getLogger(RequestEventManager.class.getName());
 
-	private RequestEvent requestEvent;
-	private RequestEventManager requestEventManager;
+	@Autowired
+	private RequestEventDao requestEventDao;
 
-	public RequestEventHandler(RequestEvent requestEvent, RequestEventManager requestEventManager) {
-		this.requestEvent = requestEvent;
-		this.requestEventManager = requestEventManager;
-	}
-
-	@Override
-	public void run() {
-		try {
-			this.requestEventManager.save(requestEvent);
-		} catch (DatabaseAccessException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
-		}
+	/**
+	 * Save the request event. Note, always does a <em>delayed</em> insert as
+	 * there's no need to edit the records at this time.
+	 * 
+	 * @param requestEvent
+	 * @throws DatabaseAccessException
+	 */
+	public void save(RequestEvent requestEvent) throws DatabaseAccessException {
+		this.requestEventDao.insert(requestEvent, true);
+		log.finest(requestEvent.getId().toString() + " saved");
 	}
 
 }

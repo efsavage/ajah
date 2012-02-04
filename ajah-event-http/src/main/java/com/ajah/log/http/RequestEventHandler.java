@@ -13,40 +13,49 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.log.http.request.data;
+package com.ajah.log.http;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ajah.log.http.request.RequestEvent;
+import com.ajah.log.http.request.data.RequestEventManager;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 
 /**
- * Persistence management for {@link RequestEvent}s.
+ * A simple async task that saves the request event.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Service
-public class RequestEventManager {
+public class RequestEventHandler implements Runnable {
 
-	private static final Logger log = Logger.getLogger(RequestEventManager.class.getName());
+	private static final Logger log = Logger.getLogger(RequestEventHandler.class.getName());
 
-	@Autowired
-	private RequestEventDao requestEventDao;
+	private final RequestEvent requestEvent;
+	private final RequestEventManager requestEventManager;
 
 	/**
-	 * Save the request event. Note, always does a <em>delayed</em> insert as
-	 * there's no need to edit the records at this time.
+	 * Public constructor.
 	 * 
 	 * @param requestEvent
-	 * @throws DatabaseAccessException
+	 *            The event to handle.
+	 * @param requestEventManager
+	 *            The manager to perform operations with.
 	 */
-	public void save(RequestEvent requestEvent) throws DatabaseAccessException {
-		this.requestEventDao.insert(requestEvent, true);
+	public RequestEventHandler(RequestEvent requestEvent, RequestEventManager requestEventManager) {
+		this.requestEvent = requestEvent;
+		this.requestEventManager = requestEventManager;
+	}
+
+	@Override
+	public void run() {
+		try {
+			this.requestEventManager.save(this.requestEvent);
+		} catch (DatabaseAccessException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+		}
 	}
 
 }

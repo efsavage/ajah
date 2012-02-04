@@ -2,9 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ajah</groupId>
 	<artifactId>ajah-event-http</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Ajah HTTP Logging</name>
 	<description>The Ajah HTTP Logging Library is a mechanism to record HTTP traffic.</description>
 
@@ -19,13 +18,13 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-mvc</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-jdbc</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
