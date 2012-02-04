@@ -42,6 +42,7 @@ public class MatchValidator implements Validator {
 	 * 
 	 * @return Always returns true
 	 */
+	@Override
 	public boolean supports(Class<?> clazz) {
 		return true;
 	}
@@ -56,6 +57,7 @@ public class MatchValidator implements Validator {
 	 *             If the value of the annotation is empty or does not
 	 *             correspond to another field.
 	 */
+	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void validate(Object target, Errors errors) {
 		log.finest("Validating " + target.getClass().getName());

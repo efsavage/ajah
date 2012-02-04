@@ -75,7 +75,8 @@ public class FilterUtils {
 	 * @param appContext
 	 *            The application context to find the bean in.
 	 * @param servletContext
-	 * @param servletRegistration The servlet to add this filter to.
+	 * @param servletRegistration
+	 *            The servlet to add this filter to.
 	 * @return The Dynamic Mapping created by this method.
 	 */
 	public static Dynamic add(Class<? extends Filter> filterClass, ApplicationContext appContext, ServletContext servletContext, Registration servletRegistration) {
@@ -84,4 +85,5 @@ public class FilterUtils {
 		reg.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST), false, servletRegistration.getName());
 		return reg;
 	}
+
 }

@@ -66,6 +66,7 @@ public class AutoFormValidator implements Validator {
 	 * 
 	 * @return Always returns true
 	 */
+	@Override
 	public boolean supports(Class<?> clazz) {
 		return true;
 	}
@@ -77,6 +78,7 @@ public class AutoFormValidator implements Validator {
 	 * @see org.springframework.validation.beanvalidation.SpringValidatorAdapter#
 	 *      validate(java.lang.Object, org.springframework.validation.Errors)
 	 */
+	@Override
 	public void validate(Object object, Errors errors) {
 		if (this.standardValidator != null) {
 			ValidationUtils.invokeValidator(this.standardValidator, object, errors);
