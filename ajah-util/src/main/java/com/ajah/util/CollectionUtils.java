@@ -109,4 +109,17 @@ public class CollectionUtils {
 		return retVal;
 	}
 
+	/**
+	 * Returns the size of a collection, or zero if the collection is null.
+	 * 
+	 * @param collection
+	 *            The collection to inspect, may be null.
+	 * @return The size of the collection, zero if the collection is null.
+	 */
+	public static int safeSize(Collection<?> collection) {
+		if (collection == null) {
+			return 0;
+		}
+		return collection.size();
+	}
 }
