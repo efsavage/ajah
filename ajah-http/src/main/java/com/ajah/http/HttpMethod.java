@@ -13,18 +13,47 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.servlet;
+package com.ajah.http;
 
 import com.ajah.util.Identifiable;
 
 /**
+ * Enum for HTTP methods.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum HttpMethod implements Identifiable<String> {
 
-	GET("2"), POST("5"), DELETE("1"), HEAD("3"), OPTIONS("4"), PUT("6"), TRACE("7");
+	/**
+	 * GET
+	 */
+	GET("2"),
+	/**
+	 * POST
+	 */
+	POST("5"),
+	/**
+	 * DELETE
+	 */
+	DELETE("1"),
+	/**
+	 * HEAD
+	 */
+	HEAD("3"),
+	/**
+	 * OPTIONS
+	 */
+	OPTIONS("4"),
+	/**
+	 * PUT
+	 */
+	PUT("6"),
+	/**
+	 * TRACE
+	 */
+	TRACE("7");
 
 	private String id;
 
@@ -33,8 +62,12 @@ public enum HttpMethod implements Identifiable<String> {
 	}
 
 	/**
+	 * Finds a matching method and returns the proper value, or null if
+	 * unmatched.
+	 * 
 	 * @param method
-	 * @return
+	 *            The name of the method to attempt to match.
+	 * @return The matching enum value, or null if unmatched.
 	 */
 	public static HttpMethod get(String method) {
 		for (HttpMethod candidate : values()) {
@@ -46,6 +79,9 @@ public enum HttpMethod implements Identifiable<String> {
 	}
 
 	/**
+	 * Returns the ID of this method. This ID is arbitrary and has no meaning
+	 * outside of this enum class.
+	 * 
 	 * @see com.ajah.util.Identifiable#getId()
 	 */
 	@Override
@@ -54,6 +90,9 @@ public enum HttpMethod implements Identifiable<String> {
 	}
 
 	/**
+	 * Throws UnsupportedOperationException, included only to satisfy
+	 * {@link Identifiable} interface.
+	 * 
 	 * @see com.ajah.util.Identifiable#setId(java.lang.Comparable)
 	 */
 	@Override

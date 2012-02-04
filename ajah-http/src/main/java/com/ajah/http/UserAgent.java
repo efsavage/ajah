@@ -13,14 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.servlet;
-
-import javax.servlet.http.HttpServletRequest;
+package com.ajah.http;
 
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
 /**
+ * Class that represents a UserAgent, exposing capabilities that are known about
+ * it. Currently incomplete and only capable of returning a {@link Browser}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
@@ -33,17 +34,30 @@ public class UserAgent implements FromStringable, ToStringable {
 		this.raw = raw;
 	}
 
-	public static UserAgent from(HttpServletRequest request) {
-		return new UserAgent(request.getHeader("User-Agent"));
-	}
-
 	@Override
 	public String toString() {
 		return this.raw;
 	}
 
+	/**
+	 * Returns the browser that matches this user agent.
+	 * 
+	 * @return The matching browser as determined by {@link Browser#get(String)}
+	 *         .
+	 */
 	public Browser getBrowser() {
 		return Browser.get(this.raw);
+	}
+
+	/**
+	 * Retrieves a UserAgent from a User-Agent http header.
+	 * 
+	 * @param header
+	 *            The User-Agent header.
+	 * @return The matching UserAgent
+	 */
+	public static UserAgent from(String header) {
+		return new UserAgent(header);
 	}
 
 }

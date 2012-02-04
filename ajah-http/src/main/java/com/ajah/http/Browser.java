@@ -13,16 +13,38 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.servlet;
+package com.ajah.http;
 
 /**
+ * Enum of browser types. Note that this class is currently incomplete and only
+ * does some basic tests for Chrome.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum Browser {
 
-	IE, FIREFOX, CHROME, OPERA, UNKNOWN;
+	/**
+	 * Internet Explorer
+	 */
+	IE,
+	/**
+	 * Mozilla Firefox
+	 */
+	FIREFOX,
+	/**
+	 * Google Chrome
+	 */
+	CHROME,
+	/**
+	 * Opera
+	 */
+	OPERA,
+	/**
+	 * Unknown
+	 */
+	UNKNOWN;
 
 	/**
 	 * Looks at user agent string and extracts browser.
@@ -41,9 +63,9 @@ public enum Browser {
 		} else if (userAgent.contains("(KHTML, like Gecko) Ubuntu/10.10 Chrome/")) {
 			return CHROME;
 		} else if (userAgent.contains("Chrome/4.")) {
-			return CHROME; 
+			return CHROME;
 		} else if (userAgent.contains("Gecko/2009032609 Chrome/")) {
-			return CHROME; 
+			return CHROME;
 		} else if (userAgent.contains("Chromium/")) {
 			return CHROME;
 		}
