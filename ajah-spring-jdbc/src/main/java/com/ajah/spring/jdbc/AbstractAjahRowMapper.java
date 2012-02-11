@@ -25,6 +25,8 @@ import com.ajah.util.Identifiable;
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @param <K>
+ *            The type of the unique key of the entity this DAO manages.
  * @param <T>
  *            The type of entity this DAO manages.
  * 

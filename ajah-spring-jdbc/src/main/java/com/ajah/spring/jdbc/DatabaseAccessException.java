@@ -16,6 +16,8 @@
 package com.ajah.spring.jdbc;
 
 /**
+ * Happens when a query is unable to be executed.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
@@ -23,10 +25,13 @@ package com.ajah.spring.jdbc;
 public class DatabaseAccessException extends Exception {
 
 	/**
-	 * @param e
+	 * Wraps another exeption.
+	 * 
+	 * @param cause
+	 *            The original exception.
 	 */
-	public DatabaseAccessException(Throwable t) {
-		super(t);
+	public DatabaseAccessException(Throwable cause) {
+		super(cause);
 	}
 
 }
