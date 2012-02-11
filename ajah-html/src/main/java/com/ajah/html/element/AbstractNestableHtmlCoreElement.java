@@ -109,7 +109,6 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 			}
 		}
 		if (depth >= 0 && this.children != null) {
-			out.write("\r\n");
 			for (int i = 0; i < depth; i++) {
 				out.write("\t");
 			}
