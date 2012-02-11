@@ -24,6 +24,7 @@ import com.ajah.html.element.Html;
 import com.ajah.html.element.Paragraph;
 import com.ajah.html.element.head.Head;
 import com.ajah.html.element.head.Title;
+import com.ajah.util.AjahUtils;
 
 /**
  * This is a helper object that adds convenience methods for constructing an
@@ -40,25 +41,49 @@ public class HtmlPage {
 	private final Body body = new Body();
 	private final Head head = new Head();
 
+	/**
+	 * Public constructor.
+	 * 
+	 * @param version
+	 *            The version of this document, required.
+	 */
 	public HtmlPage(HtmlVersion version) {
+		AjahUtils.requireParam(version, "version");
 		this.version = version;
 		this.html = new Html(version);
-		this.html.add(head);
-		this.html.add(body);
+		this.html.add(this.head);
+		this.html.add(this.body);
 	}
 
+	/**
+	 * Adds a new {@link Title} element to this page's {@link Body} element.
+	 * 
+	 * @param title
+	 *            The text of the title element.
+	 * @return This page.
+	 */
 	public HtmlPage title(String title) {
-		head.add(new Title(title));
+		this.head.add(new Title(title));
 		return this;
 	}
 
+	/**
+	 * Creates a new {@link Paragraph} and calls {@link #add(Paragraph)}.
+	 * 
+	 * @param paragraphText
+	 *            The text of the paragraph.
+	 * @return This page.
+	 */
 	public HtmlPage addParagraph(String paragraphText) {
 		return add(new Paragraph().text(paragraphText));
 	}
 
 	/**
+	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
+	 * 
 	 * @param text
-	 * @return
+	 *            The text of the paragraph.
+	 * @return This page.
 	 */
 	private HtmlPage add(Paragraph paragraph) {
 		this.body.add(paragraph);
@@ -71,6 +96,15 @@ public class HtmlPage {
 	 */
 	public void render(OutputStream out) throws IOException {
 		out.write(this.html.render().getBytes());
+	}
+
+	/**
+	 * Returns the value of {@link Html#render()}.
+	 * 
+	 * @return The value of {@link Html#render()}
+	 */
+	public String render() {
+		return this.html.render();
 	}
 
 }
