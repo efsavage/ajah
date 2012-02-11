@@ -38,6 +38,12 @@ public class Title implements HtmlElement<Title> {
 
 	private String text;
 
+	/**
+	 * Public constructor.
+	 * 
+	 * @param text
+	 *            The text value of this element.
+	 */
 	public Title(String text) {
 		this.text = text;
 	}

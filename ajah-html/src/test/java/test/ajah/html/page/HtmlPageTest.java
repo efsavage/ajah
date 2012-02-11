@@ -31,6 +31,11 @@ import com.ajah.html.page.HtmlPage;
  */
 public class HtmlPageTest {
 
+	/**
+	 * Simple but comprehensive test.
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testPage() throws IOException {
 		HtmlPage page = new HtmlPage(HtmlVersion.HTML5);
