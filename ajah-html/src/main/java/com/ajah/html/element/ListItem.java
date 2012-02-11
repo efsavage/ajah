@@ -47,6 +47,7 @@ public class ListItem extends AbstractNestableHtmlCoreElement<ListItem> {
 	}
 
 	@Override
+	public
 	ListItem getThis() {
 		return this;
 	}

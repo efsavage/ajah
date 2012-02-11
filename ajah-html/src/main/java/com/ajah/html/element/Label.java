@@ -76,6 +76,7 @@ public class Label extends AbstractNestableHtmlCoreElement<Label> {
 	}
 
 	@Override
+	public
 	Label getThis() {
 		return this;
 	}

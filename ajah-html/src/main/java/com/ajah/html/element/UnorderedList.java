@@ -18,11 +18,11 @@ package com.ajah.html.element;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
 /**
  * ul element
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Data
@@ -40,8 +40,8 @@ public class UnorderedList extends AbstractNestableHtmlCoreElement<UnorderedList
 	}
 
 	@Override
-	UnorderedList getThis() {
+	public UnorderedList getThis() {
 		return this;
 	}
-	
+
 }

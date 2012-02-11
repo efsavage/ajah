@@ -107,6 +107,7 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	}
 
 	@Override
+	public
 	TextArea getThis() {
 		return this;
 	}

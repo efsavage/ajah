@@ -45,7 +45,7 @@ public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 	}
 
 	@Override
-	H3 getThis() {
+	public H3 getThis() {
 		return this;
 	}
 

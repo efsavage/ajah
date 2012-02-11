@@ -98,6 +98,7 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 	}
 
 	@Override
+	public
 	InputImpl getThis() {
 		return this;
 	}

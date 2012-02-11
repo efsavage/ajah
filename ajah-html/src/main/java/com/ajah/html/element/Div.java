@@ -40,6 +40,7 @@ public class Div extends AbstractNestableHtmlCoreElement<Div> {
 	}
 
 	@Override
+	public
 	Div getThis() {
 		return this;
 	}

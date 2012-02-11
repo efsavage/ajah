@@ -40,7 +40,7 @@ public class Body extends AbstractNestableHtmlCoreElement<Body> {
 	}
 
 	@Override
-	Body getThis() {
+	public Body getThis() {
 		return this;
 	}
 

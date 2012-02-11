@@ -46,6 +46,7 @@ public class Script extends AbstractNestableHtmlCoreElement<Script> {
 	}
 
 	@Override
+	public
 	Script getThis() {
 		return this;
 	}

@@ -108,6 +108,7 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 	}
 
 	@Override
+	public
 	Form getThis() {
 		return this;
 	}

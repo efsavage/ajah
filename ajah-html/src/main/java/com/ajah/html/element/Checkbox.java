@@ -95,6 +95,7 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 	}
 
 	@Override
+	public
 	Checkbox getThis() {
 		return this;
 	}

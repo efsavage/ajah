@@ -101,7 +101,7 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 	 * @return The name of the element as it should appear in the output. Should
 	 *         never be null.
 	 */
-	abstract String getName();
+	public abstract String getName();
 
 	/**
 	 * {@inheritDoc}
@@ -138,6 +138,6 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 	 * @return A reference to this object, mostly used for fluid methods. Can
 	 *         never be null.
 	 */
-	abstract T getThis();
+	public abstract T getThis();
 
 }

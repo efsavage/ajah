@@ -45,6 +45,7 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 	}
 
 	@Override
+	public
 	Paragraph getThis() {
 		return this;
 	}
