@@ -3,7 +3,7 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-spring-mvc</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>Ajah Spring MVC Library</name>
 	<description>Code for use on Spring MVC webapps</description>
 	<packaging>jar</packaging>
