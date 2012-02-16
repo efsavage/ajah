@@ -91,7 +91,7 @@ public class SessionUtils {
 		@SuppressWarnings("unchecked")
 		List<String> confirmationMessages = (List<String>) session.getAttribute("ajahConfirmationMessages");
 		if (confirmationMessages == null) {
-			confirmationMessages = new ArrayList<String>();
+			confirmationMessages = new ArrayList<>();
 			session.setAttribute("ajahConfirmationMessages", confirmationMessages);
 		}
 		confirmationMessages.add(message);
