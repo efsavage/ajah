@@ -17,7 +17,9 @@ package com.ajah.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utilities for dealing with {@link Identifiable} entities.
@@ -69,6 +71,25 @@ public class IdentifiableUtils {
 			}
 		}
 		target.removeAll(idMatches);
+	}
+
+	/**
+	 * Makes a map from list of {@link Identifiable}s.
+	 * 
+	 * @param collection
+	 *            The collection to build from.
+	 * @return A map with all of the elements of the collection, using the ID of
+	 *         the objects as the key.
+	 */
+	public static <K extends Comparable<K>, I extends Identifiable<K>> Map<K, I> toMap(Collection<I> collection) {
+		Map<K, I> map = new HashMap<>();
+		if (CollectionUtils.isEmpty(collection)) {
+			return map;
+		}
+		for (I identifiable : collection) {
+			map.put(identifiable.getId(), identifiable);
+		}
+		return map;
 	}
 
 }
