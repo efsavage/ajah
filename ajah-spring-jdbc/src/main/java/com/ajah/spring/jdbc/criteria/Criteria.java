@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.StringUtils;
 import com.ajah.util.ToStringable;
 import com.ajah.util.lang.NameValuePair;
 
@@ -33,9 +34,23 @@ import com.ajah.util.lang.NameValuePair;
 public class Criteria {
 
 	private List<NameValuePair<String>> eqs = null;
+	private List<NameValuePair<String>> joins = null;
 	private List<NameValuePair<Order>> orderBys = null;
 	private int offset = 0;
 	private int rowCount = 0;
+
+	/**
+	 * A field match with an inferred name. Primarily used for Id classes so
+	 * passing a UserId of value '123' would call {@link #eq(String, String)}
+	 * with a field of 'user_id' and a value of '123'.
+	 * 
+	 * @param value
+	 *            The value the field must be.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria eq(ToStringable value) {
+		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
+	}
 
 	/**
 	 * A field match. Supports nulls (as "IS NULL").
@@ -90,6 +105,42 @@ public class Criteria {
 	}
 
 	/**
+	 * A join match.
+	 * 
+	 * @param table1
+	 *            The first table to join.
+	 * @param table2
+	 *            The second table to join.
+	 * @param field
+	 *            The field to join on (same field name in both tables).
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria join(String table1, String table2, String field) {
+		return join(table1, table2, field, field);
+	}
+
+	/**
+	 * A join match.
+	 * 
+	 * @param table1
+	 *            The first table to join.
+	 * @param table2
+	 *            The second table to join.
+	 * @param field1
+	 *            The field of the first table to join on.
+	 * @param field2
+	 *            The field of the second table to join on.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria join(String table1, String table2, String field1, String field2) {
+		if (this.joins == null) {
+			this.joins = new ArrayList<>();
+		}
+		this.joins.add(new NameValuePair<>(table1 + "." + field1, table2 + "." + field2));
+		return this;
+	}
+
+	/**
 	 * Add an "ORDER BY" clause.
 	 * 
 	 * @param field
@@ -107,6 +158,28 @@ public class Criteria {
 	}
 
 	/**
+	 * Add an "ORDER BY" clause for the field with an ascending order.
+	 * 
+	 * @param field
+	 *            The field to sort by.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria asc(String field) {
+		return orderBy(field, Order.ASC);
+	}
+
+	/**
+	 * Add an "ORDER BY" clause for the field with an ascending order.
+	 * 
+	 * @param field
+	 *            The field to sort by.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria desc(String field) {
+		return orderBy(field, Order.DESC);
+	}
+
+	/**
 	 * Constructs a {@link Where} object from this instance, suitable for
 	 * creating a prepared SQL statement.
 	 * 
@@ -119,16 +192,63 @@ public class Criteria {
 		if (!CollectionUtils.isEmpty(this.eqs)) {
 			for (NameValuePair<String> eq : this.eqs) {
 				if (first) {
+					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
 				where.append(eq.getName());
-				where.append("=?");
-				values.add(eq.getValue());
+				if (eq.getValue() == null) {
+					where.append(" IS NULL");
+				} else {
+					where.append("=?");
+					values.add(eq.getValue());
+				}
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.joins)) {
+			for (NameValuePair<String> join : this.joins) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append(join.getName());
+				where.append("=");
+				where.append(join.getValue());
 			}
 		}
 		return new Where(where.toString(), values);
+	}
+
+	/**
+	 * Returns the SQL for the ORDER BY portion of this query, or an empty
+	 * string.
+	 * 
+	 * @return The SQL for the ORDER BY portion of this query, or an empty
+	 *         string.
+	 */
+	public String getOrderBySql() {
+		if (CollectionUtils.isEmpty(this.orderBys)) {
+			return " ";
+		}
+		StringBuilder sql = new StringBuilder();
+		boolean first = true;
+		for (NameValuePair<Order> orderBy : this.orderBys) {
+			if (first) {
+				sql.append(" ORDER BY ");
+				first = false;
+			} else {
+				sql.append(",");
+			}
+			sql.append(orderBy.getName());
+			if (orderBy.getValue() != Order.ASC) {
+				sql.append(" ");
+				sql.append(orderBy.getValue().name());
+			}
+		}
+		return sql.toString();
 	}
 
 	/**
@@ -143,15 +263,27 @@ public class Criteria {
 	}
 
 	/**
-	 * Set the LIMIT number of this Criteria. Setting this to 0 will yield a
-	 * query without a LIMIT clause.
+	 * Sets the offset, i.e. the position of the first result.
 	 * 
-	 * @param newRowCount
-	 *            The number of records this criteria should yield, or 0 which
-	 *            means unlimited.
+	 * @param offsetIndex
+	 *            The offset, i.e. the position of the first result.
+	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public void rowCount(int newRowCount) {
-		this.rowCount = newRowCount;
+	public Criteria offset(int offsetIndex) {
+		this.offset = offsetIndex;
+		return this;
+	}
+
+	/**
+	 * Sets the maximum number of rows to fetch.
+	 * 
+	 * @param maximumRowsFetched
+	 *            The maximum number of rows to fetch.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria rows(int maximumRowsFetched) {
+		this.rowCount = maximumRowsFetched;
+		return this;
 	}
 
 }
