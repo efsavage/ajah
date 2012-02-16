@@ -41,12 +41,12 @@ public class Limit {
 			return "";
 		}
 		if (this.offset > 0 && this.count == 0) {
-			return "LIMIT " + this.offset + ", " + Integer.MAX_VALUE;
+			return " LIMIT " + this.offset + ", " + Integer.MAX_VALUE;
 		}
 		if (this.offset == 0 && this.count > 0) {
-			return "LIMIT " + this.count;
+			return " LIMIT " + this.count;
 		}
-		return "LIMIT " + this.offset + ", " + this.count;
+		return " LIMIT " + this.offset + ", " + this.count;
 	}
 
 }
