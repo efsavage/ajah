@@ -5,7 +5,7 @@
 	<artifactId>ajah-util</artifactId>
 	<name>Ajah Utility Library</name>
 	<url>http://efsavage.github.com/ajah/user/</url>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<description>The Ajah Utils Library provides a place for the most basic and common utilities.  This code uses very few dependencies and should be suitable for inclusion in any other projects.</description>
 
