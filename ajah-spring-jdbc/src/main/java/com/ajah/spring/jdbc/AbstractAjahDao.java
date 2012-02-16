@@ -172,11 +172,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	/**
-	 * @param field
-	 * @param props
-	 * @return
-	 */
 	private static PropertyDescriptor getProp(Field field, PropertyDescriptor[] props) {
 		for (PropertyDescriptor prop : props) {
 			if (prop.getName().equals(field.getName())) {
@@ -186,11 +181,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return null;
 	}
 
-	/**
-	 * @param field
-	 * @param props
-	 * @param string
-	 */
 	private void propSet(T entity, PropertyDescriptor prop, Object value) {
 		try {
 			Method setter = prop.getWriteMethod();
@@ -283,7 +273,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		if (criteria.getLimit().getCount() > 1) {
 			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
 		}
-		criteria.rowCount(1);
+		criteria.rows(1);
 		return find(criteria.getWhere(), criteria.getLimit());
 	}
 
@@ -517,6 +507,29 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param criteria
+	 *            The criteria object to use to build the query.
+	 * @return Entity if found, otherwise null.
+	 * @since 1.0.1
+	 */
+	public List<T> list(Criteria criteria) {
+		AjahUtils.requireParam(criteria, "criteria");
+		try {
+			String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + criteria.getWhere().getSql() + criteria.getOrderBySql() + criteria.getLimit().getSql();
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
+				log.finest(criteria.getWhere().getValues().toString());
+			}
+			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, criteria.getWhere().getValues().toArray(), getRowMapper()));
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
+	}
+
 	private void loadColumns() {
 		log.finest("Loading columns");
 		if (this.tableName == null) {
@@ -538,7 +551,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				log.finest("Ignoring Collection field " + field.getName());
 				continue;
 			}
-			String colName = JDBCMapperUtils.getColumnName(this.tableName, field);
+			String colName = JDBCMapperUtils.getColumnName(getTableName(), field);
 			columnList.add(colName);
 			this.colMap.put(colName, field);
 			if (select.length() > 0) {
@@ -614,6 +627,46 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected long count(String sql) {
 		try {
 			return getJdbcTemplate().queryForInt(sql);
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		}
+	}
+
+	protected long maxLong(String field, Criteria criteria) {
+		try {
+			String sql = "SELECT MAX(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		}
+	}
+
+	protected int maxInt(String field, Criteria criteria) {
+		try {
+			String sql = "SELECT MAX(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		}
+	}
+
+	protected long minLong(String field, Criteria criteria) {
+		try {
+			String sql = "SELECT MIN(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues());
+		} catch (EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		}
+	}
+
+	protected int minInt(String field, Criteria criteria) {
+		try {
+			String sql = "SELECT MIN(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues());
 		} catch (EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -822,4 +875,23 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return this.updateFieldsList;
 	}
 
+	/**
+	 * Deletes an entity by unique ID.
+	 * 
+	 * @param id
+	 *            Value to match against the entity.entity_id column, required.
+	 * @return Entity if found, otherwise null.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
+	public int deleteById(K id) throws DatabaseAccessException {
+		AjahUtils.requireParam(id, "id");
+		try {
+			return getJdbcTemplate().update("DELETE FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() });
+		} catch (DataAccessException e) {
+			throw new DatabaseAccessException(e);
+		}
+
+	}
+	
 }
