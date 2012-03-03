@@ -101,6 +101,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	private String selectFields;
 
+	private String selectFieldsWithTablePrefix;
+
 	private String insertFields;
 
 	private String updateFields;
@@ -383,10 +385,18 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *         empty but will not be null.
 	 */
 	public String getSelectFields() {
+		return getSelectFields(false);
+	}
+
+	/**
+	 * @return The columns for use in SELECT statements for this class, may be
+	 *         empty but will not be null.
+	 */
+	public String getSelectFields(boolean tablePrefix) {
 		if (this.selectFields == null) {
 			loadColumns();
 		}
-		return this.selectFields;
+		return tablePrefix ? this.selectFieldsWithTablePrefix : this.selectFields;
 	}
 
 	/**
@@ -539,6 +549,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		List<String> columnList = new ArrayList<>();
 		List<String> newUpdateFields = new ArrayList<>();
 		StringBuffer select = new StringBuffer();
+		StringBuffer selectWithTablePrefix = new StringBuffer();
 		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (Field field : getTargetClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Transient.class)) {
@@ -557,7 +568,12 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (select.length() > 0) {
 				select.append(", ");
 			}
+			if (selectWithTablePrefix.length() > 0) {
+				selectWithTablePrefix.append(", ");
+			}
+
 			select.append(colName);
+			selectWithTablePrefix.append(this.tableName + "." + colName);
 			if (!field.getName().equals("id")) {
 				newUpdateFields.add(colName);
 			}
@@ -569,6 +585,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 		if (this.selectFields == null) {
 			this.selectFields = select.toString();
+			this.selectFieldsWithTablePrefix = selectWithTablePrefix.toString();
 			this.insertFields = this.selectFields;
 		}
 		if (this.columns == null) {
@@ -893,5 +910,5 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 
 	}
-	
+
 }
