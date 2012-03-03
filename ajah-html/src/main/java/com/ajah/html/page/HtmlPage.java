@@ -20,6 +20,7 @@ import java.io.OutputStream;
 
 import com.ajah.html.HtmlVersion;
 import com.ajah.html.element.Body;
+import com.ajah.html.element.Div;
 import com.ajah.html.element.Html;
 import com.ajah.html.element.Paragraph;
 import com.ajah.html.element.head.Head;
@@ -81,12 +82,24 @@ public class HtmlPage {
 	/**
 	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
 	 * 
-	 * @param text
-	 *            The text of the paragraph.
+	 * @param paragraph
+	 *            The paragraph to add to the page's body.
 	 * @return This page.
 	 */
 	private HtmlPage add(Paragraph paragraph) {
 		this.body.add(paragraph);
+		return this;
+	}
+
+	/**
+	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
+	 * 
+	 * @param div
+	 *            The div element to add to the page's body.
+	 * @return This page.
+	 */
+	public HtmlPage add(Div div) {
+		this.body.add(div);
 		return this;
 	}
 

@@ -3,7 +3,7 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-html</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>Ajah HTML Library</name>
 	<description>The Ajah HTML Library provides various tools for reading and writing HTML.</description>
 
