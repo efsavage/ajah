@@ -43,7 +43,7 @@ public class VelocityEmailMessage implements EmailMessage {
 
 	private EmailAddress from;
 	private EmailAddress[] to;
-	private Map<String, Object> model = new HashMap<String, Object>();
+	private Map<String, Object> model = new HashMap<>();
 	private String subject;
 	private String textTemplate;
 	private String htmlTemplate;

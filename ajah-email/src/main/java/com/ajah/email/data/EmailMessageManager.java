@@ -132,7 +132,7 @@ public class EmailMessageManager {
 
 	}
 
-	private boolean isVerified(EmailAddress emailAddress, AmazonSimpleEmailService email, ListVerifiedEmailAddressesResult verifiedEmails) {
+	private static boolean isVerified(EmailAddress emailAddress, AmazonSimpleEmailService email, ListVerifiedEmailAddressesResult verifiedEmails) {
 		if (!verifiedEmails.getVerifiedEmailAddresses().contains(emailAddress.toString())) {
 			email.verifyEmailAddress(new VerifyEmailAddressRequest().withEmailAddress(emailAddress.toString()));
 			return false;
