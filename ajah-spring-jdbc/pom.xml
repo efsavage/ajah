@@ -2,9 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ajah</groupId>
 	<artifactId>ajah-spring-jdbc</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
 	<name>Ajah Spring JDBC Library</name>
 	<description>Code for use on projects using Spring JDBC</description>
 	<packaging>jar</packaging>
@@ -12,7 +10,7 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>

@@ -4,14 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ajah-email</groupId>
 	<artifactId>ajah-email</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>Ajah Email Library</name>
 	<description>The Ajah Email Library offers simplified ways to send ad-hoc and templated emails.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>

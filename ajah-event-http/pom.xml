@@ -3,14 +3,13 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-event-http</artifactId>
-	<version>1.0.0</version>
 	<name>Ajah HTTP Logging</name>
 	<description>The Ajah HTTP Logging Library is a mechanism to record HTTP traffic.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -18,13 +17,13 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-mvc</artifactId>
-			<version>1.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-jdbc</artifactId>
-			<version>1.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 		<dependency>
