@@ -57,8 +57,9 @@ public class Html extends AbstractNestableHtmlCoreElement<Html> {
 		return this;
 	}
 
+	@Override
 	public void render(Writer out, int depth) throws IOException {
-		out.write(version.getPrologue() + "\n");
+		out.write(this.version.getPrologue() + "\n");
 		super.render(out, depth);
 	}
 
