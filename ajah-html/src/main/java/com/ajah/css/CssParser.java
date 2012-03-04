@@ -26,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ajah.css.util.RuleComparator;
+import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.io.file.FileUtils;
 
@@ -180,6 +181,8 @@ public class CssParser {
 				break;
 			case '\r':
 				break;
+			case '_':
+				break;
 			case '\n':
 				break;
 			default:
@@ -209,12 +212,17 @@ public class CssParser {
 	/**
 	 * Parses an {@link InputStream} of raw CSS.
 	 * 
-	 * @param is
+	 * @param css
 	 *            The raw CSS.
 	 * @return The resulting CssDocument.
 	 */
-	public CssDocument parse(InputStream is) {
-		return parse(new Scanner(is).useDelimiter("\\A").next());
+	public CssDocument parse(InputStream css) {
+		AjahUtils.requireParam(css, "css");
+		Scanner scanner = new Scanner(css).useDelimiter("\\A");
+		if (scanner.hasNext()) {
+			return parse(scanner.next());
+		}
+		return null;
 	}
 
 }
