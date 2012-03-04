@@ -126,19 +126,21 @@ public class AutoFormTag extends SpringTag {
 				if (attribute.startsWith("org.springframework.validation.BindingResult.")) {
 					BindingResult result = (BindingResult) this.pageContext.getRequest().getAttribute(attribute);
 					log.fine("Found " + result.getErrorCount() + " global errors");
-					UnorderedList errs = div.add(new UnorderedList().css("asm-err"));
+					Div alertBox = div.add(new Div().css("alert").css("alert-error"));
+					UnorderedList errs = alertBox.add(new UnorderedList().css("asm-err"));
 					for (ObjectError error : result.getAllErrors()) {
 						errs.add(new ListItem(getMessage(error)));
 					}
+
 				}
 			}
 
-			Form form = new Form(FormMethod.POST).css("asm-auto");
+			Form form = new Form(FormMethod.POST).css("well").css("asm-auto");
 			if (!StringUtils.isBlank(getId())) {
 				form.setId(getId());
 			}
 			for (Field field : this.autoForm.getClass().getFields()) {
-				log.fine(field.getName());
+				log.fine(field.getName() + " has a value of " + field.get(this.autoForm));
 				Input<?> input = getInput(field, this.autoForm.getClass().getFields());
 				form.getInputs().add(input);
 			}
@@ -150,7 +152,7 @@ public class AutoFormTag extends SpringTag {
 			if (StringUtils.isBlank(submitText)) {
 				submitText = StringUtils.capitalize(StringUtils.splitCamelCase(this.autoForm.getClass().getSimpleName().replaceAll("Form$", "")));
 			}
-			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT);
+			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT).css("btn").css("btn-primary");
 			form.getInputs().add(input);
 			div.add(form);
 
@@ -204,7 +206,7 @@ public class AutoFormTag extends SpringTag {
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
 		} else if (field.getType().isAssignableFrom(Password.class)) {
 			// A password input
-			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.PASSWORD);
+			input = new InputImpl(label, field.getName(), "", InputType.PASSWORD);
 		} else if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
 			// A checkbox input
 			input = new Checkbox(label, field.getName(), "true", field.getBoolean(this.autoForm));
