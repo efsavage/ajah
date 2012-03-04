@@ -90,4 +90,26 @@ public enum Compact {
 	public boolean ge(Compact other) {
 		return this.level >= other.level;
 	}
+
+	/**
+	 * Match a compactness level based on its name, and if none is found, return
+	 * a default value.
+	 * 
+	 * @param value
+	 *            The value to search for, a case-insensitive match with the
+	 *            enum name.
+	 * @param defaultValue
+	 *            The value to return if no match is found, may be null.
+	 * @return The matching Compact, or the default value supplied, which may be
+	 *         null.
+	 */
+	public static Compact get(String value, Compact defaultValue) {
+		for (Compact compact : values()) {
+			if (compact.name().equalsIgnoreCase(value)) {
+				return compact;
+			}
+		}
+		return defaultValue;
+	}
+
 }
