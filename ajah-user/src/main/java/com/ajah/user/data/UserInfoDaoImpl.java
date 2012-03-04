@@ -15,8 +15,9 @@
  */
 package com.ajah.user.data;
 
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import org.springframework.stereotype.Repository;
+
+import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
@@ -27,7 +28,7 @@ import com.ajah.user.info.UserInfoImpl;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface UserInfoDao extends AjahDao<UserId, UserInfo> {
-
+@Repository
+public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoImpl> implements UserInfoDao {
 	// Empty
 }

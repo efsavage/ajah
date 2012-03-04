@@ -13,21 +13,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.data;
+package com.ajah.log.http.request.data;
 
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DatabaseAccessException;
-import com.ajah.user.UserId;
-import com.ajah.user.info.UserInfo;
-import com.ajah.user.info.UserInfoImpl;
+import org.springframework.stereotype.Repository;
+
+import com.ajah.log.http.request.RequestEvent;
+import com.ajah.log.http.request.RequestEventId;
+import com.ajah.spring.jdbc.AbstractAjahDao;
 
 /**
- * Data operations on the "user" table.
+ * Data operations on the "request_event" table.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public interface UserInfoDao extends AjahDao<UserId, UserInfo> {
-
+@Repository
+public class RequestEventDaoImpl extends AbstractAjahDao<RequestEventId, RequestEvent, RequestEvent> implements RequestEventDao {
 	// Empty
 }

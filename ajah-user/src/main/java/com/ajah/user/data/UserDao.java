@@ -1,5 +1,4 @@
-/*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+/*  Copyright 2011 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,14 +14,9 @@
  */
 package com.ajah.user.data;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
-import com.ajah.user.UserImpl;
-import com.ajah.util.AjahUtils;
 import com.ajah.util.crypto.Password;
 
 /**
@@ -31,56 +25,16 @@ import com.ajah.util.crypto.Password;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@Repository
-public class UserDao extends AbstractAjahDao<UserId, UserImpl> {
+public interface UserDao extends AjahDao<UserId, User> {
 
-	// private static final Logger log = Logger.getLogger(UserDao.class.getName());
+	public void insert(User user, Password password);
 
-	// private TransactionTemplate transactionTemplate;
-	//
-	// /**
-	// * Sets the transaction manager.
-	// *
-	// * @param transactionManager
-	// */
-	// @Autowired
-	// public void setTransactionManager(PlatformTransactionManager
-	// transactionManager) {
-	// this.transactionTemplate = new TransactionTemplate(transactionManager);
-	// }
+	public void update(UserId userId, Password password);
 
-	/**
-	 * This method is for saving a new user. It includes the password field
-	 * since that field is the only field on the user table that is not mapped
-	 * to a User property.
-	 * 
-	 * @param user
-	 *            The user to save, required.
-	 * @param password
-	 *            The password for the user, required.
-	 */
-	@Transactional
-	public void insert(User user, Password password) {
-		AjahUtils.requireParam(user, "user");
-		AjahUtils.requireParam(password, "password");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)", new Object[] {
-				user.getId().toString(), user.getUsername(), password.toString(), user.getStatus().getId() + "", user.getType().getId() + "" });
-	}
+	public User findByFields(String[] strings, String[] strings2);
 
-	/**
-	 * UPDATEs the user table with a new password.
-	 * 
-	 * @param userId
-	 *            ID of user to update, required.
-	 * @param password
-	 *            Password to update to, required.
-	 */
-	public void update(UserId userId, Password password) {
-		AjahUtils.requireParam(userId, "userId");
-		AjahUtils.requireParam(password, "password");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
-	}
+	public User findById(UserId userId);
+
+	public User findByField(String string, String username);
 
 }

@@ -15,6 +15,8 @@
  */
 package com.ajah.user.info;
 
+import java.util.Date;
+
 import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
@@ -147,4 +149,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 */
 	Integer getBirthYear();
 
+	Date getCreated();
+
+	void setCreated(Date date);
 }

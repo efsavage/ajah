@@ -30,8 +30,8 @@ import com.ajah.util.StringUtils;
  */
 public class JDBCMapperUtils {
 
-	private static final Map<Class<?>, String> tableNameCache = new HashMap<Class<?>, String>();
-	private static final Map<String, Map<Field, String>> columnNameCache = new HashMap<String, Map<Field, String>>();
+	private static final Map<Class<?>, String> tableNameCache = new HashMap<>();
+	private static final Map<String, Map<Field, String>> columnNameCache = new HashMap<>();
 
 	/**
 	 * Converts a class name to a table name, per standard database naming

@@ -15,6 +15,7 @@
  */
 package com.ajah.user.data;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -50,6 +51,7 @@ import com.ajah.util.data.format.EmailAddress;
  * 
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserManager {
 
 	private static final Logger log = Logger.getLogger(UserManager.class.getName());
@@ -94,8 +96,9 @@ public class UserManager {
 	 *            User ID of the user that we want the info about. *
 	 * @return UserInfo from the database if possible, otherwise a new/empty one
 	 *         will be returned with the UserId set.
+	 * @throws DatabaseAccessException
 	 */
-	public UserInfo getUserInfo(UserId userId) {
+	public UserInfo getUserInfo(UserId userId) throws DatabaseAccessException {
 		UserInfo userInfo = this.userInfoDao.findById(userId);
 		if (userInfo != null) {
 			return userInfo;
@@ -120,7 +123,6 @@ public class UserManager {
 	 * @throws DatabaseAccessException
 	 *             If the queries could not be completed.
 	 */
-	@Transactional
 	public User createUser(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) throws DatabaseAccessException {
 		User user = new UserImpl();
 		user.setId(new UserId(UUID.randomUUID().toString()));
@@ -136,8 +138,9 @@ public class UserManager {
 		email.setStatus(EmailStatusImpl.ACTIVE);
 		this.emailDao.insert(email);
 
-		UserInfoImpl userInfo = new UserInfoImpl(user.getId());
+		UserInfo userInfo = new UserInfoImpl(user.getId());
 		userInfo.setPrimaryEmailId(email.getId());
+		userInfo.setCreated(new Date());
 		this.userInfoDao.insert(userInfo);
 		return user;
 	}

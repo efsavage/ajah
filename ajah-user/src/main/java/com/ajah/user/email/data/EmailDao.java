@@ -15,12 +15,9 @@
  */
 package com.ajah.user.email.data;
 
-import org.springframework.stereotype.Repository;
-
-import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
-import com.ajah.util.AjahUtils;
 
 /**
  * Data operations on the "user" table.
@@ -28,26 +25,10 @@ import com.ajah.util.AjahUtils;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@Repository
-public class EmailDao extends AbstractAjahDao<EmailId, Email> {
+public interface EmailDao extends AjahDao<EmailId, Email> {
 
-	// private static final Logger log =
-	// Logger.getLogger(EmailDao.class.getName());
+	int insert(Email email);
 
-	/**
-	 * INSERTs an {@link Email} entity.
-	 * 
-	 * @param email
-	 *            The {@link Email} to insert.
-	 * @return Number of rows affected.
-	 */
-	@Override
-	public int insert(Email email) {
-		//TODO Necessary?
-		AjahUtils.requireParam(email, "email");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
-				email.getUserId().getId(), email.getAddress().toString(), email.getStatus().getId() });
-	}
+	Email findByField(String string, String address);
 
 }

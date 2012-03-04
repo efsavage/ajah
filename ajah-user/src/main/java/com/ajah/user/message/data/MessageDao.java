@@ -41,7 +41,7 @@ import com.ajah.util.date.DateUtils;
  * 
  */
 @Repository
-public class MessageDao extends AbstractAjahDao<MessageId, Message> {
+public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 
 	// private static final Logger log =
 	// Logger.getLogger(MessageDao.class.getName());
@@ -72,7 +72,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message> {
 		 * @return A list of user ids, may be empty but will not be null.
 		 */
 		private static List<UserId> getUserIds(String string) {
-			List<UserId> userIds = new ArrayList<UserId>();
+			List<UserId> userIds = new ArrayList<>();
 			if (StringUtils.isBlank(string)) {
 				return userIds;
 			}

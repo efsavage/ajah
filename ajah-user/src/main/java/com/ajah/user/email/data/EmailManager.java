@@ -18,6 +18,7 @@ package com.ajah.user.email.data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailNotFoundException;
@@ -44,8 +45,9 @@ public class EmailManager {
 	 * @return The Email, if found.
 	 * @throws EmailNotFoundException
 	 *             If no Email is found.
+	 * @throws DatabaseAccessException 
 	 */
-	public Email getEmail(EmailId emailId) throws EmailNotFoundException {
+	public Email getEmail(EmailId emailId) throws EmailNotFoundException, DatabaseAccessException {
 		AjahUtils.requireParam(emailId, "emailId");
 		Email email = this.emailDao.findById(emailId);
 		if (email == null) {

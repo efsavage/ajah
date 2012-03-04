@@ -37,7 +37,7 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * 
 	 * @return The class of the managed entity.
 	 */
-	Class<T> getTargetClass();
+	Class<? extends T> getTargetClass();
 
 	/**
 	 * Automatically fill in properties from the result set.
@@ -50,4 +50,8 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 */
 	void autoPopulate(T entity, ResultSet resultSet) throws SQLException;
 
+	T findById(K id) throws DatabaseAccessException;
+
+	int insert(T entity) throws DatabaseAccessException;
+	
 }

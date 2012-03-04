@@ -68,7 +68,7 @@ import com.ajah.util.reflect.ReflectionUtils;
  *            The type of entity this DAO exists for.
  * 
  */
-public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>> implements AjahDao<K, T> {
+public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements AjahDao<K, T> {
 
 	private static final Logger log = Logger.getLogger(AbstractAjahDao.class.getName());
 
@@ -254,6 +254,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *            Value to match against the entity.entity_id column, required.
 	 * @return Entity if found, otherwise null.
 	 */
+	@Override
 	public T findById(K id) {
 		AjahUtils.requireParam(id, "id");
 		try {
@@ -416,8 +417,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Class<T> getTargetClass() {
-		return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+	public Class<C> getTargetClass() {
+		return (Class<C>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
 	}
 
 	/**
@@ -717,6 +718,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DatabaseAccessException
 	 *             If an error occurs executing the query.
 	 */
+	@Override
 	public int insert(T entity) throws DatabaseAccessException {
 		return insert(entity, false);
 	}

@@ -34,19 +34,19 @@ import com.ajah.util.data.Month;
 @Data
 public class UserInfoImpl implements UserInfo {
 
-	protected UserId id;
-	protected UserSource source;
-	protected Date created;
-	protected Date passwordChanged;
-	protected String firstName;
-	protected String middleName;
-	protected String lastName;
-	protected String title;
-	protected String gender;
-	protected Month birthMonth;
-	protected Integer birthDay;
-	protected Integer birthYear;
-	protected EmailId primaryEmailId;
+	private UserId id;
+	private UserSource source;
+	private Date created;
+	private Date passwordChanged;
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String title;
+	private String gender;
+	private Month birthMonth;
+	private Integer birthDay;
+	private Integer birthYear;
+	private EmailId primaryEmailId;
 
 	public UserInfoImpl() {
 

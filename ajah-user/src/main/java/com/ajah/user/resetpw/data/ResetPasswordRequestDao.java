@@ -30,9 +30,10 @@ import com.ajah.util.AjahUtils;
  * 
  */
 @Repository
-public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordRequestId, ResetPasswordRequest> {
+public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordRequestId, ResetPasswordRequest, ResetPasswordRequest> {
 
-	// private static final Logger log = Logger.getLogger(UserDao.class.getName());
+	// private static final Logger log =
+	// Logger.getLogger(UserDao.class.getName());
 
 	/**
 	 * INSERTs a {@link ResetPasswordRequest}.
@@ -43,13 +44,11 @@ public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordReques
 	 */
 	@Override
 	public int insert(ResetPasswordRequest resetPasswordRequest) {
-		//TODO Necessary?
+		// TODO Necessary?
 		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
-		return this.jdbcTemplate.update(
-				"INSERT INTO pw_reset (pw_reset_id, user_id, created, code, status) VALUES (?,?,?,?,?)",
-				new Object[] { resetPasswordRequest.getId().getId(), resetPasswordRequest.getUserId().getId(),
-						Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
-						resetPasswordRequest.getStatus().getId() });
+		return this.jdbcTemplate.update("INSERT INTO pw_reset (pw_reset_id, user_id, created, code, status) VALUES (?,?,?,?,?)", new Object[] { resetPasswordRequest.getId().getId(),
+				resetPasswordRequest.getUserId().getId(), Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
+				resetPasswordRequest.getStatus().getId() });
 	}
 
 	/**
@@ -61,13 +60,11 @@ public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordReques
 	 */
 	@Override
 	public int update(ResetPasswordRequest resetPasswordRequest) {
-		//TODO Necessary?
+		// TODO Necessary?
 		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
-		return this.jdbcTemplate
-				.update("UPDATE pw_reset SET user_id = ?, created = ?, code = ?, status = ? WHERE pw_reset_id = ?",
-						new Object[] { resetPasswordRequest.getUserId().getId(), Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000),
-								Long.valueOf(resetPasswordRequest.getCode()), resetPasswordRequest.getStatus().getId(),
-								resetPasswordRequest.getId().getId() });
+		return this.jdbcTemplate.update("UPDATE pw_reset SET user_id = ?, created = ?, code = ?, status = ? WHERE pw_reset_id = ?",
+				new Object[] { resetPasswordRequest.getUserId().getId(), Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
+						resetPasswordRequest.getStatus().getId(), resetPasswordRequest.getId().getId() });
 	}
 
 }

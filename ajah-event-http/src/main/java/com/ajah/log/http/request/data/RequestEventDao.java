@@ -15,11 +15,10 @@
  */
 package com.ajah.log.http.request.data;
 
-import org.springframework.stereotype.Repository;
-
 import com.ajah.log.http.request.RequestEvent;
 import com.ajah.log.http.request.RequestEventId;
-import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DatabaseAccessException;
 
 /**
  * Data operations on the "request_event" table.
@@ -28,7 +27,8 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Repository
-public class RequestEventDao extends AbstractAjahDao<RequestEventId, RequestEvent> {
-	// Empty
+public interface RequestEventDao extends AjahDao<RequestEventId, RequestEvent> {
+
+	int insert(RequestEvent requestEvent, boolean b) throws DatabaseAccessException;
+
 }
