@@ -126,8 +126,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Calls {@link #join(String[], String)} with null for a delimiter. Array of
-	 * Strings, may be empty or null.
+	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
+	 * of Strings, may be empty or null.
 	 * 
 	 * @param array
 	 *            The array to be joined, may be empty or null.
@@ -135,7 +135,7 @@ public class StringUtils {
 	 *         null or empty Strings, returns null.
 	 */
 	public static String join(final String[] array) {
-		return join(array, null);
+		return join(array, ",");
 	}
 
 	/**
