@@ -16,12 +16,16 @@
 package com.ajah.spring.mvc.servlet.tag;
 
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
+
+import com.ajah.util.StringUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
@@ -30,9 +34,14 @@ import org.springframework.context.MessageSourceResolvable;
  */
 public abstract class SpringTag extends TagSupport {
 
+	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
+
 	protected String getMessage(MessageSourceResolvable resolvable) {
 		ApplicationContext appContext = (ApplicationContext) this.pageContext.getServletContext().getAttribute("appContext");
 		MessageSource messageSource = appContext.getBean(MessageSource.class);
+		if (log.isLoggable(Level.FINEST)) {
+			log.finest(StringUtils.join(resolvable.getCodes()));
+		}
 		return messageSource.getMessage(resolvable, Locale.getDefault());
 	}
 
