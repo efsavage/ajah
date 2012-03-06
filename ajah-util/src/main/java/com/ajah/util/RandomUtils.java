@@ -69,12 +69,12 @@ public class RandomUtils {
 		if (CollectionUtils.isEmpty(list)) {
 			return null;
 		}
-		return list.get(getRandomNumber(0, list.size()));
+		return list.get(getRandomNumber(0, list.size() - 1));
 	}
 
 	/**
-	 * Returns a randomized, lowercased String consisting of only a-z characters,
-	 * all with equal weighting.
+	 * Returns a randomized, lowercased String consisting of only a-z
+	 * characters, all with equal weighting.
 	 * 
 	 * @param minLength
 	 *            The minimum length of the desired string.
