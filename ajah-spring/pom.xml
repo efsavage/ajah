@@ -3,7 +3,6 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-spring</artifactId>
-	<version>1.0.0</version>
 	<name>Ajah Spring Library</name>
 	<description>Common code for projects using spring</description>
 
@@ -11,14 +10,14 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>1.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 

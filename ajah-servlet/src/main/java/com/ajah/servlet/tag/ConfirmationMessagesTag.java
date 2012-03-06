@@ -34,8 +34,6 @@ import com.ajah.util.CollectionUtils;
  */
 public class ConfirmationMessagesTag extends TagSupport {
 
-	private static final long serialVersionUID = 7806643769754990622L;
-
 	private String var;
 
 	/**

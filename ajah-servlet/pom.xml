@@ -1,23 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
->
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-servlet</artifactId>
-	<version>1.0.0</version>
 	<name>Ajah Servlet Library</name>
 	<description>The Ajah Servlet Library serves to provide a place for utilities that are specific to a servlet environment, but not specific to any particular product (Struts, Spring MVC, etc).</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>1.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 		<dependency>
@@ -36,13 +34,13 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-html</artifactId>
-			<version>1.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-http</artifactId>
-			<version>1.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 	</dependencies>
