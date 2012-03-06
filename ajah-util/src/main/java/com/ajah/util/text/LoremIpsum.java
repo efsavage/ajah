@@ -75,6 +75,37 @@ public class LoremIpsum {
 	}
 
 	/**
+	 * Returns a sentence of 1-5 random words with a period at the end, and
+	 * occasional commas.
+	 * 
+	 * @return A sentence of 1-5 random words.
+	 */
+	public static String getProperPhrase() {
+		return addProperPhrase(new StringBuilder()).toString();
+	}
+
+	/**
+	 * Appends a sentence of 2-12 random words with a period at the end, and
+	 * occasional commas.
+	 * 
+	 * @param builder
+	 *            The builder to append the sentence to.
+	 * 
+	 * @return The builder supplied as a parameter, with an appended sentence of
+	 *         2-12 random words.
+	 */
+	public static StringBuilder addProperPhrase(StringBuilder builder) {
+		int words = RandomUtils.getRandomNumber(1, 5);
+		for (int i = 0; i < words; i++) {
+			if (i > 0) {
+				builder.append(" ");
+			}
+			builder.append(StringUtils.capitalize(RandomUtils.getRandomElement(WORD_LIST)));
+		}
+		return builder;
+	}
+
+	/**
 	 * Appends a sentence of 2-12 random words with a period at the end, and
 	 * occasional commas.
 	 * 
@@ -87,7 +118,6 @@ public class LoremIpsum {
 	public static StringBuilder addSentence(StringBuilder builder) {
 		builder.append(StringUtils.capitalize(RandomUtils.getRandomElement(WORD_LIST)));
 		int words = RandomUtils.getRandomNumber(2, 12);
-		System.out.println(words);
 		for (int i = 0; i < words; i++) {
 			builder.append(" ");
 			builder.append(RandomUtils.getRandomElement(WORD_LIST));
@@ -113,8 +143,8 @@ public class LoremIpsum {
 	/**
 	 * Appends a paragraph of 3-8 sentences.
 	 * 
-	 * @return The builder supplied as a parameter, with an appended paragraph of
-	 *         3-8 sentences.
+	 * @return The builder supplied as a parameter, with an appended paragraph
+	 *         of 3-8 sentences.
 	 */
 	private static StringBuilder addParagraph(StringBuilder builder) {
 		int sentences = RandomUtils.getRandomNumber(3, 8);
