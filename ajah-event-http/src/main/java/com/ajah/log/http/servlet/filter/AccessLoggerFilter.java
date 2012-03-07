@@ -35,7 +35,9 @@ import com.ajah.servlet.AjahFilter;
 import com.ajah.util.AjahUtils;
 
 /**
- * Logs HTTP requests.
+ * Logs HTTP requests. Will try to determine on it's own if a request should be
+ * logged, but this behavior can be overridden by setting a {@link Boolean}
+ * request attribute "logMe".
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -63,10 +65,30 @@ public class AccessLoggerFilter extends AjahFilter {
 			chain.doFilter(request, response);
 		} finally {
 			requestEvent.complete();
-			log.finest(requestEvent.getUri() + " took " + requestEvent.getDuration() + "ms");
-			AjahUtils.requireParam(this.taskExecutor, "taskExecutor");
-			this.taskExecutor.execute(new RequestEventHandler(requestEvent, this.requestEventManager));
+			if (isLoggable(request)) {
+				log.finest(requestEvent.getUri() + " took " + requestEvent.getDuration() + "ms");
+				AjahUtils.requireParam(this.taskExecutor, "taskExecutor");
+				this.taskExecutor.execute(new RequestEventHandler(requestEvent, this.requestEventManager));
+			}
 		}
+	}
+
+	/**
+	 * Determines if a request should be logged.
+	 * 
+	 * @param request
+	 *            The request to examine, required.
+	 * @return true if the request should be logged, otherwise false.
+	 */
+	private static boolean isLoggable(HttpServletRequest request) {
+		if (request.getAttribute("logMe") != null) {
+			return Boolean.TRUE.equals(request.getAttribute("logMe"));
+		}
+		String uri = request.getRequestURI();
+		if (uri.equals("/favicon.ico") || uri.endsWith(".css") || uri.endsWith(".js")) {
+			return false;
+		}
+		return true;
 	}
 
 }
