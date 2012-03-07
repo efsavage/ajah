@@ -38,11 +38,20 @@ public enum FeedSourceStatus implements Identifiable<String> {
 	 */
 	BLOCKED_SPAM("-2", "spam", "Blocked (Spam)", "Blocked for being a spam feed");
 
-	private FeedSourceStatus(String id, String code, String name, String description) {
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
+	/**
+	 * Finds a FeedSourceStatus that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching FeedSourceStatus, or null.
+	 */
+	public static FeedSourceStatus get(final String id) {
+		for (final FeedSourceStatus status : values()) {
+			if (status.getId().equals(id) || status.getCode().equals(id) || status.name().equals(id)) {
+				return status;
+			}
+		}
+		return null;
 	}
 
 	private final String id;
@@ -50,14 +59,11 @@ public enum FeedSourceStatus implements Identifiable<String> {
 	private final String name;
 	private final String description;
 
-	/**
-	 * The internal ID of the status.
-	 * 
-	 * @return The internal ID of the status. Cannot be null.
-	 */
-	@Override
-	public String getId() {
-		return this.id;
+	private FeedSourceStatus(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
 	}
 
 	/**
@@ -71,16 +77,6 @@ public enum FeedSourceStatus implements Identifiable<String> {
 	}
 
 	/**
-	 * The display-friendly name of the status. If no name is applicable, it
-	 * should be an alias for the ID or code.
-	 * 
-	 * @return The display-friendly name of the status. Cannot be null.
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
 	 * The display-friendly description of the status.
 	 * 
 	 * @return The display-friendly description of the status. May be null.
@@ -90,23 +86,27 @@ public enum FeedSourceStatus implements Identifiable<String> {
 	}
 
 	/**
-	 * Finds a FeedSourceStatus that matches the id on id, name, or name().
+	 * The internal ID of the status.
 	 * 
-	 * @param id
-	 *            Value to match against id, name, or name()
-	 * @return Matching FeedSourceStatus, or null.
+	 * @return The internal ID of the status. Cannot be null.
 	 */
-	public static FeedSourceStatus get(String id) {
-		for (FeedSourceStatus status : values()) {
-			if (status.getId().equals(id) || status.getCode().equals(id) || status.name().equals(id)) {
-				return status;
-			}
-		}
-		return null;
+	@Override
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * The display-friendly name of the status. If no name is applicable, it
+	 * should be an alias for the ID or code.
+	 * 
+	 * @return The display-friendly name of the status. Cannot be null.
+	 */
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
-	public void setId(String id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -36,7 +36,7 @@ public class ByteTally<T> extends Tally<T> {
 	 * @see Tally#Tally(PrintStream)
 	 * @param out
 	 */
-	public ByteTally(PrintStream out) {
+	public ByteTally(final PrintStream out) {
 		super(out);
 	}
 

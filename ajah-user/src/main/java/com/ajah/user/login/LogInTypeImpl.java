@@ -46,7 +46,7 @@ public enum LogInTypeImpl implements LogInType {
 
 	private final boolean manual;
 
-	private LogInTypeImpl(String id, String code, String name, String description, boolean manual) {
+	private LogInTypeImpl(final String id, final String code, final String name, final String description, final boolean manual) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

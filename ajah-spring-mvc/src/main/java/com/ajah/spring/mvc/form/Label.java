@@ -21,7 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Allows for customization of the label text to display for a form field on an AutoForm.
+ * Allows for customization of the label text to display for a form field on an
+ * AutoForm.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 

@@ -24,14 +24,14 @@ package com.ajah.geo.us;
  */
 public class IllegalZipCodeFormatException extends IllegalArgumentException {
 
+	private static final long serialVersionUID = 6367113304959164109L;
+
 	/**
 	 * @see IllegalArgumentException#IllegalArgumentException(String)
 	 * @param zip
 	 */
-	public IllegalZipCodeFormatException(String zip) {
+	public IllegalZipCodeFormatException(final String zip) {
 		super(zip + " is not a valid ZIP code");
 	}
-
-	private static final long serialVersionUID = 6367113304959164109L;
 
 }

@@ -39,7 +39,7 @@ public class DaoUtils {
 	 * @throws SQLException
 	 *             If thrown by ResultSet.
 	 */
-	public static Integer getInteger(ResultSet rs, String field) throws SQLException {
+	public static Integer getInteger(final ResultSet rs, final String field) throws SQLException {
 		if (rs.getObject(field) == null) {
 			return null;
 		}

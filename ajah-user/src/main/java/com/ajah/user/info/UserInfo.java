@@ -39,7 +39,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 *            The User ID, should not be null.
 	 */
 	@Override
-	void setId(UserId userId);
+	void setId(final UserId userId);
 
 	/**
 	 * Sets the first name of the user.
@@ -47,7 +47,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param firstName
 	 *            The first name of the user.
 	 */
-	void setFirstName(String firstName);
+	void setFirstName(final String firstName);
 
 	/**
 	 * Sets the middle name of the user.
@@ -55,7 +55,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param middleName
 	 *            The middle name of the user.
 	 */
-	void setMiddleName(String middleName);
+	void setMiddleName(final String middleName);
 
 	/**
 	 * The last name of the user.
@@ -63,7 +63,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param lastName
 	 *            The last name of the user.
 	 */
-	void setLastName(String lastName);
+	void setLastName(final String lastName);
 
 	/**
 	 * Sets the birth day of the user.
@@ -71,7 +71,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param birthDay
 	 *            The birth day of the user, should be >= 0 and <= 31.
 	 */
-	void setBirthDay(Integer birthDay);
+	void setBirthDay(final Integer birthDay);
 
 	/**
 	 * Sets she birth month of the user.
@@ -79,7 +79,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param birthMonth
 	 *            The birth month of the user, should be >=0 and <=12
 	 */
-	void setBirthMonth(Month birthMonth);
+	void setBirthMonth(final Month birthMonth);
 
 	/**
 	 * Sets the birth year of the user.
@@ -88,7 +88,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 *            The birth year of the user, should be 0 or >=1900 and <=
 	 *            current year
 	 */
-	void setBirthYear(Integer birthYear);
+	void setBirthYear(final Integer birthYear);
 
 	/**
 	 * Returns the user's primary email. Could be null if the user did not sign
@@ -105,7 +105,7 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @param id
 	 *            Unique ID of the {@link Email}, may be null.
 	 */
-	void setPrimaryEmailId(EmailId id);
+	void setPrimaryEmailId(final EmailId id);
 
 	/**
 	 * Returns the first name of the user.
@@ -151,5 +151,5 @@ public interface UserInfo extends Identifiable<UserId> {
 
 	Date getCreated();
 
-	void setCreated(Date date);
+	void setCreated(final Date date);
 }

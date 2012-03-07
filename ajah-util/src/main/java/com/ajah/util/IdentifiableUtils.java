@@ -30,29 +30,6 @@ import java.util.Map;
 public class IdentifiableUtils {
 
 	/**
-	 * Removes any matching entities as determined by their IDs.
-	 * 
-	 * @param target
-	 *            The collection to remove from.
-	 * @param toRemove
-	 *            The collection of items to remove.
-	 */
-	public static <K extends Comparable<K>, I extends Identifiable<K>> void removeAll(Collection<I> target, Collection<I> toRemove) {
-		if (target == null || toRemove == null) {
-			return;
-		}
-		List<I> idMatches = new ArrayList<>();
-		for (I idRemove : toRemove) {
-			for (I idCandidate : target) {
-				if (idCandidate.getId().compareTo(idRemove.getId()) == 0) {
-					idMatches.add(idCandidate);
-				}
-			}
-		}
-		target.removeAll(idMatches);
-	}
-
-	/**
 	 * Removes a matching entity as determined by its IDs.
 	 * 
 	 * @param target
@@ -60,14 +37,37 @@ public class IdentifiableUtils {
 	 * @param toRemove
 	 *            The item to remove.
 	 */
-	public static <K extends Comparable<K>, I extends Identifiable<K>> void remove(Collection<I> target, I toRemove) {
+	public static <K extends Comparable<K>, I extends Identifiable<K>> void remove(final Collection<I> target, final I toRemove) {
 		if (target == null || toRemove == null) {
 			return;
 		}
-		List<I> idMatches = new ArrayList<>();
-		for (I idCandidate : target) {
+		final List<I> idMatches = new ArrayList<>();
+		for (final I idCandidate : target) {
 			if (idCandidate.getId().compareTo(toRemove.getId()) == 0) {
 				idMatches.add(idCandidate);
+			}
+		}
+		target.removeAll(idMatches);
+	}
+
+	/**
+	 * Removes any matching entities as determined by their IDs.
+	 * 
+	 * @param target
+	 *            The collection to remove from.
+	 * @param toRemove
+	 *            The collection of items to remove.
+	 */
+	public static <K extends Comparable<K>, I extends Identifiable<K>> void removeAll(final Collection<I> target, final Collection<I> toRemove) {
+		if (target == null || toRemove == null) {
+			return;
+		}
+		final List<I> idMatches = new ArrayList<>();
+		for (final I idRemove : toRemove) {
+			for (final I idCandidate : target) {
+				if (idCandidate.getId().compareTo(idRemove.getId()) == 0) {
+					idMatches.add(idCandidate);
+				}
 			}
 		}
 		target.removeAll(idMatches);
@@ -81,12 +81,12 @@ public class IdentifiableUtils {
 	 * @return A map with all of the elements of the collection, using the ID of
 	 *         the objects as the key.
 	 */
-	public static <K extends Comparable<K>, I extends Identifiable<K>> Map<K, I> toMap(Collection<I> collection) {
-		Map<K, I> map = new HashMap<>();
+	public static <K extends Comparable<K>, I extends Identifiable<K>> Map<K, I> toMap(final Collection<I> collection) {
+		final Map<K, I> map = new HashMap<>();
 		if (CollectionUtils.isEmpty(collection)) {
 			return map;
 		}
-		for (I identifiable : collection) {
+		for (final I identifiable : collection) {
 			map.put(identifiable.getId(), identifiable);
 		}
 		return map;

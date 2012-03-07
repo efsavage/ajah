@@ -40,6 +40,21 @@ public class TableTag extends TagSupport {
 	private String cssClass;
 
 	/**
+	 * Creates a closing table tag.
+	 * 
+	 * @see javax.servlet.jsp.tagext.TagSupport#doEndTag()
+	 */
+	@Override
+	public int doEndTag() throws JspException {
+		try {
+			this.pageContext.getOut().write("</table>");
+			return Tag.EVAL_PAGE;
+		} catch (final IOException e) {
+			throw new JspException(e);
+		}
+	}
+
+	/**
 	 * Creates an opening table tag.
 	 * 
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
@@ -60,22 +75,7 @@ public class TableTag extends TagSupport {
 			}
 			this.pageContext.getOut().write(">");
 			return Tag.EVAL_BODY_INCLUDE;
-		} catch (IOException e) {
-			throw new JspException(e);
-		}
-	}
-
-	/**
-	 * Creates a closing table tag.
-	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doEndTag()
-	 */
-	@Override
-	public int doEndTag() throws JspException {
-		try {
-			this.pageContext.getOut().write("</table>");
-			return Tag.EVAL_PAGE;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new JspException(e);
 		}
 	}

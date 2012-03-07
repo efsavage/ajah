@@ -55,7 +55,7 @@ public class AutoFormValidator implements Validator {
 	 * @param standardValidator
 	 *            The "standard" validator, may be null.
 	 */
-	public void setStandardValidator(Validator standardValidator) {
+	public void setStandardValidator(final Validator standardValidator) {
 		this.standardValidator = standardValidator;
 	}
 
@@ -67,7 +67,7 @@ public class AutoFormValidator implements Validator {
 	 * @return Always returns true
 	 */
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(final Class<?> clazz) {
 		return true;
 	}
 
@@ -79,11 +79,11 @@ public class AutoFormValidator implements Validator {
 	 *      validate(java.lang.Object, org.springframework.validation.Errors)
 	 */
 	@Override
-	public void validate(Object object, Errors errors) {
+	public void validate(final Object object, final Errors errors) {
 		if (this.standardValidator != null) {
 			ValidationUtils.invokeValidator(this.standardValidator, object, errors);
 		}
-		for (Validator validator : this.customValidators) {
+		for (final Validator validator : this.customValidators) {
 			ValidationUtils.invokeValidator(validator, object, errors);
 		}
 

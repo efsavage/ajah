@@ -36,9 +36,9 @@ public abstract class SpringTag extends TagSupport {
 
 	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
 
-	protected String getMessage(MessageSourceResolvable resolvable) {
-		ApplicationContext appContext = (ApplicationContext) this.pageContext.getServletContext().getAttribute("appContext");
-		MessageSource messageSource = appContext.getBean(MessageSource.class);
+	protected String getMessage(final MessageSourceResolvable resolvable) {
+		final ApplicationContext appContext = (ApplicationContext) this.pageContext.getServletContext().getAttribute("appContext");
+		final MessageSource messageSource = appContext.getBean(MessageSource.class);
 		if (log.isLoggable(Level.FINEST)) {
 			log.finest(StringUtils.join(resolvable.getCodes()));
 		}

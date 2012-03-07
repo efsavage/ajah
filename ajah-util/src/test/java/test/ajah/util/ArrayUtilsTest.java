@@ -30,15 +30,6 @@ import com.ajah.util.Validate;
 public class ArrayUtilsTest {
 
 	/**
-	 * Test good get.
-	 */
-	@Test
-	public void goodGet() {
-		final String[] array = new String[] { "foo", "bar" };
-		Assert.assertTrue(ArrayUtils.get(array, 1).equals("bar"));
-	}
-
-	/**
 	 * Test bad get.
 	 */
 	@Test
@@ -54,6 +45,15 @@ public class ArrayUtilsTest {
 	public void badGet2() {
 		final String[] array = new String[] { "foo", "bar" };
 		Assert.assertNull(ArrayUtils.get(array, -1));
+	}
+
+	/**
+	 * Test good get.
+	 */
+	@Test
+	public void goodGet() {
+		final String[] array = new String[] { "foo", "bar" };
+		Assert.assertTrue(ArrayUtils.get(array, 1).equals("bar"));
 	}
 
 	/**

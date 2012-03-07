@@ -27,14 +27,15 @@ import com.ajah.util.crypto.Password;
  */
 public interface UserDao extends AjahDao<UserId, User> {
 
-	public void insert(User user, Password password);
+	public void insert(final User user, final Password password);
 
-	public void update(UserId userId, Password password);
+	public void update(final UserId userId, final Password password);
 
-	public User findByFields(String[] strings, String[] strings2);
+	public User findByFields(final String[] strings, final String[] strings2);
 
-	public User findById(UserId userId);
+	@Override
+	public User findById(final UserId userId);
 
-	public User findByField(String string, String username);
+	public User findByField(final String string, final String username);
 
 }

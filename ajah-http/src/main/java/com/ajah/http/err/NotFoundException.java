@@ -30,7 +30,7 @@ public class NotFoundException extends HttpException {
 	 * @param message
 	 *            The error message.
 	 */
-	public NotFoundException(String message) {
+	public NotFoundException(final String message) {
 		super(message);
 	}
 

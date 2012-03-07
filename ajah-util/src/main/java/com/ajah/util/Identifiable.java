@@ -41,6 +41,6 @@ public interface Identifiable<K extends Comparable<K>> {
 	 * @param id
 	 *            The ID to set.
 	 */
-	void setId(K id);
+	void setId(final K id);
 
 }

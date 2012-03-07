@@ -28,15 +28,21 @@ import com.ajah.util.ToStringable;
  */
 public class UserAgent implements FromStringable, ToStringable {
 
-	private String raw;
-
-	private UserAgent(String raw) {
-		this.raw = raw;
+	/**
+	 * Retrieves a UserAgent from a User-Agent http header.
+	 * 
+	 * @param header
+	 *            The User-Agent header.
+	 * @return The matching UserAgent
+	 */
+	public static UserAgent from(final String header) {
+		return new UserAgent(header);
 	}
 
-	@Override
-	public String toString() {
-		return this.raw;
+	private final String raw;
+
+	private UserAgent(final String raw) {
+		this.raw = raw;
 	}
 
 	/**
@@ -49,15 +55,9 @@ public class UserAgent implements FromStringable, ToStringable {
 		return Browser.get(this.raw);
 	}
 
-	/**
-	 * Retrieves a UserAgent from a User-Agent http header.
-	 * 
-	 * @param header
-	 *            The User-Agent header.
-	 * @return The matching UserAgent
-	 */
-	public static UserAgent from(String header) {
-		return new UserAgent(header);
+	@Override
+	public String toString() {
+		return this.raw;
 	}
 
 }

@@ -37,54 +37,6 @@ public class ReflectionUtils {
 	private static final Logger log = Logger.getLogger(ReflectionUtils.class.getName());
 
 	/**
-	 * Executes the read method for a property descriptor. If any errors occur
-	 * they are logged, and will result in null return value.
-	 * 
-	 * @param instance
-	 * @param propertyDescriptor
-	 * @return The value of the objects read method for the property specified
-	 *         (which may be null), or null if an error occurs.
-	 */
-	public static Object propGetSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
-		AjahUtils.requireParam(instance, "instance");
-		AjahUtils.requireParam(propertyDescriptor, "propertyDescriptor");
-		try {
-			final Method getter = propertyDescriptor.getReadMethod();
-			if (getter != null) {
-				return getter.invoke(instance);
-			}
-			log.log(Level.SEVERE, "No read method found for " + propertyDescriptor.getName() + " on class " + instance.getClass().getName());
-		} catch (final RuntimeException e) {
-			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		} catch (final IllegalAccessException e) {
-			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		} catch (final InvocationTargetException e) {
-			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		}
-		return null;
-	}
-
-	/**
-	 * Executes the read method for a property descriptor, and returns as a
-	 * {@link Date}. If any errors occur they are logged, and will result in
-	 * null return value.
-	 * 
-	 * @param instance
-	 *            The instance on which the Property Descriptor is.
-	 * @param propertyDescriptor
-	 *            The property descriptor for the property sought.
-	 * @return The value of the objects read method for the property specified
-	 *         (which may be null), or null if an error occurs.
-	 */
-	public static Date propGetDateSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
-		final Object value = ReflectionUtils.propGetSafe(instance, propertyDescriptor);
-		if (value == null || !(value instanceof Date)) {
-			return null;
-		}
-		return (Date) value;
-	}
-
-	/**
 	 * Finds the enum where the getId() value matches the value of the field for
 	 * this particular object.
 	 * 
@@ -117,6 +69,54 @@ public class ReflectionUtils {
 	}
 
 	/**
+	 * Executes the read method for a property descriptor, and returns as a
+	 * {@link Date}. If any errors occur they are logged, and will result in
+	 * null return value.
+	 * 
+	 * @param instance
+	 *            The instance on which the Property Descriptor is.
+	 * @param propertyDescriptor
+	 *            The property descriptor for the property sought.
+	 * @return The value of the objects read method for the property specified
+	 *         (which may be null), or null if an error occurs.
+	 */
+	public static Date propGetDateSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
+		final Object value = ReflectionUtils.propGetSafe(instance, propertyDescriptor);
+		if (value == null || !(value instanceof Date)) {
+			return null;
+		}
+		return (Date) value;
+	}
+
+	/**
+	 * Executes the read method for a property descriptor. If any errors occur
+	 * they are logged, and will result in null return value.
+	 * 
+	 * @param instance
+	 * @param propertyDescriptor
+	 * @return The value of the objects read method for the property specified
+	 *         (which may be null), or null if an error occurs.
+	 */
+	public static Object propGetSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
+		AjahUtils.requireParam(instance, "instance");
+		AjahUtils.requireParam(propertyDescriptor, "propertyDescriptor");
+		try {
+			final Method getter = propertyDescriptor.getReadMethod();
+			if (getter != null) {
+				return getter.invoke(instance);
+			}
+			log.log(Level.SEVERE, "No read method found for " + propertyDescriptor.getName() + " on class " + instance.getClass().getName());
+		} catch (final RuntimeException e) {
+			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
+		} catch (final IllegalAccessException e) {
+			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
+		} catch (final InvocationTargetException e) {
+			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the value of a property descriptor, or null if an error occurs.
 	 * 
 	 * @param object
@@ -140,7 +140,7 @@ public class ReflectionUtils {
 			return StringUtils.safeToString(ReflectionUtils.propGetSafe(object, propertyDescriptor));
 		} else if (IntrospectionUtils.isIdentifiable(field)) {
 			// It's identifiable
-			Identifiable<?> identifiable = ((Identifiable<?>) ReflectionUtils.propGetSafe(object, propertyDescriptor));
+			final Identifiable<?> identifiable = ((Identifiable<?>) ReflectionUtils.propGetSafe(object, propertyDescriptor));
 			if (identifiable == null) {
 				return null;
 			}

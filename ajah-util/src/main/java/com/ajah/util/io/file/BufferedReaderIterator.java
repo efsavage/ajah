@@ -32,7 +32,7 @@ public class BufferedReaderIterator implements Iterator<String> {
 
 	private static final Logger log = Logger.getLogger(BufferedReaderIterator.class.getName());
 
-	private BufferedReader bufferedReader;
+	private final BufferedReader bufferedReader;
 
 	/**
 	 * Creates an iterator over a {@link LineReader}.
@@ -40,7 +40,7 @@ public class BufferedReaderIterator implements Iterator<String> {
 	 * @param bufferedReader
 	 *            The line reader to iterate over.
 	 */
-	public BufferedReaderIterator(BufferedReader bufferedReader) {
+	public BufferedReaderIterator(final BufferedReader bufferedReader) {
 		this.bufferedReader = bufferedReader;
 	}
 
@@ -54,7 +54,7 @@ public class BufferedReaderIterator implements Iterator<String> {
 	public boolean hasNext() {
 		try {
 			return this.bufferedReader.ready();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			log.log(Level.WARNING, e.getMessage(), e);
 			return false;
 		}
@@ -70,7 +70,7 @@ public class BufferedReaderIterator implements Iterator<String> {
 	public String next() {
 		try {
 			return this.bufferedReader.readLine();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return null;
 		}
 	}

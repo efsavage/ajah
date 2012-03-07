@@ -28,11 +28,20 @@ public enum EmailStatusImpl implements EmailStatus {
 	 */
 	ACTIVE("1", "Active", "Active", "Active");
 
-	private EmailStatusImpl(String id, String code, String name, String description) {
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
+	/**
+	 * Finds a EmailStatusImpl that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching EmailStatusImpl, or null.
+	 */
+	public static EmailStatus get(final String id) {
+		for (final EmailStatusImpl type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
 	}
 
 	private final String id;
@@ -40,12 +49,11 @@ public enum EmailStatusImpl implements EmailStatus {
 	private final String name;
 	private final String description;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getId() {
-		return this.id;
+	private EmailStatusImpl(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
 	}
 
 	/**
@@ -60,32 +68,24 @@ public enum EmailStatusImpl implements EmailStatus {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getName() {
-		return this.name;
+	public String getDescription() {
+		return this.description;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getDescription() {
-		return this.description;
+	public String getId() {
+		return this.id;
 	}
 
 	/**
-	 * Finds a EmailStatusImpl that matches the id on id, name, or name().
-	 * 
-	 * @param id
-	 *            Value to match against id, name, or name()
-	 * @return Matching EmailStatusImpl, or null.
+	 * {@inheritDoc}
 	 */
-	public static EmailStatus get(String id) {
-		for (EmailStatusImpl type : values()) {
-			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
-				return type;
-			}
-		}
-		return null;
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 }

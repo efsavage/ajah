@@ -23,41 +23,6 @@ package com.ajah.util;
 public class StringUtils {
 
 	/**
-	 * Looks for null or empty strings.
-	 * 
-	 * @param string
-	 *            String to be tested, may be null
-	 * @return true if string is null or zero-length
-	 */
-	public static boolean isBlank(final String string) {
-		return string == null || string.length() < 1 || string.trim().length() < 1;
-	}
-
-	/**
-	 * Returns length of string, 0 if null.
-	 * 
-	 * @param string
-	 *            String to be tested, may be null.
-	 * @return length of string, 0 if null.
-	 */
-	public static int safeLength(final String string) {
-		return string == null ? 0 : string.length();
-	}
-
-	/**
-	 * Converts camelCase text to regular text. Example: "canOfSoda" converts to
-	 * "can of soda". Source: <a href=
-	 * "http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java"
-	 * >Stack Overflow</a>
-	 * 
-	 * @param string
-	 * @return String, de-camelcased.
-	 */
-	public static String splitCamelCase(final String string) {
-		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
-	}
-
-	/**
 	 * Capitalizes first letter of a String.
 	 * 
 	 * @see Character#toTitleCase(char)
@@ -73,19 +38,50 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns toString() for the object passed, if it is not null, otherwise
-	 * returns null.
+	 * Checks a string with {@link String#endsWith(String)} against an array of
+	 * candidate strings.
 	 * 
-	 * @see Object#toString()
-	 * @param object
-	 *            The object to check/toString()
-	 * @return object.toString() or null
+	 * @param string
+	 *            The string to check.
+	 * @param suffixes
+	 *            The array of suffixes to use.
+	 * @return true if the string ends with any of the suffixes, otherwise
+	 *         false.
 	 */
-	public static String safeToString(final Object object) {
-		if (object == null) {
-			return null;
+	public static boolean endsWith(final String string, final String[] suffixes) {
+		if (isBlank(string) || suffixes == null || suffixes.length == 0) {
+			return false;
 		}
-		return object.toString();
+		for (final String suffix : suffixes) {
+			if (string.endsWith(suffix)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Looks for null or empty strings.
+	 * 
+	 * @param string
+	 *            String to be tested, may be null
+	 * @return true if string is null or zero-length
+	 */
+	public static boolean isBlank(final String string) {
+		return string == null || string.length() < 1 || string.trim().length() < 1;
+	}
+
+	/**
+	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
+	 * of Strings, may be empty or null.
+	 * 
+	 * @param array
+	 *            The array to be joined, may be empty or null.
+	 * @return The joined array. If array was null or empty or contained only
+	 *         null or empty Strings, returns null.
+	 */
+	public static String join(final String[] array) {
+		return join(array, ",");
 	}
 
 	/**
@@ -126,39 +122,43 @@ public class StringUtils {
 	}
 
 	/**
-	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
-	 * of Strings, may be empty or null.
+	 * Returns length of string, 0 if null.
 	 * 
-	 * @param array
-	 *            The array to be joined, may be empty or null.
-	 * @return The joined array. If array was null or empty or contained only
-	 *         null or empty Strings, returns null.
+	 * @param string
+	 *            String to be tested, may be null.
+	 * @return length of string, 0 if null.
 	 */
-	public static String join(final String[] array) {
-		return join(array, ",");
+	public static int safeLength(final String string) {
+		return string == null ? 0 : string.length();
 	}
 
 	/**
-	 * Checks a string with {@link String#endsWith(String)} against an array of
-	 * candidate strings.
+	 * Returns toString() for the object passed, if it is not null, otherwise
+	 * returns null.
+	 * 
+	 * @see Object#toString()
+	 * @param object
+	 *            The object to check/toString()
+	 * @return object.toString() or null
+	 */
+	public static String safeToString(final Object object) {
+		if (object == null) {
+			return null;
+		}
+		return object.toString();
+	}
+
+	/**
+	 * Converts camelCase text to regular text. Example: "canOfSoda" converts to
+	 * "can of soda". Source: <a href=
+	 * "http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java"
+	 * >Stack Overflow</a>
 	 * 
 	 * @param string
-	 *            The string to check.
-	 * @param suffixes
-	 *            The array of suffixes to use.
-	 * @return true if the string ends with any of the suffixes, otherwise
-	 *         false.
+	 * @return String, de-camelcased.
 	 */
-	public static boolean endsWith(String string, String[] suffixes) {
-		if (isBlank(string) || suffixes == null || suffixes.length == 0) {
-			return false;
-		}
-		for (String suffix : suffixes) {
-			if (string.endsWith(suffix)) {
-				return true;
-			}
-		}
-		return false;
+	public static String splitCamelCase(final String string) {
+		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class StringUtils {
 	 * @return The string truncated to maxLength characters if necessary,
 	 *         otherwise will return the original string, including null.
 	 */
-	public static String truncate(String string, int maxLength) {
+	public static String truncate(final String string, final int maxLength) {
 		if (StringUtils.isBlank(string)) {
 			return string;
 		}

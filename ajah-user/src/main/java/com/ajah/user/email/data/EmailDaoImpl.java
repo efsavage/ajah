@@ -16,7 +16,6 @@
 package com.ajah.user.email.data;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.email.Email;
@@ -35,6 +34,11 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 	// private static final Logger log =
 	// Logger.getLogger(EmailDao.class.getName());
 
+	@Override
+	public Email findByField(final String field, final String value) {
+		return super.findByField(field, value);
+	}
+
 	/**
 	 * INSERTs an {@link Email} entity.
 	 * 
@@ -43,17 +47,12 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 	 * @return Number of rows affected.
 	 */
 	@Override
-	public int insert(Email email) {
+	public int insert(final Email email) {
 		// TODO Necessary?
 		AjahUtils.requireParam(email, "email");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		return this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(), email.getUserId().getId(),
 				email.getAddress().toString(), email.getStatus().getId() });
-	}
-
-	@Override
-	public Email findByField(String field, String value) {
-		return super.findByField(field, value);
 	}
 
 }

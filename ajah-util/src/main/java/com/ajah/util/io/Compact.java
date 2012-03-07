@@ -47,50 +47,6 @@ public enum Compact {
 	 */
 	MAX(4);
 
-	private final int level;
-
-	private Compact(int level) {
-		this.level = level;
-	}
-
-	/**
-	 * Tell whether the specified Compact argument is less compact than this
-	 * one.
-	 * 
-	 * @param other
-	 *            The compact to compare to.
-	 * @return true if this compact is less compact than the parameter.
-	 */
-	public boolean lt(Compact other) {
-		return this.level < other.level;
-	}
-
-	/**
-	 * Tell whether the specified Compact argument is less or equally compact as
-	 * this one.
-	 * 
-	 * @param other
-	 *            The compact to compare to.
-	 * @return true if this compact is less or equally compact than the
-	 *         parameter.
-	 */
-	public boolean le(Compact other) {
-		return this.level <= other.level;
-	}
-
-	/**
-	 * Tell whether the specified Compact argument is more or equally compact as
-	 * this one.
-	 * 
-	 * @param other
-	 *            The compact to compare to.
-	 * @return true if this compact is less or equally compact than the
-	 *         parameter.
-	 */
-	public boolean ge(Compact other) {
-		return this.level >= other.level;
-	}
-
 	/**
 	 * Match a compactness level based on its name, and if none is found, return
 	 * a default value.
@@ -103,13 +59,57 @@ public enum Compact {
 	 * @return The matching Compact, or the default value supplied, which may be
 	 *         null.
 	 */
-	public static Compact get(String value, Compact defaultValue) {
-		for (Compact compact : values()) {
+	public static Compact get(final String value, final Compact defaultValue) {
+		for (final Compact compact : values()) {
 			if (compact.name().equalsIgnoreCase(value)) {
 				return compact;
 			}
 		}
 		return defaultValue;
+	}
+
+	private final int level;
+
+	private Compact(final int level) {
+		this.level = level;
+	}
+
+	/**
+	 * Tell whether the specified Compact argument is more or equally compact as
+	 * this one.
+	 * 
+	 * @param other
+	 *            The compact to compare to.
+	 * @return true if this compact is less or equally compact than the
+	 *         parameter.
+	 */
+	public boolean ge(final Compact other) {
+		return this.level >= other.level;
+	}
+
+	/**
+	 * Tell whether the specified Compact argument is less or equally compact as
+	 * this one.
+	 * 
+	 * @param other
+	 *            The compact to compare to.
+	 * @return true if this compact is less or equally compact than the
+	 *         parameter.
+	 */
+	public boolean le(final Compact other) {
+		return this.level <= other.level;
+	}
+
+	/**
+	 * Tell whether the specified Compact argument is less compact than this
+	 * one.
+	 * 
+	 * @param other
+	 *            The compact to compare to.
+	 * @return true if this compact is less compact than the parameter.
+	 */
+	public boolean lt(final Compact other) {
+		return this.level < other.level;
 	}
 
 }

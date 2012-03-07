@@ -69,28 +69,6 @@ public class CollectionUtils {
 	}
 
 	/**
-	 * Removes the entries of a map that have null values.
-	 * 
-	 * @param map
-	 *            The map to strip.
-	 * @return The map that was passed in.
-	 */
-	public static <K, V> Map<K, V> stripNulls(Map<K, V> map) {
-		List<Object> toRemove = null;
-		for (Object key : map.keySet()) {
-			if (map.get(key) == null) {
-				toRemove = safeAdd(toRemove, key);
-			}
-		}
-		if (toRemove != null) {
-			for (Object key : toRemove) {
-				map.remove(key);
-			}
-		}
-		return map;
-	}
-
-	/**
 	 * Shorthand method for adding an item to a list, and creating that list if
 	 * necessary.
 	 * 
@@ -100,7 +78,7 @@ public class CollectionUtils {
 	 *            The item to add.
 	 * @return The original list that was passed in, or a new list.
 	 */
-	private static <T> List<T> safeAdd(List<T> list, T item) {
+	private static <T> List<T> safeAdd(final List<T> list, final T item) {
 		List<T> retVal = list;
 		if (retVal == null) {
 			retVal = new ArrayList<>();
@@ -116,10 +94,32 @@ public class CollectionUtils {
 	 *            The collection to inspect, may be null.
 	 * @return The size of the collection, zero if the collection is null.
 	 */
-	public static int safeSize(Collection<?> collection) {
+	public static int safeSize(final Collection<?> collection) {
 		if (collection == null) {
 			return 0;
 		}
 		return collection.size();
+	}
+
+	/**
+	 * Removes the entries of a map that have null values.
+	 * 
+	 * @param map
+	 *            The map to strip.
+	 * @return The map that was passed in.
+	 */
+	public static <K, V> Map<K, V> stripNulls(final Map<K, V> map) {
+		List<Object> toRemove = null;
+		for (final Object key : map.keySet()) {
+			if (map.get(key) == null) {
+				toRemove = safeAdd(toRemove, key);
+			}
+		}
+		if (toRemove != null) {
+			for (final Object key : toRemove) {
+				map.remove(key);
+			}
+		}
+		return map;
 	}
 }

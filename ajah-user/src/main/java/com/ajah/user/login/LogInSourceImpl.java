@@ -36,7 +36,7 @@ public enum LogInSourceImpl implements LogInSource {
 
 	private final String description;
 
-	private LogInSourceImpl(String id, String code, String name, String description) {
+	private LogInSourceImpl(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
@@ -50,6 +50,7 @@ public enum LogInSourceImpl implements LogInSource {
 	public String getCode() {
 		return this.code;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -57,6 +58,7 @@ public enum LogInSourceImpl implements LogInSource {
 	public String getDescription() {
 		return this.description;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -64,6 +66,7 @@ public enum LogInSourceImpl implements LogInSource {
 	public String getId() {
 		return this.id;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */

@@ -34,7 +34,7 @@ public interface EmailMessage {
 	 * @param string
 	 *            The subject of the message.
 	 */
-	void setSubject(String string);
+	void setSubject(final String string);
 
 	/**
 	 * Returns the From: Address of the message.

@@ -44,8 +44,32 @@ public class FileScan {
 			DataSizeUnit.MEBIBYTE.getAsBytes(1), DataSizeUnit.MEBIBYTE.getAsBytes(10), DataSizeUnit.MEBIBYTE.getAsBytes(100), Long.MAX_VALUE };
 	private static long[][] rangeCountSizes = new long[ranges.length][2];
 
-	public long getFiles() {
-		return this.files;
+	public static void main(final String[] args) throws IOException {
+		for (final String arg : args) {
+			// Send logger output to our FileHandler.
+			log.addHandler(new ConsoleHandler());
+			// Request that every detail gets logged.
+			log.setLevel(Level.ALL);
+			final File file = new File(arg);
+			final Report report = new Report();
+			report.add(System.out);
+			report.add(log);
+			report.add(new File("/tmp/report-" + System.currentTimeMillis() + ".txt"));
+			report.rule();
+			report.println("Report for: " + file.getAbsolutePath());
+			final FileScan scan = new FileScan(file, report);
+			scan.scan();
+			report.rule();
+			report.println("Scan Complete");
+			report.rule();
+			scan.report(0);
+			report.close();
+		}
+	}
+
+	public FileScan(final File root, final Report report) {
+		this.root = root;
+		this.report = report;
 	}
 
 	public long getBytes() {
@@ -60,13 +84,26 @@ public class FileScan {
 		return this.emptyDirectories;
 	}
 
+	public long getFiles() {
+		return this.files;
+	}
+
 	public File getRoot() {
 		return this.root;
 	}
 
-	public FileScan(final File root, final Report report) {
-		this.root = root;
-		this.report = report;
+	private void report(final int depth) {
+		this.report.println(depth, "Files: " + NumberFormat.getInstance().format(getFiles()));
+		this.report.println(depth, "Directories: " + NumberFormat.getInstance().format(getDirectories()));
+		this.report.println(depth, "Empty Directories: " + NumberFormat.getInstance().format(getEmptyDirectories()));
+		this.report.println(depth, "Bytes: " + NumberFormat.getInstance().format(getBytes()));
+		this.report.println(depth, "Size: " + DataSizeUnit.format(getBytes()));
+		this.report.rule();
+		for (int range = 0; range < ranges.length - 1; range++) {
+			this.report.println(depth, DataSizeUnit.format(ranges[range]) + " to " + DataSizeUnit.format(ranges[range + 1]));
+			this.report.println(depth + 1, "Files: " + NumberFormat.getInstance().format(rangeCountSizes[range][0]));
+			this.report.println(depth + 1, "Size: " + DataSizeUnit.format(rangeCountSizes[range][1]));
+		}
 	}
 
 	public void scan() throws IOException {
@@ -115,42 +152,5 @@ public class FileScan {
 		this.emptyDirectories = results[3];
 		// report(depth);
 		return results;
-	}
-
-	public static void main(final String[] args) throws IOException {
-		for (final String arg : args) {
-			// Send logger output to our FileHandler.
-			log.addHandler(new ConsoleHandler());
-			// Request that every detail gets logged.
-			log.setLevel(Level.ALL);
-			final File file = new File(arg);
-			final Report report = new Report();
-			report.add(System.out);
-			report.add(log);
-			report.add(new File("/tmp/report-" + System.currentTimeMillis() + ".txt"));
-			report.rule();
-			report.println("Report for: " + file.getAbsolutePath());
-			final FileScan scan = new FileScan(file, report);
-			scan.scan();
-			report.rule();
-			report.println("Scan Complete");
-			report.rule();
-			scan.report(0);
-			report.close();
-		}
-	}
-
-	private void report(final int depth) {
-		this.report.println(depth, "Files: " + NumberFormat.getInstance().format(getFiles()));
-		this.report.println(depth, "Directories: " + NumberFormat.getInstance().format(getDirectories()));
-		this.report.println(depth, "Empty Directories: " + NumberFormat.getInstance().format(getEmptyDirectories()));
-		this.report.println(depth, "Bytes: " + NumberFormat.getInstance().format(getBytes()));
-		this.report.println(depth, "Size: " + DataSizeUnit.format(getBytes()));
-		this.report.rule();
-		for (int range = 0; range < ranges.length - 1; range++) {
-			this.report.println(depth, DataSizeUnit.format(ranges[range]) + " to " + DataSizeUnit.format(ranges[range + 1]));
-			this.report.println(depth + 1, "Files: " + NumberFormat.getInstance().format(rangeCountSizes[range][0]));
-			this.report.println(depth + 1, "Size: " + DataSizeUnit.format(rangeCountSizes[range][1]));
-		}
 	}
 }

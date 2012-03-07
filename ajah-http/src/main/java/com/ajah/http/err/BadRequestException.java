@@ -30,7 +30,7 @@ public class BadRequestException extends HttpException {
 	 * @param t
 	 *            The cause of this exception.
 	 */
-	public BadRequestException(Throwable t) {
+	public BadRequestException(final Throwable t) {
 		super(t);
 	}
 

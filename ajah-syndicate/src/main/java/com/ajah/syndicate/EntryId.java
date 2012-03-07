@@ -36,25 +36,16 @@ public class EntryId implements Serializable, ToStringable, FromStringable, Comp
 	 * @param id
 	 *            UID of entry, cannot be null.
 	 */
-	public EntryId(String id) {
+	public EntryId(final String id) {
 		this.id = id;
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public String toString() {
-		return this.id;
+	public int compareTo(final EntryId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 	/**
@@ -64,8 +55,17 @@ public class EntryId implements Serializable, ToStringable, FromStringable, Comp
 	 *            The other EntryId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(EntryId other) {
+	public boolean equals(final EntryId other) {
 		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns the String passed into the constructor.
+	 * 
+	 * @return The String passed into the constructor.
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class EntryId implements Serializable, ToStringable, FromStringable, Comp
 	}
 
 	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * Returns the String passed into the constructor.
 	 */
 	@Override
-	public int compareTo(EntryId other) {
-		return this.id.compareTo(other.getId());
+	public String toString() {
+		return this.id;
 	}
 
 }

@@ -27,7 +27,7 @@ import com.ajah.http.Browser;
  */
 public class BrowserTests {
 
-	private String[] CHROME_USER_AGENTS = new String[] {
+	private final String[] CHROME_USER_AGENTS = new String[] {
 
 			"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.872.0 Safari/535.2",
 			"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.2 (KHTML, like Gecko) Ubuntu/11.04 Chromium/15.0.871.0 Chrome/15.0.871.0 Safari/535.2",
@@ -715,10 +715,10 @@ public class BrowserTests {
 	 */
 	@Test
 	public void testChrome() {
-		for (String userAgent : this.CHROME_USER_AGENTS) {
+		for (final String userAgent : this.CHROME_USER_AGENTS) {
 			try {
 				Assert.assertEquals(Browser.CHROME, Browser.get(userAgent));
-			} catch (AssertionError e) {
+			} catch (final AssertionError e) {
 				System.err.println(userAgent);
 				throw e;
 			}

@@ -51,7 +51,7 @@ public interface Message extends Identifiable<MessageId> {
 	 *            The Message ID, should not be null.
 	 */
 	@Override
-	void setId(MessageId messageId);
+	void setId(final MessageId messageId);
 
 	/**
 	 * Sets the message status.
@@ -59,7 +59,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param status
 	 *            The message's status, should not be null.
 	 */
-	void setStatus(MessageStatus status);
+	void setStatus(final MessageStatus status);
 
 	/**
 	 * Sets the message's type.
@@ -67,7 +67,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param type
 	 *            The message's type, should not be null.
 	 */
-	void setType(MessageType type);
+	void setType(final MessageType type);
 
 	/**
 	 * Sets the creation date of the message.
@@ -75,7 +75,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param date
 	 *            The creation date of the message.
 	 */
-	void setCreated(Date date);
+	void setCreated(final Date date);
 
 	/**
 	 * Sets the message sender's ID.
@@ -83,7 +83,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param userId
 	 *            The message sender's ID.
 	 */
-	void setSender(UserId userId);
+	void setSender(final UserId userId);
 
 	/**
 	 * Sets the list of IDs of direct message recipients.
@@ -91,7 +91,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param userIds
 	 *            The list of IDs of direct message recipients.
 	 */
-	void setTo(List<UserId> userIds);
+	void setTo(final List<UserId> userIds);
 
 	/**
 	 * Sets the list of IDs of copied message recipients.
@@ -99,7 +99,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param userIds
 	 *            The list of IDs of copied message recipients.
 	 */
-	void setCc(List<UserId> userIds);
+	void setCc(final List<UserId> userIds);
 
 	/**
 	 * Sets the list of IDs of blind-copied message recipients.
@@ -107,7 +107,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param userIds
 	 *            The list of IDs of blind-copied message recipients.
 	 */
-	void setBcc(List<UserId> userIds);
+	void setBcc(final List<UserId> userIds);
 
 	/**
 	 * Sets the message's subject.
@@ -115,7 +115,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param string
 	 *            The message's subject.
 	 */
-	void setSubject(String string);
+	void setSubject(final String string);
 
 	/**
 	 * Sets the message's body.
@@ -123,7 +123,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param string
 	 *            The message's body.
 	 */
-	void setBody(String string);
+	void setBody(final String string);
 
 	/**
 	 * Gets the message's creation date.

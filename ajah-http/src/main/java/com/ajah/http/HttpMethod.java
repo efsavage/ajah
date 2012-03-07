@@ -55,12 +55,6 @@ public enum HttpMethod implements Identifiable<String> {
 	 */
 	TRACE("7");
 
-	private String id;
-
-	private HttpMethod(String id) {
-		this.id = id;
-	}
-
 	/**
 	 * Finds a matching method and returns the proper value, or null if
 	 * unmatched.
@@ -69,13 +63,19 @@ public enum HttpMethod implements Identifiable<String> {
 	 *            The name of the method to attempt to match.
 	 * @return The matching enum value, or null if unmatched.
 	 */
-	public static HttpMethod get(String method) {
-		for (HttpMethod candidate : values()) {
+	public static HttpMethod get(final String method) {
+		for (final HttpMethod candidate : values()) {
 			if (candidate.name().equals(method)) {
 				return candidate;
 			}
 		}
 		return null;
+	}
+
+	private String id;
+
+	private HttpMethod(final String id) {
+		this.id = id;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public enum HttpMethod implements Identifiable<String> {
 	 * @see com.ajah.util.Identifiable#setId(java.lang.Comparable)
 	 */
 	@Override
-	public void setId(String id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
 

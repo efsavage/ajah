@@ -45,11 +45,11 @@ public class EmailManager {
 	 * @return The Email, if found.
 	 * @throws EmailNotFoundException
 	 *             If no Email is found.
-	 * @throws DatabaseAccessException 
+	 * @throws DatabaseAccessException
 	 */
-	public Email getEmail(EmailId emailId) throws EmailNotFoundException, DatabaseAccessException {
+	public Email getEmail(final EmailId emailId) throws EmailNotFoundException, DatabaseAccessException {
 		AjahUtils.requireParam(emailId, "emailId");
-		Email email = this.emailDao.findById(emailId);
+		final Email email = this.emailDao.findById(emailId);
 		if (email == null) {
 			throw new EmailNotFoundException(emailId);
 		}

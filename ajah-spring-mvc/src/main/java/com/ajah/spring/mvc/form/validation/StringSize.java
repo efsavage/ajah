@@ -51,6 +51,11 @@ import javax.validation.constraints.Size;
 public @interface StringSize {
 
 	/**
+	 * @return String length the value must be equal to or less than.
+	 */
+	int max() default Integer.MAX_VALUE;
+
+	/**
 	 * Error code message. Uses the same default message as {@link Size}:
 	 * javax.validation.constraints.Size.message
 	 * 
@@ -62,10 +67,5 @@ public @interface StringSize {
 	 * @return String length the value must be equal to or greater than.
 	 */
 	int min() default 0;
-
-	/**
-	 * @return String length the value must be equal to or less than.
-	 */
-	int max() default Integer.MAX_VALUE;
 
 }

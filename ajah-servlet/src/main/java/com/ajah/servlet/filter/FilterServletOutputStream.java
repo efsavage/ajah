@@ -14,20 +14,10 @@ import javax.servlet.ServletOutputStream;
  */
 public class FilterServletOutputStream extends ServletOutputStream {
 
-	private DataOutputStream stream;
+	private final DataOutputStream stream;
 
-	public FilterServletOutputStream(OutputStream output) {
+	public FilterServletOutputStream(final OutputStream output) {
 		this.stream = new DataOutputStream(output);
-	}
-
-	/**
-	 * Calls {@link DataOutputStream#write(int)}.
-	 * 
-	 * @see java.io.OutputStream#write(int)
-	 */
-	@Override
-	public void write(int b) throws IOException {
-		this.stream.write(b);
 	}
 
 	/**
@@ -36,7 +26,7 @@ public class FilterServletOutputStream extends ServletOutputStream {
 	 * @see java.io.OutputStream#write(byte[])
 	 */
 	@Override
-	public void write(byte[] b) throws IOException {
+	public void write(final byte[] b) throws IOException {
 		this.stream.write(b);
 	}
 
@@ -46,8 +36,18 @@ public class FilterServletOutputStream extends ServletOutputStream {
 	 * @see java.io.OutputStream#write(byte[], int, int)
 	 */
 	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
+	public void write(final byte[] b, final int off, final int len) throws IOException {
 		this.stream.write(b, off, len);
+	}
+
+	/**
+	 * Calls {@link DataOutputStream#write(int)}.
+	 * 
+	 * @see java.io.OutputStream#write(int)
+	 */
+	@Override
+	public void write(final int b) throws IOException {
+		this.stream.write(b);
 	}
 
 }

@@ -47,40 +47,10 @@ public class OpmlUtils {
 
 	private static final Logger log = Logger.getLogger(OpmlUtils.class.getName());
 
-	/**
-	 * Parses a JDOM document into an Ajah {@link Opml}.
-	 * 
-	 * @param doc
-	 *            The document to parse.
-	 * @return The constructed Opml instance.
-	 * @throws FeedException
-	 *             if the document could not be parsed.
-	 */
-	public static Opml parse(Document doc) throws FeedException {
-		com.sun.syndication.feed.opml.Opml syndOpml = (com.sun.syndication.feed.opml.Opml) new OPML10Parser().parse(doc, false);
-		Opml opml = new Opml();
-		opml.setOutlines(createOutlines(syndOpml));
-		return opml;
-	}
-
-	private static List<Outline> createOutlines(com.sun.syndication.feed.opml.Opml syndOpml) {
+	private static Outline createOutline(final com.sun.syndication.feed.opml.Outline syndOutline, final Outline parent) {
+		final Outline outline = new Outline();
 		@SuppressWarnings("unchecked")
-		List<com.sun.syndication.feed.opml.Outline> syndOutlines = syndOpml.getOutlines();
-		return createOutlines(syndOutlines, null);
-	}
-
-	private static List<Outline> createOutlines(List<com.sun.syndication.feed.opml.Outline> syndOutlines, Outline parent) {
-		List<Outline> outlines = new ArrayList<>(syndOutlines.size());
-		for (com.sun.syndication.feed.opml.Outline syndOutline : syndOutlines) {
-			outlines.add(createOutline(syndOutline, parent));
-		}
-		return outlines;
-	}
-
-	private static Outline createOutline(com.sun.syndication.feed.opml.Outline syndOutline, Outline parent) {
-		Outline outline = new Outline();
-		@SuppressWarnings("unchecked")
-		List<com.sun.syndication.feed.opml.Outline> children = syndOutline.getChildren();
+		final List<com.sun.syndication.feed.opml.Outline> children = syndOutline.getChildren();
 		outline.setOutlines(createOutlines(children, outline));
 
 		outline.setText(syndOutline.getText());
@@ -91,6 +61,79 @@ public class OpmlUtils {
 		outline.setParent(parent);
 
 		return outline;
+	}
+
+	private static List<Outline> createOutlines(final com.sun.syndication.feed.opml.Opml syndOpml) {
+		@SuppressWarnings("unchecked")
+		final List<com.sun.syndication.feed.opml.Outline> syndOutlines = syndOpml.getOutlines();
+		return createOutlines(syndOutlines, null);
+	}
+
+	private static List<Outline> createOutlines(final List<com.sun.syndication.feed.opml.Outline> syndOutlines, final Outline parent) {
+		final List<Outline> outlines = new ArrayList<>(syndOutlines.size());
+		for (final com.sun.syndication.feed.opml.Outline syndOutline : syndOutlines) {
+			outlines.add(createOutline(syndOutline, parent));
+		}
+		return outlines;
+	}
+
+	private static FeedSource extractFeedSource(final Outline outline) {
+		final FeedSource feedSource = new FeedSource();
+		feedSource.setTitle(outline.getTitle());
+		feedSource.setHtmlUrl(outline.getHtmlUrl());
+		feedSource.setFeedUrl(outline.getXmlUrl());
+		if (!outline.getTitle().equals(outline.getText())) {
+			feedSource.setDescription(outline.getText());
+		}
+		if ("rss".equals(outline.getType())) {
+			feedSource.setType(FeedSourceType.RSS);
+		} else {
+			log.warning("Unknown type " + outline.getType());
+			feedSource.setType(FeedSourceType.UNKNOWN);
+		}
+		feedSource.setStatus(FeedSourceStatus.ACTIVE);
+		feedSource.setPollStatus(PollStatus.ACTIVE);
+		return feedSource;
+	}
+
+	private static void extractFeedSources(final List<Outline> outlines, final List<FeedSource> feedSources) {
+		for (final Outline outline : outlines) {
+			if (!CollectionUtils.isEmpty(outline.getOutlines())) {
+				extractFeedSources(outline.getOutlines(), feedSources);
+			}
+			if (!StringUtils.isBlank(outline.getXmlUrl())) {
+				feedSources.add(extractFeedSource(outline));
+			}
+		}
+	}
+
+	/**
+	 * Extracts a list of FeedSources from an {@link Opml} instance.
+	 * 
+	 * @param opml
+	 *            The opml to investigate.
+	 * @return The list of feedSources, may be empty but will not be null.
+	 */
+	public static List<FeedSource> extractFeedSources(final Opml opml) {
+		final List<FeedSource> feedSources = new ArrayList<>();
+		extractFeedSources(opml.getOutlines(), feedSources);
+		return feedSources;
+	}
+
+	/**
+	 * Parses a JDOM document into an Ajah {@link Opml}.
+	 * 
+	 * @param doc
+	 *            The document to parse.
+	 * @return The constructed Opml instance.
+	 * @throws FeedException
+	 *             if the document could not be parsed.
+	 */
+	public static Opml parse(final Document doc) throws FeedException {
+		final com.sun.syndication.feed.opml.Opml syndOpml = (com.sun.syndication.feed.opml.Opml) new OPML10Parser().parse(doc, false);
+		final Opml opml = new Opml();
+		opml.setOutlines(createOutlines(syndOpml));
+		return opml;
 	}
 
 	/**
@@ -108,51 +151,8 @@ public class OpmlUtils {
 	 * @throws IOException
 	 *             If the file could not be read.
 	 */
-	public static Opml parse(File file) throws FeedException, JDOMException, IOException {
-		Document doc = new SAXBuilder(false).build(file);
+	public static Opml parse(final File file) throws FeedException, JDOMException, IOException {
+		final Document doc = new SAXBuilder(false).build(file);
 		return parse(doc);
-	}
-
-	/**
-	 * Extracts a list of FeedSources from an {@link Opml} instance.
-	 * 
-	 * @param opml
-	 *            The opml to investigate.
-	 * @return The list of feedSources, may be empty but will not be null.
-	 */
-	public static List<FeedSource> extractFeedSources(Opml opml) {
-		List<FeedSource> feedSources = new ArrayList<>();
-		extractFeedSources(opml.getOutlines(), feedSources);
-		return feedSources;
-	}
-
-	private static void extractFeedSources(List<Outline> outlines, List<FeedSource> feedSources) {
-		for (Outline outline : outlines) {
-			if (!CollectionUtils.isEmpty(outline.getOutlines())) {
-				extractFeedSources(outline.getOutlines(), feedSources);
-			}
-			if (!StringUtils.isBlank(outline.getXmlUrl())) {
-				feedSources.add(extractFeedSource(outline));
-			}
-		}
-	}
-
-	private static FeedSource extractFeedSource(Outline outline) {
-		FeedSource feedSource = new FeedSource();
-		feedSource.setTitle(outline.getTitle());
-		feedSource.setHtmlUrl(outline.getHtmlUrl());
-		feedSource.setFeedUrl(outline.getXmlUrl());
-		if (!outline.getTitle().equals(outline.getText())) {
-			feedSource.setDescription(outline.getText());
-		}
-		if ("rss".equals(outline.getType())) {
-			feedSource.setType(FeedSourceType.RSS);
-		} else {
-			log.warning("Unknown type " + outline.getType());
-			feedSource.setType(FeedSourceType.UNKNOWN);
-		}
-		feedSource.setStatus(FeedSourceStatus.ACTIVE);
-		feedSource.setPollStatus(PollStatus.ACTIVE);
-		return feedSource;
 	}
 }

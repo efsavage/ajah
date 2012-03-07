@@ -17,6 +17,21 @@ public class CityImpl implements City {
 	protected Country country = null;
 
 	/**
+	 * If state is set, will return state.getCountry(), otherwise will return
+	 * local country field.
+	 * 
+	 * @see State#getCountry()
+	 * @return Country object as set via setCountry or from state, may be null.
+	 */
+	@Override
+	public Country getCountry() {
+		if (this.state == null) {
+			return this.country;
+		}
+		return this.state.getCountry();
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -45,7 +60,7 @@ public class CityImpl implements City {
 	 * 
 	 * @param id
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -54,7 +69,7 @@ public class CityImpl implements City {
 	 * 
 	 * @param name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -63,23 +78,8 @@ public class CityImpl implements City {
 	 * 
 	 * @param state
 	 */
-	public void setState(State state) {
+	public void setState(final State state) {
 		this.state = state;
-	}
-
-	/**
-	 * If state is set, will return state.getCountry(), otherwise will return
-	 * local country field.
-	 * 
-	 * @see State#getCountry()
-	 * @return Country object as set via setCountry or from state, may be null.
-	 */
-	@Override
-	public Country getCountry() {
-		if (this.state == null) {
-			return this.country;
-		}
-		return this.state.getCountry();
 	}
 
 }

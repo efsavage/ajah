@@ -30,11 +30,20 @@ public enum UserType implements Identifiable<String> {
 	 */
 	NORMAL("1", "Normal", "Normal", "Normal");
 
-	private UserType(String id, String code, String name, String description) {
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
+	/**
+	 * Finds a UserType that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching UserType, or null.
+	 */
+	public static UserType get(final String id) {
+		for (final UserType type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
 	}
 
 	private final String id;
@@ -42,14 +51,11 @@ public enum UserType implements Identifiable<String> {
 	private final String name;
 	private final String description;
 
-	/**
-	 * The internal ID of the type.
-	 * 
-	 * @return The internal ID of the type. Cannot be null.
-	 */
-	@Override
-	public String getId() {
-		return this.id;
+	private UserType(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
 	}
 
 	/**
@@ -63,16 +69,6 @@ public enum UserType implements Identifiable<String> {
 	}
 
 	/**
-	 * The display-friendly name of the type. If no name is applicable, it
-	 * should be an alias for the ID or code.
-	 * 
-	 * @return The display-friendly name of the type. Cannot be null.
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
 	 * The display-friendly description of the type.
 	 * 
 	 * @return The display-friendly description of the type. May be null.
@@ -82,23 +78,27 @@ public enum UserType implements Identifiable<String> {
 	}
 
 	/**
-	 * Finds a UserType that matches the id on id, name, or name().
+	 * The internal ID of the type.
 	 * 
-	 * @param id
-	 *            Value to match against id, name, or name()
-	 * @return Matching UserType, or null.
+	 * @return The internal ID of the type. Cannot be null.
 	 */
-	public static UserType get(String id) {
-		for (UserType type : values()) {
-			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
-				return type;
-			}
-		}
-		return null;
+	@Override
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * The display-friendly name of the type. If no name is applicable, it
+	 * should be an alias for the ID or code.
+	 * 
+	 * @return The display-friendly name of the type. Cannot be null.
+	 */
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
-	public void setId(String id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
 

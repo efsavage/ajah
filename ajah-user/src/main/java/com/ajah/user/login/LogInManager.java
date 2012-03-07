@@ -41,6 +41,24 @@ public class LogInManager {
 
 	private static final Logger log = Logger.getLogger(LogInManager.class.getName());
 
+	/**
+	 * Returns token value for a user, that can be used to authenticate later.
+	 * The actual scheme of token generation should be encapsulated fully here
+	 * so it can be changed. Currently the only available scheme is to encrypt
+	 * the username and password hash.
+	 * 
+	 * Note: Tokens should always expire when a user changes their password.
+	 * 
+	 * @param user
+	 *            The user to generate a token for.
+	 * @param password
+	 *            Password object for user to include in the token.
+	 * @return Token that can be used to authenticate.
+	 */
+	public static String getTokenValue(final User user, final Password password) {
+		return Crypto.toAES(user.getUsername() + "|" + password.toString());
+	}
+
 	@Autowired
 	private UserManager userManager;
 
@@ -59,48 +77,30 @@ public class LogInManager {
 	 *            Type of login attempt
 	 * @return Login record, will never return null.
 	 */
-	public LogIn login(String username, Password password, String ip, LogInSource source, LogInType type) {
+	public LogIn login(final String username, final Password password, final String ip, final LogInSource source, final LogInType type) {
 		log.fine("Login by user/pass attempt for: " + username);
-		LogIn login = new LogIn();
+		final LogIn login = new LogIn();
 		login.setIp(ip);
 		login.setCreated(new Date());
 		login.setSource(source);
 		try {
-			User user = this.userManager.getUser(username, password);
+			final User user = this.userManager.getUser(username, password);
 			login.setUser(user);
 			login.setUsername(username);
 			login.setStatus(LogInStatus.SUCCESS);
 			log.fine("User " + user.getUsername() + " logged in");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 			login.setStatus(LogInStatus.ABORT);
-		} catch (AuthenicationFailureException e) {
+		} catch (final AuthenicationFailureException e) {
 			log.log(Level.INFO, e.getMessage());
 			login.setUsername(e.getUsername());
 			login.setStatus(LogInStatus.FAIL);
-		} catch (UserNotFoundException e) {
+		} catch (final UserNotFoundException e) {
 			log.log(Level.INFO, e.getMessage());
 			login.setStatus(LogInStatus.FAIL);
 		}
 		return login;
-	}
-
-	/**
-	 * Returns token value for a user, that can be used to authenticate later.
-	 * The actual scheme of token generation should be encapsulated fully here
-	 * so it can be changed. Currently the only available scheme is to encrypt
-	 * the username and password hash.
-	 * 
-	 * Note: Tokens should always expire when a user changes their password.
-	 * 
-	 * @param user
-	 *            The user to generate a token for.
-	 * @param password
-	 *            Password object for user to include in the token.
-	 * @return Token that can be used to authenticate.
-	 */
-	public static String getTokenValue(User user, Password password) {
-		return Crypto.toAES(user.getUsername() + "|" + password.toString());
 	}
 
 	/**
@@ -117,12 +117,12 @@ public class LogInManager {
 	 *            Type of login attempt
 	 * @return Login record, will never be null.
 	 */
-	public LogIn loginByToken(String token, String ip, LogInSource source, LogInType type) {
+	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) {
 		log.fine("Login by token attempt for: " + token);
-		String decrypted = Crypto.fromAES(token);
+		final String decrypted = Crypto.fromAES(token);
 		log.fine("token contents: " + decrypted);
-		String username = decrypted.split("\\|")[0];
-		Password password = new HmacSha1Password(decrypted.split("\\|")[1], true);
+		final String username = decrypted.split("\\|")[0];
+		final Password password = new HmacSha1Password(decrypted.split("\\|")[1], true);
 		return login(username, password, ip, source, type);
 	}
 }

@@ -32,6 +32,11 @@ public class SqlEvent implements Event<SqlEventId> {
 
 	private SqlEventId id;
 
+	@Override
+	public void complete() {
+		// Empty
+	}
+
 	/**
 	 * This can be used as fluent shorthand to end an event. It doesn't actually
 	 * wrap the method or affect it in any way, it just appears to in syntax.
@@ -42,22 +47,7 @@ public class SqlEvent implements Event<SqlEventId> {
 	 * @param rv
 	 * @return The value of the "wrapped" method.
 	 */
-	public <RV> RV wrap(RV rv) {
-		complete();
-		return rv;
-	}
-
-	/**
-	 * This can be used as fluent shorthand to end an event. It doesn't actually
-	 * wrap the method or affect it in any way, it just appears to in syntax.
-	 * Example:
-	 * 
-	 * <code>return new SqlEvent().wrapLong(super.query(sql, rse));</code>
-	 * 
-	 * @param rv
-	 * @return The value of the "wrapped" method.
-	 */
-	public long wrapLong(long rv) {
+	public <RV> RV wrap(final RV rv) {
 		complete();
 		return rv;
 	}
@@ -72,14 +62,24 @@ public class SqlEvent implements Event<SqlEventId> {
 	 * @param rv
 	 * @return The value of the "wrapped" method.
 	 */
-	public int wrapInt(int rv) {
+	public int wrapInt(final int rv) {
 		complete();
 		return rv;
 	}
 
-	@Override
-	public void complete() {
-		// Empty
+	/**
+	 * This can be used as fluent shorthand to end an event. It doesn't actually
+	 * wrap the method or affect it in any way, it just appears to in syntax.
+	 * Example:
+	 * 
+	 * <code>return new SqlEvent().wrapLong(super.query(sql, rse));</code>
+	 * 
+	 * @param rv
+	 * @return The value of the "wrapped" method.
+	 */
+	public long wrapLong(final long rv) {
+		complete();
+		return rv;
 	}
-	
+
 }

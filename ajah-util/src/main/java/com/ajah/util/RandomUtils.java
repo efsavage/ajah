@@ -28,31 +28,22 @@ public class RandomUtils {
 	private static Random random = new Random();
 
 	/**
-	 * Returns a random number between the from and to parameters.
+	 * Returns a randomized, lowercased String consisting of only a-z
+	 * characters, all with equal weighting.
 	 * 
-	 * @see Random#nextDouble()
-	 * @param from
-	 *            The lowest allowable number.
-	 * @param to
-	 *            The highest allowable number.
-	 * @return Random number between from and to.
+	 * @param minLength
+	 *            The minimum length of the desired string.
+	 * @param maxLength
+	 *            The maximum length of the desired string.
+	 * @return A string within the minimum and maximum lengths specified
+	 *         consisting of random alphabetical characters.
 	 */
-	public static long getRandomNumber(final long from, final long to) {
-		return from + (long) (random.nextDouble() * (to - from));
-	}
-
-	/**
-	 * Returns a random number between the from and to parameters.
-	 * 
-	 * @see Random#nextDouble()
-	 * @param from
-	 *            The lowest allowable number.
-	 * @param to
-	 *            The highest allowable number.
-	 * @return Random number between from and to.
-	 */
-	public static int getRandomNumber(final int from, final int to) {
-		return from + (int) Math.floor(random.nextDouble() * ((to + 1) - from));
+	public static String getRandomAlphaString(final int minLength, final int maxLength) {
+		final char[] chars = new char[getRandomNumber(minLength, maxLength)];
+		for (int i = 0; i < chars.length; i++) {
+			chars[i] = (char) ('a' + getRandomNumber(0, 26));
+		}
+		return String.valueOf(chars);
 	}
 
 	/**
@@ -73,21 +64,30 @@ public class RandomUtils {
 	}
 
 	/**
-	 * Returns a randomized, lowercased String consisting of only a-z
-	 * characters, all with equal weighting.
+	 * Returns a random number between the from and to parameters.
 	 * 
-	 * @param minLength
-	 *            The minimum length of the desired string.
-	 * @param maxLength
-	 *            The maximum length of the desired string.
-	 * @return A string within the minimum and maximum lengths specified
-	 *         consisting of random alphabetical characters.
+	 * @see Random#nextDouble()
+	 * @param from
+	 *            The lowest allowable number.
+	 * @param to
+	 *            The highest allowable number.
+	 * @return Random number between from and to.
 	 */
-	public static String getRandomAlphaString(int minLength, int maxLength) {
-		char[] chars = new char[getRandomNumber(minLength, maxLength)];
-		for (int i = 0; i < chars.length; i++) {
-			chars[i] = (char) ('a' + getRandomNumber(0, 26));
-		}
-		return String.valueOf(chars);
+	public static int getRandomNumber(final int from, final int to) {
+		return from + (int) Math.floor(random.nextDouble() * ((to + 1) - from));
+	}
+
+	/**
+	 * Returns a random number between the from and to parameters.
+	 * 
+	 * @see Random#nextDouble()
+	 * @param from
+	 *            The lowest allowable number.
+	 * @param to
+	 *            The highest allowable number.
+	 * @return Random number between from and to.
+	 */
+	public static long getRandomNumber(final long from, final long to) {
+		return from + (long) (random.nextDouble() * (to - from));
 	}
 }

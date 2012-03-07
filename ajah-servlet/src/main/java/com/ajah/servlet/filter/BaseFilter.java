@@ -32,13 +32,23 @@ public class BaseFilter implements Filter {
 	public FilterConfig filterConfig;
 
 	/**
+	 * Does nothing.
+	 * 
+	 * @see javax.servlet.Filter#destroy()
+	 */
+	@Override
+	public void destroy() {
+		// Empty
+	}
+
+	/**
 	 * Just calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
 	 * 
 	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
 	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 */
 	@Override
-	public void doFilter(final ServletRequest request, final ServletResponse response, FilterChain chain) throws java.io.IOException, javax.servlet.ServletException {
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws java.io.IOException, javax.servlet.ServletException {
 		chain.doFilter(request, response);
 	}
 
@@ -50,16 +60,6 @@ public class BaseFilter implements Filter {
 	@Override
 	public void init(final FilterConfig _filterConfig) {
 		this.filterConfig = _filterConfig;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @see javax.servlet.Filter#destroy()
-	 */
-	@Override
-	public void destroy() {
-		// Empty
 	}
 
 }

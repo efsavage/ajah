@@ -130,11 +130,47 @@ public enum DataSizeUnit {
 	 */
 	EXBIBYTE(1024 * PEBIBYTE.bits, "exbibyte", "EiB");
 
+	/**
+	 * Formats the number of bytes to an automatically selected unit, with two
+	 * decimal places and the unit's abbreviation. Examples: 1024 formats to
+	 * "1.00 kiB", 135498798 formats to 129.22 MiB".
+	 * 
+	 * @param bytes
+	 *            The number of bytes to format.
+	 * @return The formatted string for the number of bytes.
+	 */
+	public static String format(final long bytes) {
+		return format(bytes, 2);
+	}
+
+	/**
+	 * Formats the number of bytes to an automatically selected unit, with a
+	 * specified number of decimal places and the unit's abbreviation. Examples:
+	 * 1024 formats to "1.00 kiB", 135498798 formats to 129.22 MiB".
+	 * 
+	 * @param bytes
+	 *            The number of bytes to format.
+	 * @param precision
+	 *            The number of decimal places to format the result to.
+	 * @return The formatted string for the number of bytes.
+	 */
+	public static String format(final long bytes, final int precision) {
+		final DataSizeUnit[] autoFormatOrder = new DataSizeUnit[] { PEBIBYTE, TEBIBYTE, GIBIBYTE, MEBIBYTE, KIBIBYTE };
+		for (final DataSizeUnit unit : autoFormatOrder) {
+			if (bytes > unit.bytes) {
+				return String.format("%." + precision + "f %s", Double.valueOf((double) bytes / unit.bytes), unit.getAbbreviation());
+			}
+		}
+		return bytes + " " + BYTE.getAbbreviation();
+	}
+
 	private final long bits;
 
 	private final long bytes;
 
 	private final String name;
+
+	private final String abbreviation;
 
 	private DataSizeUnit(final long bits, final String name, final String abbreviation) {
 		this.bits = bits;
@@ -144,12 +180,16 @@ public enum DataSizeUnit {
 	}
 
 	/**
-	 * Full name of this unit.
+	 * Returns a double of the current unit quantity that represents the number
+	 * of bytes supplied.
 	 * 
-	 * @return Full name of this unit.
+	 * @param actualBytes
+	 *            The number of bytes to convert to this unit.
+	 * @return The quantity of this unit equivalent to the number of bytes
+	 *         supplied.
 	 */
-	public String getName() {
-		return this.name;
+	public double fromBytes(final long actualBytes) {
+		return (double) actualBytes / this.bytes;
 	}
 
 	/**
@@ -161,7 +201,19 @@ public enum DataSizeUnit {
 		return this.abbreviation;
 	}
 
-	private final String abbreviation;
+	/**
+	 * Returns the number of bytes the quantity of this unit represents.
+	 * Example: DataSizeUnit.MEBIBIT.getAsBytes(3) would return 3145728. Note:
+	 * This may wrap around if large quantities of large units are used. Use
+	 * {@link LargeDataSizeUnit} where appropriate.
+	 * 
+	 * @param quantity
+	 *            of this unit to return.
+	 * @return The number of bytes the quantity of this unit represents.
+	 */
+	public long getAsBytes(final long quantity) {
+		return this.bytes * quantity;
+	}
 
 	/**
 	 * Return the number of bits for this unit.
@@ -184,64 +236,12 @@ public enum DataSizeUnit {
 	}
 
 	/**
-	 * Returns the number of bytes the quantity of this unit represents.
-	 * Example: DataSizeUnit.MEBIBIT.getAsBytes(3) would return 3145728. Note:
-	 * This may wrap around if large quantities of large units are used. Use
-	 * {@link LargeDataSizeUnit} where appropriate.
+	 * Full name of this unit.
 	 * 
-	 * @param quantity
-	 *            of this unit to return.
-	 * @return The number of bytes the quantity of this unit represents.
+	 * @return Full name of this unit.
 	 */
-	public long getAsBytes(final long quantity) {
-		return this.bytes * quantity;
-	}
-
-	/**
-	 * Formats the number of bytes to an automatically selected unit, with two
-	 * decimal places and the unit's abbreviation. Examples: 1024 formats to
-	 * "1.00 kiB", 135498798 formats to 129.22 MiB".
-	 * 
-	 * @param bytes
-	 *            The number of bytes to format.
-	 * @return The formatted string for the number of bytes.
-	 */
-	public static String format(final long bytes) {
-		return format(bytes, 2);
-	}
-
-	/**
-	 * Returns a double of the current unit quantity that represents the number
-	 * of bytes supplied.
-	 * 
-	 * @param actualBytes
-	 *            The number of bytes to convert to this unit.
-	 * @return The quantity of this unit equivalent to the number of bytes
-	 *         supplied.
-	 */
-	public double fromBytes(final long actualBytes) {
-		return (double) actualBytes / this.bytes;
-	}
-
-	/**
-	 * Formats the number of bytes to an automatically selected unit, with a
-	 * specified number of decimal places and the unit's abbreviation. Examples:
-	 * 1024 formats to "1.00 kiB", 135498798 formats to 129.22 MiB".
-	 * 
-	 * @param bytes
-	 *            The number of bytes to format.
-	 * @param precision
-	 *            The number of decimal places to format the result to.
-	 * @return The formatted string for the number of bytes.
-	 */
-	public static String format(final long bytes, final int precision) {
-		final DataSizeUnit[] autoFormatOrder = new DataSizeUnit[] { PEBIBYTE, TEBIBYTE, GIBIBYTE, MEBIBYTE, KIBIBYTE };
-		for (final DataSizeUnit unit : autoFormatOrder) {
-			if (bytes > unit.bytes) {
-				return String.format("%." + precision + "f %s", Double.valueOf((double) bytes / unit.bytes), unit.getAbbreviation());
-			}
-		}
-		return bytes + " " + BYTE.getAbbreviation();
+	public String getName() {
+		return this.name;
 	}
 
 }

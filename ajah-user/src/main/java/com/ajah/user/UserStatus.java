@@ -34,11 +34,20 @@ public enum UserStatus implements Identifiable<String> {
 	 */
 	ACTIVE("1", "Active", "Active", "Active");
 
-	private UserStatus(String id, String code, String name, String description) {
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
+	/**
+	 * Finds a UserStatus that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching UserStatus, or null.
+	 */
+	public static UserStatus get(final String id) {
+		for (final UserStatus type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
 	}
 
 	private final String id;
@@ -46,14 +55,11 @@ public enum UserStatus implements Identifiable<String> {
 	private final String name;
 	private final String description;
 
-	/**
-	 * The internal ID of the status.
-	 * 
-	 * @return The internal ID of the status. Cannot be null.
-	 */
-	@Override
-	public String getId() {
-		return this.id;
+	private UserStatus(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
 	}
 
 	/**
@@ -67,16 +73,6 @@ public enum UserStatus implements Identifiable<String> {
 	}
 
 	/**
-	 * The display-friendly name of the status. If no name is applicable, it
-	 * should be an alias for the ID or code.
-	 * 
-	 * @return The display-friendly name of the status. Cannot be null.
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
 	 * The display-friendly description of the status.
 	 * 
 	 * @return The display-friendly description of the status. May be null.
@@ -86,23 +82,27 @@ public enum UserStatus implements Identifiable<String> {
 	}
 
 	/**
-	 * Finds a UserStatus that matches the id on id, name, or name().
+	 * The internal ID of the status.
 	 * 
-	 * @param id
-	 *            Value to match against id, name, or name()
-	 * @return Matching UserStatus, or null.
+	 * @return The internal ID of the status. Cannot be null.
 	 */
-	public static UserStatus get(String id) {
-		for (UserStatus type : values()) {
-			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
-				return type;
-			}
-		}
-		return null;
+	@Override
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * The display-friendly name of the status. If no name is applicable, it
+	 * should be an alias for the ID or code.
+	 * 
+	 * @return The display-friendly name of the status. Cannot be null.
+	 */
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
-	public void setId(String id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
 

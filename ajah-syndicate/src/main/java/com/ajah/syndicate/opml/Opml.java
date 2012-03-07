@@ -28,7 +28,7 @@ import lombok.Data;
  */
 @Data
 public class Opml {
-	
+
 	List<Outline> outlines;
 
 }

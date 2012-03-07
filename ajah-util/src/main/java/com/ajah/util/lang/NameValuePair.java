@@ -30,6 +30,21 @@ public class NameValuePair<T> {
 
 	private String name;
 
+	private T value;
+
+	/**
+	 * Constructs this bean with the two fields. Either field may be null.
+	 * 
+	 * @param name
+	 *            The name of the object/value, may be null.
+	 * @param value
+	 *            The object/value, may be null.
+	 */
+	public NameValuePair(final String name, final T value) {
+		this.name = name;
+		this.value = value;
+	}
+
 	/**
 	 * Returns the name of the object/value.
 	 * 
@@ -37,6 +52,15 @@ public class NameValuePair<T> {
 	 */
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * Returns the object/value.
+	 * 
+	 * @return The object/value.
+	 */
+	public T getValue() {
+		return this.value;
 	}
 
 	/**
@@ -50,36 +74,12 @@ public class NameValuePair<T> {
 	}
 
 	/**
-	 * Returns the object/value.
-	 * 
-	 * @return The object/value.
-	 */
-	public T getValue() {
-		return this.value;
-	}
-
-	/**
 	 * Sets the object/value.
 	 * 
 	 * @param value
 	 *            The object/value.
 	 */
 	public void setValue(final T value) {
-		this.value = value;
-	}
-
-	private T value;
-
-	/**
-	 * Constructs this bean with the two fields. Either field may be null.
-	 * 
-	 * @param name
-	 *            The name of the object/value, may be null.
-	 * @param value
-	 *            The object/value, may be null.
-	 */
-	public NameValuePair(final String name, final T value) {
-		this.name = name;
 		this.value = value;
 	}
 

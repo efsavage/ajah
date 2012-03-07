@@ -29,26 +29,20 @@ import com.ajah.util.crypto.HashUtils;
  */
 public class XmlString implements ToStringable, FromStringable {
 
+	/**
+	 * Wraps the supplied string value with a new instance of {@link XmlString}.
+	 * 
+	 * @param string
+	 *            The string to wrap, may be null.
+	 * @return New instance of {@link XmlString} wrapping supplied string.
+	 */
+	public static XmlString valueOf(final String string) {
+		return new XmlString(string);
+	}
+
 	final String string;
+
 	final String sha1;
-
-	/**
-	 * Return the sha1 of the wrapped String.
-	 * 
-	 * @return the sha1
-	 */
-	public String getSha1() {
-		return this.sha1;
-	}
-
-	/**
-	 * Returns the wrapped string, may be null.
-	 * 
-	 * @return the string
-	 */
-	public String getString() {
-		return this.string;
-	}
 
 	/**
 	 * Wraps the supplied string value.
@@ -66,14 +60,21 @@ public class XmlString implements ToStringable, FromStringable {
 	}
 
 	/**
-	 * Wraps the supplied string value with a new instance of {@link XmlString}.
+	 * Return the sha1 of the wrapped String.
 	 * 
-	 * @param string
-	 *            The string to wrap, may be null.
-	 * @return New instance of {@link XmlString} wrapping supplied string.
+	 * @return the sha1
 	 */
-	public static XmlString valueOf(String string) {
-		return new XmlString(string);
+	public String getSha1() {
+		return this.sha1;
+	}
+
+	/**
+	 * Returns the wrapped string, may be null.
+	 * 
+	 * @return the string
+	 */
+	public String getString() {
+		return this.string;
 	}
 
 	@Override

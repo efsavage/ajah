@@ -56,8 +56,8 @@ public class AccessLoggerFilter extends AjahFilter {
 	 * Logs requests.
 	 */
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-		RequestEvent requestEvent = new RequestEvent(request);
+	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
+		final RequestEvent requestEvent = new RequestEvent(request);
 		request.setAttribute("ajahRequestEvent", requestEvent);
 		try {
 			chain.doFilter(request, response);

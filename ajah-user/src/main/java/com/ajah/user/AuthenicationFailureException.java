@@ -35,7 +35,7 @@ public class AuthenicationFailureException extends Exception {
 	 * @param username
 	 *            User that failed to authenticate.
 	 */
-	public AuthenicationFailureException(String username) {
+	public AuthenicationFailureException(final String username) {
 		super(username);
 	}
 

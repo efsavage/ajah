@@ -33,25 +33,28 @@ import com.ajah.util.AjahUtils;
 public class SessionUtils {
 
 	/**
-	 * A more explicit heavy-duty version of {@link HttpSession#invalidate()}.
-	 * This method will remove all attributes and clear all cookies, in addition
-	 * to calling {@link HttpSession#invalidate()}.
+	 * Adds a message to list that is stored in the session context.
 	 * 
-	 * @param request
-	 *            Request to get cookies and session from, required.
-	 * @param response
-	 *            Response to set updated cookies on. Not required, but cookies
-	 *            cannot be cleared if null.
+	 * @param message
+	 * @param session
 	 */
-	public static void eradicate(HttpServletRequest request, HttpServletResponse response) {
-		AjahUtils.requireParam(request, "request");
-		AjahUtils.requireParam(response, "response");
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			clearSessionAttributes(session);
-			session.invalidate();
+	public static void addConfirmationMessage(final String message, final HttpSession session) {
+		@SuppressWarnings("unchecked")
+		List<String> confirmationMessages = (List<String>) session.getAttribute("ajahConfirmationMessages");
+		if (confirmationMessages == null) {
+			confirmationMessages = new ArrayList<>();
+			session.setAttribute("ajahConfirmationMessages", confirmationMessages);
 		}
-		CookieUtils.clearAllCookies(request, response);
+		confirmationMessages.add(message);
+	}
+
+	/**
+	 * @param session
+	 */
+	public static void clearConfirmationMessages(final HttpSession session) {
+		if (session != null) {
+			session.removeAttribute("ajahConfirmationMessages");
+		}
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class SessionUtils {
 	 * @param request
 	 *            request on which to find a session to clear, required.
 	 */
-	public static void clearSessionAttributes(HttpServletRequest request) {
+	public static void clearSessionAttributes(final HttpServletRequest request) {
 		AjahUtils.requireParam(request, "request");
 		clearSessionAttributes(request.getSession(false));
 	}
@@ -73,28 +76,34 @@ public class SessionUtils {
 	 * @param session
 	 *            session to clear, required.
 	 */
-	public static void clearSessionAttributes(HttpSession session) {
+	public static void clearSessionAttributes(final HttpSession session) {
 		AjahUtils.requireParam(session, "session");
-		Enumeration<?> names = session.getAttributeNames();
+		final Enumeration<?> names = session.getAttributeNames();
 		while (names.hasMoreElements()) {
 			session.removeAttribute((String) names.nextElement());
 		}
 	}
 
 	/**
-	 * Adds a message to list that is stored in the session context.
+	 * A more explicit heavy-duty version of {@link HttpSession#invalidate()}.
+	 * This method will remove all attributes and clear all cookies, in addition
+	 * to calling {@link HttpSession#invalidate()}.
 	 * 
-	 * @param message
-	 * @param session
+	 * @param request
+	 *            Request to get cookies and session from, required.
+	 * @param response
+	 *            Response to set updated cookies on. Not required, but cookies
+	 *            cannot be cleared if null.
 	 */
-	public static void addConfirmationMessage(String message, HttpSession session) {
-		@SuppressWarnings("unchecked")
-		List<String> confirmationMessages = (List<String>) session.getAttribute("ajahConfirmationMessages");
-		if (confirmationMessages == null) {
-			confirmationMessages = new ArrayList<>();
-			session.setAttribute("ajahConfirmationMessages", confirmationMessages);
+	public static void eradicate(final HttpServletRequest request, final HttpServletResponse response) {
+		AjahUtils.requireParam(request, "request");
+		AjahUtils.requireParam(response, "response");
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			clearSessionAttributes(session);
+			session.invalidate();
 		}
-		confirmationMessages.add(message);
+		CookieUtils.clearAllCookies(request, response);
 	}
 
 	/**
@@ -106,20 +115,11 @@ public class SessionUtils {
 	 *         null or empty.
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<String> getConfirmationMessages(HttpSession session) {
+	public static List<String> getConfirmationMessages(final HttpSession session) {
 		if (session != null) {
 			return (List<String>) session.getAttribute("ajahConfirmationMessages");
 		}
 		return null;
-	}
-
-	/**
-	 * @param session
-	 */
-	public static void clearConfirmationMessages(HttpSession session) {
-		if (session != null) {
-			session.removeAttribute("ajahConfirmationMessages");
-		}
 	}
 
 }

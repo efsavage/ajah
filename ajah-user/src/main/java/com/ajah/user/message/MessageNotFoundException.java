@@ -28,7 +28,7 @@ public class MessageNotFoundException extends Exception {
 
 	private static final long serialVersionUID = -6481647246191615206L;
 
-	private MessageId id;
+	private final MessageId id;
 
 	/**
 	 * Thrown when a message is requested that does not exist.
@@ -36,7 +36,7 @@ public class MessageNotFoundException extends Exception {
 	 * @param id
 	 *            ID that was sought.
 	 */
-	public MessageNotFoundException(MessageId id) {
+	public MessageNotFoundException(final MessageId id) {
 		super("Message: " + id + " not found");
 		this.id = id;
 	}

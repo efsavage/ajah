@@ -31,7 +31,7 @@ public abstract class HttpException extends Exception {
 	 * @param message
 	 *            The error message.
 	 */
-	public HttpException(String message) {
+	public HttpException(final String message) {
 		super(message);
 	}
 
@@ -42,7 +42,7 @@ public abstract class HttpException extends Exception {
 	 * @param t
 	 *            The error cause.
 	 */
-	public HttpException(Throwable t) {
+	public HttpException(final Throwable t) {
 		super(t);
 	}
 

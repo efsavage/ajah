@@ -30,7 +30,7 @@ public class UnexpectedResponseCode extends HttpException {
 	 * @param message
 	 *            The error message.
 	 */
-	public UnexpectedResponseCode(String message) {
+	public UnexpectedResponseCode(final String message) {
 		super(message);
 	}
 

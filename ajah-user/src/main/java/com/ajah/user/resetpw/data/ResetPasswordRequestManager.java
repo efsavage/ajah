@@ -43,25 +43,6 @@ public class ResetPasswordRequestManager {
 	ResetPasswordRequestDao resetPasswordRequestDao;
 
 	/**
-	 * Sends a reset password request to the particular user.
-	 * 
-	 * @param user
-	 * @return The ResetPasswordRequest if creation/transport was successful.
-	 *         Will not return null.
-	 */
-	public ResetPasswordRequest sendResetPassword(User user) {
-		long code = RandomUtils.getRandomNumber(1000000000000000L, 9999999999999999L);
-		ResetPasswordRequest rpr = new ResetPasswordRequest();
-		rpr.setId(new ResetPasswordRequestId(UUID.randomUUID().toString()));
-		rpr.setUserId(user.getId());
-		rpr.setCode(code);
-		rpr.setCreated(new Date());
-		rpr.setStatus(ResetPasswordRequestStatusImpl.NEW);
-		this.resetPasswordRequestDao.insert(rpr);
-		return rpr;
-	}
-
-	/**
 	 * Finds a {@link ResetPasswordRequest} by it's code.
 	 * 
 	 * @param code
@@ -70,9 +51,9 @@ public class ResetPasswordRequestManager {
 	 * @throws ResetPasswordRequestNotFoundException
 	 *             If no {@link ResetPasswordRequest} is found.
 	 */
-	public ResetPasswordRequest getResetPasswordRequestByCode(long code) throws ResetPasswordRequestNotFoundException {
+	public ResetPasswordRequest getResetPasswordRequestByCode(final long code) throws ResetPasswordRequestNotFoundException {
 		AjahUtils.requireParam(code, "code", 1);
-		ResetPasswordRequest rpr = this.resetPasswordRequestDao.findByField("code", Long.valueOf(code));
+		final ResetPasswordRequest rpr = this.resetPasswordRequestDao.findByField("code", Long.valueOf(code));
 		if (rpr == null) {
 			throw new ResetPasswordRequestNotFoundException(code);
 		}
@@ -90,13 +71,32 @@ public class ResetPasswordRequestManager {
 	 *             If the {@link ResetPasswordRequest} is not in a redeemable
 	 *             state.
 	 */
-	public void redeem(ResetPasswordRequest rpr) {
+	public void redeem(final ResetPasswordRequest rpr) {
 		if (!rpr.getStatus().isRedeemable()) {
 			throw new IllegalArgumentException("Request is not redeemable");
 		}
 		rpr.setRedeemed(new Date());
 		rpr.setStatus(ResetPasswordRequestStatusImpl.REDEEMED);
 		this.resetPasswordRequestDao.update(rpr);
+	}
+
+	/**
+	 * Sends a reset password request to the particular user.
+	 * 
+	 * @param user
+	 * @return The ResetPasswordRequest if creation/transport was successful.
+	 *         Will not return null.
+	 */
+	public ResetPasswordRequest sendResetPassword(final User user) {
+		final long code = RandomUtils.getRandomNumber(1000000000000000L, 9999999999999999L);
+		final ResetPasswordRequest rpr = new ResetPasswordRequest();
+		rpr.setId(new ResetPasswordRequestId(UUID.randomUUID().toString()));
+		rpr.setUserId(user.getId());
+		rpr.setCode(code);
+		rpr.setCreated(new Date());
+		rpr.setStatus(ResetPasswordRequestStatusImpl.NEW);
+		this.resetPasswordRequestDao.insert(rpr);
+		return rpr;
 	}
 
 }

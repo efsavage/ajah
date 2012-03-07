@@ -38,13 +38,13 @@ public class CookieUtils {
 	 * @param response
 	 *            Response to set updated cookies on, required.
 	 */
-	public static void clearAllCookies(HttpServletRequest request, HttpServletResponse response) {
+	public static void clearAllCookies(final HttpServletRequest request, final HttpServletResponse response) {
 		AjahUtils.requireParam(request, "request");
 		AjahUtils.requireParam(response, "response");
 		if (request.getCookies() == null) {
 			return;
 		}
-		for (Cookie cookie : request.getCookies()) {
+		for (final Cookie cookie : request.getCookies()) {
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
 		}
@@ -59,12 +59,12 @@ public class CookieUtils {
 	 *            Name of cookies to look for, required.
 	 * @return Cookie if found, otherwise null.
 	 */
-	public static Cookie getCookie(HttpServletRequest request, String name) {
+	public static Cookie getCookie(final HttpServletRequest request, final String name) {
 		AjahUtils.requireParam(request, "request");
 		AjahUtils.requireParam(name, "name");
-		Cookie[] cookies = request.getCookies();
+		final Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
-			for (Cookie cookie : cookies) {
+			for (final Cookie cookie : cookies) {
 				if (cookie.getName().equals(name)) {
 					return cookie;
 				}
@@ -83,7 +83,7 @@ public class CookieUtils {
 	 *            Name of cookies to look for, required.
 	 * @return Cookie if found, otherwise null.
 	 */
-	public static Cookie getCookie(ServletRequest request, String name) {
+	public static Cookie getCookie(final ServletRequest request, final String name) {
 		return getCookie((HttpServletRequest) request, name);
 	}
 

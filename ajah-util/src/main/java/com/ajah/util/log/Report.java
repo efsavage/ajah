@@ -40,12 +40,36 @@ public class Report {
 	 */
 	public static final String HYPEN35 = "-----------------------------------";
 
+	public static char[] tabs(final int depth) {
+		final char[] tabs = new char[depth];
+		Arrays.fill(tabs, '\t');
+		return tabs;
+	}
+
 	private final List<PrintWriter> writers = new ArrayList<>();
 
 	private Logger log;
 
-	public void println(final String line) {
-		println(0, line);
+	public void add(final File file) throws FileNotFoundException {
+		this.writers.add(new PrintWriter(file));
+	}
+
+	public void add(final Logger _log) {
+		this.log = _log;
+	}
+
+	public void add(final OutputStream out) {
+		this.writers.add(new PrintWriter(out));
+	}
+
+	public void add(final PrintWriter writer) {
+		this.writers.add(writer);
+	}
+
+	public void close() {
+		for (final PrintWriter out : this.writers) {
+			out.close();
+		}
 	}
 
 	public void print(final String line) {
@@ -68,36 +92,12 @@ public class Report {
 		}
 	}
 
-	public void add(final PrintWriter writer) {
-		this.writers.add(writer);
-	}
-
-	public void add(final File file) throws FileNotFoundException {
-		this.writers.add(new PrintWriter(file));
+	public void println(final String line) {
+		println(0, line);
 	}
 
 	public void rule() {
 		println(EQUAL_40);
-	}
-
-	public static char[] tabs(final int depth) {
-		final char[] tabs = new char[depth];
-		Arrays.fill(tabs, '\t');
-		return tabs;
-	}
-
-	public void add(final OutputStream out) {
-		this.writers.add(new PrintWriter(out));
-	}
-
-	public void add(final Logger _log) {
-		this.log = _log;
-	}
-
-	public void close() {
-		for (final PrintWriter out : this.writers) {
-			out.close();
-		}
 	}
 
 }

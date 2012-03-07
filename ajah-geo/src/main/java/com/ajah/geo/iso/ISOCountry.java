@@ -535,7 +535,7 @@ public enum ISOCountry implements Country {
 
 	private final String name;
 
-	private ISOCountry(String id, String abbr3, String name) {
+	private ISOCountry(final String id, final String abbr3, final String name) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;

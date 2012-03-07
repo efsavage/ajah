@@ -41,7 +41,7 @@ public enum SignUpStatus {
 	private final int id;
 	private final boolean succeeded;
 
-	private SignUpStatus(int id, boolean succeeded, boolean complete, boolean error) {
+	private SignUpStatus(final int id, final boolean succeeded, final boolean complete, final boolean error) {
 		this.id = id;
 		this.succeeded = succeeded;
 		this.complete = complete;

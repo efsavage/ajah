@@ -33,11 +33,11 @@ import com.ajah.util.Identifiable;
  */
 public abstract class AbstractAjahRowMapper<K extends Comparable<K>, T extends Identifiable<K>> implements RowMapper<T> {
 
-	protected AbstractAjahRowMapper(AjahDao<K, T> dao) {
+	private AjahDao<K, T> dao;
+
+	protected AbstractAjahRowMapper(final AjahDao<K, T> dao) {
 		this.dao = dao;
 	}
-
-	private AjahDao<K, T> dao;
 
 	/**
 	 * The DAO that will be calling this mapper.
@@ -50,31 +50,31 @@ public abstract class AbstractAjahRowMapper<K extends Comparable<K>, T extends I
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public T mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+		T entity;
+		try {
+			entity = this.dao.getTargetClass().newInstance();
+			this.dao.autoPopulate(entity, rs);
+			return entity;
+		} catch (final InstantiationException e) {
+			throw new SQLException(e);
+		} catch (final IllegalAccessException e) {
+			throw new SQLException(e);
+		}
+	}
+
+	/**
 	 * The DAO that will be calling this mapper.
 	 * 
 	 * @param dao
 	 *            The DAO that will be calling this mapper.
 	 * 
 	 */
-	public void setDao(AjahDao<K, T> dao) {
+	public void setDao(final AjahDao<K, T> dao) {
 		this.dao = dao;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-		T entity;
-		try {
-			entity = this.dao.getTargetClass().newInstance();
-			this.dao.autoPopulate(entity, rs);
-			return entity;
-		} catch (InstantiationException e) {
-			throw new SQLException(e);
-		} catch (IllegalAccessException e) {
-			throw new SQLException(e);
-		}
 	}
 
 }

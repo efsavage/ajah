@@ -58,7 +58,7 @@ public class UserInfoImpl implements UserInfo {
 	 * @param userId
 	 *            ID of user, required.
 	 */
-	public UserInfoImpl(UserId userId) {
+	public UserInfoImpl(final UserId userId) {
 		AjahUtils.requireParam(userId, "User ID");
 		this.id = userId;
 	}

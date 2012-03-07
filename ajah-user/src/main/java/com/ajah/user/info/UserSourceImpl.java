@@ -36,7 +36,7 @@ public enum UserSourceImpl implements UserSource {
 
 	private final String description;
 
-	private UserSourceImpl(String id, String code, String name, String description) {
+	private UserSourceImpl(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
@@ -50,6 +50,7 @@ public enum UserSourceImpl implements UserSource {
 	public String getCode() {
 		return this.code;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -57,6 +58,7 @@ public enum UserSourceImpl implements UserSource {
 	public String getDescription() {
 		return this.description;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -64,6 +66,7 @@ public enum UserSourceImpl implements UserSource {
 	public String getId() {
 		return this.id;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */

@@ -42,6 +42,36 @@ public class FileHashUtils {
 	private static final Logger log = Logger.getLogger(FileHashUtils.class.getName());
 
 	/**
+	 * Splits a hash signature into a directory structure so that there will not
+	 * be too many files in a single directory.
+	 * 
+	 * Examples:
+	 * 
+	 * <code>getHashedFileName("123abcdefhjkl",3,2)</code> will return
+	 * "12/3a/bc/123abcdefhjkl"
+	 * 
+	 * <code>getHashedFileName("123abcdefhjkl",2,5)</code> will return
+	 * "123ab/cdefh/123abcdefhjkl"
+	 * 
+	 * @param hash
+	 *            The hash to split.
+	 * @param depth
+	 *            The number of subdirectories.
+	 * @param breadth
+	 *            The length of each split sequence.
+	 * @return The filename with parent directories.
+	 */
+	public static String getHashedFileName(final String hash, final int depth, final int breadth) {
+		final StringBuffer name = new StringBuffer();
+		for (int i = 0; i < depth; i++) {
+			name.append(hash.substring(i * breadth, (i + 1) * breadth));
+			name.append("/");
+		}
+		name.append(hash);
+		return name.toString();
+	}
+
+	/**
 	 * Reads a file and returns the MD5 checksum of it.
 	 * 
 	 * @param file
@@ -144,36 +174,6 @@ public class FileHashUtils {
 		} finally {
 			IOUtils.safeClose(is);
 		}
-	}
-
-	/**
-	 * Splits a hash signature into a directory structure so that there will not
-	 * be too many files in a single directory.
-	 * 
-	 * Examples:
-	 * 
-	 * <code>getHashedFileName("123abcdefhjkl",3,2)</code> will return
-	 * "12/3a/bc/123abcdefhjkl"
-	 * 
-	 * <code>getHashedFileName("123abcdefhjkl",2,5)</code> will return
-	 * "123ab/cdefh/123abcdefhjkl"
-	 * 
-	 * @param hash
-	 *            The hash to split.
-	 * @param depth
-	 *            The number of subdirectories.
-	 * @param breadth
-	 *            The length of each split sequence.
-	 * @return The filename with parent directories.
-	 */
-	public static String getHashedFileName(final String hash, final int depth, final int breadth) {
-		final StringBuffer name = new StringBuffer();
-		for (int i = 0; i < depth; i++) {
-			name.append(hash.substring(i * breadth, (i + 1) * breadth));
-			name.append("/");
-		}
-		name.append(hash);
-		return name.toString();
 	}
 
 }

@@ -68,54 +68,6 @@ public enum AjahMimeType implements Identifiable<String> {
 	 */
 	UNKNOWN("unknown", "unknown");
 
-	private final String primaryType;
-
-	/**
-	 * The primary type of the mime type, i.e. the part before the slash.
-	 * 
-	 * @return The primary type of the mime type, i.e. the part before the
-	 *         slash.
-	 */
-	public String getPrimaryType() {
-		return this.primaryType;
-	}
-
-	/**
-	 * The sub type of the mime type, i.e. the part after the slash.
-	 * 
-	 * @return The sub type of the mime type, i.e. the part after the slash.
-	 */
-	public String getSubType() {
-		return this.subType;
-	}
-
-	/**
-	 * The mime type, i.e. the primary type followed by the sub type.
-	 * 
-	 * @return The mime type, i.e. the primary type followed by the sub type.
-	 */
-	public String getBaseType() {
-		return this.baseType;
-	}
-
-	private final String subType;
-	private final String baseType;
-	private boolean text;
-
-	private AjahMimeType(final String primaryType, final String subType) {
-		this.primaryType = primaryType;
-		this.subType = subType;
-		this.baseType = primaryType + "/" + subType;
-		this.text = false;
-	}
-
-	private AjahMimeType(final String primaryType, final String subType, boolean text) {
-		this.primaryType = primaryType;
-		this.subType = subType;
-		this.baseType = primaryType + "/" + subType;
-		this.text = text;
-	}
-
 	/**
 	 * Matches a contentType to a known Mime type.
 	 * 
@@ -151,13 +103,35 @@ public enum AjahMimeType implements Identifiable<String> {
 		return UNKNOWN;
 	}
 
+	private final String primaryType;
+
+	private final String subType;
+
+	private final String baseType;
+
+	private boolean text;
+
+	private AjahMimeType(final String primaryType, final String subType) {
+		this.primaryType = primaryType;
+		this.subType = subType;
+		this.baseType = primaryType + "/" + subType;
+		this.text = false;
+	}
+
+	private AjahMimeType(final String primaryType, final String subType, final boolean text) {
+		this.primaryType = primaryType;
+		this.subType = subType;
+		this.baseType = primaryType + "/" + subType;
+		this.text = text;
+	}
+
 	/**
-	 * Is this content type a text type? E.G. plaintext, html, xml, etc.
+	 * The mime type, i.e. the primary type followed by the sub type.
 	 * 
-	 * @return true if this is a known text type, otherwise false.
+	 * @return The mime type, i.e. the primary type followed by the sub type.
 	 */
-	public boolean isText() {
-		return this.text;
+	public String getBaseType() {
+		return this.baseType;
 	}
 
 	/**
@@ -170,8 +144,36 @@ public enum AjahMimeType implements Identifiable<String> {
 		return getBaseType();
 	}
 
+	/**
+	 * The primary type of the mime type, i.e. the part before the slash.
+	 * 
+	 * @return The primary type of the mime type, i.e. the part before the
+	 *         slash.
+	 */
+	public String getPrimaryType() {
+		return this.primaryType;
+	}
+
+	/**
+	 * The sub type of the mime type, i.e. the part after the slash.
+	 * 
+	 * @return The sub type of the mime type, i.e. the part after the slash.
+	 */
+	public String getSubType() {
+		return this.subType;
+	}
+
+	/**
+	 * Is this content type a text type? E.G. plaintext, html, xml, etc.
+	 * 
+	 * @return true if this is a known text type, otherwise false.
+	 */
+	public boolean isText() {
+		return this.text;
+	}
+
 	@Override
-	public void setId(String id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -33,8 +33,7 @@ public class VelocityEmailMessageTest {
 	 */
 	@Test
 	public void basicEmail() {
-		VelocityEmailMessage vem = new VelocityEmailMessage(new EmailAddress("nobody@nobody.com"), new EmailAddress[] { new EmailAddress(
-				"someone@somewhere.com") });
+		final VelocityEmailMessage vem = new VelocityEmailMessage(new EmailAddress("nobody@nobody.com"), new EmailAddress[] { new EmailAddress("someone@somewhere.com") });
 		vem.setTextTemplate("/templates/email/simple.txt.vm");
 		Assert.assertEquals(vem.getText(), "HELLO");
 	}

@@ -48,10 +48,10 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 *            The result set to pull data from.
 	 * @throws SQLException
 	 */
-	void autoPopulate(T entity, ResultSet resultSet) throws SQLException;
+	void autoPopulate(final T entity, final ResultSet resultSet) throws SQLException;
 
-	T findById(K id) throws DatabaseAccessException;
+	T findById(final K id) throws DatabaseAccessException;
 
-	int insert(T entity) throws DatabaseAccessException;
-	
+	int insert(final T entity) throws DatabaseAccessException;
+
 }

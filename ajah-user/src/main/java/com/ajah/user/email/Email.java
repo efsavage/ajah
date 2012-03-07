@@ -34,7 +34,7 @@ public interface Email extends Identifiable<EmailId> {
 	 *            The unique ID of this email record.
 	 */
 	@Override
-	void setId(EmailId emailId);
+	void setId(final EmailId emailId);
 
 	/**
 	 * Sets the ID of the user to whom this email belongs.
@@ -42,7 +42,7 @@ public interface Email extends Identifiable<EmailId> {
 	 * @param userId
 	 *            The ID of the user to whom this email belongs.
 	 */
-	void setUserId(UserId userId);
+	void setUserId(final UserId userId);
 
 	/**
 	 * Sets the email address.
@@ -50,7 +50,7 @@ public interface Email extends Identifiable<EmailId> {
 	 * @param address
 	 *            The email address.
 	 */
-	void setAddress(EmailAddress address);
+	void setAddress(final EmailAddress address);
 
 	/**
 	 * Sets the status of this Email.
@@ -58,7 +58,7 @@ public interface Email extends Identifiable<EmailId> {
 	 * @param emailStatus
 	 *            The status of this Email.
 	 */
-	void setStatus(EmailStatus emailStatus);
+	void setStatus(final EmailStatus emailStatus);
 
 	/**
 	 * Gets the ID of the user to whom this email belongs.

@@ -37,6 +37,10 @@ public class StringSizeValidator implements Validator {
 
 	private static final Logger log = Logger.getLogger(StringSizeValidator.class.getName());
 
+	private static Object[] getArgs(final Field field, final StringSize stringSize) {
+		return new Object[] { AutoFormUtils.getLabel(field), Integer.valueOf(stringSize.min()), Integer.valueOf(stringSize.max()) };
+	}
+
 	/**
 	 * This validator realistically only supports properties with the
 	 * {@link ToStringable} attribute, but there's no real reason to enforce
@@ -45,7 +49,7 @@ public class StringSizeValidator implements Validator {
 	 * @return Always returns true
 	 */
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(final Class<?> clazz) {
 		return true;
 	}
 
@@ -57,42 +61,35 @@ public class StringSizeValidator implements Validator {
 	 *      org.springframework.validation.Errors)
 	 */
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(final Object target, final Errors errors) {
 		log.finest("Validating " + target.getClass().getName());
-		for (Field field : target.getClass().getFields()) {
+		for (final Field field : target.getClass().getFields()) {
 			if (field.isAnnotationPresent(StringSize.class)) {
-				String fieldName = field.getName();
+				final String fieldName = field.getName();
 				log.fine("Validating " + StringSize.class.getSimpleName() + " on " + fieldName);
-				StringSize stringSize = field.getAnnotation(StringSize.class);
+				final StringSize stringSize = field.getAnnotation(StringSize.class);
 				Object value;
 				try {
 					value = field.get(target);
-				} catch (IllegalAccessException e) {
+				} catch (final IllegalAccessException e) {
 					log.log(Level.SEVERE, e.getMessage(), e);
-					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize),
-							stringSize.message());
+					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize), stringSize.message());
 					return;
 				}
-				String stringValue = value != null ? value.toString() : "";
+				final String stringValue = value != null ? value.toString() : "";
 				int len = stringValue.length();
 				if (value instanceof Password) {
 					len = ((Password) value).getOriginalLength();
 				}
 				log.fine("Value is " + len + " chars [min=" + stringSize.min() + ", max=" + stringSize.max() + "]");
 				if (len < stringSize.min()) {
-					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize),
-							stringSize.message());
+					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize), stringSize.message());
 				}
 				if (len > stringSize.min()) {
-					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize),
-							stringSize.message());
+					errors.rejectValue(fieldName, StringSize.class.getSimpleName(), getArgs(field, stringSize), stringSize.message());
 				}
 			}
 		}
-	}
-
-	private static Object[] getArgs(Field field, StringSize stringSize) {
-		return new Object[] { AutoFormUtils.getLabel(field), Integer.valueOf(stringSize.min()), Integer.valueOf(stringSize.max()) };
 	}
 
 }

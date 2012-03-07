@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 public class UserNotFoundException extends Exception {
 
 	private static final long serialVersionUID = -1591254351139322758L;
-	private String username;
+	private final String username;
 
 	/**
 	 * Thrown when a user is requested that does not exist.
@@ -35,7 +35,7 @@ public class UserNotFoundException extends Exception {
 	 * @param username
 	 *            Username that was sought.
 	 */
-	public UserNotFoundException(String username) {
+	public UserNotFoundException(final String username) {
 		super("user: " + username + " not found");
 		this.username = username;
 	}

@@ -31,7 +31,7 @@ import com.ajah.util.Identifiable;
  */
 public class IdentifiableEnumPropertyEditor<E extends Identifiable<?>> extends PropertyEditorSupport {
 
-	private E[] values;
+	private final E[] values;
 
 	/**
 	 * Pass the result of Enum.getValues() because I can't seem to find a way to
@@ -40,27 +40,8 @@ public class IdentifiableEnumPropertyEditor<E extends Identifiable<?>> extends P
 	 * @param values
 	 *            The values of the enum.
 	 */
-	public IdentifiableEnumPropertyEditor(E[] values) {
+	public IdentifiableEnumPropertyEditor(final E[] values) {
 		this.values = values;
-	}
-
-	/**
-	 * Sets the property value by parsing a given String. May raise
-	 * java.lang.IllegalArgumentException if either the String is badly
-	 * formatted or if this kind of property can't be expressed as text.
-	 * 
-	 * @param text
-	 *            The string to be parsed.
-	 */
-	@Override
-	public void setAsText(String text) throws java.lang.IllegalArgumentException {
-		for (E candidate : this.values) {
-			if (candidate.getId().toString().equals(text)) {
-				setValue(candidate);
-				return;
-			}
-		}
-		throw new java.lang.IllegalArgumentException(text);
 	}
 
 	/**
@@ -78,7 +59,26 @@ public class IdentifiableEnumPropertyEditor<E extends Identifiable<?>> extends P
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getAsText() {
-		return (this.getValue() != null) ? ((E) this.getValue()).getId().toString() : null;
+		return (getValue() != null) ? ((E) getValue()).getId().toString() : null;
+	}
+
+	/**
+	 * Sets the property value by parsing a given String. May raise
+	 * java.lang.IllegalArgumentException if either the String is badly
+	 * formatted or if this kind of property can't be expressed as text.
+	 * 
+	 * @param text
+	 *            The string to be parsed.
+	 */
+	@Override
+	public void setAsText(final String text) throws java.lang.IllegalArgumentException {
+		for (final E candidate : this.values) {
+			if (candidate.getId().toString().equals(text)) {
+				setValue(candidate);
+				return;
+			}
+		}
+		throw new java.lang.IllegalArgumentException(text);
 	}
 
 }

@@ -17,14 +17,33 @@ import javax.servlet.http.HttpServletResponseWrapper;
  */
 public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
-	private ByteArrayOutputStream output;
+	private final ByteArrayOutputStream output;
 	private int contentLength;
 	private String contentType;
 
-	public GenericResponseWrapper(HttpServletResponse response) {
+	public GenericResponseWrapper(final HttpServletResponse response) {
 		super(response);
 		this.output = new ByteArrayOutputStream();
 		this.contentType = response.getContentType();
+	}
+
+	/**
+	 * Returns the content length.
+	 * 
+	 * @return The content length.
+	 */
+	public int getContentLength() {
+		return this.contentLength;
+	}
+
+	/**
+	 * Returns the content type.
+	 * 
+	 * @see javax.servlet.ServletResponseWrapper#getContentType()
+	 */
+	@Override
+	public String getContentType() {
+		return this.contentType;
 	}
 
 	public byte[] getData() {
@@ -57,18 +76,9 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 	 * @see javax.servlet.ServletResponseWrapper#setContentLength(int)
 	 */
 	@Override
-	public void setContentLength(int length) {
+	public void setContentLength(final int length) {
 		this.contentLength = length;
 		super.setContentLength(length);
-	}
-
-	/**
-	 * Returns the content length.
-	 * 
-	 * @return The content length.
-	 */
-	public int getContentLength() {
-		return this.contentLength;
 	}
 
 	/**
@@ -77,21 +87,11 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 	 * @see javax.servlet.ServletResponseWrapper#setContentType(java.lang.String)
 	 */
 	@Override
-	public void setContentType(String type) {
+	public void setContentType(final String type) {
 		System.err.println("Setting content type to :" + type);
 		new Exception().printStackTrace();
 		this.contentType = type;
 		super.setContentType(type);
-	}
-
-	/**
-	 * Returns the content type.
-	 * 
-	 * @see javax.servlet.ServletResponseWrapper#getContentType()
-	 */
-	@Override
-	public String getContentType() {
-		return this.contentType;
 	}
 
 }

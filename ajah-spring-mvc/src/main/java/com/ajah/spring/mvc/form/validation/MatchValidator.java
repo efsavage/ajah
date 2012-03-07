@@ -43,7 +43,7 @@ public class MatchValidator implements Validator {
 	 * @return Always returns true
 	 */
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(final Class<?> clazz) {
 		return true;
 	}
 
@@ -59,16 +59,16 @@ public class MatchValidator implements Validator {
 	 */
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void validate(Object target, Errors errors) {
+	public void validate(final Object target, final Errors errors) {
 		log.finest("Validating " + target.getClass().getName());
-		for (Field field : target.getClass().getFields()) {
+		for (final Field field : target.getClass().getFields()) {
 			if (field.isAnnotationPresent(Match.class)) {
 				log.fine("Validating " + Match.class.getSimpleName() + " on " + field.getName());
-				Match match = field.getAnnotation(Match.class);
-				String matchTarget = match.value();
+				final Match match = field.getAnnotation(Match.class);
+				final String matchTarget = match.value();
 				AjahUtils.requireParam(matchTarget, "@Match value");
 				try {
-					Field matchTargetField = target.getClass().getField(matchTarget);
+					final Field matchTargetField = target.getClass().getField(matchTarget);
 					if (!field.getType().equals(matchTargetField.getType())) {
 						throw new IllegalArgumentException("Target field is different type");
 					}
@@ -79,11 +79,11 @@ public class MatchValidator implements Validator {
 						valid = field.get(target).equals(matchTargetField.get(target));
 					}
 					log.fine("Valid: " + valid);
-				} catch (SecurityException e) {
+				} catch (final SecurityException e) {
 					throw new IllegalArgumentException(e);
-				} catch (NoSuchFieldException e) {
+				} catch (final NoSuchFieldException e) {
 					throw new IllegalArgumentException(e);
-				} catch (IllegalAccessException e) {
+				} catch (final IllegalAccessException e) {
 					throw new IllegalArgumentException(e);
 				}
 			}

@@ -16,8 +16,8 @@
 package com.ajah.user.resetpw;
 
 /**
- * All reset password requests must be in some state, which determines the permitted
- * operations. Common statuses might be NEW, SENT, REDEEMED
+ * All reset password requests must be in some state, which determines the
+ * permitted operations. Common statuses might be NEW, SENT, REDEEMED
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -57,7 +57,8 @@ public interface ResetPasswordRequestStatus {
 	/**
 	 * Can this request be used to reset the password?
 	 * 
-	 * @return True if this request be used to reset the password, otherwise false.
+	 * @return True if this request be used to reset the password, otherwise
+	 *         false.
 	 */
 	boolean isRedeemable();
 

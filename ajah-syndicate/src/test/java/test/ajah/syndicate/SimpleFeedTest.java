@@ -49,10 +49,10 @@ public class SimpleFeedTest {
 	 */
 	@Test
 	public void getFeed() throws IllegalArgumentException, FeedException, IOException {
-		FeedSource feedSource = new FeedSource();
-		Feed feed = RomeUtils.createFeed(HttpClient.getXml(TEST_FEED), feedSource);
+		final FeedSource feedSource = new FeedSource();
+		final Feed feed = RomeUtils.createFeed(HttpClient.getXml(TEST_FEED), feedSource);
 		log.info(feed.getEntries().size() + " entries");
-		for (Entry entry : feed.getEntries()) {
+		for (final Entry entry : feed.getEntries()) {
 			log.info("Title: " + entry.getTitle());
 			log.info("Author: " + entry.getAuthor());
 			log.info("Content: " + entry.getContent() + "\n");

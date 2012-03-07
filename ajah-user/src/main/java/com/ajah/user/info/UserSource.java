@@ -32,23 +32,25 @@ public interface UserSource {
 	String getId();
 
 	/**
-	 * The short, display-friendly code of the source.  If no code is applicable, it should be an alias for the ID.
+	 * The short, display-friendly code of the source. If no code is applicable,
+	 * it should be an alias for the ID.
 	 * 
-	 * @return The short, display-friendly code of the source.  Cannot be null.
+	 * @return The short, display-friendly code of the source. Cannot be null.
 	 */
 	String getCode();
 
 	/**
-	 * The display-friendly name of the source.  If no name is applicable, it should be an alias for the ID or code.
+	 * The display-friendly name of the source. If no name is applicable, it
+	 * should be an alias for the ID or code.
 	 * 
-	 * @return The display-friendly name of the source.  Cannot be null.
+	 * @return The display-friendly name of the source. Cannot be null.
 	 */
 	String getName();
 
 	/**
 	 * The display-friendly description of the source.
 	 * 
-	 * @return The display-friendly description of the source.  May be null.
+	 * @return The display-friendly description of the source. May be null.
 	 */
 	String getDescription();
 

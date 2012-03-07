@@ -60,15 +60,15 @@ public class SignUpManager {
 	 * @throws DatabaseAccessException
 	 *             If the queries could not be completed.
 	 */
-	public SignUp signUp(EmailAddress emailAddress, Password password, String ip, UserSource source, UserType type) throws DatabaseAccessException {
+	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DatabaseAccessException {
 		log.fine("SignUp attempt for: " + emailAddress);
-		SignUp signUp = new SignUp();
+		final SignUp signUp = new SignUp();
 		signUp.setIp(ip);
 		signUp.setCreated(new Date());
 		signUp.setSource(source);
 		signUp.setStatus(SignUpStatus.SUCCESS);
 		// TODO signup should be saved
-		User user = this.userManager.createUser(emailAddress, password, ip, source, type);
+		final User user = this.userManager.createUser(emailAddress, password, ip, source, type);
 		log.info(user.getUsername() + " created!");
 		// try {
 		// } catch (RuntimeException e) {

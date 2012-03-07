@@ -34,26 +34,6 @@ import com.ajah.util.data.XmlString;
 public class HttpClient {
 
 	/**
-	 * Get an {@link InputStream} of the target URL.
-	 * 
-	 * @param url
-	 *            The URL to fetch.
-	 * @return The results of the URL, if possible, or null.
-	 * @throws IOException
-	 *             If the file could not be fetched.
-	 */
-	public static InputStream stream(String url) throws IOException {
-		try {
-			URL ur = new URL(url);
-			URLConnection conn;
-			conn = ur.openConnection();
-			return conn.getInputStream();
-		} catch (MalformedURLException e) {
-			return null;
-		}
-	}
-
-	/**
 	 * Get a string version of the target URL.
 	 * 
 	 * @param url
@@ -62,17 +42,17 @@ public class HttpClient {
 	 * @throws IOException
 	 *             If the file could not be fetched.
 	 */
-	public static String getString(String url) throws IOException {
+	public static String getString(final String url) throws IOException {
 		try {
-			URL ur = new URL(url);
+			final URL ur = new URL(url);
 			URLConnection conn;
 			conn = ur.openConnection();
-			Object content = conn.getContent();
+			final Object content = conn.getContent();
 			if (content instanceof String) {
 				return (String) content;
 			}
 			return content.toString();
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			return null;
 		}
 	}
@@ -86,8 +66,28 @@ public class HttpClient {
 	 * @throws IOException
 	 *             If the URL could not be fetched.
 	 */
-	public static XmlString getXml(String url) throws IOException {
+	public static XmlString getXml(final String url) throws IOException {
 		return new XmlString(getString(url));
+	}
+
+	/**
+	 * Get an {@link InputStream} of the target URL.
+	 * 
+	 * @param url
+	 *            The URL to fetch.
+	 * @return The results of the URL, if possible, or null.
+	 * @throws IOException
+	 *             If the file could not be fetched.
+	 */
+	public static InputStream stream(final String url) throws IOException {
+		try {
+			final URL ur = new URL(url);
+			URLConnection conn;
+			conn = ur.openConnection();
+			return conn.getInputStream();
+		} catch (final MalformedURLException e) {
+			return null;
+		}
 	}
 
 }

@@ -45,11 +45,43 @@ public class ForEachTag extends TagSupport {
 
 	private static final Logger log = Logger.getLogger(ForEachTag.class.getName());
 
+	/**
+	 * @param items2
+	 * @return
+	 */
+	private static boolean isEmpty(final Object object) {
+		if (object == null) {
+			return true;
+		}
+		if (object instanceof Collection<?>) {
+			if (((Collection<?>) object).size() > 0) {
+				return false;
+			}
+		}
+		log.warning("Cannot handle items attribute of class: " + object.getClass().getName());
+		return true;
+	}
+
 	private Object items;
 	private String ifEmpty;
 	private String var;
 	private String title;
+
 	private Iterator<?> iterator = null;
+
+	@Override
+	public int doAfterBody() throws JspException {
+		log.finest("doAfterBody");
+		if (this.iterator != null && this.iterator.hasNext()) {
+			final Object item = this.iterator.next();
+			if (!StringUtils.isBlank(this.var)) {
+				this.pageContext.setAttribute(this.var, item);
+				log.finest("Var " + this.var + " is a " + this.pageContext.getAttribute(this.var).getClass().getName());
+			}
+			return EVAL_BODY_AGAIN;
+		}
+		return SKIP_BODY;
+	}
 
 	/**
 	 * Creates an opening table tag.
@@ -64,7 +96,7 @@ public class ForEachTag extends TagSupport {
 			}
 			if (isEmpty(this.items)) {
 				if (!StringUtils.isBlank(this.ifEmpty)) {
-					Paragraph p = new Paragraph().text(this.ifEmpty);
+					final Paragraph p = new Paragraph().text(this.ifEmpty);
 					p.render(this.pageContext.getOut(), 0);
 				}
 				return SKIP_BODY;
@@ -72,7 +104,7 @@ public class ForEachTag extends TagSupport {
 			if (this.items instanceof Iterable) {
 				this.iterator = ((Iterable<?>) this.items).iterator();
 				if (this.iterator.hasNext()) {
-					Object item = this.iterator.next();
+					final Object item = this.iterator.next();
 					if (!StringUtils.isBlank(this.var)) {
 						this.pageContext.setAttribute(this.var, item);
 					}
@@ -81,39 +113,8 @@ public class ForEachTag extends TagSupport {
 				}
 			}
 			return SKIP_BODY;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new JspException(e);
 		}
-	}
-
-	@Override
-	public int doAfterBody() throws JspException {
-		log.finest("doAfterBody");
-		if (this.iterator != null && this.iterator.hasNext()) {
-			Object item = this.iterator.next();
-			if (!StringUtils.isBlank(this.var)) {
-				this.pageContext.setAttribute(this.var, item);
-				log.finest("Var " + this.var + " is a " + this.pageContext.getAttribute(this.var).getClass().getName());
-			}
-			return EVAL_BODY_AGAIN;
-		}
-		return SKIP_BODY;
-	}
-
-	/**
-	 * @param items2
-	 * @return
-	 */
-	private static boolean isEmpty(Object object) {
-		if (object == null) {
-			return true;
-		}
-		if (object instanceof Collection<?>) {
-			if (((Collection<?>) object).size() > 0) {
-				return false;
-			}
-		}
-		log.warning("Cannot handle items attribute of class: " + object.getClass().getName());
-		return true;
 	}
 }

@@ -34,19 +34,6 @@ import org.springframework.context.ApplicationContext;
 public class FilterUtils {
 
 	/**
-	 * Convenience method for adding a filter to all requests.
-	 * 
-	 * @see ServletContext#addFilter(String, Class)
-	 * @param filterClass
-	 *            The class of Filter to instantiate.
-	 * @param servletContext
-	 */
-	public static void add(Class<? extends Filter> filterClass, ServletContext servletContext) {
-		FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
-		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
-	}
-
-	/**
 	 * Convenience method for adding a filter that is available as a Spring
 	 * bean/service to all requests.
 	 * 
@@ -58,9 +45,9 @@ public class FilterUtils {
 	 * @param servletContext
 	 * @return The Dynamic Mapping created by this method.
 	 */
-	public static Dynamic add(Class<? extends Filter> filterClass, ApplicationContext appContext, ServletContext servletContext) {
-		Filter filter = appContext.getBean(filterClass);
-		FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filter);
+	public static Dynamic add(final Class<? extends Filter> filterClass, final ApplicationContext appContext, final ServletContext servletContext) {
+		final Filter filter = appContext.getBean(filterClass);
+		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filter);
 		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 		return reg;
 	}
@@ -79,11 +66,24 @@ public class FilterUtils {
 	 *            The servlet to add this filter to.
 	 * @return The Dynamic Mapping created by this method.
 	 */
-	public static Dynamic add(Class<? extends Filter> filterClass, ApplicationContext appContext, ServletContext servletContext, Registration servletRegistration) {
-		Filter filter = appContext.getBean(filterClass);
-		FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filter);
+	public static Dynamic add(final Class<? extends Filter> filterClass, final ApplicationContext appContext, final ServletContext servletContext, final Registration servletRegistration) {
+		final Filter filter = appContext.getBean(filterClass);
+		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filter);
 		reg.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST), false, servletRegistration.getName());
 		return reg;
+	}
+
+	/**
+	 * Convenience method for adding a filter to all requests.
+	 * 
+	 * @see ServletContext#addFilter(String, Class)
+	 * @param filterClass
+	 *            The class of Filter to instantiate.
+	 * @param servletContext
+	 */
+	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext) {
+		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
+		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 	}
 
 }

@@ -51,17 +51,6 @@ public abstract class AjahFilter implements Filter {
 	 * Does nothing except log and
 	 * {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
 	 * 
-	 * @see javax.servlet.Filter#init(FilterConfig)
-	 */
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
-	}
-
-	/**
-	 * Does nothing except log and
-	 * {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
-	 * 
 	 * @param request
 	 *            The servlet request. Cannot be null.
 	 * @param response
@@ -77,8 +66,19 @@ public abstract class AjahFilter implements Filter {
 	 * 
 	 * @see javax.servlet.Filter#init(FilterConfig)
 	 */
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		chain.doFilter(request, response);
+	}
+
+	/**
+	 * Does nothing except log and
+	 * {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
+	 * 
+	 * @see javax.servlet.Filter#init(FilterConfig)
+	 */
+	@Override
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public abstract class AjahFilter implements Filter {
 	 * @see javax.servlet.Filter#init(FilterConfig)
 	 */
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init(final FilterConfig arg0) throws ServletException {
 		log.finer(getClass().getName() + " initialized");
 	}
 

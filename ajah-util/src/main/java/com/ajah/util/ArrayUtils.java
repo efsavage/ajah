@@ -29,44 +29,26 @@ public class ArrayUtils {
 	private static final Logger log = Logger.getLogger(ArrayUtils.class.getName());
 
 	/**
-	 * Sums an array of integers.
+	 * Checks to see if an array contains a given object.
 	 * 
+	 * @see Object#equals(Object)
 	 * @param array
-	 *            Integer array.
-	 * @return The sum of the values of the array. Returns 0 if the array is 0
-	 *         or empty.
+	 *            The array to check.
+	 * @param member
+	 *            The object to look for in the array.
+	 * @return true if the parameters are not null and the object was found,
+	 *         otherwise false.
 	 */
-	public static long sum(final int[] array) {
-		if (array == null || array.length == 0) {
-			return 0;
+	public static <T> boolean contains(final T[] array, final T member) {
+		if (array == null || array.length == 0 || member == null) {
+			return false;
 		}
-		int retVal = array[0];
-		for (int i = 1; i < array.length; i++) {
-			retVal += array[i];
-		}
-		return retVal;
-	}
-
-	/**
-	 * Find the largest value in the array and returns the index of it. If two
-	 * values are equal, will return the first index.
-	 * 
-	 * @param values
-	 *            The array of integers.
-	 * @return Index of the first occurrence of the largest value.
-	 * @throws IllegalArgumentException
-	 *             if values is null.
-	 */
-	public static int indexOfLargest(final int[] values) {
-		AjahUtils.requireParam(values, "values");
-		int index = 0;
-		final int largest = values[0];
-		for (int i = 1; i < values.length; i++) {
-			if (values[i] > largest) {
-				index = i;
+		for (final T t : array) {
+			if (t.equals(member)) {
+				return true;
 			}
 		}
-		return index;
+		return false;
 	}
 
 	/**
@@ -96,6 +78,48 @@ public class ArrayUtils {
 	}
 
 	/**
+	 * Find the largest value in the array and returns the index of it. If two
+	 * values are equal, will return the first index.
+	 * 
+	 * @param values
+	 *            The array of integers.
+	 * @return Index of the first occurrence of the largest value.
+	 * @throws IllegalArgumentException
+	 *             if values is null.
+	 */
+	public static int indexOfLargest(final int[] values) {
+		AjahUtils.requireParam(values, "values");
+		int index = 0;
+		final int largest = values[0];
+		for (int i = 1; i < values.length; i++) {
+			if (values[i] > largest) {
+				index = i;
+			}
+		}
+		return index;
+	}
+
+	/**
+	 * Joins the result of calling {@link #toString()} on each element of an
+	 * array.
+	 * 
+	 * @param array
+	 *            The array, may be null or empty.
+	 * @return The joined result of calling {@link #toString()} on each element
+	 *         of an array, or null if the supplied array was null or empty.
+	 */
+	public static String joinToString(final Object[] array) {
+		if (array == null || array.length == 0) {
+			return null;
+		}
+		final StringBuilder string = new StringBuilder();
+		for (final Object object : array) {
+			string.append(object.toString());
+		}
+		return string.toString();
+	}
+
+	/**
 	 * Sums an array of bytes.
 	 * 
 	 * @param array
@@ -115,45 +139,21 @@ public class ArrayUtils {
 	}
 
 	/**
-	 * Checks to see if an array contains a given object.
-	 * 
-	 * @see Object#equals(Object)
-	 * @param array
-	 *            The array to check.
-	 * @param member
-	 *            The object to look for in the array.
-	 * @return true if the parameters are not null and the object was found,
-	 *         otherwise false.
-	 */
-	public static <T> boolean contains(T[] array, T member) {
-		if (array == null || array.length == 0 || member == null) {
-			return false;
-		}
-		for (T t : array) {
-			if (t.equals(member)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Joins the result of calling {@link #toString()} on each element of an
-	 * array.
+	 * Sums an array of integers.
 	 * 
 	 * @param array
-	 *            The array, may be null or empty.
-	 * @return The joined result of calling {@link #toString()} on each element
-	 *         of an array, or null if the supplied array was null or empty.
+	 *            Integer array.
+	 * @return The sum of the values of the array. Returns 0 if the array is 0
+	 *         or empty.
 	 */
-	public static String joinToString(Object[] array) {
+	public static long sum(final int[] array) {
 		if (array == null || array.length == 0) {
-			return null;
+			return 0;
 		}
-		StringBuilder string = new StringBuilder();
-		for (Object object : array) {
-			string.append(object.toString());
+		int retVal = array[0];
+		for (int i = 1; i < array.length; i++) {
+			retVal += array[i];
 		}
-		return string.toString();
+		return retVal;
 	}
 }

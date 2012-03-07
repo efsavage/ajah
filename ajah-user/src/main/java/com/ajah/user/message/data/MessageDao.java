@@ -48,22 +48,6 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 
 	static final class MessageRowMapper extends AbstractAjahRowMapper<MessageId, Message> {
 
-		protected MessageRowMapper(AjahDao<MessageId, Message> dao) {
-			super(dao);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Message mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Message message = super.mapRow(rs, rowNum);
-			message.setTo(getUserIds(rs.getString("to")));
-			message.setCc(getUserIds(rs.getString("cc")));
-			message.setBcc(getUserIds(rs.getString("bcc")));
-			return message;
-		}
-
 		/**
 		 * Converts a comma-separated list of User IDs into a type-safe list.
 		 * 
@@ -71,32 +55,33 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 		 *            The list of IDs, separated by commas.
 		 * @return A list of user ids, may be empty but will not be null.
 		 */
-		private static List<UserId> getUserIds(String string) {
-			List<UserId> userIds = new ArrayList<>();
+		private static List<UserId> getUserIds(final String string) {
+			final List<UserId> userIds = new ArrayList<>();
 			if (StringUtils.isBlank(string)) {
 				return userIds;
 			}
-			String[] stringIds = string.split(",");
-			for (String stringId : stringIds) {
+			final String[] stringIds = string.split(",");
+			for (final String stringId : stringIds) {
 				userIds.add(new UserId(stringId));
 			}
 			return userIds;
 		}
-	}
 
-	/**
-	 * INSERTs a {@link Message} entity.
-	 * 
-	 * @param message
-	 *            Message entity to insert, required.
-	 */
-	@Override
-	public int insert(Message message) {
-		AjahUtils.requireParam(message, "message");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
-				new Object[] { message.getId().getId(), DateUtils.safeToLong(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()), fromUserIds(message.getCc()),
-						fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(), message.getStatus().getId() });
+		protected MessageRowMapper(final AjahDao<MessageId, Message> dao) {
+			super(dao);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Message mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+			final Message message = super.mapRow(rs, rowNum);
+			message.setTo(getUserIds(rs.getString("to")));
+			message.setCc(getUserIds(rs.getString("cc")));
+			message.setBcc(getUserIds(rs.getString("bcc")));
+			return message;
+		}
 	}
 
 	/**
@@ -107,14 +92,14 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 	 * @return Comma-separated list of User IDs. If a null or empty list is
 	 *         passed in, will return null.
 	 */
-	private static String fromUserIds(List<UserId> userIds) {
+	private static String fromUserIds(final List<UserId> userIds) {
 		if (CollectionUtils.isEmpty(userIds)) {
 			return null;
 		}
 		if (userIds.size() == 1) {
 			return userIds.get(0).getId();
 		}
-		StringBuilder stringIds = new StringBuilder();
+		final StringBuilder stringIds = new StringBuilder();
 		for (int i = 0; i < userIds.size(); i++) {
 			if (i > 0) {
 				stringIds.append(",");
@@ -130,6 +115,21 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 	@Override
 	protected RowMapper<Message> getRowMapper() {
 		return new MessageRowMapper(this);
+	}
+
+	/**
+	 * INSERTs a {@link Message} entity.
+	 * 
+	 * @param message
+	 *            Message entity to insert, required.
+	 */
+	@Override
+	public int insert(final Message message) {
+		AjahUtils.requireParam(message, "message");
+		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
+				new Object[] { message.getId().getId(), DateUtils.safeToLong(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()), fromUserIds(message.getCc()),
+						fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(), message.getStatus().getId() });
 	}
 
 }

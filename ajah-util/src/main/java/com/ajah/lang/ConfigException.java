@@ -33,7 +33,7 @@ public class ConfigException extends RuntimeException {
 	 * @param t
 	 *            The cause of this exception.
 	 */
-	public ConfigException(Throwable t) {
+	public ConfigException(final Throwable t) {
 		super(t);
 	}
 

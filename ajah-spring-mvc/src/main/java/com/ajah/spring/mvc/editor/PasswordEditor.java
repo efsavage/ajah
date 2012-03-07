@@ -47,7 +47,7 @@ public class PasswordEditor extends PropertyEditorSupport {
 	 * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
 	 */
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(final String text) {
 		setValue(StringUtils.isBlank(text) ? null : new HmacSha1Password(text, false));
 	}
 

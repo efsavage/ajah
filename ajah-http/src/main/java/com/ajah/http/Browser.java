@@ -53,7 +53,7 @@ public enum Browser {
 	 *            The user agent string
 	 * @return The browser, if one can be deduced, or {@link #UNKNOWN}.
 	 */
-	public static Browser get(String userAgent) {
+	public static Browser get(final String userAgent) {
 		if (userAgent.contains("(KHTML, like Gecko) Chrome/")) {
 			return CHROME;
 		} else if (userAgent.contains("(KHTML,like Gecko) Chrome/")) {

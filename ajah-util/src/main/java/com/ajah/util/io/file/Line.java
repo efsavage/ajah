@@ -36,7 +36,7 @@ public class Line {
 	 * @param string
 	 *            The line as a string.
 	 */
-	public Line(String string) {
+	public Line(final String string) {
 		this.string = string;
 	}
 

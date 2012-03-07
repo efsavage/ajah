@@ -36,25 +36,16 @@ public class RequestEventId implements Serializable, ToStringable, FromStringabl
 	 * @param id
 	 *            UID of request event, cannot be null.
 	 */
-	public RequestEventId(String id) {
+	public RequestEventId(final String id) {
 		this.id = id;
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public String toString() {
-		return this.id;
+	public int compareTo(final RequestEventId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 	/**
@@ -64,8 +55,17 @@ public class RequestEventId implements Serializable, ToStringable, FromStringabl
 	 *            The other RequestEventId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(RequestEventId other) {
+	public boolean equals(final RequestEventId other) {
 		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns the String passed into the constructor.
+	 * 
+	 * @return The String passed into the constructor.
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class RequestEventId implements Serializable, ToStringable, FromStringabl
 	}
 
 	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * Returns the String passed into the constructor.
 	 */
 	@Override
-	public int compareTo(RequestEventId other) {
-		return this.id.compareTo(other.getId());
+	public String toString() {
+		return this.id;
 	}
 
 }

@@ -27,8 +27,9 @@ import com.ajah.user.email.EmailId;
  */
 public interface EmailDao extends AjahDao<EmailId, Email> {
 
-	int insert(Email email);
+	@Override
+	int insert(final Email email);
 
-	Email findByField(String string, String address);
+	Email findByField(final String string, final String address);
 
 }

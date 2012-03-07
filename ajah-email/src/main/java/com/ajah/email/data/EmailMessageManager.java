@@ -57,6 +57,14 @@ public class EmailMessageManager {
 
 	private static final Logger log = Logger.getLogger(EmailMessageManager.class.getName());
 
+	private static boolean isVerified(final EmailAddress emailAddress, final AmazonSimpleEmailService email, final ListVerifiedEmailAddressesResult verifiedEmails) {
+		if (!verifiedEmails.getVerifiedEmailAddresses().contains(emailAddress.toString())) {
+			email.verifyEmailAddress(new VerifyEmailAddressRequest().withEmailAddress(emailAddress.toString()));
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Sends a message through Amazon's SES service.
 	 * 
@@ -67,23 +75,23 @@ public class EmailMessageManager {
 	 * @throws MessagingException
 	 *             If there is a problem with the transport of the message.
 	 */
-	public void send(EmailMessage message) throws AddressException, MessagingException {
+	public void send(final EmailMessage message) throws AddressException, MessagingException {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(message.getSubject(), "message.subject");
 		AjahUtils.requireParam(message.getFrom(), "message.from");
 		AjahUtils.requireParam(message.getTo(), "message.to");
 
-		AWSCredentials credentials = new BasicAWSCredentials(Config.i.get("aws.accessKey", null), Config.i.get("aws.secretKey", null));
+		final AWSCredentials credentials = new BasicAWSCredentials(Config.i.get("aws.accessKey", null), Config.i.get("aws.secretKey", null));
 		if (Config.i.getBoolean("aws.ses.verify", false)) {
 			// Verification is active so we'll need to check that first
-			AmazonSimpleEmailService email = new AmazonSimpleEmailServiceClient(credentials);
-			ListVerifiedEmailAddressesResult verifiedEmails = email.listVerifiedEmailAddresses();
+			final AmazonSimpleEmailService email = new AmazonSimpleEmailServiceClient(credentials);
+			final ListVerifiedEmailAddressesResult verifiedEmails = email.listVerifiedEmailAddresses();
 			boolean verified = true;
 			if (!isVerified(message.getFrom(), email, verifiedEmails)) {
 				log.warning("Sender " + message.getFrom() + " is not verified");
 				verified = false;
 			}
-			for (EmailAddress emailAddress : message.getTo()) {
+			for (final EmailAddress emailAddress : message.getTo()) {
 				if (!isVerified(emailAddress, email, verifiedEmails)) {
 					log.warning("Recipient " + emailAddress + " is not verified");
 					verified = false;
@@ -93,31 +101,31 @@ public class EmailMessageManager {
 				throw new MessagingException("Message not sent because one or more addresses need to be verified");
 			}
 		}
-		Properties props = new Properties();
+		final Properties props = new Properties();
 		props.setProperty("mail.transport.protocol", "aws");
 		props.setProperty("mail.aws.user", credentials.getAWSAccessKeyId());
 		props.setProperty("mail.aws.password", credentials.getAWSSecretKey());
 
-		Session session = Session.getInstance(props);
+		final Session session = Session.getInstance(props);
 
-		MimeMessage mimeMessage = new MimeMessage(session);
+		final MimeMessage mimeMessage = new MimeMessage(session);
 		mimeMessage.setFrom(new InternetAddress(message.getFrom().toString()));
-		for (EmailAddress to : message.getTo()) {
+		for (final EmailAddress to : message.getTo()) {
 			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(to.toString()));
 		}
 		mimeMessage.setSubject(message.getSubject());
-		String htmlContent = message.getHtml();
+		final String htmlContent = message.getHtml();
 		if (StringUtils.isBlank(htmlContent)) {
 			// No HTML so we'll just send a plaintext message.
 			mimeMessage.setText(message.getText());
 		} else {
-			Multipart multiPart = new MimeMultipart("alternative");
+			final Multipart multiPart = new MimeMultipart("alternative");
 
-			BodyPart text = new MimeBodyPart();
+			final BodyPart text = new MimeBodyPart();
 			text.setText(message.getText());
 			multiPart.addBodyPart(text);
 
-			BodyPart html = new MimeBodyPart();
+			final BodyPart html = new MimeBodyPart();
 			html.setContent(message.getHtml(), "text/html");
 			multiPart.addBodyPart(html);
 
@@ -125,19 +133,11 @@ public class EmailMessageManager {
 		}
 		mimeMessage.saveChanges();
 
-		Transport transport = new AWSJavaMailTransport(session, null);
+		final Transport transport = new AWSJavaMailTransport(session, null);
 		transport.connect();
 		transport.sendMessage(mimeMessage, null);
 		transport.close();
 
 	}
 
-	private static boolean isVerified(EmailAddress emailAddress, AmazonSimpleEmailService email, ListVerifiedEmailAddressesResult verifiedEmails) {
-		if (!verifiedEmails.getVerifiedEmailAddresses().contains(emailAddress.toString())) {
-			email.verifyEmailAddress(new VerifyEmailAddressRequest().withEmailAddress(emailAddress.toString()));
-			return false;
-		}
-		return true;
-	}
-	
 }

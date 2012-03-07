@@ -47,18 +47,6 @@ public class FeedSource implements Identifiable<FeedSourceId> {
 	private Date nextPoll;
 
 	/**
-	 * Returns the SHA-1 of the htmlUrl field, if it is available.
-	 * 
-	 * @return The SHA-1 of the htmlUrl field, or null if htmlUrl is null.
-	 */
-	public String getHtmlUrlSha1() {
-		if (this.htmlUrlSha1 == null && this.htmlUrl != null) {
-			this.htmlUrlSha1 = HashUtils.sha1Hex(this.htmlUrl);
-		}
-		return this.htmlUrlSha1;
-	}
-
-	/**
 	 * Returns the SHA-1 of the feedUrl field, if it is available.
 	 * 
 	 * @return The SHA-1 of the feedUrl field, or null if feedUrl is null.
@@ -68,6 +56,18 @@ public class FeedSource implements Identifiable<FeedSourceId> {
 			this.feedUrlSha1 = HashUtils.sha1Hex(this.feedUrl);
 		}
 		return this.feedUrlSha1;
+	}
+
+	/**
+	 * Returns the SHA-1 of the htmlUrl field, if it is available.
+	 * 
+	 * @return The SHA-1 of the htmlUrl field, or null if htmlUrl is null.
+	 */
+	public String getHtmlUrlSha1() {
+		if (this.htmlUrlSha1 == null && this.htmlUrl != null) {
+			this.htmlUrlSha1 = HashUtils.sha1Hex(this.htmlUrl);
+		}
+		return this.htmlUrlSha1;
 	}
 
 }

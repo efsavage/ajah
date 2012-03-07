@@ -45,7 +45,7 @@ public class RequestEventManager {
 	 * @param requestEvent
 	 * @throws DatabaseAccessException
 	 */
-	public void save(RequestEvent requestEvent) throws DatabaseAccessException {
+	public void save(final RequestEvent requestEvent) throws DatabaseAccessException {
 		this.requestEventDao.insert(requestEvent, true);
 		log.finest(requestEvent.getId().toString() + " saved");
 	}

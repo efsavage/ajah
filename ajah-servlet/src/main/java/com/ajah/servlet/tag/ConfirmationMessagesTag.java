@@ -37,6 +37,23 @@ public class ConfirmationMessagesTag extends TagSupport {
 	private String var;
 
 	/**
+	 * Sets the confirmation messages on the page context and removes them from
+	 * the session context. Will only execute the body if there are messages.
+	 * 
+	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 */
+	@Override
+	public int doStartTag() throws JspException {
+		final List<String> confirmationMessages = SessionUtils.getConfirmationMessages(this.pageContext.getSession());
+		if (CollectionUtils.isEmpty(confirmationMessages)) {
+			return Tag.SKIP_BODY;
+		}
+		this.pageContext.setAttribute(this.var, confirmationMessages);
+		SessionUtils.clearConfirmationMessages(this.pageContext.getSession());
+		return Tag.EVAL_BODY_INCLUDE;
+	}
+
+	/**
 	 * Returns the variable to store the list on in the page context.
 	 * 
 	 * @return The variable to store the list on in the page context.
@@ -51,25 +68,8 @@ public class ConfirmationMessagesTag extends TagSupport {
 	 * @param var
 	 *            The variable to store the list on in the page context.
 	 */
-	public void setVar(String var) {
+	public void setVar(final String var) {
 		this.var = var;
-	}
-
-	/**
-	 * Sets the confirmation messages on the page context and removes them from
-	 * the session context. Will only execute the body if there are messages.
-	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
-	 */
-	@Override
-	public int doStartTag() throws JspException {
-		List<String> confirmationMessages = SessionUtils.getConfirmationMessages(this.pageContext.getSession());
-		if (CollectionUtils.isEmpty(confirmationMessages)) {
-			return Tag.SKIP_BODY;
-		}
-		this.pageContext.setAttribute(this.var, confirmationMessages);
-		SessionUtils.clearConfirmationMessages(this.pageContext.getSession());
-		return Tag.EVAL_BODY_INCLUDE;
 	}
 
 }

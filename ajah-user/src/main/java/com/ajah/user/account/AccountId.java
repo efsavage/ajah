@@ -37,7 +37,7 @@ public class AccountId implements Serializable, ToStringable {
 	 * @param id
 	 *            UID of account, cannot be null.
 	 */
-	public AccountId(String id) {
+	public AccountId(final String id) {
 		this.id = id;
 	}
 

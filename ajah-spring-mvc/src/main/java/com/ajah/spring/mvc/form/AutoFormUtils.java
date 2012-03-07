@@ -40,7 +40,7 @@ public class AutoFormUtils {
 	 *            The field to derive the label of, required.
 	 * @return The label of the field, should not be null.
 	 */
-	public static String getLabel(Field field) {
+	public static String getLabel(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
 		if (field.isAnnotationPresent(Label.class)) {

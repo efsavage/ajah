@@ -16,7 +16,6 @@
 package com.ajah.user.data;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.User;
@@ -50,6 +49,16 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	// this.transactionTemplate = new TransactionTemplate(transactionManager);
 	// }
 
+	@Override
+	public User findByField(final String field, final String value) {
+		return super.findByField(field, value);
+	}
+
+	@Override
+	public User findByFields(final String[] fields, final String[] values) {
+		return super.findByFields(fields, values);
+	}
+
 	/**
 	 * This method is for saving a new user. It includes the password field
 	 * since that field is the only field on the user table that is not mapped
@@ -61,7 +70,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *            The password for the user, required.
 	 */
 	@Override
-	public void insert(User user, Password password) {
+	public void insert(final User user, final Password password) {
 		AjahUtils.requireParam(user, "user");
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -78,21 +87,11 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *            Password to update to, required.
 	 */
 	@Override
-	public void update(UserId userId, Password password) {
+	public void update(final UserId userId, final Password password) {
 		AjahUtils.requireParam(userId, "userId");
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
-	}
-
-	@Override
-	public User findByFields(String[] fields, String[] values) {
-		return super.findByFields(fields, values);
-	}
-
-	@Override
-	public User findByField(String field, String value) {
-		return super.findByField(field, value);
 	}
 
 }

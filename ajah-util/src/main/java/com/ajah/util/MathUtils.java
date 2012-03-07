@@ -24,45 +24,6 @@ package com.ajah.util;
 public class MathUtils {
 
 	/**
-	 * Reduces a value by a percentage, with a minimum change. Examples:
-	 * Reducing 100 by 5% with a minimum of 1 would yield 95. Reducing 100 by 7%
-	 * with a minimum of 10 would yield 90. Reducing 1 by 10% with a minimum of
-	 * 2 would yield -2.
-	 * 
-	 * @param value
-	 * @param percentageChange
-	 * @param minChange
-	 * @return The lesser of the value minus the value * percentage, or the
-	 *         value minus the minChange.
-	 */
-	public static int reduce(final int value, final double percentageChange, final int minChange) {
-		final int reduction = (int) (value * percentageChange);
-		if (reduction > minChange) {
-			return value - minChange;
-		}
-		return value - reduction;
-	}
-
-	/**
-	 * Divides a divident by divisor , with a default value if the divisor is
-	 * zero.
-	 * 
-	 * @param dividend
-	 *            The dividend.
-	 * @param divisor
-	 *            The divisor.
-	 * @param defaultDivisor
-	 *            The defaultDivisor, if the divisor is zero.
-	 * @return divident/divisor or divident/defaultDivisor
-	 */
-	public static long divideZero(final long dividend, final long divisor, final long defaultDivisor) {
-		if (divisor == 0) {
-			return dividend / defaultDivisor;
-		}
-		return dividend / divisor;
-	}
-
-	/**
 	 * Adds an array of longs to another array of longs. The resulting array
 	 * will be as long as the longer of the two parameters.
 	 * 
@@ -75,7 +36,7 @@ public class MathUtils {
 	 *            arrays are a different length.
 	 * @return The aggregate array,
 	 */
-	public static long[] add(final long[] array1, final long[] array2, boolean strict) {
+	public static long[] add(final long[] array1, final long[] array2, final boolean strict) {
 		AjahUtils.requireParam(array1, "array1");
 		AjahUtils.requireParam(array2, "array2");
 		if (strict && array1.length != array2.length) {
@@ -115,6 +76,25 @@ public class MathUtils {
 	}
 
 	/**
+	 * Divides a divident by divisor , with a default value if the divisor is
+	 * zero.
+	 * 
+	 * @param dividend
+	 *            The dividend.
+	 * @param divisor
+	 *            The divisor.
+	 * @param defaultDivisor
+	 *            The defaultDivisor, if the divisor is zero.
+	 * @return divident/divisor or divident/defaultDivisor
+	 */
+	public static long divideZero(final long dividend, final long divisor, final long defaultDivisor) {
+		if (divisor == 0) {
+			return dividend / defaultDivisor;
+		}
+		return dividend / divisor;
+	}
+
+	/**
 	 * Multiplies an object number by a primitive int and returns a Long.
 	 * 
 	 * @param operand1
@@ -123,11 +103,31 @@ public class MathUtils {
 	 *            The second operand.
 	 * @return The result of the multiplication as a Long.
 	 */
-	public static Long multiplyForLong(Number operand1, int operand2) {
+	public static Long multiplyForLong(final Number operand1, final int operand2) {
 		if (operand1 instanceof Double) {
 			return Long.valueOf(Math.round(operand1.doubleValue() * operand2));
 		}
 		throw new IllegalArgumentException(operand1.getClass() + " not supported");
+	}
+
+	/**
+	 * Reduces a value by a percentage, with a minimum change. Examples:
+	 * Reducing 100 by 5% with a minimum of 1 would yield 95. Reducing 100 by 7%
+	 * with a minimum of 10 would yield 90. Reducing 1 by 10% with a minimum of
+	 * 2 would yield -2.
+	 * 
+	 * @param value
+	 * @param percentageChange
+	 * @param minChange
+	 * @return The lesser of the value minus the value * percentage, or the
+	 *         value minus the minChange.
+	 */
+	public static int reduce(final int value, final double percentageChange, final int minChange) {
+		final int reduction = (int) (value * percentageChange);
+		if (reduction > minChange) {
+			return value - minChange;
+		}
+		return value - reduction;
 	}
 
 }

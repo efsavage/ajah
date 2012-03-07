@@ -23,17 +23,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
-import com.ajah.html.HtmlUtils;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.util.StringUtils;
-import com.ajah.util.data.XmlString;
-import com.ajah.util.net.AjahMimeType;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -53,49 +47,20 @@ public class RomeUtils {
 	private static final Logger log = Logger.getLogger(RomeUtils.class.getName());
 
 	/**
-	 * Convert a Rome feed to an Ajah feed.
-	 * 
-	 * @param syndFeed
-	 *            The Rome feed object to convert.
-	 * @param sha1
-	 *            The sha1 of the original feed.
-	 * @param feedSource
-	 *            The source of the original feed.
-	 * @return A Feed, created from the syndFeed parameter
-	 */
-	public static Feed createFeed(SyndFeed syndFeed, String sha1, FeedSource feedSource) {
-		Feed feed = new Feed();
-		feed.setId(new FeedId(UUID.randomUUID().toString()));
-		feed.setFeedSourceId(feedSource.getId());
-		feed.setAuthor(syndFeed.getAuthor());
-		feed.setUrl(syndFeed.getUri());
-		if (StringUtils.isBlank(syndFeed.getTitle())) {
-			feed.setTitle(feedSource.getTitle());
-		} else {
-			feed.setTitle(syndFeed.getTitle());
-		}
-		feed.setEntries(createEntries(syndFeed, feed));
-		feed.setCreated(new Date());
-		feed.setPublished(syndFeed.getPublishedDate());
-		feed.setSha1(sha1);
-		return feed;
-	}
-
-	/**
 	 * Creates Ajah entries from a Rome feed.
 	 * 
 	 * @param syndFeed
 	 * @return
 	 */
-	private static List<Entry> createEntries(SyndFeed syndFeed, Feed feed) {
+	private static List<Entry> createEntries(final SyndFeed syndFeed, final Feed feed) {
 		@SuppressWarnings("unchecked")
-		List<SyndEntry> syndEntries = syndFeed.getEntries();
+		final List<SyndEntry> syndEntries = syndFeed.getEntries();
 		if (syndEntries == null || syndEntries.size() < 1) {
 			return Collections.emptyList();
 		}
-		List<Entry> entries = new ArrayList<>(syndEntries.size());
-		for (SyndEntry syndEntry : syndEntries) {
-			Entry entry = createEntry(syndEntry, feed);
+		final List<Entry> entries = new ArrayList<>(syndEntries.size());
+		for (final SyndEntry syndEntry : syndEntries) {
+			final Entry entry = createEntry(syndEntry, feed);
 			entries.add(entry);
 		}
 		return entries;
@@ -107,8 +72,8 @@ public class RomeUtils {
 	 * @param syndEntry
 	 * @return
 	 */
-	private static Entry createEntry(SyndEntry syndEntry, Feed feed) {
-		Entry entry = new Entry();
+	private static Entry createEntry(final SyndEntry syndEntry, final Feed feed) {
+		final Entry entry = new Entry();
 		entry.setFeedId(feed.getId());
 		entry.setFeedSourceId(feed.getFeedSourceId());
 		entry.setAuthor(syndEntry.getAuthor());
@@ -117,14 +82,14 @@ public class RomeUtils {
 		entry.setPublished(syndEntry.getPublishedDate());
 		entry.setUpdated(syndEntry.getUpdatedDate());
 		@SuppressWarnings("unchecked")
-		List<SyndContent> contents = syndEntry.getContents();
+		final List<SyndContent> contents = syndEntry.getContents();
 		if (contents.size() < 1) {
 			log.finest("Contents are empty");
 			entry.setContentType(AjahMimeType.TEXT_PLAIN);
 		} else if (contents.size() > 1) {
 			log.warning(contents.size() + " contents in one entry");
 		}
-		for (SyndContent content : contents) {
+		for (final SyndContent content : contents) {
 			if (content.getType() == null) {
 				// TODO see if it's actually html
 				entry.setContentType(AjahMimeType.TEXT_PLAIN);
@@ -171,6 +136,35 @@ public class RomeUtils {
 	}
 
 	/**
+	 * Convert a Rome feed to an Ajah feed.
+	 * 
+	 * @param syndFeed
+	 *            The Rome feed object to convert.
+	 * @param sha1
+	 *            The sha1 of the original feed.
+	 * @param feedSource
+	 *            The source of the original feed.
+	 * @return A Feed, created from the syndFeed parameter
+	 */
+	public static Feed createFeed(final SyndFeed syndFeed, final String sha1, final FeedSource feedSource) {
+		final Feed feed = new Feed();
+		feed.setId(new FeedId(UUID.randomUUID().toString()));
+		feed.setFeedSourceId(feedSource.getId());
+		feed.setAuthor(syndFeed.getAuthor());
+		feed.setUrl(syndFeed.getUri());
+		if (StringUtils.isBlank(syndFeed.getTitle())) {
+			feed.setTitle(feedSource.getTitle());
+		} else {
+			feed.setTitle(syndFeed.getTitle());
+		}
+		feed.setEntries(createEntries(syndFeed, feed));
+		feed.setCreated(new Date());
+		feed.setPublished(syndFeed.getPublishedDate());
+		feed.setSha1(sha1);
+		return feed;
+	}
+
+	/**
 	 * Creates a feed from an {@link XmlString}.
 	 * 
 	 * @param xmlString
@@ -181,12 +175,12 @@ public class RomeUtils {
 	 * @throws FeedException
 	 *             if the xml could not be parsed or did not have valid data.
 	 */
-	public static Feed createFeed(XmlString xmlString, FeedSource feedSource) throws FeedException {
-		SyndFeedInput input = new SyndFeedInput();
+	public static Feed createFeed(final XmlString xmlString, final FeedSource feedSource) throws FeedException {
+		final SyndFeedInput input = new SyndFeedInput();
 		try {
-			SyndFeed syndFeed = input.build(new StringReader(xmlString.toString()));
+			final SyndFeed syndFeed = input.build(new StringReader(xmlString.toString()));
 			return createFeed(syndFeed, xmlString.getSha1(), feedSource);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new FeedException(e.getMessage());
 		}
 	}

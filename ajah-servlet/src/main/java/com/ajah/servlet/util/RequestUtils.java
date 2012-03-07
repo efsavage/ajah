@@ -31,7 +31,7 @@ public class RequestUtils {
 	 * @param request
 	 * @return IP of the requester, may be null.
 	 */
-	public static String getIp(HttpServletRequest request) {
+	public static String getIp(final HttpServletRequest request) {
 		return request.getRemoteAddr();
 	}
 

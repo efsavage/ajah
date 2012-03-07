@@ -51,18 +51,164 @@ public class DateUtils {
 	private static final DateFormat NICE_ABSOLUTE_TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT);
 
 	/**
-	 * Returns a {@link Long} of the result of {@link Date#getTime()}. If the
-	 * supplied date parameter is null, returns a Long with a value of zero.
+	 * Adds a number of hours to a date, rolling over other fields as necessary.
+	 * 
+	 * @see Calendar#add(int, int)
+	 * @param date
+	 *            The date to add the hours to.
+	 * @param hours
+	 *            The number of hours to add to the date.
+	 * @return The date, with the specified number of hours added to it.
+	 */
+	public static Date addHours(final Date date, final int hours) {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR, hours);
+		return calendar.getTime();
+	}
+
+	/**
+	 * Adds a number of minutes to the current time.
+	 * 
+	 * @param minutes
+	 *            The number of minutes to add, may be negative.
+	 * @return The current time plus the the number of minutes specified.
+	 */
+	public static Date addMinutes(final int minutes) {
+		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
+	}
+
+	/**
+	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
+	 * null for the largestUnit parameter.
+	 * 
+	 * @param intervalInMillis
+	 *            Interval for format, required.
+	 * @return The formatted date.
+	 */
+	public static String formatInterval(final long intervalInMillis) {
+		return formatInterval(intervalInMillis, CalendarUnit.YEAR, false);
+	}
+
+	/**
+	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
+	 * null for the largestUnit parameter.
+	 * 
+	 * @param intervalInMillis
+	 *            Interval for format, required.
+	 * @param veryShortFormat
+	 *            True if the shortest possible format is desired. This will
+	 *            return values like "1d" or "3y".
+	 * @return The formatted date.
+	 */
+	public static String formatInterval(final long intervalInMillis, final boolean veryShortFormat) {
+		return formatInterval(intervalInMillis, CalendarUnit.YEAR, veryShortFormat);
+	}
+
+	/**
+	 * Formats an interval in a "nice" format, such as "3 minutes" or
+	 * "two years". Note that this method uses integer division without
+	 * fractions so it will appear to round down aggressively. If the
+	 * largestUnit parameter is used, no units representing longer periods of
+	 * time will be used. For example, if the interval is 30 months, and
+	 * largestUnit is {@link CalendarUnit#YEAR}, "2 years" will be returned. If
+	 * the largestUnit is {@link CalendarUnit#MONTH}, "30 months" will be
+	 * returned.
+	 * 
+	 * @param intervalInMillis
+	 *            Interval to format, required.
+	 * @param largestUnit
+	 *            The largest unit to use as the format unit.
+	 * @param veryShortFormat
+	 *            True if the shortest possible format is desired. This will
+	 *            return values like "1d" or "3y".
+	 * @return The formatted date.
+	 */
+	public static String formatInterval(final long intervalInMillis, final CalendarUnit largestUnit, final boolean veryShortFormat) {
+
+		if (intervalInMillis < CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
+			return intervalInMillis + (veryShortFormat ? "ms" : " milliseconds");
+		} else if (intervalInMillis < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
+			return intervalInMillis / CalendarUnit.SECOND.getMillis() + (veryShortFormat ? "s" : " seconds");
+		} else if (intervalInMillis < 100 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
+			return intervalInMillis / CalendarUnit.MINUTE.getMillis() + (veryShortFormat ? "m" : " minutes");
+		} else if (intervalInMillis < 36 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
+			return intervalInMillis / CalendarUnit.HOUR.getMillis() + (veryShortFormat ? "h" : " hours");
+		} else if (intervalInMillis < 10 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
+			return intervalInMillis / CalendarUnit.DAY.getMillis() + (veryShortFormat ? "d" : " days");
+		} else if (intervalInMillis < 36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
+			return intervalInMillis / CalendarUnit.WEEK.getMillis() + (veryShortFormat ? "w" : " weeks");
+		} else if (!veryShortFormat && (intervalInMillis < 36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH)) {
+			return intervalInMillis / CalendarUnit.HOUR.getMillis() + " months";
+		} else {
+			return intervalInMillis / CalendarUnit.YEAR.getMillis() + (veryShortFormat ? "y" : " years");
+		}
+	}
+
+	/**
+	 * Formats a date, adjusting based on the current time, in a "nice" format,
+	 * such as "tomorrow" or "next Tuesday" without capitalization.
 	 * 
 	 * @param date
-	 *            Date to convert to UTC.
-	 * @return The date in UTC milliseconds, or zero if date is null.
+	 *            Date to format, required.
+	 * @return The formatted date.
 	 */
-	public static Long safeToLong(final Date date) {
-		if (date == null) {
-			return null;
+	public static String niceFormatAbsolute(final Date date) {
+		return niceFormatAbsolute(date, false);
+	}
+
+	/**
+	 * Formats a date, adjusting based on the current time, in a "nice" format,
+	 * such as "tomorrow" or "next Tuesday".
+	 * 
+	 * @param date
+	 *            Date to format, required.
+	 * @param capitalize
+	 *            If true, the first word will be capitalized if it is not a
+	 *            proper noun. Date and month names will always be capitalized.
+	 * @return The formatted date.
+	 */
+	public static String niceFormatAbsolute(final Date date, final boolean capitalize) {
+		final StringBuffer string = new StringBuffer();
+		final Calendar then = Calendar.getInstance();
+		then.setTime(date);
+		final Calendar now = Calendar.getInstance();
+		final long interval = System.currentTimeMillis() - date.getTime();
+
+		if (now.get(Calendar.DAY_OF_MONTH) == then.get(Calendar.DAY_OF_MONTH)) {
+			string.append("today");
+		} else if ((now.get(Calendar.DAY_OF_MONTH) + 1) == then.get(Calendar.DAY_OF_MONTH)) {
+			string.append("tomorrow");
+		} else if ((now.get(Calendar.DAY_OF_MONTH) - 1) == then.get(Calendar.DAY_OF_MONTH)) {
+			string.append("yesterday");
+		} else if (interval < 0 && interval > -WEEK_IN_MILLIS) {
+			// Within the next week
+			// TODO handle the case of it being 9:00 am on tuesday and the date
+			// is 9:01 the following tuesday
+			string.append("next " + DAY_OF_WEEK_FORMAT.format(date));
+		} else if (interval > 0 && interval < WEEK_IN_MILLIS) {
+			// Within the past week
+			// TODO handle the case of it being 9:00 am on tuesday and the date
+			// is 8:59 the previous tuesday
+			string.append("last " + DAY_OF_WEEK_FORMAT.format(date));
+		} else {
+			string.append(NICE_ABSOLUTE_DATE_FORMAT.format(date));
 		}
-		return Long.valueOf(date.getTime());
+		string.append(" at ");
+		string.append(NICE_ABSOLUTE_TIME_FORMAT.format(date));
+		return string.toString();
+	}
+
+	/**
+	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
+	 * null for the largestUnit parameter.
+	 * 
+	 * @param date
+	 *            Date for format, required.
+	 * @return The formatted date.
+	 */
+	public static String niceFormatRelative(final Date date) {
+		return niceFormatRelative(date, null);
 	}
 
 	/**
@@ -119,136 +265,18 @@ public class DateUtils {
 	}
 
 	/**
-	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
-	 * null for the largestUnit parameter.
+	 * Returns a {@link Long} of the result of {@link Date#getTime()}. If the
+	 * supplied date parameter is null, returns a Long with a value of zero.
 	 * 
 	 * @param date
-	 *            Date for format, required.
-	 * @return The formatted date.
+	 *            Date to convert to UTC.
+	 * @return The date in UTC milliseconds, or zero if date is null.
 	 */
-	public static String niceFormatRelative(final Date date) {
-		return niceFormatRelative(date, null);
-	}
-
-	/**
-	 * Formats a date, adjusting based on the current time, in a "nice" format,
-	 * such as "tomorrow" or "next Tuesday" without capitalization.
-	 * 
-	 * @param date
-	 *            Date to format, required.
-	 * @return The formatted date.
-	 */
-	public static String niceFormatAbsolute(final Date date) {
-		return niceFormatAbsolute(date, false);
-	}
-
-	/**
-	 * Formats a date, adjusting based on the current time, in a "nice" format,
-	 * such as "tomorrow" or "next Tuesday".
-	 * 
-	 * @param date
-	 *            Date to format, required.
-	 * @param capitalize
-	 *            If true, the first word will be capitalized if it is not a
-	 *            proper noun. Date and month names will always be capitalized.
-	 * @return The formatted date.
-	 */
-	public static String niceFormatAbsolute(final Date date, boolean capitalize) {
-		StringBuffer string = new StringBuffer();
-		Calendar then = Calendar.getInstance();
-		then.setTime(date);
-		Calendar now = Calendar.getInstance();
-		long interval = System.currentTimeMillis() - date.getTime();
-
-		if (now.get(Calendar.DAY_OF_MONTH) == then.get(Calendar.DAY_OF_MONTH)) {
-			string.append("today");
-		} else if ((now.get(Calendar.DAY_OF_MONTH) + 1) == then.get(Calendar.DAY_OF_MONTH)) {
-			string.append("tomorrow");
-		} else if ((now.get(Calendar.DAY_OF_MONTH) - 1) == then.get(Calendar.DAY_OF_MONTH)) {
-			string.append("yesterday");
-		} else if (interval < 0 && interval > -WEEK_IN_MILLIS) {
-			// Within the next week
-			// TODO handle the case of it being 9:00 am on tuesday and the date
-			// is 9:01 the following tuesday
-			string.append("next " + DAY_OF_WEEK_FORMAT.format(date));
-		} else if (interval > 0 && interval < WEEK_IN_MILLIS) {
-			// Within the past week
-			// TODO handle the case of it being 9:00 am on tuesday and the date
-			// is 8:59 the previous tuesday
-			string.append("last " + DAY_OF_WEEK_FORMAT.format(date));
-		} else {
-			string.append(NICE_ABSOLUTE_DATE_FORMAT.format(date));
+	public static Long safeToLong(final Date date) {
+		if (date == null) {
+			return null;
 		}
-		string.append(" at ");
-		string.append(NICE_ABSOLUTE_TIME_FORMAT.format(date));
-		return string.toString();
-	}
-
-	/**
-	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
-	 * null for the largestUnit parameter.
-	 * 
-	 * @param intervalInMillis
-	 *            Interval for format, required.
-	 * @return The formatted date.
-	 */
-	public static String formatInterval(final long intervalInMillis) {
-		return formatInterval(intervalInMillis, CalendarUnit.YEAR, false);
-	}
-
-	/**
-	 * Alias for {@link DateUtils#niceFormatRelative(Date, CalendarUnit)} with
-	 * null for the largestUnit parameter.
-	 * 
-	 * @param intervalInMillis
-	 *            Interval for format, required.
-	 * @param veryShortFormat
-	 *            True if the shortest possible format is desired. This will
-	 *            return values like "1d" or "3y".
-	 * @return The formatted date.
-	 */
-	public static String formatInterval(final long intervalInMillis, boolean veryShortFormat) {
-		return formatInterval(intervalInMillis, CalendarUnit.YEAR, veryShortFormat);
-	}
-
-	/**
-	 * Formats an interval in a "nice" format, such as "3 minutes" or
-	 * "two years". Note that this method uses integer division without
-	 * fractions so it will appear to round down aggressively. If the
-	 * largestUnit parameter is used, no units representing longer periods of
-	 * time will be used. For example, if the interval is 30 months, and
-	 * largestUnit is {@link CalendarUnit#YEAR}, "2 years" will be returned. If
-	 * the largestUnit is {@link CalendarUnit#MONTH}, "30 months" will be
-	 * returned.
-	 * 
-	 * @param intervalInMillis
-	 *            Interval to format, required.
-	 * @param largestUnit
-	 *            The largest unit to use as the format unit.
-	 * @param veryShortFormat
-	 *            True if the shortest possible format is desired. This will
-	 *            return values like "1d" or "3y".
-	 * @return The formatted date.
-	 */
-	public static String formatInterval(final long intervalInMillis, final CalendarUnit largestUnit, boolean veryShortFormat) {
-
-		if (intervalInMillis < CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
-			return intervalInMillis + (veryShortFormat ? "ms" : " milliseconds");
-		} else if (intervalInMillis < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
-			return intervalInMillis / CalendarUnit.SECOND.getMillis() + (veryShortFormat ? "s" : " seconds");
-		} else if (intervalInMillis < 100 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
-			return intervalInMillis / CalendarUnit.MINUTE.getMillis() + (veryShortFormat ? "m" : " minutes");
-		} else if (intervalInMillis < 36 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
-			return intervalInMillis / CalendarUnit.HOUR.getMillis() + (veryShortFormat ? "h" : " hours");
-		} else if (intervalInMillis < 10 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
-			return intervalInMillis / CalendarUnit.DAY.getMillis() + (veryShortFormat ? "d" : " days");
-		} else if (intervalInMillis < 36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
-			return intervalInMillis / CalendarUnit.WEEK.getMillis() + (veryShortFormat ? "w" : " weeks");
-		} else if (!veryShortFormat && (intervalInMillis < 36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH)) {
-			return intervalInMillis / CalendarUnit.HOUR.getMillis() + " months";
-		} else {
-			return intervalInMillis / CalendarUnit.YEAR.getMillis() + (veryShortFormat ? "y" : " years");
-		}
+		return Long.valueOf(date.getTime());
 	}
 
 	/**
@@ -257,29 +285,12 @@ public class DateUtils {
 	 * @return The date for the day after the current one, at midnight.
 	 */
 	public static Date tomorrow() {
-		Calendar calendar = Calendar.getInstance();
+		final Calendar calendar = Calendar.getInstance();
 		calendar.roll(Calendar.DAY_OF_YEAR, true);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar.getTime();
-	}
-
-	/**
-	 * Adds a number of hours to a date, rolling over other fields as necessary.
-	 * 
-	 * @see Calendar#add(int, int)
-	 * @param date
-	 *            The date to add the hours to.
-	 * @param hours
-	 *            The number of hours to add to the date.
-	 * @return The date, with the specified number of hours added to it.
-	 */
-	public static Date addHours(Date date, int hours) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(Calendar.HOUR, hours);
 		return calendar.getTime();
 	}
 
@@ -294,18 +305,7 @@ public class DateUtils {
 	 * @return Very short formatted version of the date, values like "1d" or
 	 *         "3y".
 	 */
-	public static String veryShortFormatRelative(Date date) {
+	public static String veryShortFormatRelative(final Date date) {
 		return formatInterval(Math.abs(System.currentTimeMillis() - date.getTime()), true);
-	}
-
-	/**
-	 * Adds a number of minutes to the current time.
-	 * 
-	 * @param minutes
-	 *            The number of minutes to add, may be negative.
-	 * @return The current time plus the the number of minutes specified.
-	 */
-	public static Date addMinutes(int minutes) {
-		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
 	}
 }

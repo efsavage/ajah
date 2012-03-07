@@ -33,6 +33,22 @@ import java.util.List;
 public class ListMap<K, V> extends HashMap<K, List<V>> {
 
 	/**
+	 * Returns the list found at the specified key or an empty list. Avoids
+	 * {@link NullPointerException} for iterators.
+	 * 
+	 * @param key
+	 *            The key to look up the value list.
+	 * @return The value list, may be empty, will not be null.
+	 */
+	public List<V> getList(final K key) {
+		final List<V> list = get(key);
+		if (list == null) {
+			return Collections.emptyList();
+		}
+		return list;
+	}
+
+	/**
 	 * Adds a value to the list for a given key, creating that list if
 	 * necessary.
 	 * 
@@ -41,29 +57,13 @@ public class ListMap<K, V> extends HashMap<K, List<V>> {
 	 * @param value
 	 *            The value to add to the list.
 	 */
-	public void putValue(K key, V value) {
+	public void putValue(final K key, final V value) {
 		List<V> list = get(key);
 		if (list == null) {
 			list = new ArrayList<>();
 			put(key, list);
 		}
 		list.add(value);
-	}
-
-	/**
-	 * Returns the list found at the specified key or an empty list. Avoids
-	 * {@link NullPointerException} for iterators.
-	 * 
-	 * @param key
-	 *            The key to look up the value list.
-	 * @return The value list, may be empty, will not be null.
-	 */
-	public List<V> getList(K key) {
-		List<V> list = get(key);
-		if (list == null) {
-			return Collections.emptyList();
-		}
-		return list;
 	}
 
 }

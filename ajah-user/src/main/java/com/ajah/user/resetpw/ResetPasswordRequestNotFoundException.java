@@ -48,7 +48,7 @@ public class ResetPasswordRequestNotFoundException extends Exception {
 	 *            The code of the {@link ResetPasswordRequest} that was not
 	 *            found.
 	 */
-	public ResetPasswordRequestNotFoundException(long code) {
+	public ResetPasswordRequestNotFoundException(final long code) {
 		super(String.valueOf(code));
 	}
 

@@ -139,7 +139,7 @@ public enum USState implements State {
 
 	private final String name;
 
-	private USState(String abbr, String name) {
+	private USState(final String abbr, final String name) {
 		this.id = abbr.toLowerCase();
 		this.abbr = abbr;
 		this.name = name;

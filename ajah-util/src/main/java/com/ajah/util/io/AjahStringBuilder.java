@@ -28,7 +28,7 @@ package com.ajah.util.io;
 public class AjahStringBuilder {
 
 	StringBuilder builder = new StringBuilder();
-	private Compact compact;
+	private final Compact compact;
 
 	/**
 	 * Public constructor.
@@ -36,36 +36,8 @@ public class AjahStringBuilder {
 	 * @param compact
 	 *            The compactness of this builder.
 	 */
-	public AjahStringBuilder(Compact compact) {
+	public AjahStringBuilder(final Compact compact) {
 		this.compact = compact;
-	}
-
-	@Override
-	public String toString() {
-		return this.builder.toString();
-	}
-
-	/**
-	 * Append these chars if this builder not more compact than the target.
-	 * 
-	 * @param chars
-	 *            The chars to append.
-	 * @param targetCompact
-	 *            The target compactness level.
-	 */
-	public void append(char[] chars, Compact targetCompact) {
-		if (this.compact.le(targetCompact)) {
-			this.builder.append(chars);
-		}
-	}
-
-	/**
-	 * @see StringBuilder#append(String)
-	 * @param string
-	 *            The string to append, regardless of compactness.
-	 */
-	public void append(String string) {
-		this.builder.append(string);
 	}
 
 	/**
@@ -76,9 +48,37 @@ public class AjahStringBuilder {
 	 * @param targetCompact
 	 *            The target compactness level.
 	 */
-	public void append(char c, Compact targetCompact) {
+	public void append(final char c, final Compact targetCompact) {
 		if (this.compact.le(targetCompact)) {
 			this.builder.append(c);
 		}
+	}
+
+	/**
+	 * Append these chars if this builder not more compact than the target.
+	 * 
+	 * @param chars
+	 *            The chars to append.
+	 * @param targetCompact
+	 *            The target compactness level.
+	 */
+	public void append(final char[] chars, final Compact targetCompact) {
+		if (this.compact.le(targetCompact)) {
+			this.builder.append(chars);
+		}
+	}
+
+	/**
+	 * @see StringBuilder#append(String)
+	 * @param string
+	 *            The string to append, regardless of compactness.
+	 */
+	public void append(final String string) {
+		this.builder.append(string);
+	}
+
+	@Override
+	public String toString() {
+		return this.builder.toString();
 	}
 }

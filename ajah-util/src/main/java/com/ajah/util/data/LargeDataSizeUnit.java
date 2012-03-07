@@ -174,6 +174,8 @@ public enum LargeDataSizeUnit {
 
 	private final String name;
 
+	private final String abbreviation;
+
 	private LargeDataSizeUnit(final BigInteger bits, final String name, final String abbreviation) {
 		this.bits = bits;
 		this.bytes = bits.divide(BigInteger.valueOf(8));
@@ -192,15 +194,6 @@ public enum LargeDataSizeUnit {
 	}
 
 	/**
-	 * Full name of this unit.
-	 * 
-	 * @return Full name of this unit.
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
 	 * Abbreviation of this unit. Note that case matters (b=bit, B=byte).
 	 * 
 	 * @return Abbreviation of this unit.
@@ -208,8 +201,6 @@ public enum LargeDataSizeUnit {
 	public String getAbbreviation() {
 		return this.abbreviation;
 	}
-
-	private final String abbreviation;
 
 	/**
 	 * Return the number of bits for this unit. Note that due to long being a
@@ -239,6 +230,15 @@ public enum LargeDataSizeUnit {
 			throw new UnsupportedOperationException();
 		}
 		return this.bytesLong;
+	}
+
+	/**
+	 * Full name of this unit.
+	 * 
+	 * @return Full name of this unit.
+	 */
+	public String getName() {
+		return this.name;
 	}
 
 }

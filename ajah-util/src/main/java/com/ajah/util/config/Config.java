@@ -55,13 +55,40 @@ public enum Config {
 		} else {
 			Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "No resource " + config + " found.");
 		}
-		for (Object propKey : this.properties.keySet()) {
-			String sysProp = System.getProperty((String) propKey);
+		for (final Object propKey : this.properties.keySet()) {
+			final String sysProp = System.getProperty((String) propKey);
 			if (!StringUtils.isBlank(sysProp)) {
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Overriding property " + (String) propKey + " with System property value of " + sysProp);
 				this.properties.setProperty((String) propKey, sysProp);
 			}
 		}
+	}
+
+	/**
+	 * Returns the value for the specified key, or the default value specified.
+	 * Invokes {@link #get(String, String)} with the values from
+	 * {@link PropertyKey}.
+	 * 
+	 * @param key
+	 *            The key of the property sought.
+	 * @return Returns the value for the specified key, or defaultValue
+	 */
+	public String get(final PropertyKey key) {
+		if (key.getFallback() != null) {
+			return get(key.getName(), get(key.getFallback()));
+		}
+		return get(key.getName(), key.getDefaultValue());
+	}
+
+	/**
+	 * Calls {@link #get(String, String)} with a default value of null.
+	 * 
+	 * @param key
+	 *            The key to fetch.
+	 * @return The value of the key, or null.
+	 */
+	public String get(final String key) {
+		return get(key, null);
 	}
 
 	/**
@@ -82,33 +109,27 @@ public enum Config {
 	}
 
 	/**
-	 * Returns the value for the specified key, or the default value specified.
-	 * Invokes {@link #get(String, String)} with the values from
-	 * {@link PropertyKey}.
+	 * Returns The value as a boolean.
 	 * 
 	 * @param key
-	 *            The key of the property sought.
-	 * @return Returns the value for the specified key, or defaultValue
+	 *            The property to return
+	 * @return Returns true if the value is "true", case-insensitive.
 	 */
-	public String get(final PropertyKey key) {
-		if (key.getFallback() != null) {
-			return get(key.getName(), get(key.getFallback()));
-		}
-		return get(key.getName(), key.getDefaultValue());
+	public boolean getBoolean(final PropertyKey key) {
+		return "true".equalsIgnoreCase(get(key));
 	}
 
 	/**
-	 * Sets the value for the specified key in the local map. <strong>These
-	 * changes will not be persisted!</strong>
+	 * Returns The value as a boolean.
 	 * 
 	 * @param key
-	 *            The key of the property to set.
-	 * @param value
-	 *            The value of the property to set.
+	 *            The property to return
+	 * @param defaultValue
+	 *            The value to return if the property is not found.
+	 * @return Returns true if the value is "true", case-insensitive.
 	 */
-	public void set(final String key, final String value) {
-		log.fine("Property " + key + " set to " + value);
-		this.properties.put(key, value);
+	public boolean getBoolean(final String key, final boolean defaultValue) {
+		return "true".equalsIgnoreCase(get(key, String.valueOf(defaultValue)));
 	}
 
 	/**
@@ -126,30 +147,6 @@ public enum Config {
 	}
 
 	/**
-	 * Returns The value as a boolean.
-	 * 
-	 * @param key
-	 *            The property to return
-	 * @param defaultValue
-	 *            The value to return if the property is not found.
-	 * @return Returns true if the value is "true", case-insensitive.
-	 */
-	public boolean getBoolean(final String key, final boolean defaultValue) {
-		return "true".equalsIgnoreCase(get(key, String.valueOf(defaultValue)));
-	}
-
-	/**
-	 * Returns The value as a boolean.
-	 * 
-	 * @param key
-	 *            The property to return
-	 * @return Returns true if the value is "true", case-insensitive.
-	 */
-	public boolean getBoolean(final PropertyKey key) {
-		return "true".equalsIgnoreCase(get(key));
-	}
-
-	/**
 	 * Returns the value, split on commas. Whitespace around the commas is
 	 * permitted and removed.
 	 * 
@@ -157,19 +154,22 @@ public enum Config {
 	 *            The property to return.
 	 * @return The values as delimited by commas in the property value.
 	 */
-	public String[] getStrings(PropertyKey key) {
+	public String[] getStrings(final PropertyKey key) {
 		return get(key).split("\\s*,\\s*");
 	}
 
 	/**
-	 * Calls {@link #get(String, String)} with a default value of null.
+	 * Sets the value for the specified key in the local map. <strong>These
+	 * changes will not be persisted!</strong>
 	 * 
 	 * @param key
-	 *            The key to fetch.
-	 * @return The value of the key, or null.
+	 *            The key of the property to set.
+	 * @param value
+	 *            The value of the property to set.
 	 */
-	public String get(String key) {
-		return get(key, null);
+	public void set(final String key, final String value) {
+		log.fine("Property " + key + " set to " + value);
+		this.properties.put(key, value);
 	}
 
 }

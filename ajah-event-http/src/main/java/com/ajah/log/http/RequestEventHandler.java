@@ -44,7 +44,7 @@ public class RequestEventHandler implements Runnable {
 	 * @param requestEventManager
 	 *            The manager to perform operations with.
 	 */
-	public RequestEventHandler(RequestEvent requestEvent, RequestEventManager requestEventManager) {
+	public RequestEventHandler(final RequestEvent requestEvent, final RequestEventManager requestEventManager) {
 		this.requestEvent = requestEvent;
 		this.requestEventManager = requestEventManager;
 	}
@@ -53,7 +53,7 @@ public class RequestEventHandler implements Runnable {
 	public void run() {
 		try {
 			this.requestEventManager.save(this.requestEvent);
-		} catch (DatabaseAccessException e) {
+		} catch (final DatabaseAccessException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}

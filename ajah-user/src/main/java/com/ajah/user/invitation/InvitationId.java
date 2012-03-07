@@ -37,7 +37,7 @@ public class InvitationId implements Serializable, ToStringable {
 	 * @param id
 	 *            UID of invitation, cannot be null.
 	 */
-	public InvitationId(String id) {
+	public InvitationId(final String id) {
 		this.id = id;
 	}
 

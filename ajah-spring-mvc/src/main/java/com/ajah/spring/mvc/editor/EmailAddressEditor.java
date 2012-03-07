@@ -46,7 +46,7 @@ public class EmailAddressEditor extends PropertyEditorSupport {
 	 * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
 	 */
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(final String text) {
 		setValue(StringUtils.isBlank(text) ? null : new EmailAddress(text));
 	}
 

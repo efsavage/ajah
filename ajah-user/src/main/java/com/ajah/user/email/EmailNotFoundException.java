@@ -27,19 +27,19 @@ public class EmailNotFoundException extends Exception {
 	private static final long serialVersionUID = 6056888345467361434L;
 
 	/**
-	 * @param emailId
-	 *            The ID of the email that was sought.
-	 * @see Exception#Exception(String)
-	 */
-	public EmailNotFoundException(EmailId emailId) {
-		super(emailId.getId());
-	}
-
-	/**
 	 * @see Exception#Exception()
 	 */
 	public EmailNotFoundException() {
 		super();
+	}
+
+	/**
+	 * @param emailId
+	 *            The ID of the email that was sought.
+	 * @see Exception#Exception(String)
+	 */
+	public EmailNotFoundException(final EmailId emailId) {
+		super(emailId.getId());
 	}
 
 }

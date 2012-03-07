@@ -27,6 +27,10 @@ import com.ajah.util.StringUtils;
  */
 public class ZipCode implements PostalCode {
 
+	private String zip;
+
+	private String zip4;
+
 	/**
 	 * Returns the 5 digit portion of the ZIP code.
 	 * 
@@ -34,20 +38,6 @@ public class ZipCode implements PostalCode {
 	 */
 	public String getZip() {
 		return this.zip;
-	}
-
-	/**
-	 * Sets the 5 digit portion of the ZIP code. Will allow nulls, otherwise
-	 * only accepts 5 digit numeric string.
-	 * 
-	 * @param zip
-	 *            5 digit numeric string, or null.
-	 */
-	public void setZip(String zip) {
-		if (zip != null && !zip.matches("\\d{5}")) {
-			throw new IllegalZipCodeFormatException(zip);
-		}
-		this.zip = zip;
 	}
 
 	/**
@@ -60,21 +50,32 @@ public class ZipCode implements PostalCode {
 	}
 
 	/**
+	 * Sets the 5 digit portion of the ZIP code. Will allow nulls, otherwise
+	 * only accepts 5 digit numeric string.
+	 * 
+	 * @param zip
+	 *            5 digit numeric string, or null.
+	 */
+	public void setZip(final String zip) {
+		if (zip != null && !zip.matches("\\d{5}")) {
+			throw new IllegalZipCodeFormatException(zip);
+		}
+		this.zip = zip;
+	}
+
+	/**
 	 * Sets the 4 digit portion of the ZIP code. Will allow nulls, otherwise
 	 * only accepts 4 digit numeric string.
 	 * 
 	 * @param zip4
 	 *            4 digit numeric string, or null.
 	 */
-	public void setZip4(String zip4) {
+	public void setZip4(final String zip4) {
 		if (zip4 != null && !zip4.matches("\\d{4}")) {
 			throw new IllegalZipCodeFormatException(zip4);
 		}
 		this.zip4 = zip4;
 	}
-
-	private String zip;
-	private String zip4;
 
 	/**
 	 * If zip4 property is set, will return 10-character ZIP code. If not, will

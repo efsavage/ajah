@@ -40,49 +40,25 @@ public class Criteria {
 	private int rowCount = 0;
 
 	/**
-	 * A field match with an inferred name. Primarily used for Id classes so
-	 * passing a UserId of value '123' would call {@link #eq(String, String)}
-	 * with a field of 'user_id' and a value of '123'.
+	 * Add an "ORDER BY" clause for the field with an ascending order.
 	 * 
-	 * @param value
-	 *            The value the field must be.
+	 * @param field
+	 *            The field to sort by.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria eq(ToStringable value) {
-		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
+	public Criteria asc(final String field) {
+		return orderBy(field, Order.ASC);
 	}
 
 	/**
-	 * A field match. Supports nulls (as "IS NULL").
+	 * Add an "ORDER BY" clause for the field with an ascending order.
 	 * 
 	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
+	 *            The field to sort by.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria eq(String field, ToStringable value) {
-		if (value == null) {
-			return eq(field, (String) null);
-		}
-		return eq(field, value.toString());
-	}
-
-	/**
-	 * A field match. Supports nulls (as "IS NULL").
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(String field, String value) {
-		if (this.eqs == null) {
-			this.eqs = new ArrayList<>();
-		}
-		this.eqs.add(new NameValuePair<>(field, value));
-		return this;
+	public Criteria desc(final String field) {
+		return orderBy(field, Order.DESC);
 	}
 
 	/**
@@ -97,7 +73,7 @@ public class Criteria {
 	 *            object, which must not be null.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria eq(String field, Identifiable<?> value) {
+	public Criteria eq(final String field, final Identifiable<?> value) {
 		if (value == null) {
 			return eq(field, (String) null);
 		}
@@ -105,121 +81,60 @@ public class Criteria {
 	}
 
 	/**
-	 * A join match.
+	 * A field match. Supports nulls (as "IS NULL").
 	 * 
-	 * @param table1
-	 *            The first table to join.
-	 * @param table2
-	 *            The second table to join.
 	 * @param field
-	 *            The field to join on (same field name in both tables).
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria join(String table1, String table2, String field) {
-		return join(table1, table2, field, field);
-	}
-
-	/**
-	 * A join match.
-	 * 
-	 * @param table1
-	 *            The first table to join.
-	 * @param table2
-	 *            The second table to join.
-	 * @param field1
-	 *            The field of the first table to join on.
-	 * @param field2
-	 *            The field of the second table to join on.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria join(String table1, String table2, String field1, String field2) {
-		if (this.joins == null) {
-			this.joins = new ArrayList<>();
+	public Criteria eq(final String field, final String value) {
+		if (this.eqs == null) {
+			this.eqs = new ArrayList<>();
 		}
-		this.joins.add(new NameValuePair<>(table1 + "." + field1, table2 + "." + field2));
+		this.eqs.add(new NameValuePair<>(field, value));
 		return this;
 	}
 
 	/**
-	 * Add an "ORDER BY" clause.
+	 * A field match. Supports nulls (as "IS NULL").
 	 * 
 	 * @param field
-	 *            The field to sort by.
-	 * @param order
-	 *            The order by which to sort.
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria orderBy(String field, Order order) {
-		if (this.orderBys == null) {
-			this.orderBys = new ArrayList<>();
+	public Criteria eq(final String field, final ToStringable value) {
+		if (value == null) {
+			return eq(field, (String) null);
 		}
-		this.orderBys.add(new NameValuePair<>(field, order));
-		return this;
+		return eq(field, value.toString());
 	}
 
 	/**
-	 * Add an "ORDER BY" clause for the field with an ascending order.
+	 * A field match with an inferred name. Primarily used for Id classes so
+	 * passing a UserId of value '123' would call {@link #eq(String, String)}
+	 * with a field of 'user_id' and a value of '123'.
 	 * 
-	 * @param field
-	 *            The field to sort by.
+	 * @param value
+	 *            The value the field must be.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria asc(String field) {
-		return orderBy(field, Order.ASC);
+	public Criteria eq(final ToStringable value) {
+		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
 	}
 
 	/**
-	 * Add an "ORDER BY" clause for the field with an ascending order.
+	 * Returns the LIMIT number of this Criteria. The default value is 0, which
+	 * will yield a query without a LIMIT clause.
 	 * 
-	 * @param field
-	 *            The field to sort by.
-	 * @return Criteria instance the method was invoked on (for chaining).
+	 * @return The number of records this criteria should yield, or 0 which
+	 *         means unlimited.
 	 */
-	public Criteria desc(String field) {
-		return orderBy(field, Order.DESC);
-	}
-
-	/**
-	 * Constructs a {@link Where} object from this instance, suitable for
-	 * creating a prepared SQL statement.
-	 * 
-	 * @return A where clause that is equivalent to this criteria.
-	 */
-	public Where getWhere() {
-		List<String> values = new ArrayList<>();
-		StringBuilder where = new StringBuilder();
-		boolean first = true;
-		if (!CollectionUtils.isEmpty(this.eqs)) {
-			for (NameValuePair<String> eq : this.eqs) {
-				if (first) {
-					where.append(" WHERE ");
-					first = false;
-				} else {
-					where.append(" AND ");
-				}
-				where.append(eq.getName());
-				if (eq.getValue() == null) {
-					where.append(" IS NULL");
-				} else {
-					where.append("=?");
-					values.add(eq.getValue());
-				}
-			}
-		}
-		if (!CollectionUtils.isEmpty(this.joins)) {
-			for (NameValuePair<String> join : this.joins) {
-				if (first) {
-					where.append(" WHERE ");
-					first = false;
-				} else {
-					where.append(" AND ");
-				}
-				where.append(join.getName());
-				where.append("=");
-				where.append(join.getValue());
-			}
-		}
-		return new Where(where.toString(), values);
+	public Limit getLimit() {
+		return new Limit(this.offset, this.rowCount);
 	}
 
 	/**
@@ -233,9 +148,9 @@ public class Criteria {
 		if (CollectionUtils.isEmpty(this.orderBys)) {
 			return " ";
 		}
-		StringBuilder sql = new StringBuilder();
+		final StringBuilder sql = new StringBuilder();
 		boolean first = true;
-		for (NameValuePair<Order> orderBy : this.orderBys) {
+		for (final NameValuePair<Order> orderBy : this.orderBys) {
 			if (first) {
 				sql.append(" ORDER BY ");
 				first = false;
@@ -252,14 +167,82 @@ public class Criteria {
 	}
 
 	/**
-	 * Returns the LIMIT number of this Criteria. The default value is 0, which
-	 * will yield a query without a LIMIT clause.
+	 * Constructs a {@link Where} object from this instance, suitable for
+	 * creating a prepared SQL statement.
 	 * 
-	 * @return The number of records this criteria should yield, or 0 which
-	 *         means unlimited.
+	 * @return A where clause that is equivalent to this criteria.
 	 */
-	public Limit getLimit() {
-		return new Limit(this.offset, this.rowCount);
+	public Where getWhere() {
+		final List<String> values = new ArrayList<>();
+		final StringBuilder where = new StringBuilder();
+		boolean first = true;
+		if (!CollectionUtils.isEmpty(this.eqs)) {
+			for (final NameValuePair<String> eq : this.eqs) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append(eq.getName());
+				if (eq.getValue() == null) {
+					where.append(" IS NULL");
+				} else {
+					where.append("=?");
+					values.add(eq.getValue());
+				}
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.joins)) {
+			for (final NameValuePair<String> join : this.joins) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append(join.getName());
+				where.append("=");
+				where.append(join.getValue());
+			}
+		}
+		return new Where(where.toString(), values);
+	}
+
+	/**
+	 * A join match.
+	 * 
+	 * @param table1
+	 *            The first table to join.
+	 * @param table2
+	 *            The second table to join.
+	 * @param field
+	 *            The field to join on (same field name in both tables).
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria join(final String table1, final String table2, final String field) {
+		return join(table1, table2, field, field);
+	}
+
+	/**
+	 * A join match.
+	 * 
+	 * @param table1
+	 *            The first table to join.
+	 * @param table2
+	 *            The second table to join.
+	 * @param field1
+	 *            The field of the first table to join on.
+	 * @param field2
+	 *            The field of the second table to join on.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria join(final String table1, final String table2, final String field1, final String field2) {
+		if (this.joins == null) {
+			this.joins = new ArrayList<>();
+		}
+		this.joins.add(new NameValuePair<>(table1 + "." + field1, table2 + "." + field2));
+		return this;
 	}
 
 	/**
@@ -269,8 +252,25 @@ public class Criteria {
 	 *            The offset, i.e. the position of the first result.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria offset(int offsetIndex) {
+	public Criteria offset(final int offsetIndex) {
 		this.offset = offsetIndex;
+		return this;
+	}
+
+	/**
+	 * Add an "ORDER BY" clause.
+	 * 
+	 * @param field
+	 *            The field to sort by.
+	 * @param order
+	 *            The order by which to sort.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria orderBy(final String field, final Order order) {
+		if (this.orderBys == null) {
+			this.orderBys = new ArrayList<>();
+		}
+		this.orderBys.add(new NameValuePair<>(field, order));
 		return this;
 	}
 
@@ -281,7 +281,7 @@ public class Criteria {
 	 *            The maximum number of rows to fetch.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria rows(int maximumRowsFetched) {
+	public Criteria rows(final int maximumRowsFetched) {
 		this.rowCount = maximumRowsFetched;
 		return this;
 	}

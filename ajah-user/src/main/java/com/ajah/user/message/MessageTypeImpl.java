@@ -36,11 +36,20 @@ public enum MessageTypeImpl implements MessageType {
 	 */
 	LINK("3", "Link", "Link", "Link");
 
-	private MessageTypeImpl(String id, String code, String name, String description) {
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
+	/**
+	 * Finds a MessageTypeImpl that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching MessageTypeImpl, or null.
+	 */
+	public static MessageType get(final String id) {
+		for (final MessageTypeImpl type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
 	}
 
 	private final String id;
@@ -48,12 +57,11 @@ public enum MessageTypeImpl implements MessageType {
 	private final String name;
 	private final String description;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getId() {
-		return this.id;
+	private MessageTypeImpl(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
 	}
 
 	/**
@@ -68,32 +76,24 @@ public enum MessageTypeImpl implements MessageType {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getName() {
-		return this.name;
+	public String getDescription() {
+		return this.description;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getDescription() {
-		return this.description;
+	public String getId() {
+		return this.id;
 	}
 
 	/**
-	 * Finds a MessageTypeImpl that matches the id on id, name, or name().
-	 * 
-	 * @param id
-	 *            Value to match against id, name, or name()
-	 * @return Matching MessageTypeImpl, or null.
+	 * {@inheritDoc}
 	 */
-	public static MessageType get(String id) {
-		for (MessageTypeImpl type : values()) {
-			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
-				return type;
-			}
-		}
-		return null;
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 }

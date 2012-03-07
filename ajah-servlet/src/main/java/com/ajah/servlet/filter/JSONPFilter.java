@@ -31,16 +31,16 @@ public class JSONPFilter extends BaseFilter {
 	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 */
 	@Override
-	public void doFilter(final ServletRequest request, final ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		String callback = request.getParameter("callback");
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+		final String callback = request.getParameter("callback");
 		if (StringUtils.isBlank(callback)) {
 			log.finest("Not adding callback, no \"callback\" parameter specified");
 			// If there's no callback, do nothing.
 			chain.doFilter(request, response);
 			return;
 		}
-		OutputStream out = response.getOutputStream();
-		GenericResponseWrapper wrapper = new GenericResponseWrapper((HttpServletResponse) response);
+		final OutputStream out = response.getOutputStream();
+		final GenericResponseWrapper wrapper = new GenericResponseWrapper((HttpServletResponse) response);
 		chain.doFilter(request, wrapper);
 		if ("application/json".equals(wrapper.getContentType()) || "jsonp".equals(request.getParameter("format"))) {
 			// We've got a JSON response

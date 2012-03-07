@@ -36,25 +36,16 @@ public class SqlEventId implements Serializable, ToStringable, FromStringable, C
 	 * @param id
 	 *            UID of sql event, cannot be null.
 	 */
-	public SqlEventId(String id) {
+	public SqlEventId(final String id) {
 		this.id = id;
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public String toString() {
-		return this.id;
+	public int compareTo(final SqlEventId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 	/**
@@ -64,8 +55,17 @@ public class SqlEventId implements Serializable, ToStringable, FromStringable, C
 	 *            The other SqlEventId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(SqlEventId other) {
+	public boolean equals(final SqlEventId other) {
 		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns the String passed into the constructor.
+	 * 
+	 * @return The String passed into the constructor.
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class SqlEventId implements Serializable, ToStringable, FromStringable, C
 	}
 
 	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * Returns the String passed into the constructor.
 	 */
 	@Override
-	public int compareTo(SqlEventId other) {
-		return this.id.compareTo(other.getId());
+	public String toString() {
+		return this.id;
 	}
 
 }

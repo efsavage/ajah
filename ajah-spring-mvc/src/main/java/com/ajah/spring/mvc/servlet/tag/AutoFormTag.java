@@ -60,52 +60,27 @@ public class AutoFormTag extends SpringTag {
 
 	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
 
+	/**
+	 * Finds a field by name.
+	 * 
+	 * @param target
+	 *            The name of the field to target.
+	 * @param allFields
+	 *            The list of fields to search across.
+	 * @return Matching field, if found, otherwise null.
+	 */
+	private static Field findField(final String target, final Field[] allFields) {
+		for (final Field field : allFields) {
+			if (field.getName().equals(target)) {
+				return field;
+			}
+		}
+		return null;
+	}
+
 	private Object autoForm;
 
 	private boolean compact = false;
-
-	/**
-	 * Denotes if whitespace should be added for readability.
-	 * 
-	 * @return true if whitespace should be removed (default), otherwise false
-	 */
-	public boolean isCompact() {
-		return this.compact;
-	}
-
-	/**
-	 * Denotes if whitespace should be added for readability.
-	 * 
-	 * @param compact
-	 *            true if whitespace should be removed, otherwise false
-	 */
-	public void setCompact(boolean compact) {
-		this.compact = compact;
-	}
-
-	/**
-	 * Returns the autoForm for this tag to render.
-	 * 
-	 * @return The autoForm for this tag to render. May be null.
-	 */
-	public Object getAutoForm() {
-		return this.autoForm;
-	}
-
-	/**
-	 * Sets the autoForm for this tag to render.
-	 * 
-	 * @param autoForm
-	 *            The autoForm for this tag to render, required.
-	 */
-	public void setAutoForm(Object autoForm) {
-		AjahUtils.requireParam(autoForm, "autoForm");
-		if (autoForm.getClass().isAnnotationPresent(AutoForm.class)) {
-			this.autoForm = autoForm;
-		} else {
-			throw new IllegalArgumentException(autoForm.getClass().getName() + " does not have " + AutoForm.class.getName() + " annotation");
-		}
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -117,31 +92,31 @@ public class AutoFormTag extends SpringTag {
 		}
 		AjahUtils.requireParam(this.autoForm, "autoForm");
 		try {
-			JspWriter out = this.pageContext.getOut();
-			Div div = new Div().css("asm-auto");
+			final JspWriter out = this.pageContext.getOut();
+			final Div div = new Div().css("asm-auto");
 
-			Enumeration<String> attributes = this.pageContext.getRequest().getAttributeNames();
+			final Enumeration<String> attributes = this.pageContext.getRequest().getAttributeNames();
 			while (attributes.hasMoreElements()) {
-				String attribute = attributes.nextElement();
+				final String attribute = attributes.nextElement();
 				if (attribute.startsWith("org.springframework.validation.BindingResult.")) {
-					BindingResult result = (BindingResult) this.pageContext.getRequest().getAttribute(attribute);
+					final BindingResult result = (BindingResult) this.pageContext.getRequest().getAttribute(attribute);
 					log.fine("Found " + result.getErrorCount() + " global errors");
-					Div alertBox = div.add(new Div().css("alert").css("alert-error"));
-					UnorderedList errs = alertBox.add(new UnorderedList().css("asm-err"));
-					for (ObjectError error : result.getAllErrors()) {
+					final Div alertBox = div.add(new Div().css("alert").css("alert-error"));
+					final UnorderedList errs = alertBox.add(new UnorderedList().css("asm-err"));
+					for (final ObjectError error : result.getAllErrors()) {
 						errs.add(new ListItem(getMessage(error)));
 					}
 
 				}
 			}
 
-			Form form = new Form(FormMethod.POST).css("well").css("asm-auto");
+			final Form form = new Form(FormMethod.POST).css("well").css("asm-auto");
 			if (!StringUtils.isBlank(getId())) {
 				form.setId(getId());
 			}
-			for (Field field : this.autoForm.getClass().getFields()) {
+			for (final Field field : this.autoForm.getClass().getFields()) {
 				log.fine(field.getName() + " has a value of " + field.get(this.autoForm));
-				Input<?> input = getInput(field, this.autoForm.getClass().getFields());
+				final Input<?> input = getInput(field, this.autoForm.getClass().getFields());
 				form.getInputs().add(input);
 			}
 
@@ -152,14 +127,14 @@ public class AutoFormTag extends SpringTag {
 			if (StringUtils.isBlank(submitText)) {
 				submitText = StringUtils.capitalize(StringUtils.splitCamelCase(this.autoForm.getClass().getSimpleName().replaceAll("Form$", "")));
 			}
-			Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT).css("btn").css("btn-primary");
+			final Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT).css("btn").css("btn-primary");
 			form.getInputs().add(input);
 			div.add(form);
 
-			Script script = new Script();
-			StringBuffer code = new StringBuffer();
+			final Script script = new Script();
+			final StringBuffer code = new StringBuffer();
 			code.append("\n$(document).ready(function() {\n");
-			for (Input<?> child : form.getInputs()) {
+			for (final Input<?> child : form.getInputs()) {
 				if (child instanceof TextArea && ((TextArea) child).isHtml()) {
 					this.pageContext.getRequest().setAttribute("jjScriptHtmlEditor", Boolean.TRUE);
 					code.append("\t$(\".rich-text"
@@ -173,19 +148,28 @@ public class AutoFormTag extends SpringTag {
 			div.add(script);
 
 			div.render(out, isCompact() ? -1 : 0);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new JspException(e);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new JspException(e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new JspException(e);
 		}
 		return Tag.EVAL_PAGE;
 	}
 
-	private Input<?> getInput(Field field, Field[] allFields) throws IllegalArgumentException, IllegalAccessException {
+	/**
+	 * Returns the autoForm for this tag to render.
+	 * 
+	 * @return The autoForm for this tag to render. May be null.
+	 */
+	public Object getAutoForm() {
+		return this.autoForm;
+	}
 
-		String label = AutoFormUtils.getLabel(field);
+	private Input<?> getInput(final Field field, final Field[] allFields) throws IllegalArgumentException, IllegalAccessException {
+
+		final String label = AutoFormUtils.getLabel(field);
 
 		Input<?> input = null;
 		log.fine(field.getType().toString());
@@ -228,7 +212,7 @@ public class AutoFormTag extends SpringTag {
 		if (field.isAnnotationPresent(Match.class)) {
 			log.fine("Match is present on " + field.getName());
 			input.data("match", field.getAnnotation(Match.class).value());
-			Field target = findField(field.getAnnotation(Match.class).value(), allFields);
+			final Field target = findField(field.getAnnotation(Match.class).value(), allFields);
 			if (target == null) {
 				throw new IllegalArgumentException("No field called " + field.getAnnotation(Match.class).value() + " found to match on");
 			}
@@ -240,21 +224,37 @@ public class AutoFormTag extends SpringTag {
 	}
 
 	/**
-	 * Finds a field by name.
+	 * Denotes if whitespace should be added for readability.
 	 * 
-	 * @param target
-	 *            The name of the field to target.
-	 * @param allFields
-	 *            The list of fields to search across.
-	 * @return Matching field, if found, otherwise null.
+	 * @return true if whitespace should be removed (default), otherwise false
 	 */
-	private static Field findField(String target, Field[] allFields) {
-		for (Field field : allFields) {
-			if (field.getName().equals(target)) {
-				return field;
-			}
+	public boolean isCompact() {
+		return this.compact;
+	}
+
+	/**
+	 * Sets the autoForm for this tag to render.
+	 * 
+	 * @param autoForm
+	 *            The autoForm for this tag to render, required.
+	 */
+	public void setAutoForm(final Object autoForm) {
+		AjahUtils.requireParam(autoForm, "autoForm");
+		if (autoForm.getClass().isAnnotationPresent(AutoForm.class)) {
+			this.autoForm = autoForm;
+		} else {
+			throw new IllegalArgumentException(autoForm.getClass().getName() + " does not have " + AutoForm.class.getName() + " annotation");
 		}
-		return null;
+	}
+
+	/**
+	 * Denotes if whitespace should be added for readability.
+	 * 
+	 * @param compact
+	 *            true if whitespace should be removed, otherwise false
+	 */
+	public void setCompact(final boolean compact) {
+		this.compact = compact;
 	}
 
 }

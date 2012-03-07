@@ -57,33 +57,12 @@ public class VelocityEmailMessage implements EmailMessage {
 	 * @param to
 	 *            The To addresses
 	 */
-	public VelocityEmailMessage(EmailAddress from, EmailAddress[] to) {
+	public VelocityEmailMessage(final EmailAddress from, final EmailAddress[] to) {
 		this.from = from;
 		this.to = to;
 		this.velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		this.velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		this.velocityEngine.init();
-	}
-
-	/**
-	 * Constructs the message from the text template.
-	 * 
-	 * @see VelocityEngine#mergeTemplate(String, String,
-	 *      org.apache.velocity.context.Context, java.io.Writer)
-	 * @see com.ajah.email.EmailMessage#getText()
-	 * @return The output of the merged velocity template, if the text template
-	 *         is null, will return null.
-	 */
-	@Override
-	public String getText() {
-		if (StringUtils.isBlank(this.textTemplate)) {
-			return null;
-		}
-		VelocityContext context = new VelocityContext(this.model);
-		StringWriter w = new StringWriter();
-		this.velocityEngine.mergeTemplate(this.textTemplate, "UTF-8", context, w);
-		return w.toString();
-
 	}
 
 	/**
@@ -100,9 +79,30 @@ public class VelocityEmailMessage implements EmailMessage {
 		if (StringUtils.isBlank(this.htmlTemplate)) {
 			return null;
 		}
-		VelocityContext context = new VelocityContext(this.model);
-		StringWriter w = new StringWriter();
+		final VelocityContext context = new VelocityContext(this.model);
+		final StringWriter w = new StringWriter();
 		this.velocityEngine.mergeTemplate(this.htmlTemplate, "UTF-8", context, w);
+		return w.toString();
+
+	}
+
+	/**
+	 * Constructs the message from the text template.
+	 * 
+	 * @see VelocityEngine#mergeTemplate(String, String,
+	 *      org.apache.velocity.context.Context, java.io.Writer)
+	 * @see com.ajah.email.EmailMessage#getText()
+	 * @return The output of the merged velocity template, if the text template
+	 *         is null, will return null.
+	 */
+	@Override
+	public String getText() {
+		if (StringUtils.isBlank(this.textTemplate)) {
+			return null;
+		}
+		final VelocityContext context = new VelocityContext(this.model);
+		final StringWriter w = new StringWriter();
+		this.velocityEngine.mergeTemplate(this.textTemplate, "UTF-8", context, w);
 		return w.toString();
 
 	}

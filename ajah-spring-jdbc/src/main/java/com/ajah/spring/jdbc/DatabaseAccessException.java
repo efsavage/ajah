@@ -30,7 +30,7 @@ public class DatabaseAccessException extends Exception {
 	 * @param cause
 	 *            The original exception.
 	 */
-	public DatabaseAccessException(Throwable cause) {
+	public DatabaseAccessException(final Throwable cause) {
 		super(cause);
 	}
 

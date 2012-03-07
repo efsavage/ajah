@@ -37,25 +37,16 @@ public class MessageId implements Serializable, ToStringable, Comparable<Message
 	 * @param id
 	 *            UID of user, cannot be null.
 	 */
-	public MessageId(String id) {
+	public MessageId(final String id) {
 		this.id = id;
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public String toString() {
-		return this.id;
+	public int compareTo(final MessageId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 	/**
@@ -65,8 +56,17 @@ public class MessageId implements Serializable, ToStringable, Comparable<Message
 	 *            The other UserId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(MessageId other) {
+	public boolean equals(final MessageId other) {
 		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns the String passed into the constructor.
+	 * 
+	 * @return The String passed into the constructor.
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**
@@ -81,11 +81,11 @@ public class MessageId implements Serializable, ToStringable, Comparable<Message
 	}
 
 	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * Returns the String passed into the constructor.
 	 */
 	@Override
-	public int compareTo(MessageId other) {
-		return this.id.compareTo(other.getId());
+	public String toString() {
+		return this.id;
 	}
 
 }

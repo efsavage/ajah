@@ -42,6 +42,27 @@ public class ImportTest {
 	private static final Logger log = Logger.getLogger(ImportTest.class.getName());
 
 	/**
+	 * Print outlines out for humans to see.
+	 * 
+	 * @param outlines
+	 *            The outlines to print.
+	 */
+	private void printOutlines(final List<Outline> outlines) {
+		if (CollectionUtils.isEmpty(outlines)) {
+			return;
+		}
+		for (final Outline outline : outlines) {
+			String line = "";
+			for (int i = 0; i < outline.getDepth(); i++) {
+				line += "--";
+			}
+			line += outline.getTitle();
+			log.fine(line);
+			printOutlines(outline.getOutlines());
+		}
+	}
+
+	/**
 	 * Test parsing Scoble's gigantic OPML file.
 	 * 
 	 * @throws IllegalArgumentException
@@ -51,30 +72,9 @@ public class ImportTest {
 	 */
 	@Test
 	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException {
-		Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/scoble.opml"));
-		Opml opml = OpmlUtils.parse(doc);
+		final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/scoble.opml"));
+		final Opml opml = OpmlUtils.parse(doc);
 		printOutlines(opml.getOutlines());
-	}
-
-	/**
-	 * Print outlines out for humans to see.
-	 * 
-	 * @param outlines
-	 *            The outlines to print.
-	 */
-	private void printOutlines(List<Outline> outlines) {
-		if (CollectionUtils.isEmpty(outlines)) {
-			return;
-		}
-		for (Outline outline : outlines) {
-			String line = "";
-			for (int i = 0; i < outline.getDepth(); i++) {
-				line += "--";
-			}
-			line += outline.getTitle();
-			log.fine(line);
-			printOutlines(outline.getOutlines());
-		}
 	}
 
 }

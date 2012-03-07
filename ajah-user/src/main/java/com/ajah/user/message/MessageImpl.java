@@ -48,7 +48,7 @@ public class MessageImpl implements Message {
 	 * @param id
 	 *            Unique ID of the message.
 	 */
-	public MessageImpl(MessageId id) {
+	public MessageImpl(final MessageId id) {
 		this.id = id;
 	}
 

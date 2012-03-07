@@ -49,7 +49,7 @@ public class RequestEvent implements Event<RequestEventId> {
 	 * 
 	 * @param request
 	 */
-	public RequestEvent(HttpServletRequest request) {
+	public RequestEvent(final HttpServletRequest request) {
 		this.id = new RequestEventId(UUID.randomUUID().toString());
 		this.start = System.currentTimeMillis();
 		this.method = HttpMethod.get(request.getMethod());

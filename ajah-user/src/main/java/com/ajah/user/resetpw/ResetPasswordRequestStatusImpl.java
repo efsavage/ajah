@@ -36,12 +36,21 @@ public enum ResetPasswordRequestStatusImpl implements ResetPasswordRequestStatus
 	 */
 	EXPIRED("2", "Expired", "Expired", "Expired", false);
 
-	private ResetPasswordRequestStatusImpl(String id, String code, String name, String description, boolean redeemable) {
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
-		this.redeemable = redeemable;
+	/**
+	 * Finds a ResetPasswordRequestStatusImpl that matches the id on id, name,
+	 * or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching ResetPasswordRequestStatusImpl, or null.
+	 */
+	public static ResetPasswordRequestStatus get(final String id) {
+		for (final ResetPasswordRequestStatusImpl type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
 	}
 
 	private final String id;
@@ -50,20 +59,12 @@ public enum ResetPasswordRequestStatusImpl implements ResetPasswordRequestStatus
 	private final String description;
 	private final boolean redeemable;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isRedeemable() {
-		return this.redeemable;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getId() {
-		return this.id;
+	private ResetPasswordRequestStatusImpl(final String id, final String code, final String name, final String description, final boolean redeemable) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+		this.redeemable = redeemable;
 	}
 
 	/**
@@ -78,6 +79,22 @@ public enum ResetPasswordRequestStatusImpl implements ResetPasswordRequestStatus
 	 * {@inheritDoc}
 	 */
 	@Override
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -86,25 +103,8 @@ public enum ResetPasswordRequestStatusImpl implements ResetPasswordRequestStatus
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getDescription() {
-		return this.description;
-	}
-
-	/**
-	 * Finds a ResetPasswordRequestStatusImpl that matches the id on id, name,
-	 * or name().
-	 * 
-	 * @param id
-	 *            Value to match against id, name, or name()
-	 * @return Matching ResetPasswordRequestStatusImpl, or null.
-	 */
-	public static ResetPasswordRequestStatus get(String id) {
-		for (ResetPasswordRequestStatusImpl type : values()) {
-			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
-				return type;
-			}
-		}
-		return null;
+	public boolean isRedeemable() {
+		return this.redeemable;
 	}
 
 }

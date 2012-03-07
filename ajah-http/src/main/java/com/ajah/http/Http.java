@@ -44,6 +44,17 @@ public class Http {
 
 	private static final Logger log = Logger.getLogger(Http.class.getName());
 
+	private static String get(final String url) throws IOException, HttpException {
+		URI uri;
+		try {
+			uri = URI.create(url);
+		} catch (final IllegalArgumentException e) {
+			log.warning("Illegal URI [" + url + "] - " + e.getMessage());
+			throw new BadRequestException(e);
+		}
+		return get(uri);
+	}
+
 	/**
 	 * Fetch a URI and return it's response as a String.
 	 * 
@@ -57,48 +68,18 @@ public class Http {
 	 * @throws NotFoundException
 	 *             If the resource could not be found at the URI (404).
 	 */
-	public static String get(URI uri) throws IOException, UnexpectedResponseCode, NotFoundException {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpGet httpget = new HttpGet(uri);
-		HttpResponse response = httpclient.execute(httpget);
+	public static String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException {
+		final HttpClient httpclient = new DefaultHttpClient();
+		final HttpGet httpget = new HttpGet(uri);
+		final HttpResponse response = httpclient.execute(httpget);
 		if (response.getStatusLine().getStatusCode() == 200) {
-			HttpEntity entity = response.getEntity();
+			final HttpEntity entity = response.getEntity();
 			return EntityUtils.toString(entity);
 		} else if (response.getStatusLine().getStatusCode() == 404) {
 			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
 		} else {
 			throw new UnexpectedResponseCode(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
 		}
-	}
-
-	/**
-	 * Calls {@link #get(URI)} but returns null instead of throwing exceptions.
-	 * 
-	 * @param uri
-	 *            The URL to fetch.
-	 * @return The response as a String, or null.
-	 */
-	public static String getSafe(String uri) {
-		try {
-			return get(uri);
-		} catch (IOException e) {
-			log.log(Level.WARNING, e.getMessage(), e);
-			return null;
-		} catch (HttpException e) {
-			log.log(Level.WARNING, e.getMessage(), e);
-			return null;
-		}
-	}
-
-	private static String get(String url) throws IOException, HttpException {
-		URI uri;
-		try {
-			uri = URI.create(url);
-		} catch (IllegalArgumentException e) {
-			log.warning("Illegal URI [" + url + "] - " + e.getMessage());
-			throw new BadRequestException(e);
-		}
-		return get(uri);
 	}
 
 	/**
@@ -114,17 +95,36 @@ public class Http {
 	 * @throws NotFoundException
 	 *             If the resource could not be found at the URI (404).
 	 */
-	public static byte[] getBytes(String uri) throws IOException, NotFoundException, UnexpectedResponseCode {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpGet httpget = new HttpGet(uri);
-		HttpResponse response = httpclient.execute(httpget);
+	public static byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+		final HttpClient httpclient = new DefaultHttpClient();
+		final HttpGet httpget = new HttpGet(uri);
+		final HttpResponse response = httpclient.execute(httpget);
 		if (response.getStatusLine().getStatusCode() == 200) {
-			HttpEntity entity = response.getEntity();
+			final HttpEntity entity = response.getEntity();
 			return EntityUtils.toByteArray(entity);
 		} else if (response.getStatusLine().getStatusCode() == 404) {
 			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
 		} else {
 			throw new UnexpectedResponseCode(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
+		}
+	}
+
+	/**
+	 * Calls {@link #get(URI)} but returns null instead of throwing exceptions.
+	 * 
+	 * @param uri
+	 *            The URL to fetch.
+	 * @return The response as a String, or null.
+	 */
+	public static String getSafe(final String uri) {
+		try {
+			return get(uri);
+		} catch (final IOException e) {
+			log.log(Level.WARNING, e.getMessage(), e);
+			return null;
+		} catch (final HttpException e) {
+			log.log(Level.WARNING, e.getMessage(), e);
+			return null;
 		}
 	}
 

@@ -29,46 +29,6 @@ import com.ajah.util.Validate;
 public class ValidEmailTest {
 
 	/**
-	 * Test basic email.
-	 */
-	@Test
-	public void simpleEmail() {
-		Assert.assertTrue(Validate.isEmail("user@domain.com"));
-	}
-
-	/**
-	 * Test valid but non-standard email.
-	 */
-	@Test
-	public void strageButTrue() {
-		Assert.assertTrue(Validate.isEmail("++%_@a.bc"));
-	}
-
-	/**
-	 * Test subdomain email.
-	 */
-	@Test
-	public void subdomain() {
-		Assert.assertTrue(Validate.isEmail("user@sub.domain.com"));
-	}
-
-	/**
-	 * Short TLD.
-	 */
-	@Test
-	public void shortTLD() {
-		Assert.assertFalse(Validate.isEmail("user@domain.c"));
-	}
-
-	/**
-	 * Long TLD.
-	 */
-	@Test
-	public void longTLD() {
-		Assert.assertFalse(Validate.isEmail("user@domain.combo"));
-	}
-
-	/**
 	 * Alphanumeric TLD.
 	 */
 	@Test
@@ -77,19 +37,27 @@ public class ValidEmailTest {
 	}
 
 	/**
-	 * Numeric TLD.
-	 */
-	@Test
-	public void numericTLD() {
-		Assert.assertFalse(Validate.isEmail("user@domain.334"));
-	}
-
-	/**
 	 * Bad domain.
 	 */
 	@Test
 	public void badDomain() {
 		Assert.assertFalse(Validate.isEmail("user@domain"));
+	}
+
+	/**
+	 * Empty
+	 */
+	@Test
+	public void emptyEmail() {
+		Assert.assertFalse(Validate.isEmail(""));
+	}
+
+	/**
+	 * Long TLD.
+	 */
+	@Test
+	public void longTLD() {
+		Assert.assertFalse(Validate.isEmail("user@domain.combo"));
 	}
 
 	/**
@@ -125,11 +93,43 @@ public class ValidEmailTest {
 	}
 
 	/**
-	 * Empty
+	 * Numeric TLD.
 	 */
 	@Test
-	public void emptyEmail() {
-		Assert.assertFalse(Validate.isEmail(""));
+	public void numericTLD() {
+		Assert.assertFalse(Validate.isEmail("user@domain.334"));
+	}
+
+	/**
+	 * Short TLD.
+	 */
+	@Test
+	public void shortTLD() {
+		Assert.assertFalse(Validate.isEmail("user@domain.c"));
+	}
+
+	/**
+	 * Test basic email.
+	 */
+	@Test
+	public void simpleEmail() {
+		Assert.assertTrue(Validate.isEmail("user@domain.com"));
+	}
+
+	/**
+	 * Test valid but non-standard email.
+	 */
+	@Test
+	public void strageButTrue() {
+		Assert.assertTrue(Validate.isEmail("++%_@a.bc"));
+	}
+
+	/**
+	 * Test subdomain email.
+	 */
+	@Test
+	public void subdomain() {
+		Assert.assertTrue(Validate.isEmail("user@sub.domain.com"));
 	}
 
 }

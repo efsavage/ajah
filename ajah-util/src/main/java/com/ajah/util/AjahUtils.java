@@ -31,28 +31,6 @@ public class AjahUtils {
 	public static final char[] LOWER_CHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 	/**
-	 * Check a parameter and throw an exception if its null. Commonly used at
-	 * the very beginning of a method for things that should never be null. If
-	 * the object is a String, it will treat empty String the same as a null.
-	 * 
-	 * @param parameter
-	 *            Object to check.
-	 * @param name
-	 * @throws IllegalArgumentException
-	 *             If parameter is null
-	 * @throws IllegalArgumentException
-	 *             If parameter is a String and is empty
-	 */
-	public static void requireParam(final Object parameter, final String name) {
-		if (parameter == null) {
-			throw new IllegalArgumentException(name + " cannot be null");
-		}
-		if (parameter instanceof String && ((String) parameter).length() < 1) {
-			throw new IllegalArgumentException(name + " cannot be empty");
-		}
-	}
-
-	/**
 	 * Check a parameter and throw an exception if its value is not greater than
 	 * or equal to the required value.Commonly used at the very beginning of a
 	 * method for things that should never be zero or negative.
@@ -73,48 +51,25 @@ public class AjahUtils {
 	}
 
 	/**
-	 * Converts a Java Date into a unix-compatible timestamp (seconds
-	 * precision).
+	 * Check a parameter and throw an exception if its null. Commonly used at
+	 * the very beginning of a method for things that should never be null. If
+	 * the object is a String, it will treat empty String the same as a null.
 	 * 
-	 * @param date
-	 *            Date to convert, may be null.
-	 * @return Value of Date in seconds, will return null if null is passed in.
+	 * @param parameter
+	 *            Object to check.
+	 * @param name
+	 * @throws IllegalArgumentException
+	 *             If parameter is null
+	 * @throws IllegalArgumentException
+	 *             If parameter is a String and is empty
 	 */
-	public static Long toUnix(final Date date) {
-		if (date == null) {
-			return null;
+	public static void requireParam(final Object parameter, final String name) {
+		if (parameter == null) {
+			throw new IllegalArgumentException(name + " cannot be null");
 		}
-		return Long.valueOf(date.getTime() / 1000);
-	}
-
-	/**
-	 * Returns {@link #toString()} on the parameter if the parameter is not
-	 * null, otherwise returns null.
-	 * 
-	 * @param object
-	 *            The object to call {@link #toString()} on.
-	 * @return The object's {@link #toString()} return value, or null.
-	 */
-	public static String safeToString(final Object object) {
-		if (object == null) {
-			return null;
+		if (parameter instanceof String && ((String) parameter).length() < 1) {
+			throw new IllegalArgumentException(name + " cannot be empty");
 		}
-		return object.toString();
-	}
-
-	/**
-	 * Checks for a null iterable object. If the parameter is null, returns an
-	 * empty list so enhanced for loops don't NPE.
-	 * 
-	 * @param iterable
-	 *            Iterable to check, may be null.
-	 * @return The original parameter, or an empty list.
-	 */
-	public static <T> Iterable<T> safeIterable(final Iterable<T> iterable) {
-		if (iterable != null) {
-			return iterable;
-		}
-		return Collections.emptyList();
 	}
 
 	/**
@@ -143,7 +98,7 @@ public class AjahUtils {
 	 *            The string to parse.
 	 * @return The parsed integer, or 0.
 	 */
-	public static int safeInt(String string) {
+	public static int safeInt(final String string) {
 		return safeInt(string, 0);
 	}
 
@@ -158,15 +113,60 @@ public class AjahUtils {
 	 *            String.
 	 * @return The parsed integer, or the defaultValue.
 	 */
-	public static int safeInt(String string, int defaultValue) {
+	public static int safeInt(final String string, final int defaultValue) {
 		if (StringUtils.isBlank(string)) {
 			return defaultValue;
 		}
 		try {
 			return Integer.parseInt(string);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return defaultValue;
 		}
+	}
+
+	/**
+	 * Checks for a null iterable object. If the parameter is null, returns an
+	 * empty list so enhanced for loops don't NPE.
+	 * 
+	 * @param iterable
+	 *            Iterable to check, may be null.
+	 * @return The original parameter, or an empty list.
+	 */
+	public static <T> Iterable<T> safeIterable(final Iterable<T> iterable) {
+		if (iterable != null) {
+			return iterable;
+		}
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Returns {@link #toString()} on the parameter if the parameter is not
+	 * null, otherwise returns null.
+	 * 
+	 * @param object
+	 *            The object to call {@link #toString()} on.
+	 * @return The object's {@link #toString()} return value, or null.
+	 */
+	public static String safeToString(final Object object) {
+		if (object == null) {
+			return null;
+		}
+		return object.toString();
+	}
+
+	/**
+	 * Converts a Java Date into a unix-compatible timestamp (seconds
+	 * precision).
+	 * 
+	 * @param date
+	 *            Date to convert, may be null.
+	 * @return Value of Date in seconds, will return null if null is passed in.
+	 */
+	public static Long toUnix(final Date date) {
+		if (date == null) {
+			return null;
+		}
+		return Long.valueOf(date.getTime() / 1000);
 	}
 
 }

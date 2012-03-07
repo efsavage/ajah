@@ -32,7 +32,7 @@ public class LineIterator implements Iterator<Line> {
 	/**
 	 * @param lineReader
 	 */
-	public LineIterator(LineReader lineReader) {
+	public LineIterator(final LineReader lineReader) {
 		this.iterator = new BufferedReaderIterator(lineReader);
 	}
 

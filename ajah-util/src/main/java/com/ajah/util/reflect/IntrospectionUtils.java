@@ -32,15 +32,15 @@ import com.ajah.util.ToStringable;
 public class IntrospectionUtils {
 
 	/**
-	 * Checks to see if the field's type is a {@link String}.
+	 * Checks to see if the field's type is a boolean.
 	 * 
 	 * @param field
 	 *            The field to check the type of, required.
-	 * @return true if the field's type is a String
+	 * @return true if the field's type is a long
 	 */
-	public static boolean isString(final Field field) {
+	public static boolean isBoolean(final Field field) {
 		AjahUtils.requireParam(field, "field");
-		return String.class.isAssignableFrom(field.getType());
+		return boolean.class.isAssignableFrom(field.getType());
 	}
 
 	/**
@@ -53,30 +53,6 @@ public class IntrospectionUtils {
 	public static boolean isDate(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return Date.class.isAssignableFrom(field.getType());
-	}
-
-	/**
-	 * Checks to see if the field's type implements {@link ToStringable}.
-	 * 
-	 * @param field
-	 *            The field to check the type of, required.
-	 * @return true if the field's type implements ToStringable
-	 */
-	public static boolean isToStringable(final Field field) {
-		AjahUtils.requireParam(field, "field");
-		return ToStringable.class.isAssignableFrom(field.getType());
-	}
-
-	/**
-	 * Checks to see if the field's type implements {@link Identifiable}.
-	 * 
-	 * @param field
-	 *            The field to check the type of, required.
-	 * @return true if the field's type implements Identifiable
-	 */
-	public static boolean isIdentifiable(final Field field) {
-		AjahUtils.requireParam(field, "field");
-		return Identifiable.class.isAssignableFrom(field.getType());
 	}
 
 	/**
@@ -106,6 +82,30 @@ public class IntrospectionUtils {
 	}
 
 	/**
+	 * Checks to see if the field's type implements {@link Identifiable}.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type implements Identifiable
+	 */
+	public static boolean isIdentifiable(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return Identifiable.class.isAssignableFrom(field.getType());
+	}
+
+	/**
+	 * Checks to see if the field's type implements {@link Identifiable} and is
+	 * an {@link Enum}.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type implements Identifiable and is an Enum
+	 */
+	public static boolean isIdentifiableEnum(final Field field) {
+		return isIdentifiable(field) && isEnum(field);
+	}
+
+	/**
 	 * Checks to see if the field's type is an int.
 	 * 
 	 * @param field
@@ -130,27 +130,27 @@ public class IntrospectionUtils {
 	}
 
 	/**
-	 * Checks to see if the field's type implements {@link Identifiable} and is
-	 * an {@link Enum}.
+	 * Checks to see if the field's type is a {@link String}.
 	 * 
 	 * @param field
 	 *            The field to check the type of, required.
-	 * @return true if the field's type implements Identifiable and is an Enum
+	 * @return true if the field's type is a String
 	 */
-	public static boolean isIdentifiableEnum(final Field field) {
-		return isIdentifiable(field) && isEnum(field);
+	public static boolean isString(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return String.class.isAssignableFrom(field.getType());
 	}
 
 	/**
-	 * Checks to see if the field's type is a boolean.
+	 * Checks to see if the field's type implements {@link ToStringable}.
 	 * 
 	 * @param field
 	 *            The field to check the type of, required.
-	 * @return true if the field's type is a long
+	 * @return true if the field's type implements ToStringable
 	 */
-	public static boolean isBoolean(Field field) {
+	public static boolean isToStringable(final Field field) {
 		AjahUtils.requireParam(field, "field");
-		return boolean.class.isAssignableFrom(field.getType());
+		return ToStringable.class.isAssignableFrom(field.getType());
 	}
 
 }

@@ -16,10 +16,8 @@
 package com.ajah.user.data;
 
 import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
-import com.ajah.user.info.UserInfoImpl;
 
 /**
  * Data operations on the "user" table.

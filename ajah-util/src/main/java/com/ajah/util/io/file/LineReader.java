@@ -37,7 +37,7 @@ public class LineReader extends BufferedReader implements Iterable<Line> {
 	 * @throws FileNotFoundException
 	 *             If the file could not be located.
 	 */
-	public LineReader(File file) throws FileNotFoundException {
+	public LineReader(final File file) throws FileNotFoundException {
 		super(new FileReader(file));
 	}
 
@@ -50,7 +50,7 @@ public class LineReader extends BufferedReader implements Iterable<Line> {
 	 * @throws FileNotFoundException
 	 *             If the file could not be found.
 	 */
-	public LineReader(String fileName) throws FileNotFoundException {
+	public LineReader(final String fileName) throws FileNotFoundException {
 		super(new FileReader(fileName));
 	}
 

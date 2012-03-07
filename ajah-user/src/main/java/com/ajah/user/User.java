@@ -57,7 +57,7 @@ public interface User extends Identifiable<UserId> {
 	 *            The User ID, should not be null.
 	 */
 	@Override
-	void setId(UserId userId);
+	void setId(final UserId userId);
 
 	/**
 	 * Sets the user status.
@@ -65,7 +65,7 @@ public interface User extends Identifiable<UserId> {
 	 * @param status
 	 *            The user's status, should not be null.
 	 */
-	void setStatus(UserStatus status);
+	void setStatus(final UserStatus status);
 
 	/**
 	 * Sets the user's type.
@@ -73,7 +73,7 @@ public interface User extends Identifiable<UserId> {
 	 * @param type
 	 *            The user's type, should not be null.
 	 */
-	void setType(UserType type);
+	void setType(final UserType type);
 
 	/**
 	 * Set the username.
@@ -81,6 +81,6 @@ public interface User extends Identifiable<UserId> {
 	 * @param username
 	 *            Should not be null.
 	 */
-	void setUsername(String username);
+	void setUsername(final String username);
 
 }

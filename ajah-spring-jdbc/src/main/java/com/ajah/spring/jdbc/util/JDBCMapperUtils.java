@@ -34,29 +34,6 @@ public class JDBCMapperUtils {
 	private static final Map<String, Map<Field, String>> columnNameCache = new HashMap<>();
 
 	/**
-	 * Converts a class name to a table name, per standard database naming
-	 * convention.
-	 * 
-	 * Will ignore "Impl" at the end of class names.
-	 * 
-	 * @param clazz
-	 *            Class to derive name from.
-	 * @return Table name
-	 */
-	public static String getTableName(Class<?> clazz) {
-		if (tableNameCache.get(clazz) != null) {
-			return tableNameCache.get(clazz);
-		}
-		String simpleName = clazz.getSimpleName();
-		if (simpleName.endsWith("Impl")) {
-			simpleName = simpleName.substring(0, simpleName.length() - 4);
-		}
-		String name = StringUtils.splitCamelCase(simpleName).replaceAll("\\W+", "_").toLowerCase();
-		tableNameCache.put(clazz, name);
-		return name;
-	}
-
-	/**
 	 * Converts a field name to a table column name, per standard database
 	 * naming convention.
 	 * 
@@ -66,7 +43,7 @@ public class JDBCMapperUtils {
 	 *            The field to derive the name from.
 	 * @return Column name
 	 */
-	public static String getColumnName(String tableName, Field field) {
+	public static String getColumnName(final String tableName, final Field field) {
 		if (columnNameCache.get(tableName) == null) {
 			columnNameCache.put(tableName, new HashMap<Field, String>());
 		}
@@ -87,6 +64,29 @@ public class JDBCMapperUtils {
 		}
 		columnNameCache.get(tableName).put(field, columnName);
 		return columnName;
+	}
+
+	/**
+	 * Converts a class name to a table name, per standard database naming
+	 * convention.
+	 * 
+	 * Will ignore "Impl" at the end of class names.
+	 * 
+	 * @param clazz
+	 *            Class to derive name from.
+	 * @return Table name
+	 */
+	public static String getTableName(final Class<?> clazz) {
+		if (tableNameCache.get(clazz) != null) {
+			return tableNameCache.get(clazz);
+		}
+		String simpleName = clazz.getSimpleName();
+		if (simpleName.endsWith("Impl")) {
+			simpleName = simpleName.substring(0, simpleName.length() - 4);
+		}
+		final String name = StringUtils.splitCamelCase(simpleName).replaceAll("\\W+", "_").toLowerCase();
+		tableNameCache.put(clazz, name);
+		return name;
 	}
 
 }
