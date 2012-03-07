@@ -175,6 +175,7 @@ public class Crypto {
 	 */
 	public static String toAES(final String secret) {
 		final String keyString = Config.i.get("crypto.key.aes", null);
+		AjahUtils.requireParam(keyString, "crypto.key.aes");
 		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
 			final Cipher cipher = Cipher.getInstance("AES");
