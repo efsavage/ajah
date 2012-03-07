@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
+import com.ajah.user.email.EmailImpl;
 import com.ajah.util.AjahUtils;
 
 /**
@@ -29,7 +30,7 @@ import com.ajah.util.AjahUtils;
  * 
  */
 @Repository
-public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> implements EmailDao {
+public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, EmailImpl> implements EmailDao {
 
 	// private static final Logger log =
 	// Logger.getLogger(EmailDao.class.getName());
