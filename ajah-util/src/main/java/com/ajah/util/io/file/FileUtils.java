@@ -187,16 +187,19 @@ public class FileUtils {
 	 * directories for the file if necessary.
 	 * 
 	 * @param file
-	 *            The file to write to.
+	 *            The file to write to, required.
 	 * @param in
 	 *            The stream to read from.
 	 * @return The number of bytes read/written.
 	 * @throws IOException
 	 */
 	public static long write(final File file, final InputStream in) throws IOException {
+		AjahUtils.requireParam(file, "file");
 		BufferedOutputStream out = null;
 		try {
-			file.getParentFile().mkdirs();
+			if (file.getParentFile() != null) {
+				file.getParentFile().mkdirs();
+			}
 			out = new BufferedOutputStream(new FileOutputStream(file));
 			final byte buf[] = new byte[1024];
 			int len;
