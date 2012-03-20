@@ -22,6 +22,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.ajah.util.data.XmlString;
+import com.ajah.util.lang.StreamUtils;
 
 /**
  * Simple HTTP client that depends only on JDK libraries. For production-level
@@ -85,6 +86,26 @@ public class HttpClient {
 			URLConnection conn;
 			conn = ur.openConnection();
 			return conn.getInputStream();
+		} catch (final MalformedURLException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Get a byte array version of the target URL.
+	 * 
+	 * @param url
+	 *            The URL to fetch.
+	 * @return The results of the URL, if possible, or null.
+	 * @throws IOException
+	 *             If the file could not be fetched.
+	 */
+	public static byte[] getBytes(final String url) throws IOException {
+		try {
+			final URL ur = new URL(url);
+			URLConnection conn;
+			conn = ur.openConnection();
+			return StreamUtils.toByteArray(conn.getInputStream());
 		} catch (final MalformedURLException e) {
 			return null;
 		}
