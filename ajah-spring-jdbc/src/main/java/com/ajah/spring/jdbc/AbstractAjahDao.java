@@ -271,7 +271,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			throw new IllegalArgumentException("Cannot use singular find method with a limit greater than 1 (" + limit.getCount() + ")");
 		}
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where.getSql() + (limit == null ? " LIMIT 1" : " " + limit.getSql());
+			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + where.getSql() + (limit == null ? " LIMIT 1" : " " + limit.getSql());
 			log.finest(sql);
 			return getJdbcTemplate().queryForObject(sql, where.getValues().toArray(), getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
@@ -910,6 +910,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
 		} catch (final DataAccessException e) {
 			throw new DatabaseAccessException(e);
+		}
+	}
+
+	public List<T> list(String where) {
+		AjahUtils.requireParam(where, "where");
+		try {
+			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where;
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
+			}
+			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, getRowMapper()));
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
 		}
 	}
 
