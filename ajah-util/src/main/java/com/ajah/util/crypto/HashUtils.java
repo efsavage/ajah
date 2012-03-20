@@ -115,4 +115,24 @@ public class HashUtils {
 		}
 	}
 
+	/**
+	 * Creates a SHA-1 digest of byte array and returns it as a hexadecimal number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
+	public static String sha1Hex(final byte[] data) {
+		AjahUtils.requireParam(data, "data");
+		try {
+			final MessageDigest md = MessageDigest.getInstance("SHA-1");
+			byte[] bytes = new byte[40];
+			md.update(data, 0, data.length);
+			bytes = md.digest();
+			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
+		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 }
