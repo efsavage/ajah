@@ -35,6 +35,26 @@ import com.ajah.util.lang.StreamUtils;
 public class HttpClient {
 
 	/**
+	 * Get a byte array version of the target URL.
+	 * 
+	 * @param url
+	 *            The URL to fetch.
+	 * @return The results of the URL, if possible, or null.
+	 * @throws IOException
+	 *             If the file could not be fetched.
+	 */
+	public static byte[] getBytes(final String url) throws IOException {
+		try {
+			final URL ur = new URL(url);
+			URLConnection conn;
+			conn = ur.openConnection();
+			return StreamUtils.toByteArray(conn.getInputStream());
+		} catch (final MalformedURLException e) {
+			return null;
+		}
+	}
+
+	/**
 	 * Get a string version of the target URL.
 	 * 
 	 * @param url
@@ -86,26 +106,6 @@ public class HttpClient {
 			URLConnection conn;
 			conn = ur.openConnection();
 			return conn.getInputStream();
-		} catch (final MalformedURLException e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Get a byte array version of the target URL.
-	 * 
-	 * @param url
-	 *            The URL to fetch.
-	 * @return The results of the URL, if possible, or null.
-	 * @throws IOException
-	 *             If the file could not be fetched.
-	 */
-	public static byte[] getBytes(final String url) throws IOException {
-		try {
-			final URL ur = new URL(url);
-			URLConnection conn;
-			conn = ur.openConnection();
-			return StreamUtils.toByteArray(conn.getInputStream());
 		} catch (final MalformedURLException e) {
 			return null;
 		}

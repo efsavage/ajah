@@ -65,7 +65,9 @@ import com.ajah.util.reflect.ReflectionUtils;
  *            The primary key class. Note that {@link Object#toString()} will be
  *            invoked on this object.
  * @param <T>
- *            The type of entity this DAO exists for.
+ *            The type of entity this DAO exists for, may be an interface.
+ * @param <C>
+ *            The concrete type of entity this DAO exists for.
  * 
  */
 public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements AjahDao<K, T> {
@@ -458,6 +460,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	/**
+	 * Returns the fields that are used when SELECTing an entity. Alias for
+	 * {@link #getSelectFields(boolean)} with parameter value of false.
+	 * 
 	 * @return The columns for use in SELECT statements for this class, may be
 	 *         empty but will not be null.
 	 */
@@ -466,6 +471,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	/**
+	 * Returns the fields that are used when SELECTing an entity.
+	 * 
+	 * @param tablePrefix
+	 *            Should we include the name of the table as a prefix for all
+	 *            columns? Useful for complex queries.
 	 * @return The columns for use in SELECT statements for this class, may be
 	 *         empty but will not be null.
 	 */
@@ -627,6 +637,28 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				log.finest(criteria.getWhere().getValues().toString());
 			}
 			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, criteria.getWhere().getValues().toArray(), getRowMapper()));
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * Find a list of entities by an arbitrary WHERE clause.
+	 * 
+	 * @param where
+	 *            The WHERE clause, required. Do not include the actual "WHERE"
+	 *            phrase as it is inserted automatically.
+	 * @return The list of entities satisfying the WHERE, may be null.
+	 */
+	public List<T> list(final String where) {
+		AjahUtils.requireParam(where, "where");
+		try {
+			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where;
+			if (log.isLoggable(Level.FINEST)) {
+				log.finest(sql);
+			}
+			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, getRowMapper()));
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
@@ -910,20 +942,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
 		} catch (final DataAccessException e) {
 			throw new DatabaseAccessException(e);
-		}
-	}
-
-	public List<T> list(String where) {
-		AjahUtils.requireParam(where, "where");
-		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where;
-			if (log.isLoggable(Level.FINEST)) {
-				log.finest(sql);
-			}
-			return CollectionUtils.nullIfEmpty(getJdbcTemplate().query(sql, getRowMapper()));
-		} catch (final EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return null;
 		}
 	}
 

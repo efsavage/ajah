@@ -25,6 +25,10 @@ public class ScriptAttribute {
 
 	private String script;
 
+	ScriptAttribute(final String script) {
+		this.script = script;
+	}
+
 	/**
 	 * Returns the script.
 	 * 
@@ -40,11 +44,7 @@ public class ScriptAttribute {
 	 * @param script
 	 *            The script.
 	 */
-	public void setScript(String script) {
-		this.script = script;
-	}
-
-	ScriptAttribute(String script) {
+	public void setScript(final String script) {
 		this.script = script;
 	}
 

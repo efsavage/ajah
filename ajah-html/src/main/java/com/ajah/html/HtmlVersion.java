@@ -32,7 +32,7 @@ public enum HtmlVersion {
 
 	private String prologue;
 
-	private HtmlVersion(String prologue) {
+	private HtmlVersion(final String prologue) {
 		this.prologue = prologue;
 	}
 

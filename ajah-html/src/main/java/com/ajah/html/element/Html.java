@@ -37,6 +37,12 @@ public class Html extends AbstractNestableHtmlCoreElement<Html> {
 
 	private HtmlVersion version;
 
+	/**
+	 * Public constructor with version.
+	 * 
+	 * @param version
+	 *            The version of the HTML document.
+	 */
 	public Html(HtmlVersion version) {
 		this.version = version;
 	}
@@ -52,8 +58,7 @@ public class Html extends AbstractNestableHtmlCoreElement<Html> {
 	}
 
 	@Override
-	public
-	Html getThis() {
+	public Html getThis() {
 		return this;
 	}
 

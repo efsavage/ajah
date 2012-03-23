@@ -149,7 +149,7 @@ public interface HtmlCoreElement<T> extends HtmlElement<T> {
 	 *            CSS class to append
 	 * @return Reference to target object
 	 */
-	T css(String cssClass);
+	T css(final String cssClass);
 
 	/**
 	 * Adds a data-* attribute to the element.
@@ -165,6 +165,6 @@ public interface HtmlCoreElement<T> extends HtmlElement<T> {
 	 *            Value of the attribute to set.
 	 * @return Reference to target object
 	 */
-	T data(String key, String value);
+	T data(final String key, final String value);
 
 }

@@ -42,7 +42,7 @@ public class CssDocument {
 	 *            The rules to add.
 	 * @return This document.
 	 */
-	public CssDocument addAll(List<CssRule> newRules) {
+	public CssDocument addAll(final List<CssRule> newRules) {
 		this.rules.addAll(newRules);
 		return this;
 	}
@@ -66,9 +66,9 @@ public class CssDocument {
 	 *            The desired level of compactness.
 	 * @return The valid, usable version of this document
 	 */
-	public String toString(Compact compact) {
-		AjahStringBuilder string = new AjahStringBuilder(compact);
-		for (CssRule rule : this.rules) {
+	public String toString(final Compact compact) {
+		final AjahStringBuilder string = new AjahStringBuilder(compact);
+		for (final CssRule rule : this.rules) {
 			string.append(rule.toString(compact));
 			string.append('\n', Compact.HIGH);
 		}

@@ -21,6 +21,13 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 	private int contentLength;
 	private String contentType;
 
+	/**
+	 * Public constructor, calls
+	 * {@link HttpServletResponseWrapper#HttpServletResponseWrapper(HttpServletResponse)}
+	 * and creates alternate output stream.
+	 * 
+	 * @param response
+	 */
 	public GenericResponseWrapper(final HttpServletResponse response) {
 		super(response);
 		this.output = new ByteArrayOutputStream();
@@ -46,6 +53,11 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 		return this.contentType;
 	}
 
+	/**
+	 * Returns the captured output stream as a byte array.
+	 * 
+	 * @return The captured output stream as a byte array.
+	 */
 	public byte[] getData() {
 		return this.output.toByteArray();
 	}

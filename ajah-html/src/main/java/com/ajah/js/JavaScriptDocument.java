@@ -37,7 +37,7 @@ public class JavaScriptDocument {
 	 * @param raw
 	 *            The raw JavaScript.
 	 */
-	public JavaScriptDocument(String raw) {
+	public JavaScriptDocument(final String raw) {
 		this.raw = raw;
 	}
 
@@ -62,7 +62,7 @@ public class JavaScriptDocument {
 	 *            The desired level of compactness.
 	 * @return The valid, usable version of this document
 	 */
-	public String toString(Compact compact) {
+	public String toString(final Compact compact) {
 		return this.raw;
 	}
 }

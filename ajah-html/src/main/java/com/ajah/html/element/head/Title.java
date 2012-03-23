@@ -44,7 +44,7 @@ public class Title implements HtmlElement<Title> {
 	 * @param text
 	 *            The text value of this element.
 	 */
-	public Title(String text) {
+	public Title(final String text) {
 		this.text = text;
 	}
 
@@ -52,7 +52,7 @@ public class Title implements HtmlElement<Title> {
 	 * @see com.ajah.html.HtmlElement#render(java.io.Writer, int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}

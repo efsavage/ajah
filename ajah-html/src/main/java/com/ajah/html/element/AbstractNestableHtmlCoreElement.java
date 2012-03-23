@@ -46,17 +46,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 
 	private static final Logger log = Logger.getLogger(AbstractNestableHtmlCoreElement.class.getName());
 
-	/**
-	 * Creates an element and a {@link CData} child element with the value
-	 * specified.
-	 * 
-	 * @param cData
-	 *            Value to create the {@link CData} with.
-	 */
-	public AbstractNestableHtmlCoreElement(String cData) {
-		this.children = new ArrayList<>();
-		this.children.add(new CData(cData));
-	}
+	protected List<HtmlElement<?>> children = null;
 
 	/**
 	 * Default no-arg constructor.
@@ -65,13 +55,23 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		// Empty
 	}
 
-	protected List<HtmlElement<?>> children = null;
+	/**
+	 * Creates an element and a {@link CData} child element with the value
+	 * specified.
+	 * 
+	 * @param cData
+	 *            Value to create the {@link CData} with.
+	 */
+	public AbstractNestableHtmlCoreElement(final String cData) {
+		this.children = new ArrayList<>();
+		this.children.add(new CData(cData));
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public synchronized <R extends HtmlElement<R>> R add(R element) {
+	public synchronized <R extends HtmlElement<R>> R add(final R element) {
 		if (this.children == null) {
 			this.children = new ArrayList<>();
 		}
@@ -80,10 +80,27 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	}
 
 	/**
+	 * Returns a rendering of this element (and children) as a string.
+	 * 
+	 * @see AbstractNestableHtmlCoreElement#render(Writer, int)
+	 * @return A rendering of this element (and children) as a string.
+	 */
+	public String render() {
+		try {
+			final Writer writer = new StringWriter();
+			render(writer, 0);
+			return writer.toString();
+		} catch (final IOException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+			return null;
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
@@ -100,7 +117,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		}
 		renderBeforeChildren(out);
 		if (this.children != null) {
-			for (HtmlElement<?> child : this.children) {
+			for (final HtmlElement<?> child : this.children) {
 				if (depth >= 0) {
 					child.render(out, depth + 1);
 				} else {
@@ -122,23 +139,6 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	}
 
 	/**
-	 * Returns a rendering of this element (and children) as a string.
-	 * 
-	 * @see AbstractNestableHtmlCoreElement#render(Writer, int)
-	 * @return A rendering of this element (and children) as a string.
-	 */
-	public String render() {
-		try {
-			Writer writer = new StringWriter();
-			render(writer, 0);
-			return writer.toString();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
-			return null;
-		}
-	}
-
-	/**
 	 * Called after the standard attributes are written, while still in the
 	 * opening tag. Does nothing unless overridden.
 	 * 
@@ -147,7 +147,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	 * @throws IOException
 	 *             If the writer cannot be written to.
 	 */
-	protected void renderAttributes(Writer out) throws IOException {
+	protected void renderAttributes(final Writer out) throws IOException {
 		// Empty
 	}
 
@@ -160,7 +160,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	 * @throws IOException
 	 *             If the writer cannot be written to.
 	 */
-	protected void renderBeforeChildren(Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out) throws IOException {
 		// Empty
 	}
 

@@ -57,7 +57,7 @@ public class CssRule {
 	 * @param parent
 	 *            The parent of this rule, if applicable. May be null.
 	 */
-	public CssRule(String raw, CssRule parent) {
+	public CssRule(final String raw, final CssRule parent) {
 		this.raw = raw;
 		this.parent = parent;
 		if (parent != null) {
@@ -65,17 +65,17 @@ public class CssRule {
 		}
 	}
 
-	private void add(CssRule cssRule) {
-		this.children.add(cssRule);
-	}
-
 	/**
 	 * Add a declaration to this Rule.
 	 * 
 	 * @param cssDeclaration
 	 */
-	public void add(CssDeclaration cssDeclaration) {
+	public void add(final CssDeclaration cssDeclaration) {
 		this.declarations.add(cssDeclaration);
+	}
+
+	private void add(final CssRule cssRule) {
+		this.children.add(cssRule);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class CssRule {
 	 * 
 	 * @param cssSelector
 	 */
-	public void add(CssSelector cssSelector) {
+	public void add(final CssSelector cssSelector) {
 		this.selectors.add(cssSelector);
 	}
 
@@ -105,12 +105,12 @@ public class CssRule {
 	 *            The desired level of compactness.
 	 * @return The valid, usable version of this document
 	 */
-	public String toString(Compact compact) {
+	public String toString(final Compact compact) {
 		return toString(compact, 0);
 	}
 
-	private String toString(Compact compact, int depth) {
-		AjahStringBuilder string = new AjahStringBuilder(compact);
+	private String toString(final Compact compact, final int depth) {
+		final AjahStringBuilder string = new AjahStringBuilder(compact);
 		string.append(Report.tabs(depth), Compact.LOW);
 		string.append(this.raw);
 		string.append(' ', Compact.MED);
@@ -118,7 +118,7 @@ public class CssRule {
 		string.append(' ', Compact.MED);
 		string.append('\n', Compact.LOW);
 		int i = 1;
-		for (CssDeclaration declaration : this.declarations) {
+		for (final CssDeclaration declaration : this.declarations) {
 			string.append(Report.tabs(depth + 1), Compact.LOW);
 			if (i++ == this.declarations.size() && compact.ge(Compact.MAX)) {
 				string.append(declaration.toString(false));
@@ -127,7 +127,7 @@ public class CssRule {
 			}
 			string.append('\n', Compact.MED);
 		}
-		for (CssRule child : this.children) {
+		for (final CssRule child : this.children) {
 			string.append(child.toString(compact, depth + 1));
 			string.append('\n', Compact.MED);
 		}

@@ -44,7 +44,7 @@ public class ResourceNotFoundException extends Exception {
 	 * @param request
 	 *            The request that spawned the error.
 	 */
-	public ResourceNotFoundException(String reason, HttpServletRequest request) {
+	public ResourceNotFoundException(final String reason, final HttpServletRequest request) {
 		super(reason);
 		this.request = request;
 	}

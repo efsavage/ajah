@@ -48,6 +48,24 @@ public class AccessLoggerFilter extends AjahFilter {
 
 	private static final Logger log = Logger.getLogger(AccessLoggerFilter.class.getName());
 
+	/**
+	 * Determines if a request should be logged.
+	 * 
+	 * @param request
+	 *            The request to examine, required.
+	 * @return true if the request should be logged, otherwise false.
+	 */
+	private static boolean isLoggable(final HttpServletRequest request) {
+		if (request.getAttribute("logMe") != null) {
+			return Boolean.TRUE.equals(request.getAttribute("logMe"));
+		}
+		final String uri = request.getRequestURI();
+		if (uri.equals("/favicon.ico") || uri.endsWith(".css") || uri.endsWith(".js")) {
+			return false;
+		}
+		return true;
+	}
+
 	@Autowired
 	private TaskExecutor taskExecutor;
 
@@ -71,24 +89,6 @@ public class AccessLoggerFilter extends AjahFilter {
 				this.taskExecutor.execute(new RequestEventHandler(requestEvent, this.requestEventManager));
 			}
 		}
-	}
-
-	/**
-	 * Determines if a request should be logged.
-	 * 
-	 * @param request
-	 *            The request to examine, required.
-	 * @return true if the request should be logged, otherwise false.
-	 */
-	private static boolean isLoggable(HttpServletRequest request) {
-		if (request.getAttribute("logMe") != null) {
-			return Boolean.TRUE.equals(request.getAttribute("logMe"));
-		}
-		String uri = request.getRequestURI();
-		if (uri.equals("/favicon.ico") || uri.endsWith(".css") || uri.endsWith(".js")) {
-			return false;
-		}
-		return true;
 	}
 
 }

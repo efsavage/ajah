@@ -48,7 +48,7 @@ public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 	 * @param text
 	 *            The text of the link, nullable.
 	 */
-	public Anchor(URL url, String text) {
+	public Anchor(final URL url, final String text) {
 		this.href = url.toExternalForm();
 		this.text = text;
 	}
@@ -72,13 +72,13 @@ public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 	}
 
 	@Override
-	protected void renderBeforeChildren(Writer out) throws IOException {
-		out.write(this.text);
+	protected void renderAttributes(final Writer out) throws IOException {
+		write(out, "href", this.href);
 	}
 
 	@Override
-	protected void renderAttributes(Writer out) throws IOException {
-		write(out, "href", this.href);
+	protected void renderBeforeChildren(final Writer out) throws IOException {
+		out.write(this.text);
 	}
 
 }

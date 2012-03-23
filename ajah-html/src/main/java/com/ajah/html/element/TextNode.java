@@ -35,6 +35,12 @@ public class TextNode implements HtmlElement<TextNode> {
 
 	private String text;
 
+	/**
+	 * Public constructor with text.
+	 * 
+	 * @param text
+	 *            The text contained in this node.
+	 */
 	public TextNode(String text) {
 		this.text = text;
 	}

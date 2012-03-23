@@ -31,16 +31,6 @@ import com.ajah.util.net.HttpClient;
 public class HttpClientTest {
 
 	/**
-	 * Tests {@link HttpClient#getString(String)}.
-	 * 
-	 * @throws IOException
-	 */
-	@Test
-	public void testString() throws IOException {
-		Assert.assertTrue(HttpClient.getString("http://efsavage.com").length() > 0);
-	}
-
-	/**
 	 * 
 	 * Tests {@link HttpClient#getBytes(String)}.
 	 * 
@@ -49,6 +39,16 @@ public class HttpClientTest {
 	@Test
 	public void testBytes() throws IOException {
 		Assert.assertTrue(HttpClient.getBytes("http://efsavage.com/blog/wp-content/uploads/2012/01/barcode-150x150.png").length > 0);
+	}
+
+	/**
+	 * Tests {@link HttpClient#getString(String)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testString() throws IOException {
+		Assert.assertTrue(HttpClient.getString("http://efsavage.com").length() > 0);
 	}
 
 }

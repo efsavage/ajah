@@ -48,7 +48,7 @@ public class HtmlPage {
 	 * @param version
 	 *            The version of this document, required.
 	 */
-	public HtmlPage(HtmlVersion version) {
+	public HtmlPage(final HtmlVersion version) {
 		AjahUtils.requireParam(version, "version");
 		this.version = version;
 		this.html = new Html(version);
@@ -57,14 +57,26 @@ public class HtmlPage {
 	}
 
 	/**
-	 * Adds a new {@link Title} element to this page's {@link Body} element.
+	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
 	 * 
-	 * @param title
-	 *            The text of the title element.
+	 * @param div
+	 *            The div element to add to the page's body.
 	 * @return This page.
 	 */
-	public HtmlPage title(String title) {
-		this.head.add(new Title(title));
+	public HtmlPage add(final Div div) {
+		this.body.add(div);
+		return this;
+	}
+
+	/**
+	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
+	 * 
+	 * @param paragraph
+	 *            The paragraph to add to the page's body.
+	 * @return This page.
+	 */
+	private HtmlPage add(final Paragraph paragraph) {
+		this.body.add(paragraph);
 		return this;
 	}
 
@@ -75,40 +87,8 @@ public class HtmlPage {
 	 *            The text of the paragraph.
 	 * @return This page.
 	 */
-	public HtmlPage addParagraph(String paragraphText) {
+	public HtmlPage addParagraph(final String paragraphText) {
 		return add(new Paragraph().text(paragraphText));
-	}
-
-	/**
-	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
-	 * 
-	 * @param paragraph
-	 *            The paragraph to add to the page's body.
-	 * @return This page.
-	 */
-	private HtmlPage add(Paragraph paragraph) {
-		this.body.add(paragraph);
-		return this;
-	}
-
-	/**
-	 * Adds a {@link Paragraph} element to this page's {@link Body} element.
-	 * 
-	 * @param div
-	 *            The div element to add to the page's body.
-	 * @return This page.
-	 */
-	public HtmlPage add(Div div) {
-		this.body.add(div);
-		return this;
-	}
-
-	/**
-	 * @param out
-	 * @throws IOException
-	 */
-	public void render(OutputStream out) throws IOException {
-		out.write(this.html.render().getBytes());
 	}
 
 	/**
@@ -118,6 +98,26 @@ public class HtmlPage {
 	 */
 	public String render() {
 		return this.html.render();
+	}
+
+	/**
+	 * @param out
+	 * @throws IOException
+	 */
+	public void render(final OutputStream out) throws IOException {
+		out.write(this.html.render().getBytes());
+	}
+
+	/**
+	 * Adds a new {@link Title} element to this page's {@link Body} element.
+	 * 
+	 * @param title
+	 *            The text of the title element.
+	 * @return This page.
+	 */
+	public HtmlPage title(final String title) {
+		this.head.add(new Title(title));
+		return this;
 	}
 
 }

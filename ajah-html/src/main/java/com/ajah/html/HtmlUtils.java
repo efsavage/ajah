@@ -33,9 +33,9 @@ public class HtmlUtils {
 	 *            The text to translate.
 	 * @return The translated html.
 	 */
-	public static String toBodyHtml(String plainText) {
+	public static String toBodyHtml(final String plainText) {
 		// TODO handle other formatting (bulleted lists, paragraphs, etc.)
-		String htmlText = plainText.trim().replaceAll("\n", "<br />\n");
+		final String htmlText = plainText.trim().replaceAll("\n", "<br />\n");
 		return htmlText;
 	}
 

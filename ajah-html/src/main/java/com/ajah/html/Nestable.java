@@ -33,6 +33,6 @@ public interface Nestable {
 	 *            Element to be added
 	 * @return Returns the value added for fluid-style coding.
 	 */
-	public <R extends HtmlElement<R>> R add(R element);
+	public <R extends HtmlElement<R>> R add(final R element);
 
 }

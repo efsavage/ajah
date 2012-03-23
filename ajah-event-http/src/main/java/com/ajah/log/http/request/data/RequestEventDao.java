@@ -29,6 +29,18 @@ import com.ajah.spring.jdbc.DatabaseAccessException;
  */
 public interface RequestEventDao extends AjahDao<RequestEventId, RequestEvent> {
 
-	int insert(final RequestEvent requestEvent, final boolean b) throws DatabaseAccessException;
+	/**
+	 * Inserts a RequestEvent into the database.
+	 * 
+	 * @param requestEvent
+	 *            The requestEvent to insert.
+	 * @param delayed
+	 *            Should the insert be delayed?
+	 * @return The number of rows insertd. If delayed is true will always be
+	 *         zero.
+	 * @throws DatabaseAccessException
+	 *             If the record could not be inserted.
+	 */
+	int insert(final RequestEvent requestEvent, final boolean delayed) throws DatabaseAccessException;
 
 }

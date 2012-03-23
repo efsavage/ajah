@@ -44,8 +44,61 @@ public class CssParser {
 	private static final Pattern propertyPattern = Pattern.compile("\\*{0,1}([-a-z]+)\\s*:\\s*(.*?);$");
 	private static final CssParser INSTANCE = new CssParser();
 
-	private CssParser() {
-		// Private Constructor
+	/**
+	 * Return singleton instance of parser.
+	 * 
+	 * @return Singleton instance of parser.
+	 */
+	public static CssParser getInstance() {
+		return INSTANCE;
+	}
+
+	private static List<String> getLines(final String rawCss) {
+		final List<String> lines = new ArrayList<>();
+		StringBuffer line = new StringBuffer();
+		for (final char c : rawCss.toCharArray()) {
+			switch (c) {
+			case '{':
+				if (!StringUtils.isBlank(line.toString())) {
+					lines.add(line.toString().trim());
+					line = new StringBuffer();
+				}
+				lines.add("{");
+				break;
+			case '}':
+				if (!StringUtils.isBlank(line.toString())) {
+					lines.add(line.toString().trim());
+					line = new StringBuffer();
+				}
+				lines.add("}");
+				break;
+			case ';':
+				line.append(';');
+				final String strLine = line.toString().trim();
+				if (strLine.startsWith("base64")) {
+					final String previousLine = lines.get(lines.size() - 1);
+					lines.remove(previousLine);
+					lines.add(previousLine + strLine);
+				} else {
+					lines.add(strLine);
+				}
+				line = new StringBuffer();
+				break;
+			case '\r':
+				break;
+			case '_':
+				break;
+			case '\n':
+				break;
+			default:
+				line.append(c);
+			}
+		}
+		return lines;
+	}
+
+	private static CssRule getRule(final String line, final CssRule parent) {
+		return new CssRule(line.replaceAll("\\s\\{", ""), parent);
 	}
 
 	/**
@@ -54,28 +107,28 @@ public class CssParser {
 	 * @param args
 	 * @throws FileNotFoundException
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
-		String rawCss = FileUtils.readFile(args[0]);
-		CssDocument doc = parse(rawCss);
-		for (CssRule rule : doc.getRules()) {
+	public static void main(final String[] args) throws FileNotFoundException {
+		final String rawCss = FileUtils.readFile(args[0]);
+		final CssDocument doc = parse(rawCss);
+		for (final CssRule rule : doc.getRules()) {
 			log.fine(rule.toString());
-			for (CssSelector selector : rule.getSelectors()) {
+			for (final CssSelector selector : rule.getSelectors()) {
 				log.fine(selector.getRaw() + ": " + selector.getType());
 			}
 		}
 	}
 
-	private static CssDocument parse(String rawCss) {
-		List<CssRule> rules = new ArrayList<>();
-		List<String> lines = getLines(rawCss);
+	private static CssDocument parse(final String rawCss) {
+		final List<CssRule> rules = new ArrayList<>();
+		final List<String> lines = getLines(rawCss);
 		log.finer(lines.size() + " lines");
-		for (String line : lines) {
+		for (final String line : lines) {
 			log.finest("Line: " + line);
 		}
 		CssRule currentRule = null;
 		boolean inComment = false;
 		for (int i = 0; i < lines.size(); i++) {
-			String trimmed = trim(lines.get(i));
+			final String trimmed = trim(lines.get(i));
 			if (StringUtils.isBlank(trimmed)) {
 				// Blank line
 			} else if (trimmed.startsWith("//")) {
@@ -97,12 +150,12 @@ public class CssParser {
 			} else if (trimmed.equals("{")) {
 				// We're in a rule, this line is extraneous
 			} else if (propertyPattern.matcher(trimmed).matches()) {
-				Matcher matcher = propertyPattern.matcher(trimmed);
+				final Matcher matcher = propertyPattern.matcher(trimmed);
 				matcher.find();
-				String property = matcher.group(1);
-				CssProperty cssProperty = CssProperty.get(property);
+				final String property = matcher.group(1);
+				final CssProperty cssProperty = CssProperty.get(property);
 				if (cssProperty != null) {
-					CssDeclaration declaration = new CssDeclaration(currentRule, cssProperty, matcher.group(2));
+					final CssDeclaration declaration = new CssDeclaration(currentRule, cssProperty, matcher.group(2));
 					log.finest("Declaration: " + declaration.toString());
 					log.finest("\tValue: " + matcher.group(2));
 				} else {
@@ -115,15 +168,15 @@ public class CssParser {
 			}
 		}
 		int i = 0;
-		for (CssRule rule : rules) {
+		for (final CssRule rule : rules) {
 			rule.add(parseSelector(rule.getRaw(), i++));
 		}
 		Collections.sort(rules, RuleComparator.INSTANCE);
 		return new CssDocument().addAll(rules);
 	}
 
-	private static CssSelector parseSelector(String raw, int position) {
-		CssSelector selector = new CssSelector(raw, position);
+	private static CssSelector parseSelector(final String raw, final int position) {
+		final CssSelector selector = new CssSelector(raw, position);
 		if (raw.matches("[a-z0-9]+")) {
 			// Simple element-level selector
 			selector.setType(CssSelectorType.ELEMENT);
@@ -148,65 +201,12 @@ public class CssParser {
 		return selector;
 	}
 
-	private static List<String> getLines(String rawCss) {
-		List<String> lines = new ArrayList<>();
-		StringBuffer line = new StringBuffer();
-		for (char c : rawCss.toCharArray()) {
-			switch (c) {
-			case '{':
-				if (!StringUtils.isBlank(line.toString())) {
-					lines.add(line.toString().trim());
-					line = new StringBuffer();
-				}
-				lines.add("{");
-				break;
-			case '}':
-				if (!StringUtils.isBlank(line.toString())) {
-					lines.add(line.toString().trim());
-					line = new StringBuffer();
-				}
-				lines.add("}");
-				break;
-			case ';':
-				line.append(';');
-				String strLine = line.toString().trim();
-				if (strLine.startsWith("base64")) {
-					String previousLine = lines.get(lines.size() - 1);
-					lines.remove(previousLine);
-					lines.add(previousLine + strLine);
-				} else {
-					lines.add(strLine);
-				}
-				line = new StringBuffer();
-				break;
-			case '\r':
-				break;
-			case '_':
-				break;
-			case '\n':
-				break;
-			default:
-				line.append(c);
-			}
-		}
-		return lines;
-	}
-
-	private static String trim(String line) {
+	private static String trim(final String line) {
 		return line.replaceAll("/\\*.*\\*/", "").replaceAll("/\\/{2,}/.*", "").trim();
 	}
 
-	private static CssRule getRule(String line, CssRule parent) {
-		return new CssRule(line.replaceAll("\\s\\{", ""), parent);
-	}
-
-	/**
-	 * Return singleton instance of parser.
-	 * 
-	 * @return Singleton instance of parser.
-	 */
-	public static CssParser getInstance() {
-		return INSTANCE;
+	private CssParser() {
+		// Private Constructor
 	}
 
 	/**
@@ -216,9 +216,9 @@ public class CssParser {
 	 *            The raw CSS.
 	 * @return The resulting CssDocument.
 	 */
-	public CssDocument parse(InputStream css) {
+	public CssDocument parse(final InputStream css) {
 		AjahUtils.requireParam(css, "css");
-		Scanner scanner = new Scanner(css).useDelimiter("\\A");
+		final Scanner scanner = new Scanner(css).useDelimiter("\\A");
 		if (scanner.hasNext()) {
 			return parse(scanner.next());
 		}

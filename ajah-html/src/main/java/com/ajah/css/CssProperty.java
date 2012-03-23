@@ -237,7 +237,11 @@ public enum CssProperty {
 	/** -moz-box-sizing */
 	MOZ_BOX_SIZING("-moz-box-sizing"),
 	/** -moz-transition */
-	MOZ_TRANSITION("-moz-transition"), MS_INTERPOLATION_MODE("-ms-interpolation-mode"),
+	MOZ_TRANSITION("-moz-transition"),
+	/**
+	 * -ms-interpolation-mode
+	 */
+	MS_INTERPOLATION_MODE("-ms-interpolation-mode"),
 	/** -ms-text-size-adjust */
 	MS_TEXT_SIZE_ADJUST("-ms-text-size-adjust"),
 	/** -ms-transition */

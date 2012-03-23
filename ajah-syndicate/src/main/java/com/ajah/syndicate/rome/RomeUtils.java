@@ -23,11 +23,17 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
+import com.ajah.html.HtmlUtils;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.util.StringUtils;
+import com.ajah.util.data.XmlString;
+import com.ajah.util.net.AjahMimeType;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;

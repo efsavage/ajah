@@ -40,7 +40,7 @@ public class RuleComparator implements Comparator<CssRule> {
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public int compare(CssRule first, CssRule second) {
+	public int compare(final CssRule first, final CssRule second) {
 		int retVal = CompareUtils.compare(first.getSelectors().get(0).getType().getSpecificity(), second.getSelectors().get(0).getType().getSpecificity());
 		if (retVal == 0) {
 			retVal = CompareUtils.compare(first.getSelectors().get(0).getPosition(), second.getSelectors().get(0).getPosition());

@@ -39,6 +39,6 @@ public interface HtmlElement<T> {
 	 *            pretty-printing.
 	 * @throws IOException
 	 */
-	void render(Writer out, int depth) throws IOException;
+	void render(final Writer out, final int depth) throws IOException;
 
 }

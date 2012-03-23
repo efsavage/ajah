@@ -29,7 +29,8 @@ import javax.servlet.ServletResponse;
  * 
  */
 public class BaseFilter implements Filter {
-	public FilterConfig filterConfig;
+
+	protected FilterConfig filterConfig;
 
 	/**
 	 * Does nothing.

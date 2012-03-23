@@ -34,14 +34,14 @@ public class StreamUtils {
 	 * 
 	 * @param input
 	 *            The stream to convert, required.
-	 * @return
+	 * @return byte array with the contents of the stream.
 	 * @throws IOException
 	 */
-	public static byte[] toByteArray(InputStream inputStream) throws IOException {
+	public static byte[] toByteArray(final InputStream inputStream) throws IOException {
 		AjahUtils.requireParam(inputStream, "inputStream");
-		byte[] buffer = new byte[1024];
+		final byte[] buffer = new byte[1024];
 		int read;
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		final ByteArrayOutputStream output = new ByteArrayOutputStream();
 		while ((read = inputStream.read(buffer)) != -1) {
 			output.write(buffer, 0, read);
 		}

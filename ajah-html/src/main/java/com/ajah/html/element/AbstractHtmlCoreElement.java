@@ -73,17 +73,17 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 
 	private Map<String, String> dataElements;
 
-	protected void writeCore(Writer out) throws IOException {
+	protected void writeCore(final Writer out) throws IOException {
 		write(out, "id", getId());
 		write(out, "class", getCssClass());
 		if (this.dataElements != null) {
-			for (String key : this.dataElements.keySet()) {
+			for (final String key : this.dataElements.keySet()) {
 				write(out, "data-" + key, this.dataElements.get(key));
 			}
 		}
 	}
 
-	protected void write(Writer out, String name, String value) throws IOException {
+	protected void write(final Writer out, final String name, final String value) throws IOException {
 		if (!StringUtils.isBlank(value)) {
 			out.write(" ");
 			out.write(name);
@@ -107,7 +107,7 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T css(String _cssClass) {
+	public T css(final String _cssClass) {
 		if (getCssClass() != null) {
 			setCssClass(getCssClass() + " " + _cssClass);
 		} else {
@@ -120,12 +120,12 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T data(String key, String value) {
+	public T data(final String key, final String value) {
 		addDataElement(key, value);
 		return getThis();
 	}
 
-	private synchronized void addDataElement(String key, String value) {
+	private synchronized void addDataElement(final String key, final String value) {
 		if (this.dataElements == null) {
 			this.dataElements = new HashMap<>();
 		}

@@ -16,12 +16,17 @@ public class FilterServletOutputStream extends ServletOutputStream {
 
 	private final DataOutputStream stream;
 
+	/**
+	 * Public constructor with wrapped/captured output stream.
+	 * 
+	 * @param output
+	 */
 	public FilterServletOutputStream(final OutputStream output) {
 		this.stream = new DataOutputStream(output);
 	}
 
 	/**
-	 * Calls {@link DataOutputStream#write(byte[]))}.
+	 * Calls {@link DataOutputStream#write(byte[])}.
 	 * 
 	 * @see java.io.OutputStream#write(byte[])
 	 */
