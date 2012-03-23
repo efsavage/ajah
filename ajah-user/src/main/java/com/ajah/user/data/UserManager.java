@@ -66,10 +66,16 @@ public class UserManager {
 	private EmailDao emailDao;
 
 	/**
+	 * Changes a user's password.
+	 * 
 	 * @param userId
+	 *            The ID of the user to update.
 	 * @param password
+	 *            The new password.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public void changePassword(final UserId userId, final Password password) {
+	public void changePassword(final UserId userId, final Password password) throws DatabaseAccessException {
 		this.userDao.update(userId, password);
 	}
 
@@ -122,7 +128,7 @@ public class UserManager {
 	 *             If user is not found.
 	 */
 	public User findUserByEmail(final String address) throws UserNotFoundException {
-		final Email email = this.emailDao.findByField("address", address);
+		final Email email = this.emailDao.findByAddress(address);
 		if (email != null) {
 			log.fine("Found email " + email.getAddress());
 			final User user = this.userDao.findById(email.getUserId());
@@ -142,9 +148,11 @@ public class UserManager {
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public User findUserByUsername(final String username) throws UserNotFoundException {
-		final User user = this.userDao.findByField("username", username);
+	public User findUserByUsername(final String username) throws UserNotFoundException, DatabaseAccessException {
+		final User user = this.userDao.findByUsername(username);
 		if (user != null) {
 			log.fine("Found user by username: " + user.getUsername());
 			return user;
@@ -161,8 +169,10 @@ public class UserManager {
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public User findUserByUsernameOrEmail(final String usernameOrEmail) throws UserNotFoundException {
+	public User findUserByUsernameOrEmail(final String usernameOrEmail) throws UserNotFoundException, DatabaseAccessException {
 		if (Validate.isEmail(usernameOrEmail)) {
 			return findUserByEmail(usernameOrEmail);
 		}
@@ -182,10 +192,12 @@ public class UserManager {
 	 *             If the password was not correct
 	 * @throws UserNotFoundException
 	 *             If no user could be found for the username supplied
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public User getUser(final String username, final Password password) throws AuthenicationFailureException, UserNotFoundException {
+	public User getUser(final String username, final Password password) throws AuthenicationFailureException, UserNotFoundException, DatabaseAccessException {
 		AjahUtils.requireParam(username, "username");
-		final User user = this.userDao.findByFields(new String[] { "username", "password" }, new String[] { username, password.toString() });
+		final User user = this.userDao.findByUsernameAndPassword(username, password.toString());
 		if (user != null) {
 			log.fine("getUser successful");
 			return user;

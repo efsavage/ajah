@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserNotFoundException;
@@ -76,8 +77,10 @@ public class LogInManager {
 	 * @param type
 	 *            Type of login attempt
 	 * @return Login record, will never return null.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public LogIn login(final String username, final Password password, final String ip, final LogInSource source, final LogInType type) {
+	public LogIn login(final String username, final Password password, final String ip, final LogInSource source, final LogInType type) throws DatabaseAccessException {
 		log.fine("Login by user/pass attempt for: " + username);
 		final LogIn login = new LogIn();
 		login.setIp(ip);
@@ -116,8 +119,10 @@ public class LogInManager {
 	 * @param type
 	 *            Type of login attempt
 	 * @return Login record, will never be null.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) {
+	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) throws DatabaseAccessException {
 		log.fine("Login by token attempt for: " + token);
 		final String decrypted = Crypto.fromAES(token);
 		log.fine("token contents: " + decrypted);

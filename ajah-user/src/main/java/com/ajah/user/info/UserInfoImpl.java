@@ -48,8 +48,11 @@ public class UserInfoImpl implements UserInfo {
 	private Integer birthYear;
 	private EmailId primaryEmailId;
 
+	/**
+	 * Empty public constructor.
+	 */
 	public UserInfoImpl() {
-
+		// Empty
 	}
 
 	/**

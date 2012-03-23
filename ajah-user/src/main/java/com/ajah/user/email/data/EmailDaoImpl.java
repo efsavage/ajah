@@ -36,8 +36,8 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, EmailImpl> imp
 	// Logger.getLogger(EmailDao.class.getName());
 
 	@Override
-	public Email findByField(final String field, final String value) {
-		return super.findByField(field, value);
+	public Email findByAddress(final String address) {
+		return super.findByField("address", address);
 	}
 
 	/**

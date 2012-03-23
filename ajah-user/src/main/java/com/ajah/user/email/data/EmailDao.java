@@ -30,6 +30,13 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	@Override
 	int insert(final Email email);
 
-	Email findByField(final String string, final String address);
+	/**
+	 * Finds an email record by its email address.
+	 * 
+	 * @param address
+	 *            The address to query, required.
+	 * @return The matching email, if found.
+	 */
+	Email findByAddress(String address);
 
 }

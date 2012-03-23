@@ -15,6 +15,7 @@
 package com.ajah.user.data;
 
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.util.crypto.Password;
@@ -27,15 +28,57 @@ import com.ajah.util.crypto.Password;
  */
 public interface UserDao extends AjahDao<UserId, User> {
 
-	public void insert(final User user, final Password password);
+	/**
+	 * Inserts a User into the database.
+	 * 
+	 * @param user
+	 *            The user to insert.
+	 * @param password
+	 *            The user's password.
+	 * @return The number of rows inserted.
+	 * @throws DatabaseAccessException
+	 *             If the record could not be inserted.
+	 */
+	public int insert(final User user, final Password password) throws DatabaseAccessException;
 
-	public void update(final UserId userId, final Password password);
-
-	public User findByFields(final String[] strings, final String[] strings2);
+	/**
+	 * Updates a user's password in the database.
+	 * 
+	 * @param userId
+	 *            The ID of the user to update.
+	 * @param password
+	 *            The user's new password.
+	 * @return The number of rows inserted.
+	 * @throws DatabaseAccessException
+	 *             If the record could not be inserted.
+	 */
+	public int update(final UserId userId, final Password password) throws DatabaseAccessException;
 
 	@Override
 	public User findById(final UserId userId);
 
-	public User findByField(final String string, final String username);
+	/**
+	 * Finds a user by username field.
+	 * 
+	 * @param username
+	 *            The username to query
+	 * @return The user, if found, otherwise null.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
+	public User findByUsername(String username) throws DatabaseAccessException;
+
+	/**
+	 * Finds a user by username and password.
+	 * 
+	 * @param username
+	 *            The username to query.
+	 * @param password
+	 *            The (hashed) password to query.
+	 * @return The user, if found, otherwise null.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
+	public User findByUsernameAndPassword(String username, String password) throws DatabaseAccessException;
 
 }

@@ -50,13 +50,13 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	// }
 
 	@Override
-	public User findByField(final String field, final String value) {
-		return super.findByField(field, value);
+	public User findByUsername(final String username) {
+		return super.findByField("username", username);
 	}
 
 	@Override
-	public User findByFields(final String[] fields, final String[] values) {
-		return super.findByFields(fields, values);
+	public User findByUsernameAndPassword(final String username, final String password) {
+		return super.findByFields(new String[] { "username", "password" }, new String[] { username, password });
 	}
 
 	/**
@@ -70,12 +70,12 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *            The password for the user, required.
 	 */
 	@Override
-	public void insert(final User user, final Password password) {
+	public int insert(final User user, final Password password) {
 		AjahUtils.requireParam(user, "user");
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)", new Object[] { user.getId().toString(), user.getUsername(), password.toString(),
-				user.getStatus().getId() + "", user.getType().getId() + "" });
+		return this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)",
+				new Object[] { user.getId().toString(), user.getUsername(), password.toString(), user.getStatus().getId() + "", user.getType().getId() + "" });
 	}
 
 	/**
@@ -87,11 +87,11 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *            Password to update to, required.
 	 */
 	@Override
-	public void update(final UserId userId, final Password password) {
+	public int update(final UserId userId, final Password password) {
 		AjahUtils.requireParam(userId, "userId");
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
+		return this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
 	}
 
 }

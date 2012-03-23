@@ -149,7 +149,18 @@ public interface UserInfo extends Identifiable<UserId> {
 	 */
 	Integer getBirthYear();
 
+	/**
+	 * Returns the date the user was created.
+	 * 
+	 * @return The creation date of the user.
+	 */
 	Date getCreated();
 
+	/**
+	 * Sets the date the user was created.
+	 * 
+	 * @param date
+	 *            THe creation date of the user.
+	 */
 	void setCreated(final Date date);
 }
