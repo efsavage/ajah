@@ -17,6 +17,8 @@ package com.ajah.util.io.file;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -126,6 +128,34 @@ public class FileUtils {
 	}
 
 	/**
+	 * Reads a file into a byte array.
+	 * 
+	 * @param file
+	 *            The file to read, required.
+	 * @return The data in the file as a byte array.
+	 * @throws IOException
+	 *             If the file could not be read.
+	 */
+	public static byte[] readFileAsBytes(final File file) throws IOException {
+		AjahUtils.requireParam(file, "file");
+		if (!file.exists()) {
+			throw new FileNotFoundException(file.getAbsolutePath());
+		}
+
+		final FileInputStream in = new FileInputStream(file);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final DataOutputStream dos = new DataOutputStream(baos);
+		final byte[] data = new byte[4096];
+		int count = in.read(data);
+		while (count != -1) {
+			dos.write(data, 0, count);
+			count = in.read(data);
+		}
+
+		return baos.toByteArray();
+	}
+
+	/**
 	 * Reads a file and returns the lines of it as a list of strings. Handles
 	 * opening a closing the file. If there are any errors other than that the
 	 * file does not exist, will return an empty or partial list. Will ignore
@@ -179,6 +209,38 @@ public class FileUtils {
 		} catch (final FileNotFoundException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
+		}
+	}
+
+	/**
+	 * Writes a byte array to a {@link File}. Will create parent directories for
+	 * the file if necessary.
+	 * 
+	 * @param file
+	 *            The file to write to, required.
+	 * @param in
+	 *            The stream to read from.
+	 * @return The number of bytes read/written.
+	 * @throws IOException
+	 */
+	public static long write(final File file, final byte[] data) throws IOException {
+		AjahUtils.requireParam(data, "data");
+		BufferedOutputStream out = null;
+		try {
+			if (file.getParentFile() != null) {
+				file.getParentFile().mkdirs();
+			}
+			out = new BufferedOutputStream(new FileOutputStream(file));
+			long total = 0;
+			for (int i = 0; i < data.length; i++) {
+				// TODO Is this faster or should we chunk it?
+				total++;
+				out.write(data, i, 1);
+			}
+			log.finest("Wrote " + total + " bytes to " + file.getAbsolutePath());
+			return total;
+		} finally {
+			IOUtils.safeClose(out);
 		}
 	}
 
