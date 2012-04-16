@@ -26,6 +26,8 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
+import com.ajah.util.AjahUtils;
+
 /**
  * Utilities for processing images.
  * 
@@ -64,7 +66,11 @@ public class ImageUtils {
 	 *             If the image could not be analyzed.
 	 */
 	public static ImageInfo getInfo(final byte[] data) throws IOException {
+		AjahUtils.requireParam(data, "data");
 		final BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
+		if (image == null) {
+			throw new IllegalArgumentException("An image could not be constructed from the data");
+		}
 		final ImageInfo info = new ImageInfo();
 		info.setHeight(image.getHeight());
 		info.setWidth(image.getWidth());
