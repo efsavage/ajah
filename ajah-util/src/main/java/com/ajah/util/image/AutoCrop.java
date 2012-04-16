@@ -48,6 +48,25 @@ public class AutoCrop {
 	 */
 	public static byte[] autoCrop(final byte[] data, int fuzziness) throws IOException {
 		final BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
+		BufferedImage cropped = autoCrop(image, fuzziness);
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ImageIO.write(cropped, "png", out);
+		return out.toByteArray();
+	}
+
+	/**
+	 * Crops an image based on the value of the top left pixel.
+	 * 
+	 * @param data
+	 *            The image data.
+	 * @param fuzziness
+	 *            The fuzziness allowed for minor deviations (~5 is
+	 *            recommended).
+	 * @return The new image data, cropped.
+	 * @throws IOException
+	 *             If the image could not be read.
+	 */
+	public static BufferedImage autoCrop(final BufferedImage image, int fuzziness) throws IOException {
 		final Color color = new Color(image.getRGB(0, 0));
 		boolean stop = false;
 		int cropTop = 0;
@@ -126,9 +145,7 @@ public class AutoCrop {
 		log.finest("Cropping right " + (image.getWidth() - cropRight) + " rows");
 
 		final BufferedImage cropped = image.getSubimage(cropLeft, cropTop, cropRight - cropLeft, cropBot - cropTop);
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ImageIO.write(cropped, "png", out);
-		return out.toByteArray();
+		return cropped;
 	}
 
 }
