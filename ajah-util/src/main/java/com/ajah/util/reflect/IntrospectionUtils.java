@@ -153,4 +153,18 @@ public class IntrospectionUtils {
 		return ToStringable.class.isAssignableFrom(field.getType());
 	}
 
+	/**
+	 * Checks to see if the field's type is a primitive byte, short, int,
+	 * long,float, double boolean or char.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a String
+	 */
+	public static boolean isPrimitive(Field field) {
+		return int.class.isAssignableFrom(field.getType()) || long.class.isAssignableFrom(field.getType()) || boolean.class.isAssignableFrom(field.getType())
+				|| byte.class.isAssignableFrom(field.getType()) || char.class.isAssignableFrom(field.getType()) || float.class.isAssignableFrom(field.getType())
+				|| double.class.isAssignableFrom(field.getType()) || short.class.isAssignableFrom(field.getType());
+	}
+
 }
