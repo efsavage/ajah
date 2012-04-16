@@ -174,9 +174,19 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				} else if (IntrospectionUtils.isIdentifiableEnum(field)) {
 					propSet(entity, getProp(field, props), ReflectionUtils.findEnumById(field, rs.getString(column)));
 				} else if (IntrospectionUtils.isInt(field)) {
-					propSet(entity, getProp(field, props), Integer.valueOf(rs.getInt(column)));
+					if (rs.getObject(column) == null && IntrospectionUtils.isPrimitive(field)) {
+						log.warning("Attempting to set a null value on a primitive int field, using zero");
+						propSet(entity, getProp(field, props), Integer.valueOf(0));
+					} else {
+						propSet(entity, getProp(field, props), Integer.valueOf(rs.getInt(column)));
+					}
 				} else if (IntrospectionUtils.isLong(field)) {
-					propSet(entity, getProp(field, props), Long.valueOf(rs.getLong(column)));
+					if (rs.getObject(column) == null && IntrospectionUtils.isPrimitive(field)) {
+						log.warning("Attempting to set a null value on a primitive long field, using zero");
+						propSet(entity, getProp(field, props), Long.valueOf(0));
+					} else {
+						propSet(entity, getProp(field, props), Long.valueOf(rs.getLong(column)));
+					}
 				} else if (IntrospectionUtils.isBoolean(field)) {
 					propSet(entity, getProp(field, props), Boolean.valueOf(rs.getBoolean(column)));
 				} else if (IntrospectionUtils.isEnum(field)) {
