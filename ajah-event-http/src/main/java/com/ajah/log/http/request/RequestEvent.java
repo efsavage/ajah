@@ -15,6 +15,7 @@
  */
 package com.ajah.log.http.request;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,11 @@ public class RequestEvent implements Event<RequestEventId> {
 
 	private long start;
 	private long end;
+	private int minute;
+	private int hour;
+	private int day;
+	private int month;
+	private int year;
 	private RequestEventId id;
 	private HttpMethod method;
 	private String uri;
@@ -67,6 +73,13 @@ public class RequestEvent implements Event<RequestEventId> {
 	@Override
 	public void complete() {
 		this.end = System.currentTimeMillis();
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(this.start);
+		this.year = cal.get(Calendar.YEAR);
+		this.month = cal.get(Calendar.MONTH) + (this.year * 12);
+		this.day = cal.get(Calendar.DAY_OF_YEAR) + (this.month * 31);
+		this.hour = cal.get(Calendar.HOUR_OF_DAY) + (this.day * 24);
+		this.minute = cal.get(Calendar.MINUTE) + (this.hour * 60);
 	}
 
 	/**
