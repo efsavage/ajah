@@ -264,11 +264,11 @@ public class FileUtils {
 			}
 			out = new BufferedOutputStream(new FileOutputStream(file));
 			final byte buf[] = new byte[1024];
-			int len;
+			int read;
 			long total = 0;
-			while ((len = in.read(buf)) > 0) {
-				total += len;
-				out.write(buf, 0, len);
+			while ((read = in.read(buf)) != -1) {
+				total += read;
+				out.write(buf, 0, read);
 			}
 			log.finest("Wrote " + total + " bytes to " + file.getAbsolutePath());
 			return total;
