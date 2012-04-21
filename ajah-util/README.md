@@ -1,12 +1,11 @@
 Ajah Utility Library
 =============
 
-This library providers various utility methods and helper classes.  The key requirement of this library is that it has *no dependencies outside of the JDK*.
+This library provides various utility methods and helper classes.  The key requirement of this library is that it has *no dependencies outside of the JDK*.
 
-pom.xml
+Maven
 -------
-
-Add this to the <dependencies> element of your pom.xml
+If you're using [Apache Maven](http://maven.apache.org) to build your project, add this to the <dependencies> element of your pom.xml
 
 		<dependency>
 			<groupId>com.ajah</groupId>
@@ -20,4 +19,4 @@ See JavaDoc.
 
 Requirements
 -------
-This requires JDK 7.
+This library requires [JDK 7](http://jdk7.java.net/).
