@@ -156,4 +156,66 @@ public class ArrayUtils {
 		}
 		return retVal;
 	}
+
+	/**
+	 * Returns the length of an array, or zero if he array is null.
+	 * 
+	 * @param array
+	 *            The array to find the length of, may be null.
+	 * @return The length of an array, or zero if he array is null.
+	 */
+	public static int safeLength(final Object[] array) {
+		if (array == null) {
+			return 0;
+		}
+		return array.length;
+	}
+
+	/**
+	 * Determines if an array has any actual objects in it. Will return true if:
+	 * <ul>
+	 * <li>The array is null.</li>
+	 * <li>The array's length is zero.</li>
+	 * <li>The array's contains only nulls.</li>
+	 * </ul>
+	 * 
+	 * @param array
+	 *            The array to test.
+	 * @return Returns true if the array is empty as specified above, otherwise
+	 *         false.
+	 */
+	public static boolean isEmpty(final Object[] array) {
+		if (array == null || array.length < 1) {
+			return true;
+		}
+		for (Object object : array) {
+			if (object != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * A variation of {@link #isEmpty(Object[])} for Strings that checks for
+	 * empty/blank strings.
+	 * 
+	 * @see StringUtils#isBlank(String)
+	 * @param array
+	 *            The array to test.
+	 * @return Returns true if the array is empty as specified above, otherwise
+	 *         false.
+	 */
+	public static boolean isEmpty(final String[] array) {
+		if (array == null || array.length < 1) {
+			return true;
+		}
+		for (Object object : array) {
+			if (object != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
