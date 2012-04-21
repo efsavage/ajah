@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 import org.jets3t.service.S3ServiceException;
+import org.jets3t.service.ServiceException;
 import org.jets3t.service.impl.rest.httpclient.RestS3Service;
 import org.jets3t.service.io.GZipDeflatingInputStream;
 import org.jets3t.service.model.S3Object;
@@ -49,13 +50,16 @@ public class S3Client {
 	 *            The AWS access key to use to authenticate.
 	 * @param secretKey
 	 *            The AWS secret key to use to authenticate.
-	 * @throws S3ServiceException
+	 * @throws S3Exception
 	 *             If an S3 service could not be provisioned.
 	 */
-	public S3Client(String accessKey, String secretKey) throws S3ServiceException {
+	public S3Client(String accessKey, String secretKey) throws S3Exception {
 		AWSCredentials awsCredentials = new AWSCredentials(accessKey, secretKey);
-		this.s3Service = new RestS3Service(awsCredentials);
-		// System.out.println(this.s3Service.listAllBuckets()[0].getName());
+		try {
+			this.s3Service = new RestS3Service(awsCredentials);
+		} catch (S3ServiceException e) {
+			throw new S3Exception(e);
+		}
 	}
 
 	/**
@@ -74,16 +78,54 @@ public class S3Client {
 	 *             If an error occurs storing the object.
 	 */
 	public void put(Bucket bucket, String name, String data) throws S3Exception {
+		byte[] input;
+		try {
+			input = data.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new ConfigException(e);
+		}
+		put(bucket, name, input, true, true);
+	}
+
+	/**
+	 * Puts an object using the default client. Consider using
+	 * {@link S3#put(Bucket, String, String)}.
+	 * 
+	 * @see S3Client#getDefaultClient()
+	 * 
+	 * @param bucket
+	 *            The bucket to put the object into, required.
+	 * @param name
+	 *            The name to store the object as, required.
+	 * @param data
+	 *            The data of the object.
+	 * @param overwrite
+	 *            Overwrite the file if it already exists?
+	 * @param gzip
+	 *            Gzip the data (and add .gz to the end of it)?
+	 * @throws S3Exception
+	 *             If an error occurs storing the object.
+	 */
+	public void put(Bucket bucket, String name, byte[] data, boolean overwrite, boolean gzip) throws S3Exception {
 
 		try {
-			byte[] input = data.getBytes("UTF-8");
-			log.info(input.length + " bytes to upload");
-			S3Object object = new S3Object(name + ".gz");
-			object.setDataInputStream(new GZipDeflatingInputStream(new ByteArrayInputStream(input)));
+			log.info(data.length + " bytes to upload");
+			S3Object object;
+			if (gzip) {
+				object = new S3Object(name + ".gz");
+				object.setDataInputStream(new GZipDeflatingInputStream(new ByteArrayInputStream(data)));
+			} else {
+				object = new S3Object(name);
+				object.setDataInputStream(new ByteArrayInputStream(data));
+			}
+			if (!overwrite && this.s3Service.isObjectInBucket(bucket.getName(), object.getName())) {
+				log.fine(object.getName() + " already exists in bucket " + bucket.getName() + " and overwriting is disabled");
+				return;
+			}
 			object = this.s3Service.putObject(bucket.toString(), object);
 		} catch (UnsupportedEncodingException e) {
 			throw new ConfigException(e);
-		} catch (IOException | S3ServiceException e) {
+		} catch (IOException | ServiceException e) {
 			throw new S3Exception(e);
 		}
 
@@ -99,7 +141,7 @@ public class S3Client {
 		try {
 			// TODO Make this a singleton.
 			return new S3Client(Config.i.get("aws.accessKey"), Config.i.get("aws.secretKey"));
-		} catch (S3ServiceException e) {
+		} catch (S3Exception e) {
 			throw new ConfigException(e);
 		}
 	}
