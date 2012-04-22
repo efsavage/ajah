@@ -32,9 +32,6 @@ import com.ajah.util.AjahUtils;
 @Repository
 public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordRequestId, ResetPasswordRequest, ResetPasswordRequest> {
 
-	// private static final Logger log =
-	// Logger.getLogger(UserDao.class.getName());
-
 	/**
 	 * INSERTs a {@link ResetPasswordRequest}.
 	 * 

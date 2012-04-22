@@ -33,22 +33,6 @@ import com.ajah.util.crypto.Password;
 @Repository
 public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> implements UserDao {
 
-	// private static final Logger log =
-	// Logger.getLogger(UserDao.class.getName());
-
-	// private TransactionTemplate transactionTemplate;
-	//
-	// /**
-	// * Sets the transaction manager.
-	// *
-	// * @param transactionManager
-	// */
-	// @Autowired
-	// public void setTransactionManager(PlatformTransactionManager
-	// transactionManager) {
-	// this.transactionTemplate = new TransactionTemplate(transactionManager);
-	// }
-
 	@Override
 	public User findByUsername(final String username) {
 		return super.findByField("username", username);

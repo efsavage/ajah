@@ -43,9 +43,6 @@ import com.ajah.util.date.DateUtils;
 @Repository
 public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 
-	// private static final Logger log =
-	// Logger.getLogger(MessageDao.class.getName());
-
 	static final class MessageRowMapper extends AbstractAjahRowMapper<MessageId, Message> {
 
 		/**

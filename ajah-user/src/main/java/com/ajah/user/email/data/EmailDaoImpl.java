@@ -32,9 +32,6 @@ import com.ajah.util.AjahUtils;
 @Repository
 public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, EmailImpl> implements EmailDao {
 
-	// private static final Logger log =
-	// Logger.getLogger(EmailDao.class.getName());
-
 	@Override
 	public Email findByAddress(final String address) {
 		return super.findByField("address", address);
