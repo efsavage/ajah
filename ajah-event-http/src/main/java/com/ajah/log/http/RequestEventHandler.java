@@ -16,7 +16,8 @@
 package com.ajah.log.http;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import com.ajah.log.http.request.RequestEvent;
 import com.ajah.log.http.request.data.RequestEventManager;
@@ -29,9 +30,8 @@ import com.ajah.spring.jdbc.DatabaseAccessException;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class RequestEventHandler implements Runnable {
-
-	private static final Logger log = Logger.getLogger(RequestEventHandler.class.getName());
 
 	private final RequestEvent requestEvent;
 	private final RequestEventManager requestEventManager;

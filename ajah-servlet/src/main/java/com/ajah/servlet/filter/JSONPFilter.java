@@ -3,7 +3,6 @@ package com.ajah.servlet.filter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -11,7 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ajah.servlet.tag.table.ForEachTag;
+import lombok.extern.java.Log;
+
 import com.ajah.util.StringUtils;
 
 /**
@@ -20,9 +20,8 @@ import com.ajah.util.StringUtils;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class JSONPFilter extends BaseFilter {
-
-	private static final Logger log = Logger.getLogger(ForEachTag.class.getName());
 
 	/**
 	 * Wraps a JSON response with a JSONP callback, if possible and appropriate.

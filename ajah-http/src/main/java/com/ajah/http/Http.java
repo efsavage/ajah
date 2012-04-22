@@ -18,7 +18,8 @@ package com.ajah.http;
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,9 +41,8 @@ import com.ajah.http.err.UnexpectedResponseCode;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class Http {
-
-	private static final Logger log = Logger.getLogger(Http.class.getName());
 
 	private static String get(final String url) throws IOException, HttpException {
 		URI uri;

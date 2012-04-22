@@ -18,7 +18,8 @@ package com.ajah.util;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 /**
  * I/O Utilities.
@@ -26,9 +27,9 @@ import java.util.logging.Logger;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class IOUtils {
 
-	private static final Logger log = Logger.getLogger(IOUtils.class.getName());
 
 	/**
 	 * Closes a {@link Closeable} object, checking for null and ignoring

@@ -17,9 +17,10 @@ package com.ajah.spring.mvc.servlet.tag;
 
 import java.util.Locale;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.jsp.tagext.TagSupport;
+
+import lombok.extern.java.Log;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
@@ -32,9 +33,9 @@ import com.ajah.util.StringUtils;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public abstract class SpringTag extends TagSupport {
 
-	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
 
 	protected String getMessage(final MessageSourceResolvable resolvable) {
 		final ApplicationContext appContext = (ApplicationContext) this.pageContext.getServletContext().getAttribute("appContext");

@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import com.ajah.util.MathUtils;
 import com.ajah.util.data.DataSizeUnit;
@@ -30,9 +31,9 @@ import com.ajah.util.log.Report;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class FileScan {
 
-	private static final Logger log = Logger.getLogger(FileScan.class.getName());
 
 	private long files;
 	private long bytes;

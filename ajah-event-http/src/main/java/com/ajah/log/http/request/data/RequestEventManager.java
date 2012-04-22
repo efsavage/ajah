@@ -15,7 +15,7 @@
  */
 package com.ajah.log.http.request.data;
 
-import java.util.logging.Logger;
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +31,8 @@ import com.ajah.spring.jdbc.DatabaseAccessException;
  * 
  */
 @Service
+@Log
 public class RequestEventManager {
-
-	private static final Logger log = Logger.getLogger(RequestEventManager.class.getName());
 
 	@Autowired
 	private RequestEventDao requestEventDao;

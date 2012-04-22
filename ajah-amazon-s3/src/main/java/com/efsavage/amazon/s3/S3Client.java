@@ -18,7 +18,8 @@ package com.efsavage.amazon.s3;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.jets3t.service.S3ServiceException;
 import org.jets3t.service.ServiceException;
@@ -37,9 +38,9 @@ import com.ajah.util.config.Config;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class S3Client {
 
-	private static final Logger log = Logger.getLogger(S3Client.class.getName());
 
 	private RestS3Service s3Service;
 

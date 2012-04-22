@@ -17,7 +17,8 @@ package test.ajah.syndicate;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -37,9 +38,8 @@ import com.sun.syndication.io.SAXBuilder;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class ImportTest {
-
-	private static final Logger log = Logger.getLogger(ImportTest.class.getName());
 
 	/**
 	 * Print outlines out for humans to see.

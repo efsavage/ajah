@@ -26,7 +26,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import com.ajah.util.IOUtils;
 import com.ajah.util.lang.NameValuePair;
@@ -37,9 +38,9 @@ import com.ajah.util.lang.NameValuePair;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class FileHashUtils {
 
-	private static final Logger log = Logger.getLogger(FileHashUtils.class.getName());
 
 	/**
 	 * Splits a hash signature into a directory structure so that there will not

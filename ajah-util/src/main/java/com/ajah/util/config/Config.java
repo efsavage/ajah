@@ -21,6 +21,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import lombok.extern.java.Log;
+
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.format.EmailAddress;
 
@@ -31,14 +33,13 @@ import com.ajah.util.data.format.EmailAddress;
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
+@Log
 public enum Config {
 
 	/**
 	 * Singleton instance of Config.
 	 */
 	i;
-
-	private static final Logger log = Logger.getLogger(Config.class.getName());
 
 	private final Properties properties = new Properties();
 

@@ -18,13 +18,13 @@ package com.ajah.servlet.tag.table;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.java.Log;
 
 import com.ajah.html.element.H3;
 import com.ajah.html.element.Paragraph;
@@ -41,9 +41,8 @@ import com.ajah.util.StringUtils;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Log
 public class ForEachTag extends TagSupport {
-
-	private static final Logger log = Logger.getLogger(ForEachTag.class.getName());
 
 	/**
 	 * @param items2

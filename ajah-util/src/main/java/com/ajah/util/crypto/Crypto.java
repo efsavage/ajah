@@ -22,7 +22,6 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -31,6 +30,8 @@ import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import lombok.extern.java.Log;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
@@ -41,9 +42,8 @@ import com.ajah.util.config.Config;
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
+@Log
 public class Crypto {
-
-	private static final Logger log = Logger.getLogger(Crypto.class.getName());
 
 	/**
 	 * Accepts a hexadecimal encoded version of the encrypted data and decrypts

@@ -21,7 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Identifiable;
@@ -32,9 +33,9 @@ import com.ajah.util.date.DateUtils;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class ReflectionUtils {
 
-	private static final Logger log = Logger.getLogger(ReflectionUtils.class.getName());
 
 	/**
 	 * Finds the enum where the getId() value matches the value of the field for

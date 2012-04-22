@@ -17,7 +17,8 @@ package com.ajah.spring.mvc.form.validation;
 
 import java.lang.reflect.Field;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -33,9 +34,8 @@ import com.ajah.util.crypto.Password;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class StringSizeValidator implements Validator {
-
-	private static final Logger log = Logger.getLogger(StringSizeValidator.class.getName());
 
 	private static Object[] getArgs(final Field field, final StringSize stringSize) {
 		return new Object[] { AutoFormUtils.getLabel(field), Integer.valueOf(stringSize.min()), Integer.valueOf(stringSize.max()) };

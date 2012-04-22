@@ -17,12 +17,13 @@
 package com.ajah.log.http.servlet.filter;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
@@ -44,9 +45,8 @@ import com.ajah.util.AjahUtils;
  * 
  */
 @Service
+@Log
 public class AccessLoggerFilter extends AjahFilter {
-
-	private static final Logger log = Logger.getLogger(AccessLoggerFilter.class.getName());
 
 	/**
 	 * Determines if a request should be logged.

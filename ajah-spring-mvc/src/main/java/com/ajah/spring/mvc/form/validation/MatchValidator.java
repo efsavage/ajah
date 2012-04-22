@@ -16,7 +16,8 @@
 package com.ajah.spring.mvc.form.validation;
 
 import java.lang.reflect.Field;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -31,9 +32,8 @@ import com.ajah.util.AjahUtils;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class MatchValidator implements Validator {
-
-	private static final Logger log = Logger.getLogger(MatchValidator.class.getName());
 
 	/**
 	 * This validator realistically only supports classes with the

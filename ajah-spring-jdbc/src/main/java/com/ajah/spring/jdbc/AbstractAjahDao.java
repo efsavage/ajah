@@ -32,11 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
+
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -70,9 +71,8 @@ import com.ajah.util.reflect.ReflectionUtils;
  *            The concrete type of entity this DAO exists for.
  * 
  */
+@Log
 public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements AjahDao<K, T> {
-
-	private static final Logger log = Logger.getLogger(AbstractAjahDao.class.getName());
 
 	private static String getFieldsClause(final String[] fields) {
 		final StringBuffer stringBuffer = new StringBuffer();

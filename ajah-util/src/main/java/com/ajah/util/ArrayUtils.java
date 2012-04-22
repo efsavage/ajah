@@ -16,7 +16,8 @@
 package com.ajah.util;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 /**
  * Utility methods for arrays.
@@ -24,9 +25,9 @@ import java.util.logging.Logger;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class ArrayUtils {
 
-	private static final Logger log = Logger.getLogger(ArrayUtils.class.getName());
 
 	/**
 	 * Checks to see if an array contains a given object.

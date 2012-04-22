@@ -21,7 +21,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -48,9 +49,8 @@ import com.sun.syndication.io.SyndFeedInput;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class RomeUtils {
-
-	private static final Logger log = Logger.getLogger(RomeUtils.class.getName());
 
 	/**
 	 * Creates Ajah entries from a Rome feed.

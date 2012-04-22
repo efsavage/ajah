@@ -21,9 +21,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import lombok.extern.java.Log;
 
 import com.ajah.css.util.RuleComparator;
 import com.ajah.util.AjahUtils;
@@ -37,9 +38,8 @@ import com.ajah.util.io.file.FileUtils;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class CssParser {
-
-	private static final Logger log = Logger.getLogger(CssParser.class.getName());
 
 	private static final Pattern propertyPattern = Pattern.compile("\\*{0,1}([-a-z]+)\\s*:\\s*(.*?);$");
 	private static final CssParser INSTANCE = new CssParser();

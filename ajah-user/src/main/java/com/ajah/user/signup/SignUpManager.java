@@ -16,7 +16,8 @@
 package com.ajah.user.signup;
 
 import java.util.Date;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,8 @@ import com.ajah.util.data.format.EmailAddress;
  * 
  */
 @Service
+@Log
 public class SignUpManager {
-
-	private static final Logger log = Logger.getLogger(SignUpManager.class.getName());
 
 	@Autowired
 	private UserManager userManager;

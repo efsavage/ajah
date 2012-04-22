@@ -17,7 +17,8 @@ package com.ajah.user.data;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,8 @@ import com.ajah.util.data.format.EmailAddress;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@Log
 public class UserManager {
-
-	private static final Logger log = Logger.getLogger(UserManager.class.getName());
 
 	@Autowired
 	private UserDao userDao;

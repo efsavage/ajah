@@ -18,12 +18,13 @@ package com.ajah.spring.mvc.servlet.tag;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
-import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.Tag;
 import javax.validation.constraints.NotNull;
+
+import lombok.extern.java.Log;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -56,9 +57,8 @@ import com.ajah.util.data.format.EmailAddress;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Log
 public class AutoFormTag extends SpringTag {
-
-	private static final Logger log = Logger.getLogger(AutoFormTag.class.getName());
 
 	/**
 	 * Finds a field by name.

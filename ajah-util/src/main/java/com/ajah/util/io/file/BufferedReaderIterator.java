@@ -19,7 +19,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 /**
  * Iterates over a {@link BufferedReader}.
@@ -28,9 +29,8 @@ import java.util.logging.Logger;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class BufferedReaderIterator implements Iterator<String> {
-
-	private static final Logger log = Logger.getLogger(BufferedReaderIterator.class.getName());
 
 	private final BufferedReader bufferedReader;
 

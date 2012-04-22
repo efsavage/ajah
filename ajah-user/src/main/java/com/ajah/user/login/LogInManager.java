@@ -17,7 +17,8 @@ package com.ajah.user.login;
 
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,8 @@ import com.ajah.util.crypto.Password;
  * 
  */
 @Service
+@Log
 public class LogInManager {
-
-	private static final Logger log = Logger.getLogger(LogInManager.class.getName());
 
 	/**
 	 * Returns token value for a user, that can be used to authenticate later.

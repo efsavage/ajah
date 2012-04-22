@@ -16,7 +16,6 @@
 package com.ajah.email.data;
 
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -29,6 +28,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
+import lombok.extern.java.Log;
 
 import org.springframework.stereotype.Service;
 
@@ -53,9 +54,8 @@ import com.amazonaws.services.simpleemail.model.VerifyEmailAddressRequest;
  * 
  */
 @Service
+@Log
 public class EmailMessageManager {
-
-	private static final Logger log = Logger.getLogger(EmailMessageManager.class.getName());
 
 	private static boolean isVerified(final EmailAddress emailAddress, final AmazonSimpleEmailService email, final ListVerifiedEmailAddressesResult verifiedEmails) {
 		if (!verifiedEmails.getVerifiedEmailAddresses().contains(emailAddress.toString())) {

@@ -21,10 +21,10 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.java.Log;
 
 import com.ajah.html.HtmlElement;
 import com.ajah.html.Nestable;
@@ -42,9 +42,8 @@ import com.ajah.util.StringUtils;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Log
 public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCoreElement<T> implements Nestable {
-
-	private static final Logger log = Logger.getLogger(AbstractNestableHtmlCoreElement.class.getName());
 
 	protected List<HtmlElement<?>> children = null;
 

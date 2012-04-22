@@ -16,7 +16,8 @@
 package test.ajah.syndicate;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.junit.Test;
 
@@ -34,9 +35,8 @@ import com.sun.syndication.io.FeedException;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class SimpleFeedTest {
-
-	private static final Logger log = Logger.getLogger(SimpleFeedTest.class.getName());
 
 	private static String TEST_FEED = "http://efsavage.com/blog/feed/";
 

@@ -19,7 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -43,9 +44,8 @@ import com.sun.syndication.io.impl.OPML10Parser;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class OpmlUtils {
-
-	private static final Logger log = Logger.getLogger(OpmlUtils.class.getName());
 
 	private static Outline createOutline(final com.sun.syndication.feed.opml.Outline syndOutline, final Outline parent) {
 		final Outline outline = new Outline();

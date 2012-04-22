@@ -16,7 +16,6 @@
 package com.ajah.servlet;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,15 +26,16 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.java.Log;
+
 /**
  * Simple skeleton class that adds some logging and implements extra methods.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Log
 public abstract class AjahFilter implements Filter {
-
-	private static final Logger log = Logger.getLogger(AjahFilter.class.getName());
 
 	/**
 	 * Does nothing except log.

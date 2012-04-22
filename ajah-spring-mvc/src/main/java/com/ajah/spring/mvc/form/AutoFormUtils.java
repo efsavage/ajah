@@ -16,7 +16,8 @@
 package com.ajah.spring.mvc.form;
 
 import java.lang.reflect.Field;
-import java.util.logging.Logger;
+
+import lombok.extern.java.Log;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
@@ -26,9 +27,8 @@ import com.ajah.util.StringUtils;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class AutoFormUtils {
-
-	private static final Logger log = Logger.getLogger(AutoFormUtils.class.getName());
 
 	/**
 	 * Returns a human-readable version of an {@link AutoForm}'s field name. If
