@@ -21,9 +21,14 @@ import java.util.Date;
 /**
  * The lowest-of-low level utilities, basically "things I wish were in the JDK".
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class AjahUtils {
+
+	private AjahUtils() {
+		// Empty, private constructor
+	}
 
 	/**
 	 * Array of lowercase characters (a-z).
@@ -44,7 +49,7 @@ public class AjahUtils {
 	 * @throws IllegalArgumentException
 	 *             If parameter is below the minimum
 	 */
-	public static void requireParam(final long parameter, final String name, final int min) {
+	public static void requireParam(final long parameter, final String name, final int min) throws IllegalArgumentException {
 		if (parameter < min) {
 			throw new IllegalArgumentException(name + " is " + parameter + " but must be at least " + min);
 		}
@@ -58,12 +63,13 @@ public class AjahUtils {
 	 * @param parameter
 	 *            Object to check.
 	 * @param name
+	 *            Name of the parameter (for the error message)
 	 * @throws IllegalArgumentException
 	 *             If parameter is null
 	 * @throws IllegalArgumentException
 	 *             If parameter is a String and is empty
 	 */
-	public static void requireParam(final Object parameter, final String name) {
+	public static void requireParam(final Object parameter, final String name) throws IllegalArgumentException {
 		if (parameter == null) {
 			throw new IllegalArgumentException(name + " cannot be null");
 		}
