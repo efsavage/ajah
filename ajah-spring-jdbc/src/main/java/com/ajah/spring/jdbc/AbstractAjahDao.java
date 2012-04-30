@@ -222,6 +222,15 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	protected long count(final Criteria criteria) {
+		try {
+			return getJdbcTemplate().queryForInt("SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql(), criteria.getWhere().getValues());
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		}
+	}
+
 	/**
 	 * Decrements the field of the record by 1.
 	 * 
