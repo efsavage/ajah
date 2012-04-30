@@ -15,6 +15,7 @@
  */
 package com.ajah.util;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
@@ -27,7 +28,6 @@ import lombok.extern.java.Log;
  */
 @Log
 public class ArrayUtils {
-
 
 	/**
 	 * Checks to see if an array contains a given object.
@@ -217,6 +217,29 @@ public class ArrayUtils {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Trims each element in an array of strings, and removes any null or blank
+	 * values.
+	 * 
+	 * @param array
+	 *            The array to trim. May be null or empty.
+	 * @return The trimmed array, which may be shorter than the original. If a
+	 *         null or empty array is passed in, the same value will be
+	 *         returned.
+	 */
+	public static String[] trim(String[] array) {
+		if (array == null || array.length == 0) {
+			return array;
+		}
+		ArrayList<String> trimmed = new ArrayList<>();
+		for (String string : array) {
+			if (!StringUtils.isBlank(string)) {
+				trimmed.add(string.trim());
+			}
+		}
+		return trimmed.toArray(new String[trimmed.size()]);
 	}
 
 }
