@@ -25,13 +25,35 @@ package com.ajah.spring.jdbc;
 public class DatabaseAccessException extends Exception {
 
 	/**
-	 * Wraps another exeption.
+	 * Wraps another exception.
 	 * 
 	 * @param cause
 	 *            The original exception.
 	 */
 	public DatabaseAccessException(final Throwable cause) {
 		super(cause);
+	}
+
+	/**
+	 * Wraps another exception, with a message.
+	 * 
+	 * @param message
+	 *            The message to include with the error.
+	 * @param cause
+	 *            The original exception.
+	 */
+	public DatabaseAccessException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
+
+	/**
+	 * Error with a message.
+	 * 
+	 * @param message
+	 *            The message describing the error.
+	 */
+	public DatabaseAccessException(final String message) {
+		super(message);
 	}
 
 }
