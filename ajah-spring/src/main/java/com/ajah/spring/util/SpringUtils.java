@@ -15,13 +15,6 @@
  */
 package com.ajah.spring.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.cache.Cache;
-import org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean;
-import org.springframework.cache.support.SimpleCacheManager;
-
 /**
  * High-level utilities for Spring.
  * 
@@ -31,23 +24,8 @@ import org.springframework.cache.support.SimpleCacheManager;
  */
 public class SpringUtils {
 
-	/**
-	 * Creates a {@link SimpleCacheManager} and a set of named
-	 * {@link ConcurrentMapCacheFactoryBean}s.
-	 * 
-	 * @param cacheNames
-	 *            The names of the caches, must include at least one.
-	 * @return A new cache manager with new caches.
-	 */
-	public SimpleCacheManager getSimpleCache(String... cacheNames) {
-		List<Cache> caches = new ArrayList<>();
-		for (String cacheName : cacheNames) {
-			ConcurrentMapCacheFactoryBean cache = new ConcurrentMapCacheFactoryBean();
-			cache.setName(cacheName);
-			caches.add(cache.getObject());
-		}
-		SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
-		simpleCacheManager.setCaches(caches);
-		return simpleCacheManager;
+	private SpringUtils() {
+		// Empty
 	}
+
 }
