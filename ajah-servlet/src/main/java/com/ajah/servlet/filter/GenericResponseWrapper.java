@@ -8,6 +8,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import lombok.extern.java.Log;
+
 /**
  * Implementation of {@link HttpServletResponseWrapper} that holds the data for
  * manipulation typically by a {@link Filter}.
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	private final ByteArrayOutputStream output;
@@ -100,8 +103,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 	 */
 	@Override
 	public void setContentType(final String type) {
-		System.err.println("Setting content type to :" + type);
-		new Exception().printStackTrace();
+		log.fine("Setting content type to :" + type);
 		this.contentType = type;
 		super.setContentType(type);
 	}
