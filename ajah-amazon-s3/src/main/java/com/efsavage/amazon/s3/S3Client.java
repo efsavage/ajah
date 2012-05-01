@@ -41,7 +41,6 @@ import com.ajah.util.config.Config;
 @Log
 public class S3Client {
 
-
 	private RestS3Service s3Service;
 
 	/**
@@ -110,7 +109,7 @@ public class S3Client {
 	public void put(Bucket bucket, String name, byte[] data, boolean overwrite, boolean gzip) throws S3Exception {
 
 		try {
-			log.info(data.length + " bytes to upload");
+			log.finest(data.length + " bytes to upload");
 			S3Object object;
 			if (gzip) {
 				object = new S3Object(name + ".gz");
@@ -124,6 +123,7 @@ public class S3Client {
 				return;
 			}
 			object = this.s3Service.putObject(bucket.toString(), object);
+			log.fine("Uploaded " + object.getName() + " to bucket " + bucket.getName());
 		} catch (UnsupportedEncodingException e) {
 			throw new ConfigException(e);
 		} catch (IOException | ServiceException e) {
