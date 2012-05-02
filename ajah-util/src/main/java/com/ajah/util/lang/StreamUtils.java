@@ -32,7 +32,7 @@ public class StreamUtils {
 	/**
 	 * Converts an {@link InputStream} into a byte array.
 	 * 
-	 * @param input
+	 * @param inputStream
 	 *            The stream to convert, required.
 	 * @return byte array with the contents of the stream.
 	 * @throws IOException

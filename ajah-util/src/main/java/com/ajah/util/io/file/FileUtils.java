@@ -218,8 +218,8 @@ public class FileUtils {
 	 * 
 	 * @param file
 	 *            The file to write to, required.
-	 * @param in
-	 *            The stream to read from.
+	 * @param data
+	 *            The data to write.
 	 * @return The number of bytes read/written.
 	 * @throws IOException
 	 */

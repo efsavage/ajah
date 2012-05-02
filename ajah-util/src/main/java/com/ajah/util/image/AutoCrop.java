@@ -57,8 +57,8 @@ public class AutoCrop {
 	/**
 	 * Crops an image based on the value of the top left pixel.
 	 * 
-	 * @param data
-	 *            The image data.
+	 * @param image
+	 *            The image to crop.
 	 * @param fuzziness
 	 *            The fuzziness allowed for minor deviations (~5 is
 	 *            recommended).

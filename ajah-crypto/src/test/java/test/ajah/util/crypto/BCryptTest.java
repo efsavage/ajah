@@ -22,11 +22,16 @@ import org.junit.Test;
 import com.ajah.crypto.BCrypt;
 
 /**
+ * Tests for {@link BCrypt}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class BCryptTest {
 
+	/**
+	 * Hashes a value and then checks that hash.
+	 */
 	@Test
 	public void hashpwTest() {
 		String hashed = BCrypt.hashpw("foobar", BCrypt.gensalt());

@@ -97,8 +97,8 @@ public class HashUtils {
 	 * Creates a SHA-1 digest of byte array and returns it as a hexadecimal
 	 * number.
 	 * 
-	 * @param string
-	 *            The string to digest.
+	 * @param data
+	 *            The data to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String sha1Hex(final byte[] data) {

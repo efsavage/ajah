@@ -23,11 +23,16 @@ import com.ajah.crypto.HmacSha1Password;
 import com.ajah.util.config.Config;
 
 /**
+ * Tests {@link HmacSha1Password}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class CryptoTest {
 
+	/**
+	 * Tests that a value is being hashed properly.
+	 */
 	@Test
 	public void hmacSha1PasswordTest() {
 		Config.i.set("crypto.key.hmacsha1", "1234567890");
