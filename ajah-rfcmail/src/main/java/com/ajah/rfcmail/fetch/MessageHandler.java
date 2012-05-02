@@ -17,8 +17,6 @@ package com.ajah.rfcmail.fetch;
 
 import javax.mail.MessagingException;
 
-import com.ajah.rfcmail.AjahMessage;
-
 /**
  * An interface for defining an operation to be performed on a message handler.
  * These handlers can be chained with the
@@ -38,7 +36,7 @@ public interface MessageHandler extends AutoCloseable {
 	 * @return The result of the message processing, will not be null.
 	 * @throws MessagingException
 	 */
-	MessageHandlerResponse handle(AjahMessage message) throws MessagingException;
+	MessageHandlerResponse handle(AjahMimeMessage message) throws MessagingException;
 
 	/**
 	 * Add a message handler to be activated if this handler yields in the

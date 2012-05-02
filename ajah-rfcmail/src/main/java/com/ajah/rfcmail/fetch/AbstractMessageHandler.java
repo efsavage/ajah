@@ -37,10 +37,10 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 	 * Handle the message via {@link #innerHandle(AjahMessage)} and then call
 	 * handle on child handlers.
 	 * 
-	 * @see com.ajah.rfcmail.fetch.MessageHandler#handle(AjahMessage)
+	 * @see com.ajah.rfcmail.fetch.MessageHandler#handle(AjahMimeMessage)
 	 */
 	@Override
-	public final MessageHandlerResponse handle(AjahMessage message) throws MessagingException {
+	public final MessageHandlerResponse handle(AjahMimeMessage message) throws MessagingException {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(message.getId(), "message.id");
 		MessageHandlerResponse response = innerHandle(message);

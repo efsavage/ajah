@@ -31,7 +31,6 @@ import javax.mail.internet.MimeMessage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.ajah.rfcmail.AjahMessage;
 import com.sun.mail.imap.IMAPFolder;
 
 /**
@@ -87,7 +86,7 @@ public class IMAPMailFetcher extends AbstractMailFetcher {
 				try {
 					for (MessageHandler messageHandler : getMessageHandlers()) {
 						log.finest(messageHandler.getClass().getSimpleName() + " handling " + ((MimeMessage) message).getMessageID());
-						messageHandler.handle(new AjahMessage(message));
+						messageHandler.handle(new AjahMimeMessage(message.getInputStream()));
 						return;
 					}
 				} catch (final MessagingException e) {

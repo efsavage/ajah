@@ -16,7 +16,7 @@
 package com.ajah.rfcmail.fetch;
 
 /**
- * The result of a {@link MessageHandler#handle(javax.mail.Message)} operation.
+ * The result of a {@link MessageHandler#handle(AjahMimeMessage)} operation.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.

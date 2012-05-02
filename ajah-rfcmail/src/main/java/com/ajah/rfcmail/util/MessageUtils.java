@@ -26,7 +26,7 @@ import javax.mail.MessagingException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.ajah.rfcmail.AjahMessage;
+import com.ajah.rfcmail.fetch.AjahMimeMessage;
 import com.ajah.util.StringUtils;
 import com.ajah.util.net.AjahMimeType;
 
@@ -52,7 +52,7 @@ public class MessageUtils {
 	 * @throws IOException
 	 *             If the body of the message could not be read.
 	 */
-	public static String getContentAsText(AjahMessage msg) throws MessagingException, IOException {
+	public static String getContentAsText(AjahMimeMessage msg) throws MessagingException, IOException {
 		if (msg.getAjahMimeType() == AjahMimeType.TEXT_PLAIN) {
 			// Nothing to do here
 			return (String) msg.getContent();
@@ -103,7 +103,7 @@ public class MessageUtils {
 	 * @return true if the message is text/html, otherwise false.
 	 * @throws MessagingException
 	 */
-	public static boolean isHtml(AjahMessage msg) throws MessagingException {
+	public static boolean isHtml(AjahMimeMessage msg) throws MessagingException {
 		return msg != null && (msg.getAjahMimeType() == AjahMimeType.TEXT_HTML);
 	}
 
@@ -155,13 +155,13 @@ public class MessageUtils {
 	/**
 	 * Gets the content of a message as text and removes extra whitespace.
 	 * 
-	 * @see #getContentAsText(AjahMessage)
+	 * @see #getContentAsText(AjahMimeMessage)
 	 * @param message
 	 * @return The content of a message as text with extra whitespace removed.
 	 * @throws IOException
 	 * @throws MessagingException
 	 */
-	public static String getContentAsCleanText(AjahMessage message) throws MessagingException, IOException {
+	public static String getContentAsCleanText(AjahMimeMessage message) throws MessagingException, IOException {
 		return removeExtraWhitespace(getContentAsText(message));
 	}
 

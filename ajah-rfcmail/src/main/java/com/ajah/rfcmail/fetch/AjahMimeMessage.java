@@ -20,6 +20,13 @@ import java.io.InputStream;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import com.ajah.rfcmail.AjahMessage;
+import com.ajah.rfcmail.AjahMessageId;
+import com.ajah.util.net.AjahMimeType;
+
 /**
  * An extension of MimeMessage with some convenience methods.
  * 
@@ -27,8 +34,12 @@ import javax.mail.internet.MimeMessage;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public class AjahMimeMessage extends MimeMessage{
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class AjahMimeMessage extends MimeMessage implements AjahMessage {
 
+	private AjahMessageId id;
+	private AjahMimeType ajahMimeType;
 
 	/**
 	 * Calls {@link MimeMessage#MimeMessage(javax.mail.Session, InputStream)}
@@ -42,8 +53,6 @@ public class AjahMimeMessage extends MimeMessage{
 	public AjahMimeMessage(final InputStream inputStream) throws MessagingException {
 		super(null, inputStream);
 	}
-
-	
 
 	@Override
 	public InputStream getContentStream() throws MessagingException {
