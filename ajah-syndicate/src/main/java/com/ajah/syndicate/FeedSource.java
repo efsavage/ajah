@@ -20,7 +20,7 @@ import java.util.Date;
 import lombok.Data;
 
 import com.ajah.util.Identifiable;
-import com.ajah.util.crypto.HashUtils;
+import com.ajah.util.data.HashUtils;
 
 /**
  * A feed source is something that create feeds. This could be a website, blog,

@@ -29,6 +29,7 @@ import lombok.extern.java.Log;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
+import com.ajah.crypto.Password;
 import com.ajah.html.dtd.FormMethod;
 import com.ajah.html.dtd.InputType;
 import com.ajah.html.element.Checkbox;
@@ -48,7 +49,6 @@ import com.ajah.spring.mvc.form.Submit;
 import com.ajah.spring.mvc.form.validation.Match;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
-import com.ajah.util.crypto.Password;
 import com.ajah.util.data.format.EmailAddress;
 
 /**

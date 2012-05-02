@@ -17,7 +17,6 @@ package com.ajah.util.data;
 
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
-import com.ajah.util.crypto.HashUtils;
 
 /**
  * This class is just a wrapper around {@link String} with the intent of

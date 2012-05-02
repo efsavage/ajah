@@ -1,10 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ajah-user</artifactId>
-	<name>Ajah User Library</name>
-	<description>Code for projects using Ajah User management and authentication</description>
-	<url>http://efsavage.github.com/ajah/user/</url>
+	<artifactId>ajah-crypto</artifactId>
+	<name>Ajah Utility Library</name>
+	<url>http://efsavage.github.com/ajah/crypto/</url>
+
+
+	<description>The Ajah Utils Library provides a place for the most basic and common cryptographic utilities.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
@@ -15,15 +17,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.ajah</groupId>
-			<artifactId>ajah-spring-jdbc</artifactId>
+			<artifactId>ajah-util</artifactId>
 			<version>${version}</version>
 		</dependency>
+
 		<dependency>
-			<groupId>com.ajah</groupId>
-			<artifactId>ajah-crypto</artifactId>
-			<version>${version}</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
 		</dependency>
 	</dependencies>
-
 
 </project>

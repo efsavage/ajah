@@ -17,12 +17,12 @@ package com.ajah.user.data;
 
 import org.springframework.stereotype.Repository;
 
+import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
 import com.ajah.util.AjahUtils;
-import com.ajah.util.crypto.Password;
 
 /**
  * Data operations on the "user" table.

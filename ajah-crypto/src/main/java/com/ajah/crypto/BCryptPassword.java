@@ -13,18 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util.crypto;
-
-import com.sun.crypto.provider.HmacSHA1;
+package com.ajah.crypto;
 
 /**
- * {@link HmacSHA1} implementation of {@link Password}. Note: Does not store the
+ * {@link BCrypt} implementation of {@link Password}. Note: Does not store the
  * raw password.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
-@SuppressWarnings("restriction")
-public class HmacSha1Password implements Password {
+public class BCryptPassword implements Password {
 
 	private final String hash;
 	private final int originalLength;
@@ -37,11 +34,11 @@ public class HmacSha1Password implements Password {
 	 * @param hashed
 	 *            true if the value is hashed (will not be re-hashed)
 	 */
-	public HmacSha1Password(final String value, final boolean hashed) {
+	public BCryptPassword(final String value, final boolean hashed) {
 		if (hashed) {
 			this.hash = value;
 		} else {
-			this.hash = Crypto.getHmacSha1Hex(value);
+			this.hash = BCrypt.hashpw(value, BCrypt.gensalt());
 		}
 		this.originalLength = value.length();
 	}

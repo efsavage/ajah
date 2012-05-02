@@ -14,11 +14,11 @@
  */
 package com.ajah.user.data;
 
+import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
-import com.ajah.util.crypto.Password;
 
 /**
  * Data operations on the "user" table.

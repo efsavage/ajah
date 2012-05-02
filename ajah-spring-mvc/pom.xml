@@ -16,7 +16,12 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-crypto</artifactId>
+			<version>${version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>

@@ -23,9 +23,9 @@ import lombok.extern.java.Log;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.ajah.crypto.Password;
 import com.ajah.spring.mvc.form.AutoFormUtils;
 import com.ajah.util.ToStringable;
-import com.ajah.util.crypto.Password;
 
 /**
  * Validates {@link StringSize} annotations.

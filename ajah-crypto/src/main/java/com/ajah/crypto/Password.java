@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,23 +13,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package test.ajah.util.crypto;
+package com.ajah.crypto;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import com.ajah.util.crypto.BCrypt;
+import com.ajah.util.ToStringable;
 
 /**
+ * Marker interface for type-safe Password fields.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public class BCryptTest {
+public interface Password extends ToStringable {
 
-	@Test
-	public void hashpwTest() {
-		String hashed = BCrypt.hashpw("foobar", BCrypt.gensalt());
-		Assert.assertTrue(BCrypt.checkpw("foobar", hashed));
-	}
+	/**
+	 * This is so we can validate min/max lengths, this is probably not
+	 * available after encrypting/hashing.
+	 * 
+	 * @return Original length of the raw password. If the raw password was null
+	 *         this should return 0.
+	 */
+	public int getOriginalLength();
+
 }

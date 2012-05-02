@@ -20,8 +20,8 @@ import java.util.Date;
 import lombok.Data;
 
 import com.ajah.util.Identifiable;
-import com.ajah.util.crypto.HashUtils;
 import com.ajah.util.data.Audited;
+import com.ajah.util.data.HashUtils;
 import com.ajah.util.net.AjahMimeType;
 
 /**

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
@@ -42,7 +43,6 @@ import com.ajah.user.info.UserInfoImpl;
 import com.ajah.user.info.UserSource;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Validate;
-import com.ajah.util.crypto.Password;
 import com.ajah.util.data.format.EmailAddress;
 
 /**

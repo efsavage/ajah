@@ -23,14 +23,14 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.crypto.Crypto;
+import com.ajah.crypto.HmacSha1Password;
+import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserNotFoundException;
 import com.ajah.user.data.UserManager;
-import com.ajah.util.crypto.Crypto;
-import com.ajah.util.crypto.HmacSha1Password;
-import com.ajah.util.crypto.Password;
 
 /**
  * Manages creation of logins.

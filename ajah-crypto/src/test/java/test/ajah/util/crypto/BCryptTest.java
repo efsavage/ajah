@@ -15,16 +15,21 @@
  */
 package test.ajah.util.crypto;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
+
+import com.ajah.crypto.BCrypt;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public class CryptoTest {
+public class BCryptTest {
 
 	@Test
 	public void hashpwTest() {
-
+		String hashed = BCrypt.hashpw("foobar", BCrypt.gensalt());
+		Assert.assertTrue(BCrypt.checkpw("foobar", hashed));
 	}
 }

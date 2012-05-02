@@ -22,12 +22,12 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.user.User;
 import com.ajah.user.UserType;
 import com.ajah.user.data.UserManager;
 import com.ajah.user.info.UserSource;
-import com.ajah.util.crypto.Password;
 import com.ajah.util.data.format.EmailAddress;
 
 /**

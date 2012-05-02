@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,25 +13,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util.crypto;
+package test.ajah.util.crypto;
 
-import com.ajah.util.ToStringable;
+import junit.framework.Assert;
+
+import org.junit.Test;
+
+import com.ajah.crypto.HmacSha1Password;
+import com.ajah.util.config.Config;
 
 /**
- * Marker interface for type-safe Password fields.
- * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public interface Password extends ToStringable {
+public class CryptoTest {
 
-	/**
-	 * This is so we can validate min/max lengths, this is probably not
-	 * available after encrypting/hashing.
-	 * 
-	 * @return Original length of the raw password. If the raw password was null
-	 *         this should return 0.
-	 */
-	public int getOriginalLength();
-
+	@Test
+	public void hmacSha1PasswordTest() {
+		Config.i.set("crypto.key.hmacsha1", "1234567890");
+		HmacSha1Password hmacSha1Password = new HmacSha1Password("foobar", false);
+		Assert.assertEquals("-305dc59cb5a82c23fcef84a3c60ea0aca890f03e", hmacSha1Password.toString());
+	}
 }

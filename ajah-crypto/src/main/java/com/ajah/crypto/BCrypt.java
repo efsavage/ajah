@@ -1,4 +1,4 @@
-package com.ajah.util.crypto;
+package com.ajah.crypto;
 
 // Copyright (c) 2006 Damien Miller <djm@mindrot.org>
 //

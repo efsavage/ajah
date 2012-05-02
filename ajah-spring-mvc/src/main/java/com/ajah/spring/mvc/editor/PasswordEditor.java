@@ -17,9 +17,9 @@ package com.ajah.spring.mvc.editor;
 
 import java.beans.PropertyEditorSupport;
 
+import com.ajah.crypto.HmacSha1Password;
+import com.ajah.crypto.Password;
 import com.ajah.util.StringUtils;
-import com.ajah.util.crypto.HmacSha1Password;
-import com.ajah.util.crypto.Password;
 
 /**
  * Property editor for {@link Password} type. Uses {@link HmacSha1Password}
