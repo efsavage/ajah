@@ -32,6 +32,7 @@ import javax.mail.internet.MimeMultipart;
 import lombok.extern.java.Log;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.email.EmailMessage;
 import com.ajah.util.AjahUtils;
@@ -54,6 +55,7 @@ import com.amazonaws.services.simpleemail.model.VerifyEmailAddressRequest;
  * 
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 @Log
 public class EmailMessageManager {
 

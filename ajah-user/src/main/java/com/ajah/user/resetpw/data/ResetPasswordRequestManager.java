@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.user.User;
 import com.ajah.user.resetpw.ResetPasswordRequest;
@@ -37,6 +38,7 @@ import com.ajah.util.RandomUtils;
  * 
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ResetPasswordRequestManager {
 
 	@Autowired

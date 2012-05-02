@@ -21,6 +21,7 @@ import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DatabaseAccessException;
@@ -37,6 +38,7 @@ import com.ajah.util.data.format.EmailAddress;
  * 
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 @Log
 public class SignUpManager {
 

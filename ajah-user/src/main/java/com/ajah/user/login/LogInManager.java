@@ -22,6 +22,7 @@ import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.crypto.Crypto;
 import com.ajah.crypto.HmacSha1Password;
@@ -39,6 +40,7 @@ import com.ajah.user.data.UserManager;
  * 
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 @Log
 public class LogInManager {
 
