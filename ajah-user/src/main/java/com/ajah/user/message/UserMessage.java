@@ -22,36 +22,36 @@ import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
 
 /**
- * A Message corresponds to a person who is using the system. A person should
+ * A UserMessage corresponds to a person who is using the system. A person should
  * not need to have separate messages within the application.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface Message extends Identifiable<MessageId> {
+public interface UserMessage extends Identifiable<UserMessageId> {
 
 	/**
 	 * The status of the message.
 	 * 
 	 * @return The status of the message. May be null if not saved/complete.
 	 */
-	MessageStatus getStatus();
+	UserMessageStatus getStatus();
 
 	/**
 	 * The type of the message.
 	 * 
 	 * @return The type of the message. May be null if not saved/complete.
 	 */
-	MessageType getType();
+	UserMessageType getType();
 
 	/**
 	 * Sets the message ID.
 	 * 
 	 * @param messageId
-	 *            The Message ID, should not be null.
+	 *            The UserMessage ID, should not be null.
 	 */
 	@Override
-	void setId(final MessageId messageId);
+	void setId(final UserMessageId messageId);
 
 	/**
 	 * Sets the message status.
@@ -59,7 +59,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param status
 	 *            The message's status, should not be null.
 	 */
-	void setStatus(final MessageStatus status);
+	void setStatus(final UserMessageStatus status);
 
 	/**
 	 * Sets the message's type.
@@ -67,7 +67,7 @@ public interface Message extends Identifiable<MessageId> {
 	 * @param type
 	 *            The message's type, should not be null.
 	 */
-	void setType(final MessageType type);
+	void setType(final UserMessageType type);
 
 	/**
 	 * Sets the creation date of the message.

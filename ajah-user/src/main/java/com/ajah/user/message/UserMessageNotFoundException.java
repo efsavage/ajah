@@ -24,11 +24,9 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @EqualsAndHashCode(callSuper = false)
-public class MessageNotFoundException extends Exception {
+public class UserMessageNotFoundException extends Exception {
 
-	private static final long serialVersionUID = -6481647246191615206L;
-
-	private final MessageId id;
+	private final UserMessageId id;
 
 	/**
 	 * Thrown when a message is requested that does not exist.
@@ -36,8 +34,8 @@ public class MessageNotFoundException extends Exception {
 	 * @param id
 	 *            ID that was sought.
 	 */
-	public MessageNotFoundException(final MessageId id) {
-		super("Message: " + id + " not found");
+	public UserMessageNotFoundException(final UserMessageId id) {
+		super("UserMessage: " + id + " not found");
 		this.id = id;
 	}
 

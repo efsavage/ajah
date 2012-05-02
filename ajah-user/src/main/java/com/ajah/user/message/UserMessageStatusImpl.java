@@ -16,35 +16,59 @@
 package com.ajah.user.message;
 
 /**
- * Basic implementations of MessageType.
+ * Basic implementations of UserMessageStatus.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum MessageTypeImpl implements MessageType {
+public enum UserMessageStatusImpl implements UserMessageStatus {
 
 	/**
-	 * Regular message, should be the default.
+	 * UserMessage was not sent because of an error.
 	 */
-	NORMAL("1", "Message", "Message", "Message"),
+	ERROR("-3", "Error", "Error", "Error"),
 	/**
-	 * System message, probably important.
+	 * UserMessage was saved but not sent yet.
 	 */
-	SYSTEM("2", "System", "System", "System"),
+	DRAFT("-2", "Draft", "Draft", "Draft"),
 	/**
-	 * Message that is a link to a URL.
+	 * UserMessage was deleted.
 	 */
-	LINK("3", "Link", "Link", "Link");
+	DELETED("-1", "Deleted", "Deleted", "Deleted"),
+	/**
+	 * Unread message.
+	 */
+	UNREAD("0", "Unread", "Unread", "Unread"),
+	/**
+	 * UserMessage was read.
+	 */
+	READ("1", "Read", "Read", "Read"),
+	/**
+	 * UserMessage was replied to.
+	 */
+	REPLY("2", "Replied", "Replied", "Replied"),
+	/**
+	 * UserMessage was forwarded.
+	 */
+	FORWARD("3", "Forwarded", "Forwarded", "Forwarded"),
+	/**
+	 * UserMessage is in the process of being sent.
+	 */
+	SENDING("4", "Sending", "Sending", "Sending"),
+	/**
+	 * UserMessage was sent.
+	 */
+	SENT("5", "Sent", "Sent", "Sent");
 
 	/**
-	 * Finds a MessageTypeImpl that matches the id on id, name, or name().
+	 * Finds a UserMessageStatusImpl that matches the id on id, name, or name().
 	 * 
 	 * @param id
 	 *            Value to match against id, name, or name()
-	 * @return Matching MessageTypeImpl, or null.
+	 * @return Matching UserMessageStatusImpl, or null.
 	 */
-	public static MessageType get(final String id) {
-		for (final MessageTypeImpl type : values()) {
+	public static UserMessageStatus get(final String id) {
+		for (final UserMessageStatusImpl type : values()) {
 			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
 				return type;
 			}
@@ -57,7 +81,7 @@ public enum MessageTypeImpl implements MessageType {
 	private final String name;
 	private final String description;
 
-	private MessageTypeImpl(final String id, final String code, final String name, final String description) {
+	private UserMessageStatusImpl(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

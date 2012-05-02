@@ -16,59 +16,35 @@
 package com.ajah.user.message;
 
 /**
- * Basic implementations of MessageStatus.
+ * Basic implementations of UserMessageType.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum MessageStatusImpl implements MessageStatus {
+public enum UserMessageTypeImpl implements UserMessageType {
 
 	/**
-	 * Message was not sent because of an error.
+	 * Regular message, should be the default.
 	 */
-	ERROR("-3", "Error", "Error", "Error"),
+	NORMAL("1", "UserMessage", "UserMessage", "UserMessage"),
 	/**
-	 * Message was saved but not sent yet.
+	 * System message, probably important.
 	 */
-	DRAFT("-2", "Draft", "Draft", "Draft"),
+	SYSTEM("2", "System", "System", "System"),
 	/**
-	 * Message was deleted.
+	 * UserMessage that is a link to a URL.
 	 */
-	DELETED("-1", "Deleted", "Deleted", "Deleted"),
-	/**
-	 * Unread message.
-	 */
-	UNREAD("0", "Unread", "Unread", "Unread"),
-	/**
-	 * Message was read.
-	 */
-	READ("1", "Read", "Read", "Read"),
-	/**
-	 * Message was replied to.
-	 */
-	REPLY("2", "Replied", "Replied", "Replied"),
-	/**
-	 * Message was forwarded.
-	 */
-	FORWARD("3", "Forwarded", "Forwarded", "Forwarded"),
-	/**
-	 * Message is in the process of being sent.
-	 */
-	SENDING("4", "Sending", "Sending", "Sending"),
-	/**
-	 * Message was sent.
-	 */
-	SENT("5", "Sent", "Sent", "Sent");
+	LINK("3", "Link", "Link", "Link");
 
 	/**
-	 * Finds a MessageStatusImpl that matches the id on id, name, or name().
+	 * Finds a UserMessageTypeImpl that matches the id on id, name, or name().
 	 * 
 	 * @param id
 	 *            Value to match against id, name, or name()
-	 * @return Matching MessageStatusImpl, or null.
+	 * @return Matching UserMessageTypeImpl, or null.
 	 */
-	public static MessageStatus get(final String id) {
-		for (final MessageStatusImpl type : values()) {
+	public static UserMessageType get(final String id) {
+		for (final UserMessageTypeImpl type : values()) {
 			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
 				return type;
 			}
@@ -81,7 +57,7 @@ public enum MessageStatusImpl implements MessageStatus {
 	private final String name;
 	private final String description;
 
-	private MessageStatusImpl(final String id, final String code, final String name, final String description) {
+	private UserMessageTypeImpl(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

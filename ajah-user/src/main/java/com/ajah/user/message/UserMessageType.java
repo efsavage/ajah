@@ -16,41 +16,42 @@
 package com.ajah.user.message;
 
 /**
- * All messages must be in some state, which determines the permitted operations
- * and display attributes. Common statuses might be UNREAD, DELETED, etc.
+ * All messages must be of some type, which determines the permitted operations
+ * and possibly some display attributes. Common types might be NORMAL, SYSTEM,
+ * etc.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface MessageStatus {
+public interface UserMessageType {
 
 	/**
-	 * The internal ID of the status.
+	 * The internal ID of the type.
 	 * 
-	 * @return The internal ID of the status. Cannot be null.
+	 * @return The internal ID of the type. Cannot be null.
 	 */
 	String getId();
 
 	/**
-	 * The short, display-friendly code of the status. If no code is applicable,
+	 * The short, display-friendly code of the type. If no code is applicable,
 	 * it should be an alias for the ID.
 	 * 
-	 * @return The short, display-friendly code of the status. Cannot be null.
+	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
 	String getCode();
 
 	/**
-	 * The display-friendly name of the status. If no name is applicable, it
+	 * The display-friendly name of the type. If no name is applicable, it
 	 * should be an alias for the ID or code.
 	 * 
-	 * @return The display-friendly name of the status. Cannot be null.
+	 * @return The display-friendly name of the type. Cannot be null.
 	 */
 	String getName();
 
 	/**
-	 * The display-friendly description of the status.
+	 * The display-friendly description of the type.
 	 * 
-	 * @return The display-friendly description of the status. May be null.
+	 * @return The display-friendly description of the type. May be null.
 	 */
 	String getDescription();
 

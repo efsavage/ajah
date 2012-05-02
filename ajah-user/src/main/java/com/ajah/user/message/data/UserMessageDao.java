@@ -27,8 +27,8 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.AbstractAjahRowMapper;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.user.UserId;
-import com.ajah.user.message.Message;
-import com.ajah.user.message.MessageId;
+import com.ajah.user.message.UserMessage;
+import com.ajah.user.message.UserMessageId;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
@@ -41,9 +41,9 @@ import com.ajah.util.date.DateUtils;
  * 
  */
 @Repository
-public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
+public class UserMessageDao extends AbstractAjahDao<UserMessageId, UserMessage, UserMessage> {
 
-	static final class MessageRowMapper extends AbstractAjahRowMapper<MessageId, Message> {
+	static final class UserMessageRowMapper extends AbstractAjahRowMapper<UserMessageId, UserMessage> {
 
 		/**
 		 * Converts a comma-separated list of User IDs into a type-safe list.
@@ -64,7 +64,7 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 			return userIds;
 		}
 
-		protected MessageRowMapper(final AjahDao<MessageId, Message> dao) {
+		protected UserMessageRowMapper(final AjahDao<UserMessageId, UserMessage> dao) {
 			super(dao);
 		}
 
@@ -72,8 +72,8 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Message mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-			final Message message = super.mapRow(rs, rowNum);
+		public UserMessage mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+			final UserMessage message = super.mapRow(rs, rowNum);
 			message.setTo(getUserIds(rs.getString("to")));
 			message.setCc(getUserIds(rs.getString("cc")));
 			message.setBcc(getUserIds(rs.getString("bcc")));
@@ -110,18 +110,18 @@ public class MessageDao extends AbstractAjahDao<MessageId, Message, Message> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected RowMapper<Message> getRowMapper() {
-		return new MessageRowMapper(this);
+	protected RowMapper<UserMessage> getRowMapper() {
+		return new UserMessageRowMapper(this);
 	}
 
 	/**
-	 * INSERTs a {@link Message} entity.
+	 * INSERTs a {@link UserMessage} entity.
 	 * 
 	 * @param message
-	 *            Message entity to insert, required.
+	 *            UserMessage entity to insert, required.
 	 */
 	@Override
-	public int insert(final Message message) {
+	public int insert(final UserMessage message) {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",

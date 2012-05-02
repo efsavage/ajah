@@ -23,17 +23,17 @@ import lombok.Data;
 import com.ajah.user.UserId;
 
 /**
- * Basic implementation of Message interface.
+ * Basic implementation of UserMessage interface.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Data
-public class MessageImpl implements Message {
+public class UserMessageImpl implements UserMessage {
 
-	protected MessageId id;
-	protected MessageStatus status;
-	protected MessageType type;
+	protected UserMessageId id;
+	protected UserMessageStatus status;
+	protected UserMessageType type;
 	protected String subject;
 	protected String body;
 	protected Date created;
@@ -48,7 +48,7 @@ public class MessageImpl implements Message {
 	 * @param id
 	 *            Unique ID of the message.
 	 */
-	public MessageImpl(final MessageId id) {
+	public UserMessageImpl(final UserMessageId id) {
 		this.id = id;
 	}
 

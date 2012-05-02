@@ -25,7 +25,7 @@ import com.ajah.util.ToStringable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class MessageId implements Serializable, ToStringable, Comparable<MessageId> {
+public class UserMessageId implements Serializable, ToStringable, Comparable<UserMessageId> {
 
 	private static final long serialVersionUID = -8938358157550623613L;
 
@@ -37,7 +37,7 @@ public class MessageId implements Serializable, ToStringable, Comparable<Message
 	 * @param id
 	 *            UID of user, cannot be null.
 	 */
-	public MessageId(final String id) {
+	public UserMessageId(final String id) {
 		this.id = id;
 	}
 
@@ -45,7 +45,7 @@ public class MessageId implements Serializable, ToStringable, Comparable<Message
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(final MessageId other) {
+	public int compareTo(final UserMessageId other) {
 		return this.id.compareTo(other.getId());
 	}
 
@@ -56,7 +56,7 @@ public class MessageId implements Serializable, ToStringable, Comparable<Message
 	 *            The other UserId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(final MessageId other) {
+	public boolean equals(final UserMessageId other) {
 		return this.id.equals(other.id);
 	}
 
