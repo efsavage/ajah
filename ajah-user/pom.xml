@@ -16,12 +16,12 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-jdbc</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-crypto</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -16,17 +16,17 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-crypto</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -36,12 +36,12 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-servlet</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-html</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>

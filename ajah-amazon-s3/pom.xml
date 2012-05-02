@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.jets3t</groupId>

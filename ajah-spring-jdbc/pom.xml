@@ -17,12 +17,12 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-event</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
