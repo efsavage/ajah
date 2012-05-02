@@ -16,7 +16,6 @@
 package com.ajah.syndicate.data;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,6 @@ import com.ajah.syndicate.PollStatus;
 @Service
 public class FeedSourceManager {
 
-	private static final Logger log = Logger.getLogger(FeedSourceManager.class.getName());
-
 	@Autowired
 	private FeedSourceDao feedDao;
 
@@ -46,8 +43,9 @@ public class FeedSourceManager {
 	 * 
 	 * @return A feed source where the next_poll_date field is in the past, if
 	 *         available, otherwise null.
+	 * @throws DatabaseAccessException
 	 */
-	public FeedSource getStaleFeedSource() {
+	public FeedSource getStaleFeedSource() throws DatabaseAccessException {
 		return this.feedDao.findByWhere("poll_status=" + PollStatus.ACTIVE.getId() + " AND next_poll_date < (unix_timestamp() * 1000)");
 	}
 
@@ -57,8 +55,9 @@ public class FeedSourceManager {
 	 * @param feedUrlSha1
 	 *            The SHA-1 of the feed url.
 	 * @return The feed source, if found, otherwise null.
+	 * @throws DatabaseAccessException
 	 */
-	public FeedSource findByFeedUrlSha1(String feedUrlSha1) {
+	public FeedSource findByFeedUrlSha1(String feedUrlSha1) throws DatabaseAccessException {
 		return this.feedDao.findByField("feed_url_sha_1", feedUrlSha1);
 	}
 

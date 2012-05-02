@@ -16,7 +16,6 @@
 package com.ajah.syndicate.data;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +37,6 @@ import com.ajah.syndicate.FeedSource;
 @Service
 public class FeedManager {
 
-	private static final Logger log = Logger.getLogger(FeedManager.class.getName());
-
 	@Autowired
 	private FeedDao feedDao;
 
@@ -49,8 +46,9 @@ public class FeedManager {
 	 * @param feedSource
 	 *            The feed source to query on.
 	 * @return The most recent feed for the feed source, or null.
+	 * @throws DatabaseAccessException
 	 */
-	public Feed getLatestFeed(FeedSource feedSource) {
+	public Feed getLatestFeed(FeedSource feedSource) throws DatabaseAccessException {
 		return this.feedDao.find(new Criteria().eq("feed_source_id", feedSource).orderBy("created", Order.DESC));
 	}
 

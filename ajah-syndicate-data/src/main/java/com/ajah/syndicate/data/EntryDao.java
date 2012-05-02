@@ -17,7 +17,9 @@ package com.ajah.syndicate.data;
 
 import org.springframework.stereotype.Repository;
 
-import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
 
@@ -29,6 +31,10 @@ import com.ajah.syndicate.EntryId;
  * 
  */
 @Repository
-public class EntryDao extends AbstractAjahDao<EntryId, Entry> {
-	// Empty
+public interface EntryDao extends AjahDao<EntryId, Entry> {
+
+	int update(Entry entry) throws DatabaseAccessException;
+
+	Entry find(Criteria eq) throws DatabaseAccessException;
+
 }

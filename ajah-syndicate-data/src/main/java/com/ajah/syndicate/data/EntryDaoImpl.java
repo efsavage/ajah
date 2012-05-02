@@ -17,25 +17,18 @@ package com.ajah.syndicate.data;
 
 import org.springframework.stereotype.Repository;
 
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DatabaseAccessException;
-import com.ajah.syndicate.FeedSource;
-import com.ajah.syndicate.FeedSourceId;
+import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.syndicate.Entry;
+import com.ajah.syndicate.EntryId;
 
 /**
- * DAO for {@link FeedSource}s.
+ * Dao for {@link Entry}s.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Repository
-public interface FeedSourceDao extends AjahDao<FeedSourceId, FeedSource> {
-
-	FeedSource findByField(String string, String feedUrlSha1) throws DatabaseAccessException;
-
-	int update(FeedSource feedSource) throws DatabaseAccessException;
-
-	FeedSource findByWhere(String string) throws DatabaseAccessException;
-
+public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> implements EntryDao {
+	// Empty
 }

@@ -17,7 +17,9 @@ package com.ajah.syndicate.data;
 
 import org.springframework.stereotype.Repository;
 
-import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 
@@ -29,6 +31,10 @@ import com.ajah.syndicate.FeedId;
  * 
  */
 @Repository
-public class FeedDao extends AbstractAjahDao<FeedId, Feed> {
-	// Empty
+public interface FeedDao extends AjahDao<FeedId, Feed> {
+
+	int update(Feed feed) throws DatabaseAccessException;
+
+	Feed find(Criteria orderBy) throws DatabaseAccessException;
+
 }

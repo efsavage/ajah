@@ -17,7 +17,6 @@ package com.ajah.syndicate.data;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +37,6 @@ import com.ajah.util.AjahUtils;
  */
 @Service
 public class EntryManager {
-
-	private static final Logger log = Logger.getLogger(EntryManager.class.getName());
 
 	@Autowired
 	private EntryDao entryDao;
@@ -75,8 +72,9 @@ public class EntryManager {
 	 * @param htmlUrlSha1
 	 *            The SHA-1 of the Entry's html url.
 	 * @return The Entry, if found, otherwise null.
+	 * @throws DatabaseAccessException
 	 */
-	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) {
+	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) throws DatabaseAccessException {
 		// TODO this field may not necessarily be unique, order by something?
 		return this.entryDao.find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
 	}
