@@ -18,27 +18,34 @@ package com.ajah.syndicate.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
-import com.ajah.spring.jdbc.criteria.Criteria;
-import com.ajah.syndicate.Entry;
-import com.ajah.syndicate.EntryId;
+import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceId;
+import com.ajah.syndicate.PollStatus;
 
 /**
- * Dao for {@link Entry}s.
+ * Dao for {@link FeedSource}s.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Repository
-public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> implements EntryDao {
+public class FeedSourceDaoImpl extends AbstractAjahDao<FeedSourceId, FeedSource, FeedSource> implements FeedSourceDao {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) {
-		return find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
+	public FeedSource getStaleFeedSource() {
+		return findByWhere("poll_status=" + PollStatus.ACTIVE.getId() + " AND next_poll_date < (unix_timestamp() * 1000)");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public FeedSource findByFeedUrlSha1(String feedUrlSha1) {
+		return findByField("feed_url_sha_1", feedUrlSha1);
 	}
 
 }

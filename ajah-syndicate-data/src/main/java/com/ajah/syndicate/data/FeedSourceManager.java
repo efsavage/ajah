@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import com.ajah.spring.jdbc.DatabaseAccessException;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceId;
-import com.ajah.syndicate.PollStatus;
 
 /**
  * Manages persistence of {@link FeedSource}s.
@@ -46,7 +45,7 @@ public class FeedSourceManager {
 	 * @throws DatabaseAccessException
 	 */
 	public FeedSource getStaleFeedSource() throws DatabaseAccessException {
-		return this.feedDao.findByWhere("poll_status=" + PollStatus.ACTIVE.getId() + " AND next_poll_date < (unix_timestamp() * 1000)");
+		return this.feedDao.getStaleFeedSource();
 	}
 
 	/**
@@ -58,7 +57,7 @@ public class FeedSourceManager {
 	 * @throws DatabaseAccessException
 	 */
 	public FeedSource findByFeedUrlSha1(String feedUrlSha1) throws DatabaseAccessException {
-		return this.feedDao.findByField("feed_url_sha_1", feedUrlSha1);
+		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
 	}
 
 	/**

@@ -19,9 +19,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.DatabaseAccessException;
-import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
+import com.ajah.syndicate.FeedSourceId;
 
 /**
  * Dao for {@link Entry}s.
@@ -33,8 +33,26 @@ import com.ajah.syndicate.EntryId;
 @Repository
 public interface EntryDao extends AjahDao<EntryId, Entry> {
 
+	/**
+	 * Update an entry that already exists.
+	 * 
+	 * @param entry
+	 *            The entry to update.
+	 * @return The number of rows affected by the update.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
 	int update(Entry entry) throws DatabaseAccessException;
 
-	Entry find(Criteria eq) throws DatabaseAccessException;
+	/**
+	 * Finds an entry by {@link Entry#getHtmlUrlSha1()} and feed source.
+	 * 
+	 * @param feedSourceId
+	 *            The feed source.
+	 * @param htmlUrlSha1
+	 *            The SHA-1 of the URL.
+	 * @return The matching entry, if found, otherwise null.
+	 */
+	Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1);
 
 }

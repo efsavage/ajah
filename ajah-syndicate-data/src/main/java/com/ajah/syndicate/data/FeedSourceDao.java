@@ -32,10 +32,31 @@ import com.ajah.syndicate.FeedSourceId;
 @Repository
 public interface FeedSourceDao extends AjahDao<FeedSourceId, FeedSource> {
 
-	FeedSource findByField(String string, String feedUrlSha1) throws DatabaseAccessException;
-
+	/**
+	 * Updates a feed source that exists.
+	 * 
+	 * @param feedSource
+	 *            The feed source to update.
+	 * @return The number of rows affected by the update.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
 	int update(FeedSource feedSource) throws DatabaseAccessException;
 
-	FeedSource findByWhere(String string) throws DatabaseAccessException;
+	/**
+	 * Finds an active, stale feed source that needs to be polled.
+	 * 
+	 * @return An active, stale feed source that should be polled.
+	 */
+	FeedSource getStaleFeedSource();
+
+	/**
+	 * Finds a feed by the SHA-1 of it's url.
+	 * 
+	 * @param feedUrlSha1
+	 *            The SHA-1 of the url.
+	 * @return The feed source, if found, otherwise null.
+	 */
+	FeedSource findByFeedUrlSha1(String feedUrlSha1);
 
 }

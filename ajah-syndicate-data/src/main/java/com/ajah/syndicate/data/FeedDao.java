@@ -19,9 +19,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.DatabaseAccessException;
-import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
+import com.ajah.syndicate.FeedSource;
 
 /**
  * DAO for {@link Feed}s.
@@ -33,8 +33,24 @@ import com.ajah.syndicate.FeedId;
 @Repository
 public interface FeedDao extends AjahDao<FeedId, Feed> {
 
+	/**
+	 * Updates an existing Feed.
+	 * 
+	 * @param feed
+	 *            The feed to update.
+	 * @return The number of rows affected by the update.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
 	int update(Feed feed) throws DatabaseAccessException;
 
-	Feed find(Criteria orderBy) throws DatabaseAccessException;
+	/**
+	 * Finds the most recent feed for a feed source.
+	 * 
+	 * @param feedSource
+	 *            The feed source to match on.
+	 * @return The latest feed, if found, otherwise null.
+	 */
+	Feed getLatestFeed(FeedSource feedSource);
 
 }

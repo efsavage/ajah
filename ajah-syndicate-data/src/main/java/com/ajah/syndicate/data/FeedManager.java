@@ -21,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DatabaseAccessException;
-import com.ajah.spring.jdbc.criteria.Criteria;
-import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
@@ -49,7 +47,7 @@ public class FeedManager {
 	 * @throws DatabaseAccessException
 	 */
 	public Feed getLatestFeed(FeedSource feedSource) throws DatabaseAccessException {
-		return this.feedDao.find(new Criteria().eq("feed_source_id", feedSource).orderBy("created", Order.DESC));
+		return this.feedDao.getLatestFeed(feedSource);
 	}
 
 	/**

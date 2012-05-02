@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DatabaseAccessException;
-import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
 import com.ajah.syndicate.FeedSourceId;
@@ -76,7 +75,7 @@ public class EntryManager {
 	 */
 	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) throws DatabaseAccessException {
 		// TODO this field may not necessarily be unique, order by something?
-		return this.entryDao.find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
+		return this.entryDao.findByHtmlUrlSha1(feedSourceId, htmlUrlSha1);
 	}
 
 }

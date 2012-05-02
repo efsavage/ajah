@@ -19,26 +19,27 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
-import com.ajah.syndicate.Entry;
-import com.ajah.syndicate.EntryId;
-import com.ajah.syndicate.FeedSourceId;
+import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.syndicate.Feed;
+import com.ajah.syndicate.FeedId;
+import com.ajah.syndicate.FeedSource;
 
 /**
- * Dao for {@link Entry}s.
+ * Dao for {@link Feed}s.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Repository
-public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> implements EntryDao {
+public class FeedDaoImpl extends AbstractAjahDao<FeedId, Feed, Feed> implements FeedDao {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) {
-		return find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
+	public Feed getLatestFeed(FeedSource feedSource) {
+		return find(new Criteria().eq("feed_source_id", feedSource).orderBy("created", Order.DESC));
 	}
 
 }
