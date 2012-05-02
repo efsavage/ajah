@@ -3,7 +3,6 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-rfcmail-fetch</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>Ajah Mail Fetch Library</name>
 	<description>Library for fetching email from various sources and a simple framework for acting on the results.</description>
 	<url>http://efsavage.github.com/ajah/mail-fetch/</url>
@@ -11,7 +10,7 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -23,7 +22,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${version}</version>
 		</dependency>
 		<dependency>
 			<!-- jsoup HTML parser library @ http://jsoup.org/ -->
