@@ -77,6 +77,7 @@ public class Http {
 	/**
 	 * Return the body of the response as a byte array (such as an image).
 	 * 
+	 * @see #getBytes(URI)
 	 * @param uri
 	 *            The URI to fetch.
 	 * @return The response body as a String.
@@ -92,6 +93,19 @@ public class Http {
 		return EntityUtils.toByteArray(internalGet(new URI(uri)));
 	}
 
+	/**
+	 * Return the body of the response as a byte array (such as an image).
+	 * 
+	 * @param uri
+	 *            The URI to fetch.
+	 * @return The response body as a String.
+	 * @throws IOException
+	 *             If the response could not be completed.
+	 * @throws UnexpectedResponseCode
+	 *             If an unexpected/illegal response status is issued.
+	 * @throws NotFoundException
+	 *             If the resource could not be found at the URI (404).
+	 */
 	public static byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
 		return EntityUtils.toByteArray(internalGet(uri));
 	}
