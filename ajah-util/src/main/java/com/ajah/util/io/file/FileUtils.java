@@ -46,6 +46,7 @@ public class FileUtils {
 	private static Logger log = Logger.getLogger(FileUtils.class.getName());
 
 	public static long copyFile(final File file, final File newFile) {
+		// TODO Write to temp file then rename
 		InputStream in = null;
 		OutputStream out = null;
 		long bytes = 0;
@@ -224,6 +225,7 @@ public class FileUtils {
 	 * @throws IOException
 	 */
 	public static long write(final File file, final byte[] data) throws IOException {
+		// TODO Write to temp file then rename
 		AjahUtils.requireParam(data, "data");
 		BufferedOutputStream out = null;
 		try {
@@ -256,6 +258,7 @@ public class FileUtils {
 	 * @throws IOException
 	 */
 	public static long write(final File file, final InputStream in) throws IOException {
+		// TODO Write to temp file then rename
 		AjahUtils.requireParam(file, "file");
 		BufferedOutputStream out = null;
 		try {
@@ -278,6 +281,7 @@ public class FileUtils {
 	}
 
 	public static int write(final File file, final List<String> lines) throws IOException {
+		// TODO Write to temp file then rename
 		BufferedOutputStream out = null;
 		try {
 			file.getParentFile().mkdirs();
@@ -294,6 +298,7 @@ public class FileUtils {
 	}
 
 	public static int write(final File file, final String string) throws IOException {
+		// TODO Write to temp file then rename
 		BufferedOutputStream out = null;
 		try {
 			file.getParentFile().mkdirs();
