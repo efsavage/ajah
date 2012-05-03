@@ -22,8 +22,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.ajah.util.image.ImageInfo;
-import com.ajah.util.image.ImageUtils;
+import com.ajah.image.ImageInfo;
+import com.ajah.image.ImageUtils;
 import com.ajah.util.lang.StreamUtils;
 
 /**
