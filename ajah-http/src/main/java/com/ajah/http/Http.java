@@ -17,12 +17,14 @@ package com.ajah.http;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -69,17 +71,7 @@ public class Http {
 	 *             If the resource could not be found at the URI (404).
 	 */
 	public static String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException {
-		final HttpClient httpclient = new DefaultHttpClient();
-		final HttpGet httpget = new HttpGet(uri);
-		final HttpResponse response = httpclient.execute(httpget);
-		if (response.getStatusLine().getStatusCode() == 200) {
-			final HttpEntity entity = response.getEntity();
-			return EntityUtils.toString(entity);
-		} else if (response.getStatusLine().getStatusCode() == 404) {
-			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
-		} else {
-			throw new UnexpectedResponseCode(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
-		}
+		return EntityUtils.toString(internalGet(uri));
 	}
 
 	/**
@@ -94,14 +86,23 @@ public class Http {
 	 *             If an unexpected/illegal response status is issued.
 	 * @throws NotFoundException
 	 *             If the resource could not be found at the URI (404).
+	 * @throws URISyntaxException
 	 */
-	public static byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+	public static byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode, URISyntaxException {
+		return EntityUtils.toByteArray(internalGet(new URI(uri)));
+	}
+
+	public static byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+		return EntityUtils.toByteArray(internalGet(uri));
+	}
+
+	private static HttpEntity internalGet(final URI uri) throws IOException, ClientProtocolException, NotFoundException, UnexpectedResponseCode {
 		final HttpClient httpclient = new DefaultHttpClient();
 		final HttpGet httpget = new HttpGet(uri);
 		final HttpResponse response = httpclient.execute(httpget);
 		if (response.getStatusLine().getStatusCode() == 200) {
 			final HttpEntity entity = response.getEntity();
-			return EntityUtils.toByteArray(entity);
+			return entity;
 		} else if (response.getStatusLine().getStatusCode() == 404) {
 			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
 		} else {
