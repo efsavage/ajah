@@ -13,7 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package test.ajah.util;
+
+package test.ajah.image;
 
 import java.io.IOException;
 
@@ -31,6 +32,11 @@ import com.ajah.util.lang.StreamUtils;
  */
 public class ImageUtilsTest {
 
+	/**
+	 * Test extracting infromation from a GIF.
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testGif() throws IOException {
 		final byte[] data = StreamUtils.toByteArray(getClass().getResourceAsStream("/test.gif"));
@@ -40,6 +46,11 @@ public class ImageUtilsTest {
 		Assert.assertEquals("gif", info.getFormat().getSuffix());
 	}
 
+	/**
+	 * Test extracting infromation from a JPEG.
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testJpg() throws IOException {
 		final byte[] data = StreamUtils.toByteArray(getClass().getResourceAsStream("/test.jpg"));
@@ -49,6 +60,11 @@ public class ImageUtilsTest {
 		Assert.assertEquals("jpg", info.getFormat().getSuffix());
 	}
 
+	/**
+	 * Test extracting infromation from a PNG.
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testPng() throws IOException {
 		final byte[] data = StreamUtils.toByteArray(getClass().getResourceAsStream("/test.png"));

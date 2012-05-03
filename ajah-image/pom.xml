@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ajah-image</artifactId>
+	<name>Ajah Image Library</name>
+	<url>http://efsavage.github.com/ajah/image/</url>
+	<inceptionYear>2012</inceptionYear>
+	<description>The Ajah Image Library offers image information and manipulation utilities.</description>
+
+	<parent>
+		<groupId>com.ajah</groupId>
+		<artifactId>ajah-base</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-util</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	
+</project>

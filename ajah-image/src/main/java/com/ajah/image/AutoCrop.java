@@ -13,7 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util.image;
+
+package com.ajah.image;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
