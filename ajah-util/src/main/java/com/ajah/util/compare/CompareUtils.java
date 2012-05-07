@@ -136,6 +136,34 @@ public class CompareUtils {
 	}
 
 	/**
+	 * Compares two comparables, checking for nulls first.
+	 * 
+	 * @see Comparable#compareTo(Object)
+	 * @param first
+	 *            The first object, may be null.
+	 * @param second
+	 *            The second object, may be null.
+	 * @param nullsEqual
+	 *            Should two null objects be treated as equal (true) or throw an
+	 *            exception (false)?
+	 * @return The comparison of the two object.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static <T extends Comparable<T>> int compare(final T first, final T second, final boolean nullsEqual) {
+		final int retVal = compareNulls(first, second, nullsEqual);
+		if (nullsEqual && retVal == 0 && first == null) {
+			return retVal;
+		}
+		if (retVal != 0) {
+			return retVal;
+		}
+		return first.compareTo(second);
+	}
+
+	/**
 	 * Compares two strings, checking for nulls first, and ignoring case.
 	 * 
 	 * @see String#compareToIgnoreCase(String)
