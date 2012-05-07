@@ -15,7 +15,12 @@
  */
 package com.ajah.util.compare;
 
+import java.util.Collection;
 import java.util.Date;
+
+import com.ajah.util.CollectionUtils;
+import com.ajah.util.Identifiable;
+import com.ajah.util.StringUtils;
 
 /**
  * Utility methods for comparisons.
@@ -136,6 +141,80 @@ public class CompareUtils {
 	}
 
 	/**
+	 * Compares the presence (not the contents) of two strings, checking for
+	 * nulls first. An empty or null string will sort lower (-1) than a
+	 * non-blank string. Null values are considered equal to empty strings.
+	 * 
+	 * @see String#compareTo(String)
+	 * @param first
+	 *            The first string, may be null.
+	 * @param second
+	 *            The second string, may be null.
+	 * @return The comparison of the two Strings.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static int comparePresence(final String first, final String second) {
+		final int retVal = compareNulls(first, second, true);
+		if (retVal != 0) {
+			return retVal;
+		}
+		if (StringUtils.isBlank(first)) {
+			if (StringUtils.isBlank(second)) {
+				// both blank
+				return 0;
+			}
+			// blank, not-blank
+			return -1;
+		}
+		if (StringUtils.isBlank(second)) {
+			// not-blank, blank
+			return 1;
+		}
+		// not-blank, not-blank
+		return 0;
+	}
+
+	/**
+	 * Compares the presence (not the contents) of two collections, checking for
+	 * nulls first. An empty or null collection will sort lower (-1) than a
+	 * populated one.
+	 * 
+	 * @see String#compareTo(String)
+	 * @param first
+	 *            The first string, may be null.
+	 * @param second
+	 *            The second string, may be null.
+	 * @return The comparison of the two Strings.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static int comparePresence(final Collection<?> first, final Collection<?> second) {
+		final int retVal = compareNulls(first, second, true);
+		if (retVal != 0) {
+			return retVal;
+		}
+		if (CollectionUtils.isEmpty(first)) {
+			if (CollectionUtils.isEmpty(second)) {
+				// both empty
+				return 0;
+			}
+			// empty, not-empty
+			return -1;
+		}
+		if (CollectionUtils.isEmpty(second)) {
+			// not-empty, empty
+			return 1;
+		}
+		// both not-empty
+		return 0;
+	}
+
+	/**
 	 * Compares two comparables, checking for nulls first.
 	 * 
 	 * @see Comparable#compareTo(Object)
@@ -152,7 +231,7 @@ public class CompareUtils {
 	 *             means it cannot be passed along to a comparator even though
 	 *             they are "equal".
 	 */
-	public static <T extends Comparable<T>> int compare(final T first, final T second, final boolean nullsEqual) {
+	public static <T2, T1 extends Comparable<T2>> int safeCompare(final T1 first, final T2 second, final boolean nullsEqual) {
 		final int retVal = compareNulls(first, second, nullsEqual);
 		if (nullsEqual && retVal == 0 && first == null) {
 			return retVal;
@@ -161,6 +240,39 @@ public class CompareUtils {
 			return retVal;
 		}
 		return first.compareTo(second);
+	}
+
+	/**
+	 * Compares two identifiables, checking for nulls on the objects and IDs
+	 * first.
+	 * 
+	 * @see Comparable#compareTo(Object)
+	 * @param first
+	 *            The first object, may be null.
+	 * @param second
+	 *            The second object, may be null.
+	 * @param nullsEqual
+	 *            Should two null objects be treated as equal (true) or throw an
+	 *            exception (false)?
+	 * @return The comparison of the two object.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static <K extends Comparable<K>, T extends Identifiable<K>> int compareIds(final T first, final T second, final boolean nullsEqual) {
+		int retVal = compareNulls(first, second, nullsEqual);
+		if (nullsEqual && retVal == 0 && first == null) {
+			return retVal;
+		}
+		retVal = compareNulls(first.getId(), second.getId(), nullsEqual);
+		if (nullsEqual && retVal == 0 && first.getId() == null) {
+			return retVal;
+		}
+		if (retVal != 0) {
+			return retVal;
+		}
+		return first.getId().compareTo(second.getId());
 	}
 
 	/**
