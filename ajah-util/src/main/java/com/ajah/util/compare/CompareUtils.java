@@ -21,6 +21,7 @@ import java.util.Date;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
+import com.ajah.util.ToStringable;
 
 /**
  * Utility methods for comparisons.
@@ -74,6 +75,25 @@ public class CompareUtils {
 			return 1;
 		}
 		return 0;
+	}
+
+	/**
+	 * Compares two booleans, with true being greater than false.
+	 * 
+	 * @param first
+	 *            First value.
+	 * @param second
+	 *            Second value.
+	 * @return -1 if first is false and second is true, 1 if first is true and
+	 *         second is false, otherwise 0.
+	 */
+	public static int compare(final boolean first, final boolean second) {
+		if (first == second) {
+			return 0;
+		} else if (first) {
+			return 1;
+		}
+		return -1;
 	}
 
 	/**
@@ -138,6 +158,34 @@ public class CompareUtils {
 			return retVal;
 		}
 		return first.compareTo(second);
+	}
+
+	/**
+	 * Compares two {@link ToStringable}s, checking for nulls first.
+	 * 
+	 * @see String#compareTo(String)
+	 * @param first
+	 *            The first ToStringable, may be null.
+	 * @param second
+	 *            The second ToStringable, may be null.
+	 * @param nullsEqual
+	 *            Should two null objects be treated as equal (true) or throw an
+	 *            exception (false)?
+	 * @return The comparison of the two ToStringables.
+	 * @throws IllegalArgumentException
+	 *             If Both values are null and nullsEqual is false, as this
+	 *             means it cannot be passed along to a comparator even though
+	 *             they are "equal".
+	 */
+	public static int compare(final ToStringable first, final ToStringable second, final boolean nullsEqual) {
+		final int retVal = compareNulls(first, second, nullsEqual);
+		if (nullsEqual && retVal == 0 && first == null) {
+			return retVal;
+		}
+		if (retVal != 0) {
+			return retVal;
+		}
+		return compare(first.toString(), second.toString());
 	}
 
 	/**
