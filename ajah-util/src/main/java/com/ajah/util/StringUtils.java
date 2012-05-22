@@ -133,6 +133,24 @@ public class StringUtils {
 	}
 
 	/**
+	 * Returns leftmost characters of a string.
+	 * 
+	 * @param string
+	 *            String to be tested, may be null.
+	 * @param length
+	 *            The maximum length of the string to return.
+	 * @return The leftmost characters of a string. If the string was null, or
+	 *         shorter than the specified lenght, the original string will be
+	 *         returned.
+	 */
+	public static String left(final String string, final int length) {
+		if (string == null || string.length() < length) {
+			return string;
+		}
+		return string.substring(0, length);
+	}
+
+	/**
 	 * Returns toString() for the object passed, if it is not null, otherwise
 	 * returns null.
 	 * 
