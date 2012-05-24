@@ -30,6 +30,7 @@ import org.jets3t.service.security.AWSCredentials;
 
 import com.ajah.lang.ConfigException;
 import com.ajah.util.config.Config;
+import com.ajah.util.lang.StreamUtils;
 
 /**
  * Wrapper for {@link RestS3Service}.
@@ -88,8 +89,7 @@ public class S3Client {
 	}
 
 	/**
-	 * Puts an object using the default client. Consider using
-	 * {@link S3#put(Bucket, String, String)}.
+	 * Puts an object. Consider using {@link S3#put(Bucket, String, String)}.
 	 * 
 	 * @see S3Client#getDefaultClient()
 	 * 
@@ -124,6 +124,38 @@ public class S3Client {
 			}
 			object = this.s3Service.putObject(bucket.toString(), object);
 			log.fine("Uploaded " + object.getName() + " to bucket " + bucket.getName());
+		} catch (UnsupportedEncodingException e) {
+			throw new ConfigException(e);
+		} catch (IOException | ServiceException e) {
+			throw new S3Exception(e);
+		}
+
+	}
+
+	/**
+	 * Gets an object.
+	 * 
+	 * @see S3Client#getDefaultClient()
+	 * 
+	 * @param bucket
+	 *            The bucket to put the object into, required.
+	 * @param name
+	 *            The name to store the object as, required.
+	 * @param gzip
+	 *            Un-Gzip the data? (if it has .gz to the end of it)
+	 * @return The file's data
+	 * @throws S3Exception
+	 *             If an error occurs storing the object.
+	 */
+	public byte[] get(Bucket bucket, String name, boolean gzip) throws S3Exception {
+
+		try {
+			log.finest("Fetching " + name + " from bucket " + bucket.getName());
+			S3Object object = this.s3Service.getObject(bucket.toString(), name);
+			if (gzip && name.endsWith(".gz")) {
+				throw new UnsupportedOperationException();
+			}
+			return StreamUtils.toByteArray(object.getDataInputStream());
 		} catch (UnsupportedEncodingException e) {
 			throw new ConfigException(e);
 		} catch (IOException | ServiceException e) {
