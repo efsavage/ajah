@@ -39,7 +39,7 @@ public class HashCache<K, V> {
 	 * @param value
 	 *            The value to store.
 	 */
-	public void Store(K key, V value) {
+	public void store(K key, V value) {
 		this.map.put(key, new CacheEntry<>(value, System.currentTimeMillis()));
 	}
 
