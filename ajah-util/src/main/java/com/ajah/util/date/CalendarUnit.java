@@ -74,6 +74,20 @@ public enum CalendarUnit {
 	}
 
 	/**
+	 * Returns how many milliseconds the specified quantity of this unit is
+	 * equivalent to.
+	 * 
+	 * @param quantity
+	 *            The quantity of this unit to return the equivalent
+	 *            milliseconds for.
+	 * @return How many milliseconds the specified quantity of this unit is
+	 *         equivalent to.
+	 */
+	public long getMillis(int quantity) {
+		return this.millis;
+	}
+
+	/**
 	 * The singular name of this unit.
 	 * 
 	 * @return The singular name of this unit.
