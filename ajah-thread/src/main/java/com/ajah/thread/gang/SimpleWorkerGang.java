@@ -19,23 +19,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A simple gang that can execute a list of jobs.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class SimpleWorkerGang {
 
-	private List<Worker<?>> workers = new ArrayList<Worker<?>>();
+	private List<Worker<?>> workers = new ArrayList<>();
 
 	private boolean autoStart;
 
+	/**
+	 * Constructor with autoStart enabled.
+	 */
+	public SimpleWorkerGang() {
+		this.autoStart = true;
+	}
+
+	/**
+	 * Public constructor.
+	 * 
+	 * @param autoStart
+	 *            Should jobs be started as they are added?
+	 */
 	public SimpleWorkerGang(boolean autoStart) {
 		this.autoStart = autoStart;
 	}
 
 	/**
-	 * Invokes go on all workers in this gang. This isn't necessary if autoStart
-	 * is true.
+	 * Invokes {@link Worker#go()} on all workers in this gang. This isn't
+	 * necessary if autoStart is true.
 	 */
 	public void go() {
 		for (Worker<?> worker : this.workers) {

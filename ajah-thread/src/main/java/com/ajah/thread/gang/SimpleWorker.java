@@ -20,9 +20,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
 
+import com.ajah.thread.ThreadQueue;
 import com.ajah.util.AjahUtils;
 
 /**
+ * A simple implementation of {@link Worker}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <T>
@@ -34,6 +37,7 @@ public class SimpleWorker<T> implements Worker<T> {
 	private static Logger log = Logger.getLogger(SimpleWorker.class.getName());
 	private FutureTask<T> task;
 	private boolean cancelRequested;
+	private ThreadQueue threadQueue;
 
 	/**
 	 * {@inheritDoc}
@@ -63,7 +67,7 @@ public class SimpleWorker<T> implements Worker<T> {
 	 */
 	public SimpleWorker(Callable<T> callable) {
 		AjahUtils.requireParam(callable, "callable");
-		this.task = new FutureTask<T>(callable);
+		this.task = new FutureTask<>(callable);
 	}
 
 	/**
@@ -90,7 +94,10 @@ public class SimpleWorker<T> implements Worker<T> {
 	 */
 	@Override
 	public void go() {
-		this.task.run();
+		if (this.threadQueue == null) {
+			ThreadQueue.getInstance().execute(this.task);
+		}
+		this.threadQueue.execute(this.task);
 	}
 
 }
