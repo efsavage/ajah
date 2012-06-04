@@ -46,7 +46,7 @@ public class DiskCache implements HttpCache {
 	 */
 	@Override
 	public String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException {
-		return new String(getBytes(uri));
+		return new String(getBytes(uri, Long.MAX_VALUE));
 	}
 
 	/**
@@ -54,14 +54,24 @@ public class DiskCache implements HttpCache {
 	 */
 	@Override
 	public byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode, URISyntaxException {
-		return getBytes(new URI(uri));
+		return getBytes(new URI(uri), Long.MAX_VALUE);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the content from cache if possible, and if not, will fetch and
+	 * cache it.
+	 * 
+	 * @param uri
+	 *            The URI to fetch.
+	 * @param maxAge
+	 *            The maximum age of the cached copy to return. Use -1 to force
+	 *            a fresh fetch.
+	 * @return The content from cache or as fetched.
+	 * @throws IOException
+	 * @throws NotFoundException
+	 * @throws UnexpectedResponseCode
 	 */
-	@Override
-	public byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+	public byte[] getBytes(final URI uri, long maxAge) throws IOException, NotFoundException, UnexpectedResponseCode {
 		// TODO Add max-age
 		// IDEA Store expires header, check last-modified
 		final String path = FileHashUtils.getHashedFileName(SHA.sha1Hex(uri.toString()), 3, 2);
@@ -69,16 +79,43 @@ public class DiskCache implements HttpCache {
 		final File f = new File(cacheDir, path);
 
 		byte[] data = null;
-		if (!f.exists()) {
-			log.info("Cache miss; getting " + uri);
-			data = Http.getBytes(uri);
-			FileUtils.write(f, data);
+		if (f.exists()) {
+			if (maxAge > 0) {
+				if (maxAge == Long.MAX_VALUE || f.lastModified() + maxAge < System.currentTimeMillis()) {
+					return FileUtils.readFileAsBytes(f);
+				}
+				log.fine("Cache expired; getting " + uri);
+			}
 		} else {
-			// TODO should we be erroring here or just re-fetching?
-			data = FileUtils.readFileAsBytes(f);
+			log.fine("Cache miss; getting " + uri);
 		}
 
+		data = Http.getBytes(uri);
+		FileUtils.write(f, data);
 		return data;
+	}
+
+	/**
+	 * @param url
+	 * @param millis
+	 * @return
+	 * @throws IOException 
+	 * @throws UnexpectedResponseCode 
+	 * @throws NotFoundException 
+	 */
+	public String get(URI uri, long millis) throws NotFoundException, UnexpectedResponseCode, IOException {
+		return new String(getBytes(uri, millis));
+	}
+
+	/**
+	 * Calls {@link #getBytes(URI, long)} with {@link Long#MAX_VALUE} for a
+	 * maxAge.
+	 * 
+	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
+	 */
+	@Override
+	public byte[] getBytes(URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+		return getBytes(uri, Long.MAX_VALUE);
 	}
 
 }
