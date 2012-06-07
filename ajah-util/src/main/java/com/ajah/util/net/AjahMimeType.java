@@ -36,9 +36,9 @@ public enum AjahMimeType implements Identifiable<String> {
 	 */
 	MULTIPART_ALTERNATIVE("multipart", "alternative"),
 	/**
-	 * text/html
+	 * application/javascript
 	 */
-	TEXT_HTML("text", "html", true),
+	APPLICATION_JAVASCRIPT("application", "javascript"),
 	/**
 	 * application/xhtml+xml (XHTML)
 	 */
@@ -63,6 +63,14 @@ public enum AjahMimeType implements Identifiable<String> {
 	 * image/png
 	 */
 	IMAGE_PNG("image", "png"),
+	/**
+	 * text/html
+	 */
+	TEXT_HTML("text", "html", true),
+	/**
+	 * text/css
+	 */
+	TEXT_CSS("text", "css", true),
 	/**
 	 * Unknown
 	 */
