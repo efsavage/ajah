@@ -215,6 +215,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	protected long count(final String sql) {
 		try {
+			sqlLog.finest(sql);
 			return getJdbcTemplate().queryForInt(sql);
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
@@ -224,7 +225,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	protected long count(final Criteria criteria) {
 		try {
-			return getJdbcTemplate().queryForInt("SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql(), criteria.getWhere().getValues());
+			String sql = "SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql();
+			sqlLog.finest(sql);
+			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -864,7 +867,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected int maxInt(final String field, final Criteria criteria) {
 		try {
 			final String sql = "SELECT MAX(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
-			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues());
+			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -874,7 +877,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected long maxLong(final String field, final Criteria criteria) {
 		try {
 			final String sql = "SELECT MAX(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
-			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues());
+			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -884,7 +887,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected int minInt(final String field, final Criteria criteria) {
 		try {
 			final String sql = "SELECT MIN(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
-			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues());
+			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -894,7 +897,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected long minLong(final String field, final Criteria criteria) {
 		try {
 			final String sql = "SELECT MIN(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
-			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues());
+			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
