@@ -15,6 +15,8 @@
  */
 package com.ajah.servlet.util;
 
+import java.util.UUID;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -85,6 +87,24 @@ public class CookieUtils {
 	 */
 	public static Cookie getCookie(final ServletRequest request, final String name) {
 		return getCookie((HttpServletRequest) request, name);
+	}
+
+	/**
+	 * Clears a cookies by setting its {@link Cookie#setMaxAge(int)} to 0;
+	 * 
+	 * @param cookieName
+	 *            The name of the cookie to clear
+	 * @param response
+	 *            Response to set updated cookies on, required.
+	 * @param request
+	 */
+	public static void clearCookie(final String cookieName, HttpServletRequest request, final HttpServletResponse response) {
+		AjahUtils.requireParam(cookieName, "cookieName");
+		AjahUtils.requireParam(request, "request");
+		AjahUtils.requireParam(response, "response");
+		Cookie cookie = getCookie(request, cookieName);
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
 	}
 
 }
