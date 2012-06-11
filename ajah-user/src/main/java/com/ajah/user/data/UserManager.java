@@ -202,7 +202,7 @@ public class UserManager {
 			log.fine("getUser successful");
 			return user;
 		}
-		throw new AuthenicationFailureException(username);
+		throw new AuthenicationFailureException(username + " authentication failed");
 	}
 
 	/**
