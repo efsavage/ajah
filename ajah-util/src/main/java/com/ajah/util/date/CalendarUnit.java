@@ -84,7 +84,7 @@ public enum CalendarUnit {
 	 *         equivalent to.
 	 */
 	public long getMillis(int quantity) {
-		return this.millis;
+		return quantity * this.millis;
 	}
 
 	/**
