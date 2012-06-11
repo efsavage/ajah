@@ -50,6 +50,8 @@ public class DateUtils {
 	private static final DateFormat NICE_ABSOLUTE_DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
 	private static final DateFormat NICE_ABSOLUTE_TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT);
 
+	private static DateFormat DAY_FORMAT = new SimpleDateFormat("yyyyMMdd");
+
 	/**
 	 * Adds a number of hours to a date, rolling over other fields as necessary.
 	 * 
@@ -61,6 +63,7 @@ public class DateUtils {
 	 * @return The date, with the specified number of hours added to it.
 	 */
 	public static Date addHours(final Date date, final int hours) {
+		// TODO Why are we using a calendar here?
 		final Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.add(Calendar.HOUR, hours);
@@ -76,6 +79,19 @@ public class DateUtils {
 	 */
 	public static Date addMinutes(final int minutes) {
 		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
+	}
+
+	/**
+	 * Adds a number of days to the given date.
+	 * 
+	 * @param date
+	 *            The date to add the time to.
+	 * @param days
+	 *            The number of days to add, may be negative.
+	 * @return The current time plus the the number of days specified.
+	 */
+	public static Date addDays(final Date date, final int days) {
+		return new Date(date.getTime() + (days * DAY_IN_MILLIS));
 	}
 
 	/**
@@ -307,5 +323,13 @@ public class DateUtils {
 	 */
 	public static String veryShortFormatRelative(final Date date) {
 		return formatInterval(Math.abs(System.currentTimeMillis() - date.getTime()), true);
+	}
+
+	public static Date daysOffset(int offset) {
+		return new Date(System.currentTimeMillis() + CalendarUnit.DAY.getMillis(offset));
+	}
+
+	public static boolean isSameDay(Date date1, Date date2) {
+		return DAY_FORMAT.format(date1).equals(DAY_FORMAT.format(date2));
 	}
 }
