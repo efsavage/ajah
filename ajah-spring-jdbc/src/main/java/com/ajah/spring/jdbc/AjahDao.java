@@ -59,7 +59,7 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @throws DatabaseAccessException
 	 *             if the query could not be executed.
 	 */
-	T findById(final K id) throws DatabaseAccessException;
+	T load(final K id) throws DatabaseAccessException;
 
 	/**
 	 * Inserts a record.
@@ -71,5 +71,27 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 *             if the query could not be executed.
 	 */
 	int insert(final T entity) throws DatabaseAccessException;
+
+	/**
+	 * Inserts a record.
+	 * 
+	 * @param entity
+	 *            The entity to update.
+	 * @return The number of rows updated.
+	 * @throws DatabaseAccessException
+	 *             if the query could not be executed.
+	 */
+	int update(final T entity) throws DatabaseAccessException;
+
+	/**
+	 * Deletes a record, or marks it as deleted.
+	 * 
+	 * @param entity
+	 *            The entity to delete.
+	 * @return The number of rows deleted or marked as deleted.
+	 * @throws DatabaseAccessException
+	 *             if the query could not be executed.
+	 */
+	int delete(final T entity) throws DatabaseAccessException;
 
 }
