@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -81,21 +82,50 @@ public class FileUtils {
 		}
 	}
 
-	public static String readFile(final File file) throws FileNotFoundException {
+	/**
+	 * Reads a file to a UTF-8 string.
+	 * 
+	 * @param file
+	 *            The file to read.
+	 * @return The contents of the file as a string.
+	 * @throws IOException
+	 *             If the file could not be read.
+	 */
+	public static String readFile(final File file) throws IOException {
+		try {
+			return readFile(file, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalArgumentException("UTF-8encoding is not supported?!");
+		}
+	}
+
+	/**
+	 * Reads a file to a string, with the specified character set.
+	 * 
+	 * @param file
+	 *            The file to read
+	 * @param charSet
+	 *            The character set to use when constructing the string.
+	 * @return The contents of the file as a string.
+	 * @throws IOException
+	 *             If the file could not be read.
+	 * @throws UnsupportedEncodingException
+	 *             If the encoding is not supported.
+	 */
+	public static String readFile(final File file, String charSet) throws UnsupportedEncodingException, IOException {
 		AjahUtils.requireParam(file, "file");
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
+
 		final StringBuffer data = new StringBuffer();
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new FileReader(file));
 			while (in.ready()) {
-				final String line = in.readLine();
+				final String line = new String(in.readLine().getBytes(), charSet);
 				data.append(line).append("\n");
 			}
-		} catch (final IOException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			if (in != null) {
 				try {
@@ -111,16 +141,15 @@ public class FileUtils {
 
 	/**
 	 * Reads a file and returns the lines of it as a list of strings. Handles
-	 * opening a closing the file. If there are any errors other than that the
-	 * file does not exist, will return an empty or partial list.
+	 * opening a closing the file.
 	 * 
 	 * @param fileName
 	 *            The name of the file to load, required.
 	 * @return List of lines in the file.
-	 * @throws FileNotFoundException
-	 *             If the file does not exist.
+	 * @throws IOException
+	 *             If the file could not be read.
 	 */
-	public static String readFile(final String fileName) throws FileNotFoundException {
+	public static String readFile(final String fileName) throws IOException {
 		if (fileName == null || fileName.length() < 1) {
 			throw new IllegalArgumentException("Filename may not be null or empty");
 		}
@@ -201,6 +230,16 @@ public class FileUtils {
 		return data;
 	}
 
+	/**
+	 * Reads a file as a long value. If there are any errors, returns a default
+	 * value.
+	 * 
+	 * @param file
+	 *            The file to read.
+	 * @param defaultValue
+	 *            The value to return if no valid value is available.
+	 * @return The contents of the file as a long, or the defaultValue.
+	 */
 	public static Long readFileAsLong(final File file, final Long defaultValue) {
 		try {
 			return Long.valueOf(readFile(file));
@@ -208,6 +247,9 @@ public class FileUtils {
 			log.warning(e.getMessage());
 			return defaultValue;
 		} catch (final FileNotFoundException e) {
+			log.warning(e.getMessage());
+			return defaultValue;
+		} catch (IOException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
 		}
