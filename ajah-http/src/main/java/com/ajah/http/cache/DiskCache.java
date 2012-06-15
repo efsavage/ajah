@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.logging.Level;
 
 import lombok.extern.java.Log;
 
@@ -27,6 +29,7 @@ import com.ajah.http.Http;
 import com.ajah.http.err.NotFoundException;
 import com.ajah.http.err.UnexpectedResponseCode;
 import com.ajah.util.config.Config;
+import com.ajah.util.date.DateUtils;
 import com.ajah.util.io.file.FileHashUtils;
 import com.ajah.util.io.file.FileUtils;
 
@@ -80,12 +83,22 @@ public class DiskCache implements HttpCache {
 
 		byte[] data = null;
 		if (f.exists()) {
-			if (maxAge > 0) {
-				if (maxAge == Long.MAX_VALUE || f.lastModified() + maxAge < System.currentTimeMillis()) {
+			if (maxAge == Long.MAX_VALUE) {
+				log.finest("Indefinite caching enabled; getting " + uri);
+				return FileUtils.readFileAsBytes(f);
+			} else if (maxAge > 0) {
+				long mod = f.lastModified();
+				if (log.isLoggable(Level.FINEST)) {
+					log.finest("File modified " + new Date(mod));
+					log.finest("Expiration is " + new Date(System.currentTimeMillis() - maxAge));
+				}
+				if (mod + maxAge > System.currentTimeMillis()) {
+					log.fine("Cache hit for " + uri + " (expires in " + DateUtils.formatInterval(System.currentTimeMillis() - mod) + ")");
 					return FileUtils.readFileAsBytes(f);
 				}
 				log.fine("Cache expired; getting " + uri);
 			}
+
 		} else {
 			log.fine("Cache miss; getting " + uri);
 		}
@@ -99,9 +112,9 @@ public class DiskCache implements HttpCache {
 	 * @param url
 	 * @param millis
 	 * @return
-	 * @throws IOException 
-	 * @throws UnexpectedResponseCode 
-	 * @throws NotFoundException 
+	 * @throws IOException
+	 * @throws UnexpectedResponseCode
+	 * @throws NotFoundException
 	 */
 	public String get(URI uri, long millis) throws NotFoundException, UnexpectedResponseCode, IOException {
 		return new String(getBytes(uri, millis));
