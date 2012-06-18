@@ -211,8 +211,8 @@ public class ArrayUtils {
 		if (array == null || array.length < 1) {
 			return true;
 		}
-		for (Object object : array) {
-			if (object != null) {
+		for (String string : array) {
+			if (!StringUtils.isBlank(string)) {
 				return false;
 			}
 		}
