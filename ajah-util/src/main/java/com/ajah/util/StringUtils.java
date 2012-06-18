@@ -23,6 +23,11 @@ package com.ajah.util;
 public class StringUtils {
 
 	/**
+	 * The Non-breaking space character.
+	 */
+	public static final char NBSP = (char) 160;
+
+	/**
 	 * Capitalizes first letter of a String.
 	 * 
 	 * @see Character#toTitleCase(char)
@@ -68,7 +73,13 @@ public class StringUtils {
 	 * @return true if string is null or zero-length
 	 */
 	public static boolean isBlank(final String string) {
-		return string == null || string.length() < 1 || string.trim().length() < 1;
+		if (string == null) {
+			return true;
+		}
+		if (string.indexOf(NBSP) >= 0) {
+			return isBlank(string.replace(NBSP, ' '));
+		}
+		return string.length() < 1 || string.trim().length() < 1;
 	}
 
 	/**
