@@ -31,7 +31,7 @@ public class CompareUtilsTest {
 
 	private static enum TestEnum {
 		FOO, BAR, BYE
-	};
+	}
 
 	/**
 	 * Test enum comparison

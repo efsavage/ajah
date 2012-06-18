@@ -71,8 +71,12 @@ public class DiskCache implements HttpCache {
 	 *            a fresh fetch.
 	 * @return The content from cache or as fetched.
 	 * @throws IOException
+	 *             If the URI could not be fetched.
 	 * @throws NotFoundException
+	 *             If the URI is 404
 	 * @throws UnexpectedResponseCode
+	 *             If the URI returns a response code that {@link Http} cannot
+	 *             not handle.
 	 */
 	public byte[] getBytes(final URI uri, long maxAge) throws IOException, NotFoundException, UnexpectedResponseCode {
 		// TODO Add max-age
@@ -109,15 +113,25 @@ public class DiskCache implements HttpCache {
 	}
 
 	/**
-	 * @param url
-	 * @param millis
-	 * @return
+	 * Fetches a URI as a string, with a cache expiration time.
+	 * 
+	 * @param uri
+	 *            The URI to fetch
+	 * @param maxAge
+	 *            The maximum age of the cached copy to use.
+	 * @return The fetched string.
 	 * @throws IOException
-	 * @throws UnexpectedResponseCode
+	 *             If the URI could not be fetched.
 	 * @throws NotFoundException
+	 *             If the URI is 404
+	 * @throws NotFoundException
+	 *             If the resource was not found.
+	 * @throws UnexpectedResponseCode
+	 *             If the URI returns a response code that {@link Http} cannot
+	 *             not handle.
 	 */
-	public String get(URI uri, long millis) throws NotFoundException, UnexpectedResponseCode, IOException {
-		return new String(getBytes(uri, millis));
+	public String get(URI uri, long maxAge) throws NotFoundException, IOException, UnexpectedResponseCode {
+		return new String(getBytes(uri, maxAge));
 	}
 
 	/**

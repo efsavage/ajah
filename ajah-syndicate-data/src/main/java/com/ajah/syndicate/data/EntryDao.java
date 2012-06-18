@@ -42,6 +42,7 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 * @throws DatabaseAccessException
 	 *             If the query could not be executed.
 	 */
+	@Override
 	int update(Entry entry) throws DatabaseAccessException;
 
 	/**

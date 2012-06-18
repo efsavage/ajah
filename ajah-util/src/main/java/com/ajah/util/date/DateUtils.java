@@ -325,11 +325,32 @@ public class DateUtils {
 		return formatInterval(Math.abs(System.currentTimeMillis() - date.getTime()), true);
 	}
 
+	/**
+	 * Returns a date that is the number of days different than the current
+	 * time.
+	 * 
+	 * @param offset
+	 *            The number of days to offset the desired date by. A positive
+	 *            number will be in the future, a negative number will be in the
+	 *            past.
+	 * @return The new date offset by the number of days.
+	 */
 	public static Date daysOffset(int offset) {
 		return new Date(System.currentTimeMillis() + CalendarUnit.DAY.getMillis(offset));
 	}
 
+	/**
+	 * Checks two dates to see if they are the same calendar day.
+	 * 
+	 * @param date1
+	 *            The first date.
+	 * @param date2
+	 *            The second date.
+	 * @return true if the dates are the same calendar day, based on the current
+	 *         timezone and locale.
+	 */
 	public static boolean isSameDay(Date date1, Date date2) {
 		return DAY_FORMAT.format(date1).equals(DAY_FORMAT.format(date2));
 	}
+
 }

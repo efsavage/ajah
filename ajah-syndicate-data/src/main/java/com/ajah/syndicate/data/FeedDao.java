@@ -42,6 +42,7 @@ public interface FeedDao extends AjahDao<FeedId, Feed> {
 	 * @throws DatabaseAccessException
 	 *             If the query could not be executed.
 	 */
+	@Override
 	int update(Feed feed) throws DatabaseAccessException;
 
 	/**

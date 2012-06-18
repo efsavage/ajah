@@ -95,7 +95,7 @@ public class FileUtils {
 		try {
 			return readFile(file, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException("UTF-8encoding is not supported?!");
+			throw new IllegalArgumentException("UTF-8 encoding is not supported?!");
 		}
 	}
 
