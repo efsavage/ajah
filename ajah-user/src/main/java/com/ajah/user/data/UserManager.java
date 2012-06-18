@@ -126,12 +126,14 @@ public class UserManager {
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
 	 */
-	public User findUserByEmail(final String address) throws UserNotFoundException {
+	public User findUserByEmail(final String address) throws UserNotFoundException, DatabaseAccessException {
 		final Email email = this.emailDao.findByAddress(address);
 		if (email != null) {
 			log.fine("Found email " + email.getAddress());
-			final User user = this.userDao.findById(email.getUserId());
+			final User user = this.userDao.load(email.getUserId());
 			if (user != null) {
 				log.fine("Found user by email: " + user.getUsername());
 				return user;
@@ -215,7 +217,7 @@ public class UserManager {
 	 * @throws DatabaseAccessException
 	 */
 	public UserInfo getUserInfo(final UserId userId) throws DatabaseAccessException {
-		final UserInfo userInfo = this.userInfoDao.findById(userId);
+		final UserInfo userInfo = this.userInfoDao.load(userId);
 		if (userInfo != null) {
 			return userInfo;
 		}

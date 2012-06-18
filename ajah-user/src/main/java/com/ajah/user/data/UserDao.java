@@ -54,9 +54,6 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 */
 	public int update(final UserId userId, final Password password) throws DatabaseAccessException;
 
-	@Override
-	public User findById(final UserId userId);
-
 	/**
 	 * Finds a user by username field.
 	 * 
