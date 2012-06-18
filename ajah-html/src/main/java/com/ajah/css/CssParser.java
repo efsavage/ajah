@@ -15,7 +15,7 @@
  */
 package com.ajah.css;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -105,9 +105,11 @@ public class CssParser {
 	 * Process a file
 	 * 
 	 * @param args
-	 * @throws FileNotFoundException
+	 *            The name of the file to process.
+	 * @throws IOException
+	 *             If the file could not be read.
 	 */
-	public static void main(final String[] args) throws FileNotFoundException {
+	public static void main(final String[] args) throws IOException {
 		final String rawCss = FileUtils.readFile(args[0]);
 		final CssDocument doc = parse(rawCss);
 		for (final CssRule rule : doc.getRules()) {
