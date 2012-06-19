@@ -52,4 +52,22 @@ public class MapMap<K1, K2, V> extends HashMap<K1, Map<K2, V>> {
 		innerMap.put(key2, value);
 	}
 
+	/**
+	 * Fetches a value based on both keys. Avoids the possible NPE caused by
+	 * fetching the inner map, then the value.
+	 * 
+	 * @param key1
+	 *            The first key.
+	 * @param key2
+	 *            The second key.
+	 * @return The value, may be null if not previously set.
+	 */
+	public V get(K1 key1, K2 key2) {
+		Map<K2, V> innerMap = get(key1);
+		if (innerMap == null) {
+			return null;
+		}
+		return innerMap.get(key2);
+	}
+
 }
