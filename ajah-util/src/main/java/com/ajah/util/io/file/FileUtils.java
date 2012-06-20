@@ -45,6 +45,10 @@ import com.ajah.util.IOUtils;
  */
 public class FileUtils {
 
+	/**
+	 * UTF-8.
+	 */
+	public static final String UTF8 = "UTF-8";
 	private static Logger log = Logger.getLogger(FileUtils.class.getName());
 
 	/**
@@ -103,7 +107,7 @@ public class FileUtils {
 	 */
 	public static String readFile(final File file) throws IOException {
 		try {
-			return readFile(file, "UTF-8");
+			return readFile(file, UTF8);
 		} catch (final UnsupportedEncodingException e) {
 			throw new IllegalArgumentException("UTF-8 encoding is not supported?!");
 		}
@@ -123,30 +127,7 @@ public class FileUtils {
 	 *             If the encoding is not supported.
 	 */
 	public static String readFile(final File file, final String charSet) throws UnsupportedEncodingException, IOException {
-		AjahUtils.requireParam(file, "file");
-		if (!file.exists()) {
-			throw new FileNotFoundException(file.getAbsolutePath());
-		}
-
-		final StringBuffer data = new StringBuffer();
-		BufferedReader in = null;
-		try {
-			in = new BufferedReader(new FileReader(file));
-			while (in.ready()) {
-				final String line = new String(in.readLine().getBytes(), charSet);
-				data.append(line).append("\n");
-			}
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (final IOException e) {
-					log.log(Level.SEVERE, e.getMessage(), e);
-				}
-			}
-		}
-		log.log(Level.FINER, data.length() + " bytes loaded.");
-		return data.toString();
+		return new String(readFileAsBytes(file), charSet);
 	}
 
 	/**
@@ -379,7 +360,7 @@ public class FileUtils {
 		try {
 			file.getParentFile().mkdirs();
 			out = new BufferedOutputStream(new FileOutputStream(file));
-			out.write(string.getBytes());
+			out.write(string.getBytes(UTF8));
 			log.fine("Wrote " + string.length() + " bytes");
 			return string.length();
 		} finally {
