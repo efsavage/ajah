@@ -41,7 +41,7 @@ public class TextNode implements HtmlElement<TextNode> {
 	 * @param text
 	 *            The text contained in this node.
 	 */
-	public TextNode(String text) {
+	public TextNode(final String text) {
 		this.text = text;
 	}
 
@@ -49,7 +49,7 @@ public class TextNode implements HtmlElement<TextNode> {
 	 * @see com.ajah.html.HtmlElement#render(java.io.Writer, int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		if (!StringUtils.isBlank(this.text)) {
 			for (int i = 0; i < depth; i++) {
 				out.write("\t");

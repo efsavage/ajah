@@ -21,7 +21,8 @@ import com.ajah.html.HtmlCoreElement;
  * Marker interface for the different input types, because they exhibit more
  * similarity in name than in function.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <T>
  *            Self-reference to type of implementing class, for fluid methods.
  * 

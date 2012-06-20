@@ -120,6 +120,22 @@ public class CssParser {
 		}
 	}
 
+	/**
+	 * Parses an {@link InputStream} of raw CSS.
+	 * 
+	 * @param css
+	 *            The raw CSS.
+	 * @return The resulting CssDocument.
+	 */
+	public static CssDocument parse(final InputStream css) {
+		AjahUtils.requireParam(css, "css");
+		final Scanner scanner = new Scanner(css).useDelimiter("\\A");
+		if (scanner.hasNext()) {
+			return parse(scanner.next());
+		}
+		return null;
+	}
+
 	private static CssDocument parse(final String rawCss) {
 		final List<CssRule> rules = new ArrayList<>();
 		final List<String> lines = getLines(rawCss);
@@ -209,22 +225,6 @@ public class CssParser {
 
 	private CssParser() {
 		// Private Constructor
-	}
-
-	/**
-	 * Parses an {@link InputStream} of raw CSS.
-	 * 
-	 * @param css
-	 *            The raw CSS.
-	 * @return The resulting CssDocument.
-	 */
-	public static CssDocument parse(final InputStream css) {
-		AjahUtils.requireParam(css, "css");
-		final Scanner scanner = new Scanner(css).useDelimiter("\\A");
-		if (scanner.hasNext()) {
-			return parse(scanner.next());
-		}
-		return null;
 	}
 
 }

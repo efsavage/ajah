@@ -50,7 +50,7 @@ public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 	}
 
 	@Override
-	protected void renderBeforeChildren(Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out) throws IOException {
 		out.write(this.text);
 	}
 
@@ -61,8 +61,8 @@ public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 	 *            The text to set.
 	 * @return The current instance.
 	 */
-	public H3 text(String newText) {
-		this.setText(newText);
+	public H3 text(final String newText) {
+		setText(newText);
 		return this;
 	}
 

@@ -15,9 +15,6 @@
  */
 package com.ajah.html.element;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
  * li element
  * 
@@ -25,14 +22,12 @@ import lombok.EqualsAndHashCode;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class ListItem extends AbstractNestableHtmlCoreElement<ListItem> {
 
 	/**
 	 * @see AbstractNestableHtmlCoreElement#AbstractNestableHtmlCoreElement(String)
 	 */
-	public ListItem(String cData) {
+	public ListItem(final String cData) {
 		super(cData);
 	}
 
@@ -47,8 +42,7 @@ public class ListItem extends AbstractNestableHtmlCoreElement<ListItem> {
 	}
 
 	@Override
-	public
-	ListItem getThis() {
+	public ListItem getThis() {
 		return this;
 	}
 

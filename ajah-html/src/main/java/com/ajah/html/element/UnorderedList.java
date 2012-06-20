@@ -15,9 +15,6 @@
  */
 package com.ajah.html.element;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
  * ul element
  * 
@@ -25,8 +22,6 @@ import lombok.EqualsAndHashCode;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class UnorderedList extends AbstractNestableHtmlCoreElement<UnorderedList> {
 
 	/**

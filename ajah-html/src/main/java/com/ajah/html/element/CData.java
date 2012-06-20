@@ -42,7 +42,7 @@ public class CData implements HtmlElement<CData> {
 	 * @param value
 	 *            The text to render.
 	 */
-	public CData(String value) {
+	public CData(final String value) {
 		this.value = value;
 	}
 
@@ -52,7 +52,7 @@ public class CData implements HtmlElement<CData> {
 	 * @see com.ajah.html.HtmlElement#render(java.io.Writer, int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		out.write(this.value);
 	}
 

@@ -45,13 +45,12 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 	}
 
 	@Override
-	public
-	Paragraph getThis() {
+	public Paragraph getThis() {
 		return this;
 	}
 
 	@Override
-	protected void renderBeforeChildren(Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out) throws IOException {
 		out.write(this.text);
 	}
 
@@ -62,8 +61,8 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 	 *            The text to set.
 	 * @return The current instance.
 	 */
-	public Paragraph text(String newText) {
-		this.setText(newText);
+	public Paragraph text(final String newText) {
+		setText(newText);
 		return this;
 	}
 

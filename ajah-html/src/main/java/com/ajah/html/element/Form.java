@@ -46,8 +46,23 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 	 * @param method
 	 *            The method attribute.
 	 */
-	public Form(FormMethod method) {
+	public Form(final FormMethod method) {
 		this.method = method;
+	}
+
+	/**
+	 * Returns "form"
+	 * 
+	 * @see com.ajah.html.element.AbstractNestableHtmlCoreElement#getName()
+	 */
+	@Override
+	public String getName() {
+		return "form";
+	}
+
+	@Override
+	public Form getThis() {
+		return this;
 	}
 
 	/**
@@ -57,7 +72,7 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 	 *      int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
@@ -69,7 +84,7 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 		if (depth >= 0) {
 			out.write("\r\n");
 		}
-		for (Input<?> input : this.inputs) {
+		for (final Input<?> input : this.inputs) {
 			for (int i = 0; i <= depth; i++) {
 				out.write("\t");
 			}
@@ -95,22 +110,6 @@ public class Form extends AbstractNestableHtmlCoreElement<Form> {
 		if (depth >= 0) {
 			out.write("\r\n");
 		}
-	}
-
-	/**
-	 * Returns "form"
-	 * 
-	 * @see com.ajah.html.element.AbstractNestableHtmlCoreElement#getName()
-	 */
-	@Override
-	public String getName() {
-		return "form";
-	}
-
-	@Override
-	public
-	Form getThis() {
-		return this;
 	}
 
 }

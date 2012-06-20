@@ -46,18 +46,17 @@ public class Script extends AbstractNestableHtmlCoreElement<Script> {
 	}
 
 	@Override
-	public
-	Script getThis() {
+	public Script getThis() {
 		return this;
 	}
 
 	@Override
-	protected void renderAttributes(Writer out) throws IOException {
+	protected void renderAttributes(final Writer out) throws IOException {
 		write(out, "type", this.type);
 	}
 
 	@Override
-	protected void renderBeforeChildren(Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out) throws IOException {
 		out.write(this.text);
 	}
 

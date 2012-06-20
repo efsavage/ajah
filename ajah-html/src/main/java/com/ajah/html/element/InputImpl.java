@@ -34,6 +34,13 @@ import com.ajah.html.dtd.InputType;
 @EqualsAndHashCode(callSuper = false)
 public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implements Input<InputImpl> {
 
+	private final String name;
+
+	private Label label;
+
+	private final InputType type;
+	private String value;
+
 	/**
 	 * @param name
 	 *            Name attribute.
@@ -42,7 +49,7 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 	 * @param type
 	 *            Type attribute.
 	 */
-	public InputImpl(String name, String value, InputType type) {
+	public InputImpl(final String name, final String value, final InputType type) {
 		this.id = name;
 		this.name = name;
 		this.value = value;
@@ -62,15 +69,15 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 	 * @param type
 	 *            Type attribute.
 	 */
-	public InputImpl(String label, String name, String value, InputType type) {
+	public InputImpl(final String label, final String name, final String value, final InputType type) {
 		this(name, value, type);
 		this.label = new Label(this, label).css(type.name().toLowerCase());
 	}
 
-	private final String name;
-	private Label label;
-	private final InputType type;
-	private String value;
+	@Override
+	public InputImpl getThis() {
+		return this;
+	}
 
 	/**
 	 * Renders attributes and also the sibling Label.
@@ -79,7 +86,7 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 	 *      int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		if (this.label != null) {
 			this.label.render(out, depth);
 		}
@@ -95,11 +102,5 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 		if (depth >= 0) {
 			out.write("\r\n");
 		}
-	}
-
-	@Override
-	public
-	InputImpl getThis() {
-		return this;
 	}
 }

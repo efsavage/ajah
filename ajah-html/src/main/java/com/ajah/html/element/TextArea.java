@@ -50,7 +50,7 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	 * @param html
 	 *            Should this textarea allow HTML?
 	 */
-	public TextArea(String name, String value, InputType type, boolean html) {
+	public TextArea(final String name, final String value, final InputType type, final boolean html) {
 		this.id = name;
 		this.name = name;
 		this.value = value;
@@ -73,12 +73,17 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	 * @param html
 	 *            Should this textarea allow HTML?
 	 */
-	public TextArea(String label, String name, String value, InputType type, boolean html) {
+	public TextArea(final String label, final String name, final String value, final InputType type, final boolean html) {
 		this(name, value, type, html);
 		this.label = new Label(this, label).css(type.name().toLowerCase());
-		if(html) {
+		if (html) {
 			css("rich-text");
 		}
+	}
+
+	@Override
+	public TextArea getThis() {
+		return this;
 	}
 
 	/**
@@ -88,7 +93,7 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 	 *      int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		if (this.label != null) {
 			this.label.render(out, depth);
 		}
@@ -104,11 +109,5 @@ public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implemen
 		out.write(">");
 		out.write(this.value);
 		out.write("</textarea>");
-	}
-
-	@Override
-	public
-	TextArea getThis() {
-		return this;
 	}
 }

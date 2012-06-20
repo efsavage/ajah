@@ -32,37 +32,19 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Label extends AbstractNestableHtmlCoreElement<Label> {
 
+	private Input<?> input;
+
+	private String value;
+
 	/**
 	 * @param input
 	 *            Input this Label is attached to (via "for" attribute)
 	 * @param value
 	 *            Value of this label.
 	 */
-	public Label(Input<?> input, String value) {
+	public Label(final Input<?> input, final String value) {
 		this.input = input;
 		this.value = value;
-	}
-
-	private Input<?> input;
-	private String value;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void render(Writer out, int depth) throws IOException {
-		for (int i = 0; i < depth; i++) {
-			out.write("\t");
-		}
-		out.write("<label");
-		writeCore(out);
-		write(out, "for", this.input.getId());
-		out.write(">");
-		out.write(this.value);
-		out.write("</label>");
-		if (depth >= 0) {
-			out.write("\r\n");
-		}
 	}
 
 	/**
@@ -76,9 +58,27 @@ public class Label extends AbstractNestableHtmlCoreElement<Label> {
 	}
 
 	@Override
-	public
-	Label getThis() {
+	public Label getThis() {
 		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void render(final Writer out, final int depth) throws IOException {
+		for (int i = 0; i < depth; i++) {
+			out.write("\t");
+		}
+		out.write("<label");
+		writeCore(out);
+		write(out, "for", this.input.getId());
+		out.write(">");
+		out.write(this.value);
+		out.write("</label>");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
 	}
 
 }

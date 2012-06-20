@@ -45,7 +45,7 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 	 * @param checked
 	 *            Checked attribute.
 	 */
-	public Checkbox(String name, String value, boolean checked) {
+	public Checkbox(final String name, final String value, final boolean checked) {
 		this.id = name;
 		this.name = name;
 		this.value = value;
@@ -65,9 +65,14 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 	 * @param checked
 	 *            Checked attribute.
 	 */
-	public Checkbox(String label, String name, String value, boolean checked) {
+	public Checkbox(final String label, final String name, final String value, final boolean checked) {
 		this(name, value, checked);
 		this.label = new Label(this, label).css("checkbox");
+	}
+
+	@Override
+	public Checkbox getThis() {
+		return this;
 	}
 
 	/**
@@ -77,7 +82,7 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 	 *      int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
@@ -92,12 +97,6 @@ public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implemen
 			out.write("\r\n");
 		}
 		this.label.render(out, depth);
-	}
-
-	@Override
-	public
-	Checkbox getThis() {
-		return this;
 	}
 
 }

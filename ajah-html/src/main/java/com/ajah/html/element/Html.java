@@ -43,7 +43,7 @@ public class Html extends AbstractNestableHtmlCoreElement<Html> {
 	 * @param version
 	 *            The version of the HTML document.
 	 */
-	public Html(HtmlVersion version) {
+	public Html(final HtmlVersion version) {
 		this.version = version;
 	}
 
@@ -63,7 +63,7 @@ public class Html extends AbstractNestableHtmlCoreElement<Html> {
 	}
 
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		out.write(this.version.getPrologue() + "\n");
 		super.render(out, depth);
 	}

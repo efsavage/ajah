@@ -15,18 +15,13 @@
  */
 package com.ajah.html.element;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-
 /**
  * div element
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class Div extends AbstractNestableHtmlCoreElement<Div> {
 
 	/**
@@ -40,9 +35,8 @@ public class Div extends AbstractNestableHtmlCoreElement<Div> {
 	}
 
 	@Override
-	public
-	Div getThis() {
+	public Div getThis() {
 		return this;
 	}
-	
+
 }

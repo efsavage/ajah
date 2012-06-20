@@ -40,10 +40,10 @@ public class CssParserTest {
 	 */
 	@Test
 	public static void testPage() throws IOException {
-		InputStream css = CssParserTest.class.getResourceAsStream("/bootstrap.css");
+		final InputStream css = CssParserTest.class.getResourceAsStream("/bootstrap.css");
 		CssParser.getInstance();
-		CssDocument doc = CssParser.parse(css);
+		final CssDocument doc = CssParser.parse(css);
 		Assert.assertEquals(703, doc.getRules().size());
 	}
-	
+
 }
