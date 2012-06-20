@@ -27,7 +27,7 @@ package com.ajah.lang;
 public class ConfigException extends RuntimeException {
 
 	/**
-	 * Public constructor
+	 * Public constructor.
 	 * 
 	 * @see RuntimeException#RuntimeException(Throwable)
 	 * @param t
