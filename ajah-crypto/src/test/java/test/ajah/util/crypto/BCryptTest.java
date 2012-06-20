@@ -34,7 +34,7 @@ public class BCryptTest {
 	 */
 	@Test
 	public void hashpwTest() {
-		String hashed = BCrypt.hashpw("foobar", BCrypt.gensalt());
+		final String hashed = BCrypt.hashpw("foobar", BCrypt.gensalt());
 		Assert.assertTrue(BCrypt.checkpw("foobar", hashed));
 	}
 }

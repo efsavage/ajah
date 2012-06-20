@@ -34,29 +34,10 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 	ListMap<MessageHandlerResult, MessageHandler> messageHandlers = new ListMap<>();
 
 	/**
-	 * Handle the message via {@link #innerHandle(AjahMessage)} and then call
-	 * handle on child handlers.
-	 * 
-	 * @see com.ajah.rfcmail.fetch.MessageHandler#handle(AjahMimeMessage)
-	 */
-	@Override
-	public final MessageHandlerResponse handle(AjahMimeMessage message) throws MessagingException {
-		AjahUtils.requireParam(message, "message");
-		AjahUtils.requireParam(message.getId(), "message.id");
-		MessageHandlerResponse response = innerHandle(message);
-		for (MessageHandler messageHandler : this.messageHandlers.getList(response.getResult())) {
-			messageHandler.handle(message);
-		}
-		return null;
-	}
-
-	protected abstract MessageHandlerResponse innerHandle(AjahMessage message) throws MessagingException;
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addHandler(MessageHandlerResult result, MessageHandler messageHandler) throws MessagingException {
+	public void addHandler(final MessageHandlerResult result, final MessageHandler messageHandler) throws MessagingException {
 		this.messageHandlers.putValue(result, messageHandler);
 	}
 
@@ -65,11 +46,30 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 	 */
 	@Override
 	public void close() {
-		for (MessageHandlerResult result : this.messageHandlers.keySet()) {
-			for (MessageHandler messageHandler : this.messageHandlers.get(result)) {
+		for (final MessageHandlerResult result : this.messageHandlers.keySet()) {
+			for (final MessageHandler messageHandler : this.messageHandlers.get(result)) {
 				messageHandler.close();
 			}
 		}
 	}
+
+	/**
+	 * Handle the message via {@link #innerHandle(AjahMessage)} and then call
+	 * handle on child handlers.
+	 * 
+	 * @see com.ajah.rfcmail.fetch.MessageHandler#handle(AjahMimeMessage)
+	 */
+	@Override
+	public final MessageHandlerResponse handle(final AjahMimeMessage message) throws MessagingException {
+		AjahUtils.requireParam(message, "message");
+		AjahUtils.requireParam(message.getId(), "message.id");
+		final MessageHandlerResponse response = innerHandle(message);
+		for (final MessageHandler messageHandler : this.messageHandlers.getList(response.getResult())) {
+			messageHandler.handle(message);
+		}
+		return null;
+	}
+
+	protected abstract MessageHandlerResponse innerHandle(final AjahMessage message) throws MessagingException;
 
 }

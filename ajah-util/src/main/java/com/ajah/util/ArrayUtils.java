@@ -101,6 +101,53 @@ public class ArrayUtils {
 	}
 
 	/**
+	 * Determines if an array has any actual objects in it. Will return true if:
+	 * <ul>
+	 * <li>The array is null.</li>
+	 * <li>The array's length is zero.</li>
+	 * <li>The array's contains only nulls.</li>
+	 * </ul>
+	 * 
+	 * @param array
+	 *            The array to test.
+	 * @return Returns true if the array is empty as specified above, otherwise
+	 *         false.
+	 */
+	public static boolean isEmpty(final Object[] array) {
+		if (array == null || array.length < 1) {
+			return true;
+		}
+		for (final Object object : array) {
+			if (object != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * A variation of {@link #isEmpty(Object[])} for Strings that checks for
+	 * empty/blank strings.
+	 * 
+	 * @see StringUtils#isBlank(String)
+	 * @param array
+	 *            The array to test.
+	 * @return Returns true if the array is empty as specified above, otherwise
+	 *         false.
+	 */
+	public static boolean isEmpty(final String[] array) {
+		if (array == null || array.length < 1) {
+			return true;
+		}
+		for (final String string : array) {
+			if (!StringUtils.isBlank(string)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Joins the result of calling {@link #toString()} on each element of an
 	 * array.
 	 * 
@@ -118,6 +165,20 @@ public class ArrayUtils {
 			string.append(object.toString());
 		}
 		return string.toString();
+	}
+
+	/**
+	 * Returns the length of an array, or zero if he array is null.
+	 * 
+	 * @param array
+	 *            The array to find the length of, may be null.
+	 * @return The length of an array, or zero if he array is null.
+	 */
+	public static int safeLength(final Object[] array) {
+		if (array == null) {
+			return 0;
+		}
+		return array.length;
 	}
 
 	/**
@@ -159,67 +220,6 @@ public class ArrayUtils {
 	}
 
 	/**
-	 * Returns the length of an array, or zero if he array is null.
-	 * 
-	 * @param array
-	 *            The array to find the length of, may be null.
-	 * @return The length of an array, or zero if he array is null.
-	 */
-	public static int safeLength(final Object[] array) {
-		if (array == null) {
-			return 0;
-		}
-		return array.length;
-	}
-
-	/**
-	 * Determines if an array has any actual objects in it. Will return true if:
-	 * <ul>
-	 * <li>The array is null.</li>
-	 * <li>The array's length is zero.</li>
-	 * <li>The array's contains only nulls.</li>
-	 * </ul>
-	 * 
-	 * @param array
-	 *            The array to test.
-	 * @return Returns true if the array is empty as specified above, otherwise
-	 *         false.
-	 */
-	public static boolean isEmpty(final Object[] array) {
-		if (array == null || array.length < 1) {
-			return true;
-		}
-		for (Object object : array) {
-			if (object != null) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * A variation of {@link #isEmpty(Object[])} for Strings that checks for
-	 * empty/blank strings.
-	 * 
-	 * @see StringUtils#isBlank(String)
-	 * @param array
-	 *            The array to test.
-	 * @return Returns true if the array is empty as specified above, otherwise
-	 *         false.
-	 */
-	public static boolean isEmpty(final String[] array) {
-		if (array == null || array.length < 1) {
-			return true;
-		}
-		for (String string : array) {
-			if (!StringUtils.isBlank(string)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * Trims each element in an array of strings, and removes any null or blank
 	 * values.
 	 * 
@@ -229,12 +229,12 @@ public class ArrayUtils {
 	 *         null or empty array is passed in, the same value will be
 	 *         returned.
 	 */
-	public static String[] trim(String[] array) {
+	public static String[] trim(final String[] array) {
 		if (array == null || array.length == 0) {
 			return array;
 		}
-		ArrayList<String> trimmed = new ArrayList<>();
-		for (String string : array) {
+		final ArrayList<String> trimmed = new ArrayList<>();
+		for (final String string : array) {
 			if (!StringUtils.isBlank(string)) {
 				trimmed.add(string.trim());
 			}

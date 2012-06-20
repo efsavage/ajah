@@ -46,5 +46,5 @@ public interface MailFetcher extends AutoCloseable {
 	 *            The message handler to add. MessageHandlers will be invoked in
 	 *            the order in which they are added.
 	 */
-	void addMessageHandler(MessageHandler messageHandler);
+	void addMessageHandler(final MessageHandler messageHandler);
 }

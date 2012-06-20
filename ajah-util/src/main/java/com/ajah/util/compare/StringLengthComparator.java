@@ -34,7 +34,7 @@ public class StringLengthComparator implements Comparator<String> {
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public int compare(String first, String second) {
+	public int compare(final String first, final String second) {
 		int retVal = CompareUtils.compare(StringUtils.isBlank(first), StringUtils.isBlank(second));
 		if (retVal == 0) {
 			retVal = CompareUtils.compareNulls(first, second);

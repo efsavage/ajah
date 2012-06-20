@@ -1,4 +1,5 @@
 package com.ajah.image;
+
 /*
  *  Copyright 2012 Eric F. Savage, code@efsavage.com
  *
@@ -14,7 +15,6 @@ package com.ajah.image;
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 
 /**
  * Supported image formats.

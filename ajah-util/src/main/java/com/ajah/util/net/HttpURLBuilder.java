@@ -49,6 +49,40 @@ public class HttpURLBuilder {
 	}
 
 	/**
+	 * Returns the port. If the port is not set, will return default port based
+	 * on {@link #isSecure()}.
+	 * 
+	 * @return The port number.
+	 */
+	public int getPort() {
+		if (this.port == 0) {
+			if (isSecure()) {
+				return 443;
+			}
+			return 80;
+		}
+		return this.port;
+	}
+
+	/**
+	 * Sets/replaces a single-value parameter. A null value will not be included
+	 * in the URL.
+	 * 
+	 * @param name
+	 *            The parameter name.
+	 * @param value
+	 *            The parameter value.
+	 * @return The current instance, for chaining.
+	 */
+	public HttpURLBuilder setParam(final String name, final String value) {
+		if (this.singleValueParameters == null) {
+			this.singleValueParameters = new HashMap<>();
+		}
+		this.singleValueParameters.put(name, value);
+		return this;
+	}
+
+	/**
 	 * Creates a complete "external" URL.
 	 * 
 	 * @see java.lang.Object#toString()
@@ -57,7 +91,7 @@ public class HttpURLBuilder {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder string = new StringBuilder();
+		final StringBuilder string = new StringBuilder();
 		if (isSecure()) {
 			string.append("https://");
 		} else {
@@ -76,7 +110,7 @@ public class HttpURLBuilder {
 
 		boolean params = false;
 		if (this.singleValueParameters != null && this.singleValueParameters.size() > 0) {
-			for (String name : this.singleValueParameters.keySet()) {
+			for (final String name : this.singleValueParameters.keySet()) {
 				if (this.singleValueParameters.get(name) == null) {
 					// Skip null values
 					continue;
@@ -108,43 +142,9 @@ public class HttpURLBuilder {
 	public URL toURL() {
 		try {
 			return new URL(toString());
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			throw new IllegalArgumentException(e);
 		}
-	}
-
-	/**
-	 * Sets/replaces a single-value parameter. A null value will not be included
-	 * in the URL.
-	 * 
-	 * @param name
-	 *            The parameter name.
-	 * @param value
-	 *            The parameter value.
-	 * @return The current instance, for chaining.
-	 */
-	public HttpURLBuilder setParam(String name, String value) {
-		if (this.singleValueParameters == null) {
-			this.singleValueParameters = new HashMap<>();
-		}
-		this.singleValueParameters.put(name, value);
-		return this;
-	}
-
-	/**
-	 * Returns the port. If the port is not set, will return default port based
-	 * on {@link #isSecure()}.
-	 * 
-	 * @return The port number.
-	 */
-	public int getPort() {
-		if (this.port == 0) {
-			if (isSecure()) {
-				return 443;
-			}
-			return 80;
-		}
-		return this.port;
 	}
 
 }

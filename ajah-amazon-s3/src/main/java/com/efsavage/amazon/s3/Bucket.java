@@ -39,7 +39,7 @@ public class Bucket implements ToStringable, FromStringable {
 	 * @param name
 	 *            The name of the bucket, required.
 	 */
-	public Bucket(String name) {
+	public Bucket(final String name) {
 		AjahUtils.requireParam(name, "name");
 		this.name = name;
 	}

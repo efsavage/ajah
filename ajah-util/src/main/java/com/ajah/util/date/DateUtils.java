@@ -53,6 +53,19 @@ public class DateUtils {
 	private static DateFormat DAY_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
 	/**
+	 * Adds a number of days to the given date.
+	 * 
+	 * @param date
+	 *            The date to add the time to.
+	 * @param days
+	 *            The number of days to add, may be negative.
+	 * @return The current time plus the the number of days specified.
+	 */
+	public static Date addDays(final Date date, final int days) {
+		return new Date(date.getTime() + (days * DAY_IN_MILLIS));
+	}
+
+	/**
 	 * Adds a number of hours to a date, rolling over other fields as necessary.
 	 * 
 	 * @see Calendar#add(int, int)
@@ -82,16 +95,17 @@ public class DateUtils {
 	}
 
 	/**
-	 * Adds a number of days to the given date.
+	 * Returns a date that is the number of days different than the current
+	 * time.
 	 * 
-	 * @param date
-	 *            The date to add the time to.
-	 * @param days
-	 *            The number of days to add, may be negative.
-	 * @return The current time plus the the number of days specified.
+	 * @param offset
+	 *            The number of days to offset the desired date by. A positive
+	 *            number will be in the future, a negative number will be in the
+	 *            past.
+	 * @return The new date offset by the number of days.
 	 */
-	public static Date addDays(final Date date, final int days) {
-		return new Date(date.getTime() + (days * DAY_IN_MILLIS));
+	public static Date daysOffset(final int offset) {
+		return new Date(System.currentTimeMillis() + CalendarUnit.DAY.getMillis(offset));
 	}
 
 	/**
@@ -159,6 +173,20 @@ public class DateUtils {
 		} else {
 			return intervalInMillis / CalendarUnit.YEAR.getMillis() + (veryShortFormat ? "y" : " years");
 		}
+	}
+
+	/**
+	 * Checks two dates to see if they are the same calendar day.
+	 * 
+	 * @param date1
+	 *            The first date.
+	 * @param date2
+	 *            The second date.
+	 * @return true if the dates are the same calendar day, based on the current
+	 *         timezone and locale.
+	 */
+	public static boolean isSameDay(final Date date1, final Date date2) {
+		return DAY_FORMAT.format(date1).equals(DAY_FORMAT.format(date2));
 	}
 
 	/**
@@ -323,34 +351,6 @@ public class DateUtils {
 	 */
 	public static String veryShortFormatRelative(final Date date) {
 		return formatInterval(Math.abs(System.currentTimeMillis() - date.getTime()), true);
-	}
-
-	/**
-	 * Returns a date that is the number of days different than the current
-	 * time.
-	 * 
-	 * @param offset
-	 *            The number of days to offset the desired date by. A positive
-	 *            number will be in the future, a negative number will be in the
-	 *            past.
-	 * @return The new date offset by the number of days.
-	 */
-	public static Date daysOffset(int offset) {
-		return new Date(System.currentTimeMillis() + CalendarUnit.DAY.getMillis(offset));
-	}
-
-	/**
-	 * Checks two dates to see if they are the same calendar day.
-	 * 
-	 * @param date1
-	 *            The first date.
-	 * @param date2
-	 *            The second date.
-	 * @return true if the dates are the same calendar day, based on the current
-	 *         timezone and locale.
-	 */
-	public static boolean isSameDay(Date date1, Date date2) {
-		return DAY_FORMAT.format(date1).equals(DAY_FORMAT.format(date2));
 	}
 
 }

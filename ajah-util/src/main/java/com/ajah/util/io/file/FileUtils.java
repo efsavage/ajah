@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,15 @@ public class FileUtils {
 
 	private static Logger log = Logger.getLogger(FileUtils.class.getName());
 
+	/**
+	 * Copies a file to another file by reading and writing the data.
+	 * 
+	 * @param file
+	 *            The file to read from.
+	 * @param newFile
+	 *            The file to write to.
+	 * @return The number of bytes written.
+	 */
 	public static long copyFile(final File file, final File newFile) {
 		// TODO Write to temp file then rename
 		InputStream in = null;
@@ -94,7 +104,7 @@ public class FileUtils {
 	public static String readFile(final File file) throws IOException {
 		try {
 			return readFile(file, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			throw new IllegalArgumentException("UTF-8 encoding is not supported?!");
 		}
 	}
@@ -112,7 +122,7 @@ public class FileUtils {
 	 * @throws UnsupportedEncodingException
 	 *             If the encoding is not supported.
 	 */
-	public static String readFile(final File file, String charSet) throws UnsupportedEncodingException, IOException {
+	public static String readFile(final File file, final String charSet) throws UnsupportedEncodingException, IOException {
 		AjahUtils.requireParam(file, "file");
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.getAbsolutePath());
@@ -249,7 +259,7 @@ public class FileUtils {
 		} catch (final FileNotFoundException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
 		}
@@ -322,7 +332,20 @@ public class FileUtils {
 		}
 	}
 
-	public static int write(final File file, final List<String> lines) throws IOException {
+	/**
+	 * Writes a collection of strings to a file.
+	 * 
+	 * @param file
+	 *            The file to write to.
+	 * @param lines
+	 *            The lines to write. Note that the strings should not already
+	 *            have line-ending characters as they will be added
+	 *            automatically.
+	 * @return The number of lines written.
+	 * @throws IOException
+	 *             If the file could not be written to.
+	 */
+	public static int write(final File file, final Collection<String> lines) throws IOException {
 		// TODO Write to temp file then rename
 		BufferedOutputStream out = null;
 		try {
@@ -339,6 +362,17 @@ public class FileUtils {
 		}
 	}
 
+	/**
+	 * Writes a string to a file.
+	 * 
+	 * @param file
+	 *            The file to write to.
+	 * @param string
+	 *            The string to write.
+	 * @return The number of bytes written.
+	 * @throws IOException
+	 *             If the file could not be written to.
+	 */
 	public static int write(final File file, final String string) throws IOException {
 		// TODO Write to temp file then rename
 		BufferedOutputStream out = null;

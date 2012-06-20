@@ -43,7 +43,7 @@ public interface FeedDao extends AjahDao<FeedId, Feed> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(Feed feed) throws DatabaseAccessException;
+	int update(final Feed feed) throws DatabaseAccessException;
 
 	/**
 	 * Finds the most recent feed for a feed source.
@@ -52,6 +52,6 @@ public interface FeedDao extends AjahDao<FeedId, Feed> {
 	 *            The feed source to match on.
 	 * @return The latest feed, if found, otherwise null.
 	 */
-	Feed getLatestFeed(FeedSource feedSource);
+	Feed getLatestFeed(final FeedSource feedSource);
 
 }

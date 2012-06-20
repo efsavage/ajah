@@ -213,21 +213,21 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	protected long count(final String sql) {
+	protected long count(final Criteria criteria) {
 		try {
+			final String sql = "SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
-			return getJdbcTemplate().queryForInt(sql);
+			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
 		}
 	}
 
-	protected long count(final Criteria criteria) {
+	protected long count(final String sql) {
 		try {
-			String sql = "SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
-			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
+			return getJdbcTemplate().queryForInt(sql);
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -257,7 +257,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @see #deleteById(Comparable)
 	 */
 	@Override
-	public int delete(T entity) {
+	public int delete(final T entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -362,28 +362,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
-		}
-	}
-
-	/**
-	 * Find an entity by unique ID.
-	 * 
-	 * @param id
-	 *            Value to match against the entity.entity_id column, required.
-	 * @return Entity if found, otherwise null.
-	 * @throws DatabaseAccessException
-	 *             If the query could not be executed.
-	 */
-	@Override
-	public T load(final K id) throws DatabaseAccessException {
-		AjahUtils.requireParam(id, "id");
-		try {
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }, getRowMapper());
-		} catch (final EmptyResultDataAccessException e) {
-			log.finest(e.getMessage());
-			return null;
-		} catch (final DataAccessException e) {
-			throw new DatabaseAccessException(e);
 		}
 	}
 
@@ -803,6 +781,28 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return listByField(field, value.toString(), orderBy, page, count);
 	}
 
+	/**
+	 * Find an entity by unique ID.
+	 * 
+	 * @param id
+	 *            Value to match against the entity.entity_id column, required.
+	 * @return Entity if found, otherwise null.
+	 * @throws DatabaseAccessException
+	 *             If the query could not be executed.
+	 */
+	@Override
+	public T load(final K id) throws DatabaseAccessException {
+		AjahUtils.requireParam(id, "id");
+		try {
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }, getRowMapper());
+		} catch (final EmptyResultDataAccessException e) {
+			log.finest(e.getMessage());
+			return null;
+		} catch (final DataAccessException e) {
+			throw new DatabaseAccessException(e);
+		}
+	}
+
 	private void loadColumns() {
 		log.finest("Loading columns");
 		if (this.tableName == null) {
@@ -920,7 +920,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	protected int now() {
+	protected static int now() {
 		return (int) (System.currentTimeMillis() / 1000);
 	}
 

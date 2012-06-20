@@ -35,28 +35,9 @@ import com.ajah.util.AjahUtils;
 public class SimpleWorker<T> implements Worker<T> {
 
 	private static Logger log = Logger.getLogger(SimpleWorker.class.getName());
-	private FutureTask<T> task;
+	private final FutureTask<T> task;
 	private boolean cancelRequested;
 	private ThreadQueue threadQueue;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isCancelRequested() {
-		return this.cancelRequested;
-	}
-
-	/**
-	 * Instantiates with the supplied task.
-	 * 
-	 * @param task
-	 *            The task this worker manages.
-	 */
-	public SimpleWorker(FutureTask<T> task) {
-		AjahUtils.requireParam(task, "task");
-		this.task = task;
-	}
 
 	/**
 	 * Instantiates with the callable, wrapping it a {@link FutureTask}
@@ -65,16 +46,27 @@ public class SimpleWorker<T> implements Worker<T> {
 	 * @param callable
 	 *            The callable the callable object to execute.
 	 */
-	public SimpleWorker(Callable<T> callable) {
+	public SimpleWorker(final Callable<T> callable) {
 		AjahUtils.requireParam(callable, "callable");
 		this.task = new FutureTask<>(callable);
+	}
+
+	/**
+	 * Instantiates with the supplied task.
+	 * 
+	 * @param task
+	 *            The task this worker manages.
+	 */
+	public SimpleWorker(final FutureTask<T> task) {
+		AjahUtils.requireParam(task, "task");
+		this.task = task;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
+	public boolean cancel(final boolean mayInterruptIfRunning) {
 		this.cancelRequested = true;
 		// TODO This isn't correct
 		return this.task.cancel(mayInterruptIfRunning);
@@ -98,6 +90,14 @@ public class SimpleWorker<T> implements Worker<T> {
 			ThreadQueue.getInstance().execute(this.task);
 		}
 		this.threadQueue.execute(this.task);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isCancelRequested() {
+		return this.cancelRequested;
 	}
 
 }

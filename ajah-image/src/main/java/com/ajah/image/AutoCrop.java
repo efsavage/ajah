@@ -38,26 +38,6 @@ public class AutoCrop {
 	/**
 	 * Crops an image based on the value of the top left pixel.
 	 * 
-	 * @param data
-	 *            The image data.
-	 * @param fuzziness
-	 *            The fuzziness allowed for minor deviations (~5 is
-	 *            recommended).
-	 * @return The new image data, cropped.
-	 * @throws IOException
-	 *             If the image could not be read.
-	 */
-	public static byte[] autoCrop(final byte[] data, int fuzziness) throws IOException {
-		final BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
-		BufferedImage cropped = autoCrop(image, fuzziness);
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ImageIO.write(cropped, "png", out);
-		return out.toByteArray();
-	}
-
-	/**
-	 * Crops an image based on the value of the top left pixel.
-	 * 
 	 * @param image
 	 *            The image to crop.
 	 * @param fuzziness
@@ -67,7 +47,7 @@ public class AutoCrop {
 	 * @throws IOException
 	 *             If the image could not be read.
 	 */
-	public static BufferedImage autoCrop(final BufferedImage image, int fuzziness) throws IOException {
+	public static BufferedImage autoCrop(final BufferedImage image, final int fuzziness) throws IOException {
 		final Color color = new Color(image.getRGB(0, 0));
 		boolean stop = false;
 		int cropTop = 0;
@@ -147,6 +127,26 @@ public class AutoCrop {
 
 		final BufferedImage cropped = image.getSubimage(cropLeft, cropTop, cropRight - cropLeft, cropBot - cropTop);
 		return cropped;
+	}
+
+	/**
+	 * Crops an image based on the value of the top left pixel.
+	 * 
+	 * @param data
+	 *            The image data.
+	 * @param fuzziness
+	 *            The fuzziness allowed for minor deviations (~5 is
+	 *            recommended).
+	 * @return The new image data, cropped.
+	 * @throws IOException
+	 *             If the image could not be read.
+	 */
+	public static byte[] autoCrop(final byte[] data, final int fuzziness) throws IOException {
+		final BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
+		final BufferedImage cropped = autoCrop(image, fuzziness);
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ImageIO.write(cropped, "png", out);
+		return out.toByteArray();
 	}
 
 }

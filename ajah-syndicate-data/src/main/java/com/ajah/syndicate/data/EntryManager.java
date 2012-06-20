@@ -43,6 +43,21 @@ public class EntryManager {
 	private EntryDao entryDao;
 
 	/**
+	 * Fetches an Entry by the SHA-1 of it's html url.
+	 * 
+	 * @param feedSourceId
+	 *            The ID of the FeedSource this entry is from.
+	 * @param htmlUrlSha1
+	 *            The SHA-1 of the Entry's html url.
+	 * @return The Entry, if found, otherwise null.
+	 * @throws DatabaseAccessException
+	 */
+	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DatabaseAccessException {
+		// TODO this field may not necessarily be unique, order by something?
+		return this.entryDao.findByHtmlUrlSha1(feedSourceId, htmlUrlSha1);
+	}
+
+	/**
 	 * Saves an entry, inserting if the ID is not set, otherwise updating. Will
 	 * set created date if that is null.
 	 * 
@@ -51,7 +66,7 @@ public class EntryManager {
 	 * @throws DatabaseAccessException
 	 *             if the entry could not be saved.
 	 */
-	public void save(Entry entry) throws DatabaseAccessException {
+	public void save(final Entry entry) throws DatabaseAccessException {
 		AjahUtils.requireParam(entry.getFeedId(), "entry.feedId");
 		AjahUtils.requireParam(entry.getFeedSourceId(), "entry.feedSourceId");
 		if (entry.getCreated() == null) {
@@ -63,21 +78,6 @@ public class EntryManager {
 		} else {
 			this.entryDao.update(entry);
 		}
-	}
-
-	/**
-	 * Fetches an Entry by the SHA-1 of it's html url.
-	 * 
-	 * @param feedSourceId
-	 *            The ID of the FeedSource this entry is from.
-	 * @param htmlUrlSha1
-	 *            The SHA-1 of the Entry's html url.
-	 * @return The Entry, if found, otherwise null.
-	 * @throws DatabaseAccessException
-	 */
-	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) throws DatabaseAccessException {
-		// TODO this field may not necessarily be unique, order by something?
-		return this.entryDao.findByHtmlUrlSha1(feedSourceId, htmlUrlSha1);
 	}
 
 }

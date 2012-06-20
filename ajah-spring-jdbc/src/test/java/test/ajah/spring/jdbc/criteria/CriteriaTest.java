@@ -32,8 +32,8 @@ public class CriteriaTest {
 	 * Tests a simple {@link Criteria#eq(com.ajah.util.ToStringable)} operation.
 	 */
 	@Test
-	public void testCriteria() {
-		Criteria criteria = new Criteria().eq("object_id", "1234");
+	public static void testCriteria() {
+		final Criteria criteria = new Criteria().eq("object_id", "1234");
 		Assert.assertEquals(" WHERE object_id=?", criteria.getWhere().getSql());
 		Assert.assertEquals("1234", criteria.getWhere().getValues().get(0));
 	}

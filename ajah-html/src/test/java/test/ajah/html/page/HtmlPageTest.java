@@ -37,7 +37,7 @@ public class HtmlPageTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void testPage() throws IOException {
+	public static void testPage() throws IOException {
 		HtmlPage page = new HtmlPage(HtmlVersion.HTML5);
 		page.addParagraph("Testing...");
 		page.addParagraph("Again!");

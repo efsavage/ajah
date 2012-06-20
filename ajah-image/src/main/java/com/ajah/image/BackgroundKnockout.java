@@ -48,7 +48,7 @@ public class BackgroundKnockout {
 	 * @throws IOException
 	 *             If the image could not be read/written to.
 	 */
-	public BufferedImage knockout(final BufferedImage image, final Color color) throws IOException {
+	public static BufferedImage knockout(final BufferedImage image, final Color color) throws IOException {
 		return knockout(image, color, new Color(255, 255, 255, 0));
 	}
 
@@ -65,8 +65,8 @@ public class BackgroundKnockout {
 	 * @throws IOException
 	 *             If the image could not be read/written to.
 	 */
-	public BufferedImage knockout(BufferedImage image, final Color color, final Color knockoutColor) throws IOException {
-		ThresholdFilter filter = new ThresholdFilter();
+	public static BufferedImage knockout(final BufferedImage image, final Color color, final Color knockoutColor) throws IOException {
+		final ThresholdFilter filter = new ThresholdFilter();
 		final BufferedImage knocked = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		new DespeckleFilter().filter(image, knocked);
 		new BoxBlurFilter().filter(knocked, knocked);

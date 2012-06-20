@@ -30,7 +30,7 @@ public class S3Exception extends Exception {
 	 * @param t
 	 *            The cause of this exception.
 	 */
-	public S3Exception(Throwable t) {
+	public S3Exception(final Throwable t) {
 		super(t);
 	}
 

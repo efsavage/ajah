@@ -32,18 +32,6 @@ public class HashCache<K, V> {
 	private final Map<K, CacheEntry<V>> map = new HashMap<>();
 
 	/**
-	 * Stores a value.
-	 * 
-	 * @param key
-	 *            They key to store the value under.
-	 * @param value
-	 *            The value to store.
-	 */
-	public void store(K key, V value) {
-		this.map.put(key, new CacheEntry<>(value, System.currentTimeMillis()));
-	}
-
-	/**
 	 * Returns a cached value if available and if it is not older than the
 	 * specified maximum age.
 	 * 
@@ -54,12 +42,24 @@ public class HashCache<K, V> {
 	 * @return The cached value if available and if it is not older than the
 	 *         specified maximum age, otherwise null.
 	 */
-	public V get(K key, long maxAge) {
-		CacheEntry<V> entry = this.map.get(key);
+	public V get(final K key, final long maxAge) {
+		final CacheEntry<V> entry = this.map.get(key);
 		if (entry == null || (entry.getCreated() + maxAge) < System.currentTimeMillis()) {
 			return null;
 		}
 		return entry.getObject();
 	}
-	
+
+	/**
+	 * Stores a value.
+	 * 
+	 * @param key
+	 *            They key to store the value under.
+	 * @param value
+	 *            The value to store.
+	 */
+	public void store(final K key, final V value) {
+		this.map.put(key, new CacheEntry<>(value, System.currentTimeMillis()));
+	}
+
 }

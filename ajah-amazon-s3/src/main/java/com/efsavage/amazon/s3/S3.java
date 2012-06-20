@@ -40,7 +40,7 @@ public class S3 {
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
-	public static void put(Bucket bucket, String name, String data) throws S3Exception {
+	public static void put(final Bucket bucket, final String name, final String data) throws S3Exception {
 		defaultClient.put(bucket, name, data);
 	}
 

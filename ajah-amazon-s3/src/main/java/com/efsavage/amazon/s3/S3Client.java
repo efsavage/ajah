@@ -42,6 +42,21 @@ import com.ajah.util.lang.StreamUtils;
 @Log
 public class S3Client {
 
+	/**
+	 * Returns the default client as configured by the aws.accessKey and
+	 * aws.secretKey properties.
+	 * 
+	 * @return The default client.
+	 */
+	public static S3Client getDefaultClient() {
+		try {
+			// TODO Make this a singleton.
+			return new S3Client(Config.i.get("aws.accessKey"), Config.i.get("aws.secretKey"));
+		} catch (final S3Exception e) {
+			throw new ConfigException(e);
+		}
+	}
+
 	private RestS3Service s3Service;
 
 	/**
@@ -54,18 +69,17 @@ public class S3Client {
 	 * @throws S3Exception
 	 *             If an S3 service could not be provisioned.
 	 */
-	public S3Client(String accessKey, String secretKey) throws S3Exception {
-		AWSCredentials awsCredentials = new AWSCredentials(accessKey, secretKey);
+	public S3Client(final String accessKey, final String secretKey) throws S3Exception {
+		final AWSCredentials awsCredentials = new AWSCredentials(accessKey, secretKey);
 		try {
 			this.s3Service = new RestS3Service(awsCredentials);
-		} catch (S3ServiceException e) {
+		} catch (final S3ServiceException e) {
 			throw new S3Exception(e);
 		}
 	}
 
 	/**
-	 * Puts an object using the default client. Consider using
-	 * {@link S3#put(Bucket, String, String)}.
+	 * Gets an object.
 	 * 
 	 * @see S3Client#getDefaultClient()
 	 * 
@@ -73,19 +87,27 @@ public class S3Client {
 	 *            The bucket to put the object into, required.
 	 * @param name
 	 *            The name to store the object as, required.
-	 * @param data
-	 *            The data of the object.
+	 * @param gzip
+	 *            Un-Gzip the data? (if it has .gz to the end of it)
+	 * @return The file's data
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
-	public void put(Bucket bucket, String name, String data) throws S3Exception {
-		byte[] input;
+	public byte[] get(final Bucket bucket, final String name, final boolean gzip) throws S3Exception {
+
 		try {
-			input = data.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
+			log.finest("Fetching " + name + " from bucket " + bucket.getName());
+			final S3Object object = this.s3Service.getObject(bucket.toString(), name);
+			if (gzip && name.endsWith(".gz")) {
+				throw new UnsupportedOperationException();
+			}
+			return StreamUtils.toByteArray(object.getDataInputStream());
+		} catch (final UnsupportedEncodingException e) {
 			throw new ConfigException(e);
+		} catch (IOException | ServiceException e) {
+			throw new S3Exception(e);
 		}
-		put(bucket, name, input, true, true);
+
 	}
 
 	/**
@@ -106,7 +128,7 @@ public class S3Client {
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
-	public void put(Bucket bucket, String name, byte[] data, boolean overwrite, boolean gzip) throws S3Exception {
+	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip) throws S3Exception {
 
 		try {
 			log.finest(data.length + " bytes to upload");
@@ -124,7 +146,7 @@ public class S3Client {
 			}
 			object = this.s3Service.putObject(bucket.toString(), object);
 			log.fine("Uploaded " + object.getName() + " to bucket " + bucket.getName());
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			throw new ConfigException(e);
 		} catch (IOException | ServiceException e) {
 			throw new S3Exception(e);
@@ -133,7 +155,8 @@ public class S3Client {
 	}
 
 	/**
-	 * Gets an object.
+	 * Puts an object using the default client. Consider using
+	 * {@link S3#put(Bucket, String, String)}.
 	 * 
 	 * @see S3Client#getDefaultClient()
 	 * 
@@ -141,42 +164,19 @@ public class S3Client {
 	 *            The bucket to put the object into, required.
 	 * @param name
 	 *            The name to store the object as, required.
-	 * @param gzip
-	 *            Un-Gzip the data? (if it has .gz to the end of it)
-	 * @return The file's data
+	 * @param data
+	 *            The data of the object.
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
-	public byte[] get(Bucket bucket, String name, boolean gzip) throws S3Exception {
-
+	public void put(final Bucket bucket, final String name, final String data) throws S3Exception {
+		byte[] input;
 		try {
-			log.finest("Fetching " + name + " from bucket " + bucket.getName());
-			S3Object object = this.s3Service.getObject(bucket.toString(), name);
-			if (gzip && name.endsWith(".gz")) {
-				throw new UnsupportedOperationException();
-			}
-			return StreamUtils.toByteArray(object.getDataInputStream());
-		} catch (UnsupportedEncodingException e) {
-			throw new ConfigException(e);
-		} catch (IOException | ServiceException e) {
-			throw new S3Exception(e);
-		}
-
-	}
-
-	/**
-	 * Returns the default client as configured by the aws.accessKey and
-	 * aws.secretKey properties.
-	 * 
-	 * @return The default client.
-	 */
-	public static S3Client getDefaultClient() {
-		try {
-			// TODO Make this a singleton.
-			return new S3Client(Config.i.get("aws.accessKey"), Config.i.get("aws.secretKey"));
-		} catch (S3Exception e) {
+			input = data.getBytes("UTF-8");
+		} catch (final UnsupportedEncodingException e) {
 			throw new ConfigException(e);
 		}
+		put(bucket, name, input, true, true);
 	}
 
 }

@@ -41,7 +41,6 @@ import com.ajah.util.lang.NameValuePair;
 @Log
 public class FileHashUtils {
 
-
 	/**
 	 * Splits a hash signature into a directory structure so that there will not
 	 * be too many files in a single directory.

@@ -77,7 +77,7 @@ public class EmailMessageManager {
 	 * @throws MessagingException
 	 *             If there is a problem with the transport of the message.
 	 */
-	public void send(final EmailMessage message) throws AddressException, MessagingException {
+	public static void send(final EmailMessage message) throws AddressException, MessagingException {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(message.getSubject(), "message.subject");
 		AjahUtils.requireParam(message.getFrom(), "message.from");

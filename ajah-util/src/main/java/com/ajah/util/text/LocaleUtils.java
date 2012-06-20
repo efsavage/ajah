@@ -42,10 +42,10 @@ public class LocaleUtils {
 	 *            The code or name of the Locale
 	 * @return The matching Locale, or null if no matches are found.
 	 */
-	public static Locale getLocale(String code) {
+	public static Locale getLocale(final String code) {
 		AjahUtils.requireParam(code, "code");
-		String upperCode = code.toUpperCase();
-		for (Locale locale : Locale.getAvailableLocales()) {
+		final String upperCode = code.toUpperCase();
+		for (final Locale locale : Locale.getAvailableLocales()) {
 			try {
 				if (upperCode.equals(locale.getISO3Country())) {
 					return locale;
@@ -53,11 +53,11 @@ public class LocaleUtils {
 				if (upperCode.equals(locale.getDisplayName())) {
 					return locale;
 				}
-			} catch (MissingResourceException e) {
+			} catch (final MissingResourceException e) {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 		}
 		return null;
 	}
-	
+
 }

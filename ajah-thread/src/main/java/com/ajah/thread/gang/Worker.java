@@ -40,7 +40,7 @@ public interface Worker<T> {
 	 * @return True if the job was successfully cancelled as a result of this
 	 *         call or previously, otherwise false.
 	 */
-	boolean cancel(boolean mayInterruptIfRunning);
+	boolean cancel(final boolean mayInterruptIfRunning);
 
 	/**
 	 * Returns the value. This will wait until the job is complete or the job

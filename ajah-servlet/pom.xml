@@ -12,6 +12,7 @@
 	</parent>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>

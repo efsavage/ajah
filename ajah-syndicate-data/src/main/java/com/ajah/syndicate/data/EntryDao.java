@@ -43,7 +43,7 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(Entry entry) throws DatabaseAccessException;
+	int update(final Entry entry) throws DatabaseAccessException;
 
 	/**
 	 * Finds an entry by {@link Entry#getHtmlUrlSha1()} and feed source.
@@ -54,6 +54,6 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 *            The SHA-1 of the URL.
 	 * @return The matching entry, if found, otherwise null.
 	 */
-	Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1);
+	Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1);
 
 }

@@ -84,7 +84,7 @@ public class IMAPMailFetcher extends AbstractMailFetcher {
 			for (final Message message : messages) {
 				messageCount++;
 				try {
-					for (MessageHandler messageHandler : getMessageHandlers()) {
+					for (final MessageHandler messageHandler : getMessageHandlers()) {
 						log.finest(messageHandler.getClass().getSimpleName() + " handling " + ((MimeMessage) message).getMessageID());
 						messageHandler.handle(new AjahMimeMessage(message.getInputStream()));
 						return;

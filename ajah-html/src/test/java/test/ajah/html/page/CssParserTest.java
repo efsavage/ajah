@@ -39,9 +39,10 @@ public class CssParserTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void testPage() throws IOException {
+	public static void testPage() throws IOException {
 		InputStream css = CssParserTest.class.getResourceAsStream("/bootstrap.css");
-		CssDocument doc = CssParser.getInstance().parse(css);
+		CssParser.getInstance();
+		CssDocument doc = CssParser.parse(css);
 		Assert.assertEquals(703, doc.getRules().size());
 	}
 	

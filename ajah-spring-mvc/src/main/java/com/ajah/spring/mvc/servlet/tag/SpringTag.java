@@ -36,7 +36,6 @@ import com.ajah.util.StringUtils;
 @Log
 public abstract class SpringTag extends TagSupport {
 
-
 	protected String getMessage(final MessageSourceResolvable resolvable) {
 		final ApplicationContext appContext = (ApplicationContext) this.pageContext.getServletContext().getAttribute("appContext");
 		final MessageSource messageSource = appContext.getBean(MessageSource.class);

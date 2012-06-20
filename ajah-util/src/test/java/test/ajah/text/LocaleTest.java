@@ -36,7 +36,7 @@ public class LocaleTest {
 	 */
 	@Test
 	public void denmark() {
-		Locale locale = LocaleUtils.getLocale("DNK");
+		final Locale locale = LocaleUtils.getLocale("DNK");
 		Assert.assertNotNull(locale);
 		Assert.assertEquals("Danish (Denmark)", locale.getDisplayName());
 	}

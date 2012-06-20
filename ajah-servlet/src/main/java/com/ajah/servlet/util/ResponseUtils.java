@@ -38,7 +38,7 @@ public class ResponseUtils {
 	 * @param calendarUnit
 	 *            The unit of time
 	 */
-	public static void setExpires(final HttpServletResponse response, long quantity, CalendarUnit calendarUnit) {
+	public static void setExpires(final HttpServletResponse response, final long quantity, final CalendarUnit calendarUnit) {
 		response.setDateHeader("Expires", System.currentTimeMillis() + (calendarUnit.getMillis() * quantity));
 	}
 

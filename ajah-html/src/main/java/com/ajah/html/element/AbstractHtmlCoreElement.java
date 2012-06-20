@@ -83,7 +83,7 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 		}
 	}
 
-	protected void write(final Writer out, final String name, final String value) throws IOException {
+	protected static void write(final Writer out, final String name, final String value) throws IOException {
 		if (!StringUtils.isBlank(value)) {
 			out.write(" ");
 			out.write(name);

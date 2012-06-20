@@ -36,7 +36,7 @@ public interface MessageHandler extends AutoCloseable {
 	 * @return The result of the message processing, will not be null.
 	 * @throws MessagingException
 	 */
-	MessageHandlerResponse handle(AjahMimeMessage message) throws MessagingException;
+	MessageHandlerResponse handle(final AjahMimeMessage message) throws MessagingException;
 
 	/**
 	 * Add a message handler to be activated if this handler yields in the
@@ -48,7 +48,7 @@ public interface MessageHandler extends AutoCloseable {
 	 *            The messageHandler to activate.
 	 * @throws MessagingException
 	 */
-	void addHandler(MessageHandlerResult result, MessageHandler messageHandler) throws MessagingException;
+	void addHandler(final MessageHandlerResult result, final MessageHandler messageHandler) throws MessagingException;
 
 	/**
 	 * Closes this message handler and all child handlers.

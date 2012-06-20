@@ -16,8 +16,8 @@
 package com.ajah.crypto;
 
 /**
- * HmacSHA1 implementation of {@link Password}. Note: Does not store the
- * raw password.
+ * HmacSHA1 implementation of {@link Password}. Note: Does not store the raw
+ * password.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */

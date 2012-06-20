@@ -26,10 +26,6 @@ import java.util.Date;
  */
 public class AjahUtils {
 
-	private AjahUtils() {
-		// Empty, private constructor
-	}
-
 	/**
 	 * Array of lowercase characters (a-z).
 	 */
@@ -173,6 +169,10 @@ public class AjahUtils {
 			return null;
 		}
 		return Long.valueOf(date.getTime() / 1000);
+	}
+
+	private AjahUtils() {
+		// Empty, private constructor
 	}
 
 }

@@ -32,7 +32,7 @@ public class VelocityEmailMessageTest {
 	 * Tests that a simple text email is working, no model used.
 	 */
 	@Test
-	public void basicEmail() {
+	public static void basicEmail() {
 		final VelocityEmailMessage vem = new VelocityEmailMessage(new EmailAddress("nobody@nobody.com"), new EmailAddress[] { new EmailAddress("someone@somewhere.com") });
 		vem.setTextTemplate("/templates/email/simple.txt.vm");
 		Assert.assertEquals(vem.getText(), "HELLO");

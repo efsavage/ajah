@@ -37,6 +37,6 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 *            The address to query, required.
 	 * @return The matching email, if found.
 	 */
-	Email findByAddress(String address);
+	Email findByAddress(final String address);
 
 }

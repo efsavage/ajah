@@ -40,6 +40,13 @@ public class Report {
 	 */
 	public static final String HYPEN35 = "-----------------------------------";
 
+	/**
+	 * Adds a number of tabs to nest things properly.
+	 * 
+	 * @param depth
+	 *            The number of levels deep we are.
+	 * @return Array of tab characters.
+	 */
 	public static char[] tabs(final int depth) {
 		final char[] tabs = new char[depth];
 		Arrays.fill(tabs, '\t');
@@ -50,35 +57,79 @@ public class Report {
 
 	private Logger log;
 
+	/**
+	 * Add a file, automatically wrapped by a {@link PrintWriter}.
+	 * 
+	 * @param file
+	 *            The file to add/wrap.
+	 * @throws FileNotFoundException
+	 *             If the file could not be found.
+	 */
 	public void add(final File file) throws FileNotFoundException {
 		this.writers.add(new PrintWriter(file));
 	}
 
-	public void add(final Logger _log) {
+	/**
+	 * Sets a logger to receive the report.
+	 * 
+	 * @param _log
+	 *            The logger to log to.
+	 */
+	public void set(final Logger _log) {
 		this.log = _log;
 	}
 
+	/**
+	 * Adds an OutputStream to write the report to, wrapped by a
+	 * {@link PrintWriter}.
+	 * 
+	 * @param out
+	 *            A stream to write the report to.
+	 */
 	public void add(final OutputStream out) {
 		this.writers.add(new PrintWriter(out));
 	}
 
+	/**
+	 * Adds an PrintWriter to write the report to.
+	 * 
+	 * @param writer
+	 *            A stream to write the report to.
+	 */
 	public void add(final PrintWriter writer) {
 		this.writers.add(writer);
 	}
 
+	/**
+	 * Closes all of the writers.
+	 */
 	public void close() {
 		for (final PrintWriter out : this.writers) {
 			out.close();
 		}
 	}
 
-	public void print(final String line) {
-		this.log.info(line);
+	/**
+	 * Prints a string to the writers.
+	 * 
+	 * @param string
+	 *            The string to print to the writers.
+	 */
+	public void print(final String string) {
+		this.log.info(string);
 		for (final PrintWriter out : this.writers) {
-			out.print(line);
+			out.print(string);
 		}
 	}
 
+	/**
+	 * Prints a line of text with the appropriate leading tab characters.
+	 * 
+	 * @param depth
+	 *            The depth of the line in the hierarchy.
+	 * @param line
+	 *            The line to print.
+	 */
 	public void println(final int depth, final String line) {
 		if (this.writers.size() < 1) {
 			throw new IllegalArgumentException();
@@ -92,10 +143,20 @@ public class Report {
 		}
 	}
 
+	/**
+	 * Prints a line at zero depth.
+	 * 
+	 * @see #println(int, String)
+	 * @param line
+	 *            The line to print.
+	 */
 	public void println(final String line) {
 		println(0, line);
 	}
 
+	/**
+	 * Writes a {@link #EQUAL_40} line.
+	 */
 	public void rule() {
 		println(EQUAL_40);
 	}

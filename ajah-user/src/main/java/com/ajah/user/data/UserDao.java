@@ -63,7 +63,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DatabaseAccessException
 	 *             If the query could not be executed.
 	 */
-	public User findByUsername(String username) throws DatabaseAccessException;
+	public User findByUsername(final String username) throws DatabaseAccessException;
 
 	/**
 	 * Finds a user by username and password.
@@ -76,6 +76,6 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DatabaseAccessException
 	 *             If the query could not be executed.
 	 */
-	public User findByUsernameAndPassword(String username, String password) throws DatabaseAccessException;
+	public User findByUsernameAndPassword(final String username, final String password) throws DatabaseAccessException;
 
 }

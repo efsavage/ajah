@@ -133,17 +133,6 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns length of string, 0 if null.
-	 * 
-	 * @param string
-	 *            String to be tested, may be null.
-	 * @return length of string, 0 if null.
-	 */
-	public static int safeLength(final String string) {
-		return string == null ? 0 : string.length();
-	}
-
-	/**
 	 * Returns leftmost characters of a string.
 	 * 
 	 * @param string
@@ -159,6 +148,17 @@ public class StringUtils {
 			return string;
 		}
 		return string.substring(0, length);
+	}
+
+	/**
+	 * Returns length of string, 0 if null.
+	 * 
+	 * @param string
+	 *            String to be tested, may be null.
+	 * @return length of string, 0 if null.
+	 */
+	public static int safeLength(final String string) {
+		return string == null ? 0 : string.length();
 	}
 
 	/**

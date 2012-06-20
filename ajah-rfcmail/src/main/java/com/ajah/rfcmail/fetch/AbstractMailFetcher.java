@@ -32,19 +32,19 @@ public abstract class AbstractMailFetcher implements MailFetcher {
 
 	private final List<MessageHandler> messageHandlers = new ArrayList<>();
 
-	@Override
-	public void close() {
-		for (MessageHandler messageHandler : this.messageHandlers) {
-			messageHandler.close();
-		}
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addMessageHandler(MessageHandler messageHandler) {
+	public void addMessageHandler(final MessageHandler messageHandler) {
 		this.messageHandlers.add(messageHandler);
+	}
+
+	@Override
+	public void close() {
+		for (final MessageHandler messageHandler : this.messageHandlers) {
+			messageHandler.close();
+		}
 	}
 
 }

@@ -48,7 +48,7 @@ public class SimpleFeedTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void getFeed() throws IllegalArgumentException, FeedException, IOException {
+	public static void getFeed() throws IllegalArgumentException, FeedException, IOException {
 		final FeedSource feedSource = new FeedSource();
 		final Feed feed = RomeUtils.createFeed(HttpClient.getXml(TEST_FEED), feedSource);
 		log.info(feed.getEntries().size() + " entries");

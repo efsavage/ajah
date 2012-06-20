@@ -34,7 +34,7 @@ public class MessageHandlerResponse {
 	 * @param message
 	 * @param result
 	 */
-	public MessageHandlerResponse(AjahMessage message, MessageHandlerResult result) {
+	public MessageHandlerResponse(final AjahMessage message, final MessageHandlerResult result) {
 		this.message = message;
 		this.result = result;
 	}

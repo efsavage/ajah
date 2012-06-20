@@ -42,7 +42,7 @@ public interface FeedSourceDao extends AjahDao<FeedSourceId, FeedSource> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(FeedSource feedSource) throws DatabaseAccessException;
+	int update(final FeedSource feedSource) throws DatabaseAccessException;
 
 	/**
 	 * Finds an active, stale feed source that needs to be polled.
@@ -58,6 +58,6 @@ public interface FeedSourceDao extends AjahDao<FeedSourceId, FeedSource> {
 	 *            The SHA-1 of the url.
 	 * @return The feed source, if found, otherwise null.
 	 */
-	FeedSource findByFeedUrlSha1(String feedUrlSha1);
+	FeedSource findByFeedUrlSha1(final String feedUrlSha1);
 
 }

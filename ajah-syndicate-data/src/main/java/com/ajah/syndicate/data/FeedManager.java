@@ -48,25 +48,8 @@ public class FeedManager {
 	 * @return The most recent feed for the feed source, or null.
 	 * @throws DatabaseAccessException
 	 */
-	public Feed getLatestFeed(FeedSource feedSource) throws DatabaseAccessException {
+	public Feed getLatestFeed(final FeedSource feedSource) throws DatabaseAccessException {
 		return this.feedDao.getLatestFeed(feedSource);
-	}
-
-	/**
-	 * Saves a feed, inserting if there is no ID set, otherwise updating.
-	 * 
-	 * @param feed
-	 *            The feed to save.
-	 * @throws DatabaseAccessException
-	 *             If the feed could not be saved.
-	 */
-	public void save(Feed feed) throws DatabaseAccessException {
-		if (feed.getId() == null) {
-			feed.setId(new FeedId(UUID.randomUUID().toString()));
-			this.feedDao.insert(feed);
-		} else {
-			this.feedDao.update(feed);
-		}
 	}
 
 	/**
@@ -77,8 +60,25 @@ public class FeedManager {
 	 * @throws DatabaseAccessException
 	 *             If the feed could not be inserted.
 	 */
-	public void insert(Feed feed) throws DatabaseAccessException {
+	public void insert(final Feed feed) throws DatabaseAccessException {
 		this.feedDao.insert(feed);
+	}
+
+	/**
+	 * Saves a feed, inserting if there is no ID set, otherwise updating.
+	 * 
+	 * @param feed
+	 *            The feed to save.
+	 * @throws DatabaseAccessException
+	 *             If the feed could not be saved.
+	 */
+	public void save(final Feed feed) throws DatabaseAccessException {
+		if (feed.getId() == null) {
+			feed.setId(new FeedId(UUID.randomUUID().toString()));
+			this.feedDao.insert(feed);
+		} else {
+			this.feedDao.update(feed);
+		}
 	}
 
 }

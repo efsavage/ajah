@@ -25,13 +25,13 @@ package com.ajah.spring.jdbc;
 public class DatabaseAccessException extends Exception {
 
 	/**
-	 * Wraps another exception.
+	 * Error with a message.
 	 * 
-	 * @param cause
-	 *            The original exception.
+	 * @param message
+	 *            The message describing the error.
 	 */
-	public DatabaseAccessException(final Throwable cause) {
-		super(cause);
+	public DatabaseAccessException(final String message) {
+		super(message);
 	}
 
 	/**
@@ -47,13 +47,13 @@ public class DatabaseAccessException extends Exception {
 	}
 
 	/**
-	 * Error with a message.
+	 * Wraps another exception.
 	 * 
-	 * @param message
-	 *            The message describing the error.
+	 * @param cause
+	 *            The original exception.
 	 */
-	public DatabaseAccessException(final String message) {
-		super(message);
+	public DatabaseAccessException(final Throwable cause) {
+		super(cause);
 	}
 
 }

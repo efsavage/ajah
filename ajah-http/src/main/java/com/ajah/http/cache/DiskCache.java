@@ -78,7 +78,7 @@ public class DiskCache implements HttpCache {
 	 *             If the URI returns a response code that {@link Http} cannot
 	 *             not handle.
 	 */
-	public byte[] getBytes(final URI uri, long maxAge) throws IOException, NotFoundException, UnexpectedResponseCode {
+	public static byte[] getBytes(final URI uri, long maxAge) throws IOException, NotFoundException, UnexpectedResponseCode {
 		// TODO Add max-age
 		// IDEA Store expires header, check last-modified
 		final String path = FileHashUtils.getHashedFileName(SHA.sha1Hex(uri.toString()), 3, 2);
@@ -130,7 +130,7 @@ public class DiskCache implements HttpCache {
 	 *             If the URI returns a response code that {@link Http} cannot
 	 *             not handle.
 	 */
-	public String get(URI uri, long maxAge) throws NotFoundException, IOException, UnexpectedResponseCode {
+	public static String get(URI uri, long maxAge) throws NotFoundException, IOException, UnexpectedResponseCode {
 		return new String(getBytes(uri, maxAge));
 	}
 

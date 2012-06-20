@@ -37,26 +37,17 @@ public class AjahMessageId implements Serializable, ToStringable, FromStringable
 	 * @param id
 	 *            UID of message, cannot be null.
 	 */
-	public AjahMessageId(String id) {
+	public AjahMessageId(final String id) {
 		AjahUtils.requireParam(id, "id");
 		this.id = id;
 	}
 
 	/**
-	 * Returns the String passed into the constructor.
-	 * 
-	 * @return The String passed into the constructor.
-	 */
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the String passed into the constructor.
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public String toString() {
-		return this.id;
+	public int compareTo(final AjahMessageId other) {
+		return this.id.compareTo(other.getId());
 	}
 
 	/**
@@ -66,8 +57,17 @@ public class AjahMessageId implements Serializable, ToStringable, FromStringable
 	 *            The other UserId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(AjahMessageId other) {
+	public boolean equals(final AjahMessageId other) {
 		return this.id.equals(other.id);
+	}
+
+	/**
+	 * Returns the String passed into the constructor.
+	 * 
+	 * @return The String passed into the constructor.
+	 */
+	public String getId() {
+		return this.id;
 	}
 
 	/**
@@ -82,11 +82,11 @@ public class AjahMessageId implements Serializable, ToStringable, FromStringable
 	}
 
 	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * Returns the String passed into the constructor.
 	 */
 	@Override
-	public int compareTo(AjahMessageId other) {
-		return this.id.compareTo(other.getId());
+	public String toString() {
+		return this.id;
 	}
 
 }

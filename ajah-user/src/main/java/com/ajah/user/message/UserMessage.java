@@ -22,8 +22,8 @@ import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
 
 /**
- * A UserMessage corresponds to a person who is using the system. A person should
- * not need to have separate messages within the application.
+ * A UserMessage corresponds to a person who is using the system. A person
+ * should not need to have separate messages within the application.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 

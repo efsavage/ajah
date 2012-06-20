@@ -34,7 +34,6 @@ import com.ajah.util.log.Report;
 @Log
 public class FileScan {
 
-
 	private long files;
 	private long bytes;
 	private long directories;
@@ -45,6 +44,14 @@ public class FileScan {
 			DataSizeUnit.MEBIBYTE.getAsBytes(1), DataSizeUnit.MEBIBYTE.getAsBytes(10), DataSizeUnit.MEBIBYTE.getAsBytes(100), Long.MAX_VALUE };
 	private static long[][] rangeCountSizes = new long[ranges.length][2];
 
+	/**
+	 * Scans one or more directories.
+	 * 
+	 * @param args
+	 *            The directories to scan
+	 * @throws IOException
+	 *             If a file or directory could not be scanned.
+	 */
 	public static void main(final String[] args) throws IOException {
 		for (final String arg : args) {
 			// Send logger output to our FileHandler.
@@ -54,7 +61,7 @@ public class FileScan {
 			final File file = new File(arg);
 			final Report report = new Report();
 			report.add(System.out);
-			report.add(log);
+			report.set(log);
 			report.add(new File("/tmp/report-" + System.currentTimeMillis() + ".txt"));
 			report.rule();
 			report.println("Report for: " + file.getAbsolutePath());
@@ -68,27 +75,60 @@ public class FileScan {
 		}
 	}
 
+	/**
+	 * Public constructor.
+	 * 
+	 * @param root
+	 *            The root directory to scan.
+	 * @param report
+	 *            The report to write results to.
+	 */
 	public FileScan(final File root, final Report report) {
 		this.root = root;
 		this.report = report;
 	}
 
+	/**
+	 * Returns the number of bytes scanned.
+	 * 
+	 * @return The number of bytes scanned.
+	 */
 	public long getBytes() {
 		return this.bytes;
 	}
 
+	/**
+	 * Returns the number of directories scanned.
+	 * 
+	 * @return The number of directories scanned.
+	 */
 	public long getDirectories() {
 		return this.directories;
 	}
 
+	/**
+	 * Returns the number of empty directories scanned.
+	 * 
+	 * @return The number of empty directories scanned.
+	 */
 	public long getEmptyDirectories() {
 		return this.emptyDirectories;
 	}
 
+	/**
+	 * Returns the number of files scanned.
+	 * 
+	 * @return The number of files scanned.
+	 */
 	public long getFiles() {
 		return this.files;
 	}
 
+	/**
+	 * Returns the root file of the scan.
+	 * 
+	 * @return The root file of the scan.
+	 */
 	public File getRoot() {
 		return this.root;
 	}
@@ -107,6 +147,12 @@ public class FileScan {
 		}
 	}
 
+	/**
+	 * Executes a scan starting at the root directory.
+	 * 
+	 * @throws IOException
+	 *             If a file or directory could not be scanned.
+	 */
 	public void scan() throws IOException {
 		final int depth = 0;
 		scan(this.root, depth);

@@ -35,10 +35,10 @@ public class ListMapTest {
 	 */
 	@Test
 	public void basicTest() {
-		ListMap<String, Date> listMap = new ListMap<>();
-		Date now = new Date();
-		Date yesterday = new Date(System.currentTimeMillis() - 86400000L);
-		Date tomorrow = new Date(System.currentTimeMillis() + 86400000L);
+		final ListMap<String, Date> listMap = new ListMap<>();
+		final Date now = new Date();
+		final Date yesterday = new Date(System.currentTimeMillis() - 86400000L);
+		final Date tomorrow = new Date(System.currentTimeMillis() + 86400000L);
 		List<Date> dates = listMap.getList("all");
 		Assert.assertNotNull(dates);
 		Assert.assertEquals(0, dates.size());

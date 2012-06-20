@@ -83,7 +83,7 @@ public enum CalendarUnit {
 	 * @return How many milliseconds the specified quantity of this unit is
 	 *         equivalent to.
 	 */
-	public long getMillis(int quantity) {
+	public long getMillis(final int quantity) {
 		return quantity * this.millis;
 	}
 

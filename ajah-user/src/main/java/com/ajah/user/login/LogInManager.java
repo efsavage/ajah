@@ -105,6 +105,7 @@ public class LogInManager {
 			log.log(Level.INFO, e.getMessage());
 			login.setStatus(LogInStatus.FAIL);
 		}
+		log.fine("Returning!");
 		return login;
 	}
 

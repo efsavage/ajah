@@ -73,7 +73,7 @@ public class RequestEvent implements Event<RequestEventId> {
 	@Override
 	public void complete() {
 		this.end = System.currentTimeMillis();
-		Calendar cal = Calendar.getInstance();
+		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(this.start);
 		this.year = cal.get(Calendar.YEAR);
 		this.month = cal.get(Calendar.MONTH) + (this.year * 12);

@@ -36,7 +36,7 @@ public class CompositeComparator<T> implements Comparator<T> {
 	 * @param comparators
 	 */
 	@SafeVarargs
-	public CompositeComparator(Comparator<T>... comparators) {
+	public CompositeComparator(final Comparator<T>... comparators) {
 		if (comparators == null || comparators.length == 0) {
 			throw new IllegalArgumentException("Must include at least one child comparator");
 		}
@@ -44,10 +44,10 @@ public class CompositeComparator<T> implements Comparator<T> {
 	}
 
 	@Override
-	public int compare(T first, T second) {
+	public int compare(final T first, final T second) {
 		int retVal = 0;
-		for (Comparator<T> comparator : this.comparators) {
-			comparator.compare(first, second);
+		for (final Comparator<T> comparator : this.comparators) {
+			retVal = comparator.compare(first, second);
 			if (retVal != 0) {
 				return retVal;
 			}

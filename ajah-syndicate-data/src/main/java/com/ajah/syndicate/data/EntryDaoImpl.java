@@ -37,7 +37,7 @@ public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> impleme
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Entry findByHtmlUrlSha1(FeedSourceId feedSourceId, String htmlUrlSha1) {
+	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) {
 		return find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
 	}
 

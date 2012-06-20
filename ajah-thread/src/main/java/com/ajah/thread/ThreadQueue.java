@@ -32,23 +32,6 @@ import com.ajah.util.AjahUtils;
 public class ThreadQueue {
 
 	private static final ThreadQueue INSTANCE = new ThreadQueue();
-	private Executor executor;
-
-	private ThreadQueue() {
-		BlockingQueue<Runnable> queue = new LinkedBlockingDeque<>();
-		this.executor = new ThreadPoolExecutor(10, 50, 1, TimeUnit.DAYS, queue);
-	}
-
-	/**
-	 * Creates a {@link ThreadQueue} around the supplied {@link Executor}.
-	 * 
-	 * @param executor
-	 *            The executor to wrap. Required.
-	 */
-	public ThreadQueue(Executor executor) {
-		AjahUtils.requireParam(executor, "executor");
-		this.executor = executor;
-	}
 
 	/**
 	 * Returns the singleton instance with default configuration.
@@ -59,13 +42,31 @@ public class ThreadQueue {
 		return INSTANCE;
 	}
 
+	private final Executor executor;
+
+	private ThreadQueue() {
+		final BlockingQueue<Runnable> queue = new LinkedBlockingDeque<>();
+		this.executor = new ThreadPoolExecutor(10, 50, 1, TimeUnit.DAYS, queue);
+	}
+
+	/**
+	 * Creates a {@link ThreadQueue} around the supplied {@link Executor}.
+	 * 
+	 * @param executor
+	 *            The executor to wrap. Required.
+	 */
+	public ThreadQueue(final Executor executor) {
+		AjahUtils.requireParam(executor, "executor");
+		this.executor = executor;
+	}
+
 	/**
 	 * Drops a runnable onto the configured Executor.
 	 * 
 	 * @param runnable
 	 *            The job to execute, required.
 	 */
-	public void execute(Runnable runnable) {
+	public void execute(final Runnable runnable) {
 		AjahUtils.requireParam(runnable, "runnable");
 		this.executor.execute(runnable);
 	}

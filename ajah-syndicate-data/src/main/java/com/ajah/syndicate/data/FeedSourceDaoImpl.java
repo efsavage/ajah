@@ -36,16 +36,16 @@ public class FeedSourceDaoImpl extends AbstractAjahDao<FeedSourceId, FeedSource,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FeedSource getStaleFeedSource() {
-		return findByWhere("poll_status=" + PollStatus.ACTIVE.getId() + " AND next_poll_date < (unix_timestamp() * 1000)");
+	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) {
+		return findByField("feed_url_sha_1", feedUrlSha1);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FeedSource findByFeedUrlSha1(String feedUrlSha1) {
-		return findByField("feed_url_sha_1", feedUrlSha1);
+	public FeedSource getStaleFeedSource() {
+		return findByWhere("poll_status=" + PollStatus.ACTIVE.getId() + " AND next_poll_date < (unix_timestamp() * 1000)");
 	}
 
 }

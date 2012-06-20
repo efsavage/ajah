@@ -33,22 +33,6 @@ public class ThreadUtils {
 	private static final Logger log = Logger.getLogger(ThreadUtils.class.getName());
 
 	/**
-	 * Sleep for the specified number of ms. If interuppted by
-	 * {@link InterruptedException}, just return.
-	 * 
-	 * @param ms
-	 *            The number of ms to sleep, must be 0 or greater.
-	 */
-	public static void sleep(long ms) {
-		try {
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {
-			log.log(Level.FINE, e.getMessage(), e);
-		}
-		return;
-	}
-
-	/**
 	 * Sleep via {@link #sleep(long)} for the specified length of time.
 	 * 
 	 * @param quantity
@@ -56,8 +40,24 @@ public class ThreadUtils {
 	 * @param calendarUnit
 	 *            The unit of time the quantity represents.
 	 */
-	public static void sleep(int quantity, CalendarUnit calendarUnit) {
+	public static void sleep(final int quantity, final CalendarUnit calendarUnit) {
 		sleep(quantity * calendarUnit.getMillis());
+	}
+
+	/**
+	 * Sleep for the specified number of ms. If interuppted by
+	 * {@link InterruptedException}, just return.
+	 * 
+	 * @param ms
+	 *            The number of ms to sleep, must be 0 or greater.
+	 */
+	public static void sleep(final long ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (final InterruptedException e) {
+			log.log(Level.FINE, e.getMessage(), e);
+		}
+		return;
 	}
 
 }

@@ -30,7 +30,6 @@ import lombok.extern.java.Log;
 @Log
 public class IOUtils {
 
-
 	/**
 	 * Closes a {@link Closeable} object, checking for null and ignoring
 	 * (logging as warning) {@link IOException}s.

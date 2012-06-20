@@ -38,7 +38,7 @@ public class FeedDaoImpl extends AbstractAjahDao<FeedId, Feed, Feed> implements 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Feed getLatestFeed(FeedSource feedSource) {
+	public Feed getLatestFeed(final FeedSource feedSource) {
 		return find(new Criteria().eq("feed_source_id", feedSource).orderBy("created", Order.DESC));
 	}
 

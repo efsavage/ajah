@@ -81,6 +81,19 @@ public class Criteria {
 	}
 
 	/**
+	 * A field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria eq(final String field, final long value) {
+		return eq(field, String.valueOf(value));
+	}
+
+	/**
 	 * A field match. Supports nulls (as "IS NULL").
 	 * 
 	 * @param field
@@ -95,19 +108,6 @@ public class Criteria {
 		}
 		this.eqs.add(new NameValuePair<>(field, value));
 		return this;
-	}
-
-	/**
-	 * A field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final long value) {
-		return eq(field, String.valueOf(value));
 	}
 
 	/**

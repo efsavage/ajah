@@ -36,7 +36,6 @@ import com.ajah.util.date.DateUtils;
 @Log
 public class ReflectionUtils {
 
-
 	/**
 	 * Finds the enum where the getId() value matches the value of the field for
 	 * this particular object.

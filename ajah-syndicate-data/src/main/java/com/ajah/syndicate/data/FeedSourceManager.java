@@ -40,6 +40,18 @@ public class FeedSourceManager {
 	private FeedSourceDao feedDao;
 
 	/**
+	 * Finds a feed source by the SHA-1 of the feed url.
+	 * 
+	 * @param feedUrlSha1
+	 *            The SHA-1 of the feed url.
+	 * @return The feed source, if found, otherwise null.
+	 * @throws DatabaseAccessException
+	 */
+	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DatabaseAccessException {
+		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
+	}
+
+	/**
 	 * Find a feed source where the next_poll_date field is in the past.
 	 * 
 	 * @return A feed source where the next_poll_date field is in the past, if
@@ -51,18 +63,6 @@ public class FeedSourceManager {
 	}
 
 	/**
-	 * Finds a feed source by the SHA-1 of the feed url.
-	 * 
-	 * @param feedUrlSha1
-	 *            The SHA-1 of the feed url.
-	 * @return The feed source, if found, otherwise null.
-	 * @throws DatabaseAccessException
-	 */
-	public FeedSource findByFeedUrlSha1(String feedUrlSha1) throws DatabaseAccessException {
-		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
-	}
-
-	/**
 	 * Saves a feed source, inserting if the ID is empty, otherwise updating.
 	 * 
 	 * @param feedSource
@@ -70,7 +70,7 @@ public class FeedSourceManager {
 	 * @throws DatabaseAccessException
 	 *             If the feed source could not be saved.
 	 */
-	public void save(FeedSource feedSource) throws DatabaseAccessException {
+	public void save(final FeedSource feedSource) throws DatabaseAccessException {
 		if (feedSource.getId() == null) {
 			feedSource.setId(new FeedSourceId(UUID.randomUUID().toString()));
 			this.feedDao.insert(feedSource);

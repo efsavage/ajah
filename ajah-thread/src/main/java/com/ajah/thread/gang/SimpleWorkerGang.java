@@ -27,9 +27,9 @@ import java.util.List;
  */
 public class SimpleWorkerGang {
 
-	private List<Worker<?>> workers = new ArrayList<>();
+	private final List<Worker<?>> workers = new ArrayList<>();
 
-	private boolean autoStart;
+	private final boolean autoStart;
 
 	/**
 	 * Constructor with autoStart enabled.
@@ -44,18 +44,8 @@ public class SimpleWorkerGang {
 	 * @param autoStart
 	 *            Should jobs be started as they are added?
 	 */
-	public SimpleWorkerGang(boolean autoStart) {
+	public SimpleWorkerGang(final boolean autoStart) {
 		this.autoStart = autoStart;
-	}
-
-	/**
-	 * Invokes {@link Worker#go()} on all workers in this gang. This isn't
-	 * necessary if autoStart is true.
-	 */
-	public void go() {
-		for (Worker<?> worker : this.workers) {
-			worker.go();
-		}
 	}
 
 	/**
@@ -65,9 +55,19 @@ public class SimpleWorkerGang {
 	 *            The worker to add to the gang. If autostart is active it will
 	 *            begin execution immediately.
 	 */
-	public void add(Worker<?> worker) {
+	public void add(final Worker<?> worker) {
 		this.workers.add(worker);
 		if (this.autoStart) {
+			worker.go();
+		}
+	}
+
+	/**
+	 * Invokes {@link Worker#go()} on all workers in this gang. This isn't
+	 * necessary if autoStart is true.
+	 */
+	public void go() {
+		for (final Worker<?> worker : this.workers) {
 			worker.go();
 		}
 	}

@@ -36,7 +36,7 @@ public class CryptoTest {
 	@Test
 	public void hmacSha1PasswordTest() {
 		Config.i.set("crypto.key.hmacsha1", "1234567890");
-		HmacSha1Password hmacSha1Password = new HmacSha1Password("foobar", false);
+		final HmacSha1Password hmacSha1Password = new HmacSha1Password("foobar", false);
 		Assert.assertEquals("-305dc59cb5a82c23fcef84a3c60ea0aca890f03e", hmacSha1Password.toString());
 	}
 }
