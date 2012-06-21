@@ -31,6 +31,7 @@ import org.jets3t.service.security.AWSCredentials;
 import com.ajah.lang.ConfigException;
 import com.ajah.util.config.Config;
 import com.ajah.util.lang.StreamUtils;
+import com.ajah.util.net.AjahMimeType;
 
 /**
  * Wrapper for {@link RestS3Service}.
@@ -125,11 +126,17 @@ public class S3Client {
 	 *            Overwrite the file if it already exists?
 	 * @param gzip
 	 *            Gzip the data (and add .gz to the end of it)?
+	 * @param mimeType
+	 *            The mime type of the file, may be null.
+	 * @param acl
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
-	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip) throws S3Exception {
-
+	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip, AjahMimeType mimeType, S3ACL acl) throws S3Exception {
+		if (data == null || data.length == 0) {
+			log.warning("Data is empty, skipping upload");
+			return;
+		}
 		try {
 			log.finest(data.length + " bytes to upload");
 			S3Object object;
@@ -140,6 +147,11 @@ public class S3Client {
 				object = new S3Object(name);
 				object.setDataInputStream(new ByteArrayInputStream(data));
 			}
+			object.setContentLength(data.length);
+			if (mimeType != null) {
+				object.setContentType(mimeType.getBaseType());
+			}
+			object.setAcl(acl.getJets3t());
 			if (!overwrite && this.s3Service.isObjectInBucket(bucket.getName(), object.getName())) {
 				log.fine(object.getName() + " already exists in bucket " + bucket.getName() + " and overwriting is disabled");
 				return;
@@ -176,7 +188,7 @@ public class S3Client {
 		} catch (final UnsupportedEncodingException e) {
 			throw new ConfigException(e);
 		}
-		put(bucket, name, input, true, true);
+		put(bucket, name, input, true, true, AjahMimeType.TEXT_PLAIN, S3ACL.PRIVATE);
 	}
 
 }
