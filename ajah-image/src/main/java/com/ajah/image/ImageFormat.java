@@ -1,5 +1,7 @@
 package com.ajah.image;
 
+import com.ajah.util.net.AjahMimeType;
+
 /*
  *  Copyright 2012 Eric F. Savage, code@efsavage.com
  *
@@ -27,15 +29,15 @@ public enum ImageFormat {
 	/**
 	 * PNG
 	 */
-	PNG("png"),
+	PNG("png", AjahMimeType.IMAGE_PNG),
 	/**
 	 * GIF
 	 */
-	GIF("gif"),
+	GIF("gif", AjahMimeType.IMAGE_GIF),
 	/**
 	 * JPEG
 	 */
-	JPG("jpg", "jpeg");
+	JPG("jpg", AjahMimeType.IMAGE_JPG, "jpeg");
 
 	/**
 	 * Matches a format based on the name and aliases.
@@ -64,22 +66,38 @@ public enum ImageFormat {
 
 	private final String[] aliases;
 
-	private ImageFormat(final String suffix, final String... aliases) {
+	private final AjahMimeType mimeType;
+
+	private ImageFormat(final String suffix, AjahMimeType mimeType, final String... aliases) {
 		this.suffix = suffix;
+		this.mimeType = mimeType;
 		this.aliases = aliases;
 	}
 
 	/**
-	 * @return the aliases
+	 * Returns the suffix aliases for this image format.
+	 * 
+	 * @return the suffix aliases for this image format.
 	 */
 	public String[] getAliases() {
 		return this.aliases;
 	}
 
 	/**
-	 * @return the suffix
+	 * Returns the canonical suffix for this image format.
+	 * 
+	 * @return the canonical suffix for this image format.
 	 */
 	public String getSuffix() {
 		return this.suffix;
+	}
+
+	/**
+	 * Returns the mimeType for this image format.
+	 * 
+	 * @return the mimeType for this image format.
+	 */
+	public AjahMimeType getMimeType() {
+		return this.mimeType;
 	}
 }

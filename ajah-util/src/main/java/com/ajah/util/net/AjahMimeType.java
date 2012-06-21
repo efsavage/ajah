@@ -64,6 +64,14 @@ public enum AjahMimeType implements Identifiable<String> {
 	 */
 	IMAGE_PNG("image", "png"),
 	/**
+	 * image/gif
+	 */
+	IMAGE_GIF("image", "gif"),
+	/**
+	 * image/png
+	 */
+	IMAGE_JPG("image", "jpeg"),
+	/**
 	 * text/html
 	 */
 	TEXT_HTML("text", "html", true),
