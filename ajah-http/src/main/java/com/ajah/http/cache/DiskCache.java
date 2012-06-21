@@ -84,6 +84,7 @@ public class DiskCache implements HttpCache {
 		final String path = FileHashUtils.getHashedFileName(SHA.sha1Hex(uri.toString()), 3, 2);
 		final File cacheDir = new File(Config.i.get("ajah.http.cache.dir", "/tmp/ajah-http-cache"));
 		final File f = new File(cacheDir, path);
+		log.finest("Cache location: " + f.getAbsolutePath());
 
 		byte[] data = null;
 		if (f.exists()) {
