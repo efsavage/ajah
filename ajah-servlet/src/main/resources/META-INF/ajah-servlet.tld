@@ -80,7 +80,7 @@
 
 	<function>
 		<name>md5</name>
-		<function-class>com.ajah.util.crypto.HashUtils</function-class>
+		<function-class>com.ajah.util.data.HashUtils</function-class>
 		<function-signature>
 			java.lang.String md5Hex( java.lang.String )
 		</function-signature>
@@ -88,7 +88,7 @@
 
 	<function>
 		<name>sha1</name>
-		<function-class>com.ajah.util.crypto.HashUtils</function-class>
+		<function-class>com.ajah.util.data.HashUtils</function-class>
 		<function-signature>
 			java.lang.String sha1Hex( java.lang.String )
 		</function-signature>
