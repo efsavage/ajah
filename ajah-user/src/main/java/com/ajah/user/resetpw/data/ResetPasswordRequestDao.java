@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.user.resetpw.ResetPasswordRequest;
 import com.ajah.user.resetpw.ResetPasswordRequestId;
-import com.ajah.util.AjahUtils;
 
 /**
  * Handles data operations for {@link ResetPasswordRequest} entities.
@@ -31,37 +30,5 @@ import com.ajah.util.AjahUtils;
  */
 @Repository
 public class ResetPasswordRequestDao extends AbstractAjahDao<ResetPasswordRequestId, ResetPasswordRequest, ResetPasswordRequest> {
-
-	/**
-	 * INSERTs a {@link ResetPasswordRequest}.
-	 * 
-	 * @param resetPasswordRequest
-	 *            The {@link ResetPasswordRequest} to save, required.
-	 * @return The number of rows affected.
-	 */
-	@Override
-	public int insert(final ResetPasswordRequest resetPasswordRequest) {
-		// TODO Necessary?
-		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
-		return this.jdbcTemplate.update("INSERT INTO pw_reset (pw_reset_id, user_id, created, code, status) VALUES (?,?,?,?,?)", new Object[] { resetPasswordRequest.getId().getId(),
-				resetPasswordRequest.getUserId().getId(), Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
-				resetPasswordRequest.getStatus().getId() });
-	}
-
-	/**
-	 * UPDATEs a {@link ResetPasswordRequest}.
-	 * 
-	 * @param resetPasswordRequest
-	 *            The {@link ResetPasswordRequest} to save, required.
-	 * @return The number of rows affected.
-	 */
-	@Override
-	public int update(final ResetPasswordRequest resetPasswordRequest) {
-		// TODO Necessary?
-		AjahUtils.requireParam(resetPasswordRequest, "resetPasswordRequest");
-		return this.jdbcTemplate.update("UPDATE pw_reset SET user_id = ?, created = ?, code = ?, status = ? WHERE pw_reset_id = ?",
-				new Object[] { resetPasswordRequest.getUserId().getId(), Long.valueOf(resetPasswordRequest.getCreated().getTime() / 1000), Long.valueOf(resetPasswordRequest.getCode()),
-						resetPasswordRequest.getStatus().getId(), resetPasswordRequest.getId().getId() });
-	}
-
+	// Empty
 }
