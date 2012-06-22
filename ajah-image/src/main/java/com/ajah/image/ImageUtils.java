@@ -17,6 +17,7 @@ package com.ajah.image;
  */
 
 import java.awt.Color;
+import java.awt.color.CMMException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -64,9 +65,11 @@ public class ImageUtils {
 	 *            The image data.
 	 * @return The image info bean.
 	 * @throws IOException
+	 *             If the image could not be accessed.
+	 * @throws CMMException
 	 *             If the image could not be analyzed.
 	 */
-	public static ImageInfo getInfo(final byte[] data) throws IOException {
+	public static ImageInfo getInfo(final byte[] data) throws IOException, CMMException {
 		AjahUtils.requireParam(data, "data");
 		final BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
 		if (image == null) {
