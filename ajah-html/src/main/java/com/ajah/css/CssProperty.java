@@ -93,19 +93,37 @@ public enum CssProperty {
 	 * border-spacing
 	 */
 	BORDER_SPACING("border-spacing"),
-	/** border-style */
+	/**
+	 * border-style
+	 */
 	BORDER_STYLE("border-style"),
-	/** border-top */
+	/**
+	 * border-top
+	 */
 	BORDER_TOP("border-top"),
-	/** border-top-color */
+	/**
+	 * border-top-color
+	 */
 	BORDER_TOP_COLOR("border-top-color"),
-	/** border-top-left-radius */
+	/**
+	 * border-top-left-radius
+	 */
 	BORDER_TOP_LEFT_RADIUS("border-top-left-radius"),
-	/** border-top-right-radius */
+	/**
+	 * border-top-right-radius
+	 */
 	BORDER_TOP_RIGHT_RADIUS("border-top-right-radius"),
-	/** border-width */
+	/**
+	 * border-top-width
+	 */
+	BORDER_TOP_WIDTH("border-top-width"),
+	/**
+	 * border-width
+	 */
 	BORDER_WIDTH("border-width"),
-	/** bottom */
+	/**
+	 * bottom
+	 */
 	BOTTOM("bottom"),
 	/**
 	 * box-shadow
@@ -213,42 +231,85 @@ public enum CssProperty {
 	MAX_WIDTH("max-width"),
 	/** min-height */
 	MIN_HEIGHT("min-height"),
-
-	/** min-width */
+	/**
+	 * min-width
+	 */
 	MIN_WIDTH("min-width"),
-	/** -moz-animation */
+	/**
+	 * -moz-animation
+	 */
 	MOZ_ANIMATION("-moz-animation"),
-	/** -moz-background-clip */
+	/**
+	 * -moz-background-clip
+	 */
 	MOZ_BACKGROUND_CLIP("-moz-background-clip"),
-	/** -moz-background-size */
+	/**
+	 * -moz-background-size
+	 */
 	MOZ_BACKGROUND_SIZE("-moz-background-size"),
-	/** -moz-border-radius */
+	/**
+	 * -moz-border-radius
+	 */
 	MOZ_BORDER_RADIUS("-moz-border-radius"),
-	/** -moz-border-radius-bottomleft */
+	/**
+	 * -moz-border-radius-bottomleft
+	 */
 	MOZ_BORDER_RADIUS_BOTTOMLEFT("-moz-border-radius-bottomleft"),
-	/** -moz-border-radius-bottomright */
+	/**
+	 * -moz-border-radius-bottomright
+	 */
 	MOZ_BORDER_RADIUS_BOTTOMRIGHT("-moz-border-radius-bottomright"),
-	/** -moz-border-radius-topleft */
+	/**
+	 * -moz-border-radius-topleft
+	 */
 	MOZ_BORDER_RADIUS_TOPLEFT("-moz-border-radius-topleft"),
-	/** -moz-border-radius-topright */
+	/**
+	 * -moz-border-radius-topright
+	 */
 	MOZ_BORDER_RADIUS_TOPRIGHT("-moz-border-radius-topright"),
-	/** -moz-box-shadow */
+	/**
+	 * -moz-box-shadow
+	 */
 	MOZ_BOX_SHADOW("-moz-box-shadow"),
-	/** -moz-box-sizing */
+	/**
+	 * -moz-box-sizing
+	 */
 	MOZ_BOX_SIZING("-moz-box-sizing"),
-	/** -moz-transition */
+	/**
+	 * -moz-transition
+	 */
 	MOZ_TRANSITION("-moz-transition"),
+	/**
+	 * -ms-animation
+	 */
+	MS_ANIMATION("-ms-animation"),
+	/**
+	 * -ms-box-sizing
+	 */
+	MS_BOX_SIZING("-ms-box-sizing"),
 	/**
 	 * -ms-interpolation-mode
 	 */
 	MS_INTERPOLATION_MODE("-ms-interpolation-mode"),
-	/** -ms-text-size-adjust */
+	/**
+	 * -ms-text-size-adjust
+	 */
 	MS_TEXT_SIZE_ADJUST("-ms-text-size-adjust"),
-	/** -ms-transition */
+	/**
+	 * -ms-transition
+	 */
 	MS_TRANSITION("-ms-transition"),
-	/** -o-background-size */
+	/**
+	 * -o-animation
+	 */
+	O_ANIMATION("-o-animation"),
+	/**
+	 * -o-background-size
+	 */
 	O_BACKGROUND_SIZE("-o-background-size"),
-	/** -o-transition */
+	/**
+	 * -o-transition
+	 */
 	O_TRANSITION("-o-transition"),
 	/**
 	 * opacity
@@ -294,29 +355,55 @@ public enum CssProperty {
 	TEXT_DECORATION("text-decoration"),
 	/** text-indent */
 	TEXT_INDENT("text-indent"),
-	/** text-rendering */
+	/** text-overflow */
+	TEXT_OVERFLOW("text-overflow"),
+	/**
+	 * text-rendering
+	 */
 	TEXT_RENDERING("text-rendering"),
-	/** text-shadow */
+	/**
+	 * text-shadow
+	 */
 	TEXT_SHADOW("text-shadow"),
-	/** text-transform */
+	/**
+	 * text-transform
+	 */
 	TEXT_TRANSFORM("text-transform"),
-	/** top */
+	/**
+	 * top
+	 */
 	TOP("top"),
-	/** transition */
+	/**
+	 * transition
+	 */
 	TRANSITION("transition"),
-	/** vertical-align */
+	/**
+	 * vertical-align
+	 */
 	VERTICAL_ALIGN("vertical-align"),
-	/** visibility */
+	/**
+	 * visibility
+	 */
 	VISIBILITY("visibility"),
-	/** -webkit-animation */
+	/**
+	 * -webkit-animation
+	 */
 	WEBKIT_ANIMATION("-webkit-animation"),
-	/** -webkit-animation-duration */
+	/**
+	 * -webkit-animation-duration
+	 */
 	WEBKIT_ANIMATION_DURATION("-webkit-animation-duration"),
-	/** -webkit-animation-iteration-count */
+	/**
+	 * -webkit-animation-iteration-count
+	 */
 	WEBKIT_ANIMATION_ITERATION_COUNT("-webkit-animation-iteration-count"),
-	/** -webkit-animation-name */
+	/**
+	 * -webkit-animation-name
+	 */
 	WEBKIT_ANIMATION_NAME("-webkit-animation-name"),
-	/** -webkit-appearance */
+	/**
+	 * -webkit-appearance
+	 */
 	WEBKIT_APPEARANCE("-webkit-appearance"),
 	/** -webkit-background-clip */
 	WEBKIT_BACKGROUND_CLIP("-webkit-background-clip"),
