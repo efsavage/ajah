@@ -296,7 +296,6 @@
 		<module>../ajah-amazon-s3</module>
 	</modules>
 
-
 	<licenses>
 		<license>
 			<name>Apache 2</name>
