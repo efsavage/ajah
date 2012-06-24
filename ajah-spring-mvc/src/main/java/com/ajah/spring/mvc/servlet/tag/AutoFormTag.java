@@ -30,13 +30,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
 import com.ajah.crypto.Password;
+import com.ajah.html.dtd.ButtonType;
 import com.ajah.html.dtd.FormMethod;
 import com.ajah.html.dtd.InputType;
+import com.ajah.html.element.Button;
 import com.ajah.html.element.Checkbox;
 import com.ajah.html.element.Div;
 import com.ajah.html.element.Form;
 import com.ajah.html.element.Input;
 import com.ajah.html.element.InputImpl;
+import com.ajah.html.element.Italic;
 import com.ajah.html.element.ListItem;
 import com.ajah.html.element.Script;
 import com.ajah.html.element.TextArea;
@@ -44,6 +47,7 @@ import com.ajah.html.element.UnorderedList;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.AutoFormUtils;
 import com.ajah.spring.mvc.form.HtmlText;
+import com.ajah.spring.mvc.form.Icon;
 import com.ajah.spring.mvc.form.LongText;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.spring.mvc.form.validation.Match;
@@ -101,12 +105,13 @@ public class AutoFormTag extends SpringTag {
 				if (attribute.startsWith("org.springframework.validation.BindingResult.")) {
 					final BindingResult result = (BindingResult) this.pageContext.getRequest().getAttribute(attribute);
 					log.fine("Found " + result.getErrorCount() + " global errors");
-					final Div alertBox = div.add(new Div().css("alert").css("alert-error"));
-					final UnorderedList errs = alertBox.add(new UnorderedList().css("asm-err"));
-					for (final ObjectError error : result.getAllErrors()) {
-						errs.add(new ListItem(getMessage(error)));
+					if (result.getErrorCount() > 0) {
+						final Div alertBox = div.add(new Div().css("alert").css("alert-error"));
+						final UnorderedList errs = alertBox.add(new UnorderedList().css("asm-err"));
+						for (final ObjectError error : result.getAllErrors()) {
+							errs.add(new ListItem(getMessage(error)));
+						}
 					}
-
 				}
 			}
 
@@ -121,14 +126,29 @@ public class AutoFormTag extends SpringTag {
 			}
 
 			String submitText = null;
+			Icon iconLeft = null;
+			Icon iconRight = null;
 			if (this.autoForm.getClass().isAnnotationPresent(Submit.class)) {
-				submitText = this.autoForm.getClass().getAnnotation(Submit.class).value();
+				Submit submit = this.autoForm.getClass().getAnnotation(Submit.class);
+				submitText = submit.value();
+				if (submit.iconLeft() != null && submit.iconLeft() != Icon.NONE) {
+					iconLeft = submit.iconLeft();
+				}
+				if (submit.iconRight() != null && submit.iconRight() != Icon.NONE) {
+					iconRight = submit.iconRight();
+				}
 			}
 			if (StringUtils.isBlank(submitText)) {
 				submitText = StringUtils.capitalize(StringUtils.splitCamelCase(this.autoForm.getClass().getSimpleName().replaceAll("Form$", "")));
 			}
-			final Input<InputImpl> input = new InputImpl("submit", submitText, InputType.SUBMIT).css("btn").css("btn-primary");
-			form.getInputs().add(input);
+			final Button submitButton = new Button().text(submitText).type(ButtonType.SUBMIT).css("btn").css("btn-primary");
+			if (iconLeft != null) {
+				submitButton.addBeforeText(new Italic().css(iconLeft.getBootstrapClass()));
+			}
+			if (iconRight != null) {
+				submitButton.add(new Italic().css(iconRight.getBootstrapClass()));
+			}
+			form.getInputs().add(submitButton);
 			div.add(form);
 
 			final Script script = new Script();
