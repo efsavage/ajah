@@ -30,19 +30,25 @@ import com.ajah.util.net.HttpClient;
  */
 
 public class AjahMimeTypeTest {
-	
-	
+
 	/**
 	 * Test various attributes and methods in AjahMimeType
 	 */
 	@Test
 	public void testMimeType() {
-		AjahMimeType mimeType = AjahMimeType.APPLICATION_JAVASCRIPT;
+		final AjahMimeType mimeType = AjahMimeType.APPLICATION_JAVASCRIPT;
 		Assert.assertEquals("application/javascript", mimeType.getId());
 		Assert.assertEquals("application", mimeType.getPrimaryType());
 		Assert.assertEquals("javascript", mimeType.getSubType());
 		Assert.assertEquals(mimeType, AjahMimeType.get("application/javascript"));
-		Assert.assertEquals(AjahMimeType.UNKNOWN, AjahMimeType.get(""));
-		
 	}
+
+	/**
+	 * Test get operation in AjahMimeType
+	 */
+	@Test
+	public void testMimeTypeForUnknown() {
+		Assert.assertEquals(AjahMimeType.UNKNOWN, AjahMimeType.get(""));
+	}
+
 }

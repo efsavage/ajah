@@ -33,14 +33,14 @@ import com.ajah.util.reflect.IntrospectionUtils;
  */
 
 public class IntrospectionUtilsTest {
-	
+
 	public String str;
 	public boolean bool;
 	public int aint;
 	public AjahMimeType identifiable;
 	public Date adate;
 	public long along;
-	
+
 	/**
 	 * Test operations in IntrospectionUtils
 	 */
@@ -51,29 +51,29 @@ public class IntrospectionUtilsTest {
 			field = IntrospectionUtilsTest.class.getField("str");
 			Assert.assertTrue(IntrospectionUtils.isString(field));
 			Assert.assertTrue(!IntrospectionUtils.isToStringable(field));
-			
+
 			field = IntrospectionUtilsTest.class.getField("bool");
 			Assert.assertTrue(IntrospectionUtils.isBoolean(field));
-			
+
 			field = IntrospectionUtilsTest.class.getField("aint");
 			Assert.assertTrue(IntrospectionUtils.isInt(field));
-			
+
 			field = IntrospectionUtilsTest.class.getField("adate");
 			Assert.assertTrue(IntrospectionUtils.isDate(field));
-			
+
 			field = IntrospectionUtilsTest.class.getField("identifiable");
 			Assert.assertTrue(IntrospectionUtils.isEnum(field));
 			Assert.assertTrue(IntrospectionUtils.isIdentifiableEnum(field));
 			Assert.assertTrue(IntrospectionUtils.isIdentifiable(field));
-			
+
 			field = IntrospectionUtilsTest.class.getField("along");
 			Assert.assertTrue(IntrospectionUtils.isLong(field));
-			
+
 			field = IntrospectionUtilsTest.class.getField("along");
 			Assert.assertTrue(IntrospectionUtils.isPrimitive(field));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 	}
 }

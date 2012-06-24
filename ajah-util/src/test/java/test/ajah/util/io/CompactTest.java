@@ -29,22 +29,45 @@ import com.ajah.util.io.Compact;
  */
 
 public class CompactTest {
-	
-	
+	Compact compactH = Compact.HIGH;
+	Compact compactL = Compact.LOW;
+
+	/**
+	 * Test Equals operations in Compact class
+	 */
+	public void testEquals() {
+		Assert.assertTrue(this.compactH.equals(this.compactH));
+	}
+
+	/**
+	 * Test Get operations in Compact class
+	 */
+	public void testGetOperation() {
+		Assert.assertEquals(Compact.HIGH, Compact.get(Compact.HIGH.toString(), Compact.NONE));
+		Assert.assertEquals(Compact.NONE, Compact.get("INVALID", Compact.NONE));
+	}
+
+	/**
+	 * Test Greater than or Equal operations in Compact class
+	 */
+	public void testGreaterOrEqual() {
+		Assert.assertTrue(this.compactH.ge(this.compactL));
+		Assert.assertTrue(!this.compactL.ge(this.compactH));
+	}
+
+	/**
+	 * Test Less than or Equal operation in Compact class
+	 */
+	@Test
+	public void testLesserOrEqual() {
+		Assert.assertTrue(this.compactL.le(this.compactH));
+		Assert.assertTrue(!this.compactH.le(this.compactL));
+	}
+
 	/**
 	 * Test operations in Compact class
 	 */
-	@Test
-	public void testStringBuilder() {
-		Compact compactH = Compact.HIGH;
-		Compact compactL = Compact.LOW;
-		Assert.assertTrue(compactH.ge(compactL));
-		Assert.assertTrue(!compactL.ge(compactH));
-		Assert.assertTrue(compactL.lt(compactH));
-		Assert.assertTrue(compactH.equals(compactH));
-		Assert.assertTrue(compactL.le(compactH));
-		Assert.assertTrue(!compactH.le(compactL));
-		Assert.assertEquals(Compact.HIGH, Compact.get(Compact.HIGH.toString(), Compact.NONE));
-		Assert.assertEquals(Compact.NONE, Compact.get("INVALID", Compact.NONE));
+	public void testLessThan() {
+		Assert.assertTrue(this.compactL.lt(this.compactH));
 	}
 }

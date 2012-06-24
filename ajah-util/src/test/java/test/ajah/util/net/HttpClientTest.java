@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ajah.util.data.XmlString;
@@ -32,29 +33,70 @@ import com.ajah.util.net.HttpClient;
  */
 
 public class HttpClientTest {
-	
-	
+	HttpClient client;
+	byte[] bytes;
+	String string;
+	XmlString xmlString;
+	String url = "http://localhost/xampp";
+
 	/**
-	 * Test various operations of HttpClient
+	 * Initialization required for running tests
+	 */
+	@Before
+	public void setUp() {
+		this.client = new HttpClient();
+	}
+
+	/**
+	 * Null Check
+	 * 
+	 * @throws IOException
 	 */
 	@Test
-	public void testHttpClient() {
-		HttpClient client = new HttpClient();
-		byte[] bytes;
-		String string;
-		XmlString xmlString;
-		String url = "http://localhost/xampp";
-		try {
-			bytes = HttpClient.getBytes(url);
-			string = HttpClient.getString(url);
-			xmlString = HttpClient.getXml(url);
-			Assert.assertNotNull(client);
-			Assert.assertNotNull(HttpClient.stream(url));
-			Assert.assertNotNull(bytes);
-			Assert.assertNotNull(string);
-			Assert.assertNotNull(xmlString);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void testHttpClient() throws IOException {
+		Assert.assertNotNull(this.client);
+	}
+
+	/**
+	 * Test the get Bytes operation
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testHttpClientGetBytes() throws IOException {
+		this.bytes = HttpClient.getBytes(this.url);
+		Assert.assertNotNull(this.bytes);
+	}
+
+	/**
+	 * Test the get Stream operation
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testHttpClientGetStream() throws IOException {
+		Assert.assertNotNull(HttpClient.stream(this.url));
+	}
+
+	/**
+	 * Test the get String operation
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testHttpClientGetString() throws IOException {
+		this.string = HttpClient.getString(this.url);
+		Assert.assertNotNull(this.string);
+	}
+
+	/**
+	 * Test the get XmlString operation
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testHttpClientGetXmlString() throws IOException {
+		this.xmlString = HttpClient.getXml(this.url);
+		Assert.assertNotNull(this.xmlString);
 	}
 }

@@ -32,59 +32,69 @@ import com.ajah.util.data.format.EmailAddress;
  */
 
 public class ConfigTest {
-	
-	
 	/**
-	 * Test operations in Config
+	 * Inner class implementation for PropertyKey
+	 */
+	@Accessors
+	class PropertyKeyImpl implements PropertyKey {
+		private final String key;
+		private final String value;
+
+		public PropertyKeyImpl(final String key, final String value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		@Override
+		public String getDefaultValue() {
+			return this.value;
+		}
+
+		@Override
+		public PropertyKey getFallback() {
+			return new PropertyKeyImpl("default", "default");
+		}
+
+		@Override
+		public String getName() {
+			return this.key;
+		}
+	}
+
+	Config config = Config.i;
+
+	/**
+	 * Test get operations in Config
 	 */
 	@Test
 	public void testConfig() {
-		Config config = Config.i;
-		config.set("key", "value");
-		Assert.assertEquals("value", config.get("key"));
-		//config.set("emailKey", "test@email.com");
-		//Assert.assertEquals("test@email.com", config.get("emailKey"));
-		//config.set("badEmailKey", "testemailcom");
-		@Accessors
-		class PropertyKeyImpl implements PropertyKey{
-			private String key;
-			private String value;
 
-			public PropertyKeyImpl(String key, String value)
-			{
-				this.key = key;
-				this.value = value;
-			}
-			@Override
-			public String getName() {
-				return key;
-			}
+		this.config.set("key", "value");
+		Assert.assertEquals("value", this.config.get("key"));
+	}
 
-			@Override
-			public String getDefaultValue() {
-				return value;
-			}
-
-			@Override
-			public PropertyKey getFallback() {
-				return new PropertyKeyImpl("default", "default");
-			}
-		}
-		//Test for a bad email syntax
-		config.set("badEmailKey", "bademail");
-		PropertyKeyImpl pki = new PropertyKeyImpl("badEmailKey", "bademail");
+	/**
+	 * Test getEmailAddress operations in Config class
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testConfigBadEmail() {
+		// Test for a bad email syntax
+		this.config.set("badEmailKey", "bademail");
+		final PropertyKeyImpl pki = new PropertyKeyImpl("badEmailKey", "bademail");
 		EmailAddress emailAddress = null;
-		try {
-			emailAddress = config.getEmailAddress(pki);
-		} catch (Exception e) {
-			//do nothing
-		}
-		Assert.assertNull( emailAddress);
-		
-		//Test for a good email syntax
-		config.set("goodEmailKey", "goodemail@email.com");
-		pki = new PropertyKeyImpl("goodEmailKey", "goodemail@email.com");
-		emailAddress = config.getEmailAddress(pki);
+		emailAddress = this.config.getEmailAddress(pki);
+		Assert.assertNull(emailAddress);
+	}
+
+	/**
+	 * Test getEmailAddress operations in Config class
+	 */
+	@Test
+	public void testConfigGoodEmail() {
+		// Test for a good email syntax
+		this.config.set("goodEmailKey", "goodemail@email.com");
+		final PropertyKeyImpl pki = new PropertyKeyImpl("goodEmailKey", "goodemail@email.com");
+		final EmailAddress emailAddress = this.config.getEmailAddress(pki);
 		Assert.assertEquals("goodemail@email.com", emailAddress.toString());
 	}
 }

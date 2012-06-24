@@ -15,7 +15,6 @@
  */
 package test.ajah.util.io;
 
-
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -31,27 +30,29 @@ import com.ajah.util.io.Compact;
  */
 
 public class AjahStringBuilderTest {
-	
-	
+
 	/**
-	 * Test operations in AjahStringBuilder
+	 * Test operations in AjahStringBuilder for valid scenarios
 	 */
 	@Test
 	public void testStringBuilder() {
-		AjahStringBuilder ajahStringBuilder = new AjahStringBuilder(Compact.HIGH);
+		final AjahStringBuilder ajahStringBuilder = new AjahStringBuilder(Compact.HIGH);
 		ajahStringBuilder.append("1");
 		ajahStringBuilder.append('2', Compact.HIGH);
-		ajahStringBuilder.append(new char[]{'3','4'}, Compact.HIGH);
+		ajahStringBuilder.append(new char[] { '3', '4' }, Compact.HIGH);
 		Assert.assertNotNull(ajahStringBuilder.toString());
 		Assert.assertEquals("1234", ajahStringBuilder.toString());
 	}
-	
+
+	/**
+	 * Test the String Builder operation where elements are dropped.
+	 */
 	@Test
 	public void testStringBuilderDrop() {
-		AjahStringBuilder ajahStringBuilder = new AjahStringBuilder(Compact.HIGH);
+		final AjahStringBuilder ajahStringBuilder = new AjahStringBuilder(Compact.HIGH);
 		ajahStringBuilder.append("1");
 		ajahStringBuilder.append('2', Compact.LOW);
-		ajahStringBuilder.append(new char[]{'3','4'}, Compact.LOW);
+		ajahStringBuilder.append(new char[] { '3', '4' }, Compact.LOW);
 		Assert.assertNotNull(ajahStringBuilder.toString());
 		Assert.assertEquals("1", ajahStringBuilder.toString());
 	}

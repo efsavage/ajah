@@ -30,7 +30,18 @@ import com.ajah.util.data.format.EmailAddress;
  */
 
 public class EmailAddressTest {
-	
+
+	/**
+	 * Test person@badurl
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void badEmail() {
+		final String emailString = "person@badurl";
+		EmailAddress emailAddress = null;
+		emailAddress = new EmailAddress(emailString);
+		Assert.assertNull(emailAddress);
+	}
+
 	/**
 	 * Test person@yahoo.com
 	 */
@@ -43,30 +54,13 @@ public class EmailAddressTest {
 	}
 
 	/**
-	 * Test person@badurl
-	 */
-	@Test
-	public void badEmail() {
-		final String emailString = "person@badurl";
-		EmailAddress emailAddress = null;
-		try {
-			emailAddress = new EmailAddress(emailString);
-		} catch (Exception e) {
-		}
-		Assert.assertNull(emailAddress);
-	}
-	
-	/**
 	 * Test null email
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void nullEmail() {
 		final String emailString = null;
 		EmailAddress emailAddress = null;
-		try {
-			emailAddress = new EmailAddress(emailString);
-		} catch (Exception e) {
-		}
+		emailAddress = new EmailAddress(emailString);
 		Assert.assertNull(emailAddress);
 	}
 }

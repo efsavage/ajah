@@ -31,22 +31,64 @@ import com.ajah.cache.CacheEntry;
  */
 
 public class CacheEntryTest {
-	
-	
+
+	final long timestamp = new Date().getTime();
+	String str = "aString";
+	final CacheEntry<String> cacheEntry = new CacheEntry<String>(this.str, this.timestamp);
+
 	/**
-	 * Test get and set in CacheEntry
+	 * Test getObject method in CacheEntry
 	 */
 	@Test
 	public void testCache() {
-		final long timestamp = new Date().getTime();
-		String str = "aString";
-		final CacheEntry<String> cacheEntry = new CacheEntry<String>(str, timestamp);
-		Assert.assertNotNull(cacheEntry);
-		Assert.assertEquals(timestamp, cacheEntry.getCreated());
-		Assert.assertEquals(str, cacheEntry.getObject());
-		Assert.assertNotNull(cacheEntry.toString());
-		Assert.assertTrue(!cacheEntry.equals(str));
-		Assert.assertNotNull(cacheEntry.hashCode());
-		Assert.assertTrue(cacheEntry.canEqual(cacheEntry));
+		Assert.assertEquals(this.str, this.cacheEntry.getObject());
+	}
+
+	/**
+	 * Test canEqual method in CacheEntry
+	 */
+	@Test
+	public void testCacheCanEquals() {
+		Assert.assertTrue(this.cacheEntry.canEqual(this.cacheEntry));
+	}
+
+	/**
+	 * Test equals method in CacheEntry
+	 */
+	@Test
+	public void testCacheEquality() {
+		Assert.assertTrue(!this.cacheEntry.equals(this.str));
+	}
+
+	/**
+	 * Test getCreated method in CacheEntry
+	 */
+	@Test
+	public void testCacheGetCreated() {
+		Assert.assertEquals(this.timestamp, this.cacheEntry.getCreated());
+	}
+
+	/**
+	 * Test hashCode method in CacheEntry
+	 */
+	@Test
+	public void testCacheHashCode() {
+		Assert.assertNotNull(this.cacheEntry.hashCode());
+	}
+
+	/**
+	 * Test for Null Check in CacheEntry
+	 */
+	@Test
+	public void testCacheNullCheck() {
+		Assert.assertNotNull(this.cacheEntry);
+	}
+
+	/**
+	 * Test toString method in CacheEntry
+	 */
+	@Test
+	public void testCacheToString() {
+		Assert.assertNotNull(this.cacheEntry.toString());
 	}
 }

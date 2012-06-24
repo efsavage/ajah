@@ -16,6 +16,7 @@
 package test.ajah.util.reflect;
 
 import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.sql.Date;
@@ -36,30 +37,31 @@ import com.ajah.util.reflect.ReflectionUtils;
  */
 
 public class ReflectionUtilsTest {
-	
+
 	public String str;
 	public boolean bool;
 	public int aint;
 	public Compact compact;
 	public Date adate;
 	public long along;
-	
+
 	/**
 	 * Test operations in ReflectionUtils
 	 */
 	@Test
 	public void testReflection() {
 		try {
-		Class<?> clazz = Class.forName(ReflectionUtilsTest.class.getName());
-		BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-		PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
-		for (int i = 0; i < props.length; i++) {
-			PropertyDescriptor prop = props[i];
-			Assert.assertNotNull(ReflectionUtils.propGetSafe(new ReflectionUtilsTest(), prop));
-		}
-		} catch (Exception e) {
+			final Class<?> clazz = Class.forName(ReflectionUtilsTest.class.getName());
+			final BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+			final PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
+			for (final PropertyDescriptor prop : props) {
+				Assert.assertNotNull(ReflectionUtils.propGetSafe(new ReflectionUtilsTest(), prop));
+			}
+		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
-		} 
-		
+		} catch (final IntrospectionException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

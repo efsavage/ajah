@@ -20,6 +20,8 @@ import java.io.PrintStream;
 
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ajah.util.log.ByteTally;
@@ -33,22 +35,35 @@ import com.ajah.util.log.ByteTally;
 
 public class ByteTallyTest {
 
+	String tempFile;
+	PrintStream out;
+
+	/**
+	 * Initialization required for running tests
+	 * 
+	 * @throws FileNotFoundException
+	 */
+	@Before
+	public void setUp() throws FileNotFoundException {
+		this.tempFile = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "temp.txt";
+		this.out = new PrintStream(this.tempFile);
+	}
+
+	/*
+	 * Free up any resources.
+	 */
+	@After
+	public void tearDown() {
+		this.out.close();
+	}
+
 	/**
 	 * Test operations in ByteTally
 	 */
 	@Test
 	public void testByteTally() {
-        
-		try {
-			String tempFile = System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+"temp.txt";
-			PrintStream out;
-			out = new PrintStream(tempFile);
-			ByteTally<PrintStream> byteTally = new ByteTally<PrintStream>(out);
-			Assert.assertEquals(0, byteTally.getTotal());
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
+		final ByteTally<PrintStream> byteTally = new ByteTally<PrintStream>(this.out);
+		Assert.assertEquals(0, byteTally.getTotal());
 	}
+
 }

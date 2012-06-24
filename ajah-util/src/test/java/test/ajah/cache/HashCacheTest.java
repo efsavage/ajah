@@ -17,6 +17,7 @@ package test.ajah.cache;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ajah.cache.HashCache;
@@ -29,17 +30,31 @@ import com.ajah.cache.HashCache;
  */
 
 public class HashCacheTest {
-	
+	HashCache<String, String> hashCache = new HashCache<String, String>();
+
 	/**
-	 * Test operations in HashCacheEntry
+	 * Store operation to initialize
+	 */
+	@Before
+	public void setUp() {
+		this.hashCache.store("myKey", "aString");
+	}
+
+	/**
+	 * Test get operating when max age is expired
 	 */
 	@Test
-	public void testHashCache() {
-		HashCache<String, String> hashCache = new HashCache<String, String>();
-		hashCache.store("myKey", "aString");
-		Assert.assertNotNull(hashCache);
-		Assert.assertNotNull(hashCache.get("myKey", 0).toString());
-		Assert.assertEquals("aString", hashCache.get("myKey", 1000000).toString());
-		Assert.assertNull(hashCache.get("myKey", -10000));
+	public void testGetExpiredMaxAge() {
+		Assert.assertNull(this.hashCache.get("myKey", -10000));
+	}
+
+	/**
+	 * Test get operations with expire period of max age
+	 */
+	@Test
+	public void testGetValidMaxAge() {
+		Assert.assertNotNull(this.hashCache);
+		Assert.assertNotNull(this.hashCache.get("myKey", 0).toString());
+		Assert.assertEquals("aString", this.hashCache.get("myKey", 1000000).toString());
 	}
 }

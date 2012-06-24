@@ -20,6 +20,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ajah.util.net.HttpURLBuilder;
@@ -32,38 +33,52 @@ import com.ajah.util.net.HttpURLBuilder;
  */
 
 public class HttpURLBuilderTest {
-	
-	
+
+	HttpURLBuilder httpURLBuilder;
+	Map<String, String> map;
+
+	/**
+	 * Initialization required for running tests
+	 */
+	@Before
+	public void setUp() {
+		this.httpURLBuilder = new HttpURLBuilder();
+		this.httpURLBuilder.setHost("localhost");
+		this.httpURLBuilder.setParam("name", "value");
+		this.httpURLBuilder.setPath("/xampp");
+		this.httpURLBuilder.setPort(80);
+		this.httpURLBuilder.setSecure(false);
+		this.map = new HashMap<String, String>();
+		this.map.put("key", "value");
+	}
+
 	/**
 	 * Test various operation of HttpURLBuilder
 	 */
 	@Test
-	public void testHttpURLBuilder() {
-		HttpURLBuilder httpURLBuilder = new HttpURLBuilder();
-		httpURLBuilder.setHost("localhost");
-		httpURLBuilder.setParam("name", "value");
-		httpURLBuilder.setPath("/xampp");
-		httpURLBuilder.setPort(80);
-		httpURLBuilder.setSecure(false);
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("key", "value");
-		httpURLBuilder.setSingleValueParameters(map);
-		
-		Assert.assertEquals("localhost", httpURLBuilder.getHost());
-		Assert.assertEquals("/xampp", httpURLBuilder.getPath());
-		Assert.assertEquals(80, httpURLBuilder.getPort());
-		Assert.assertEquals(map, httpURLBuilder.getSingleValueParameters());
-		Assert.assertFalse(httpURLBuilder.isSecure());
-		Assert.assertNotNull(httpURLBuilder.toString());
-		Assert.assertNotNull(httpURLBuilder.toURL());
-		
-		httpURLBuilder.setSecure(true);
-		httpURLBuilder.setPort(0);
-		Assert.assertEquals(443, httpURLBuilder.getPort());
-		Assert.assertNotNull(httpURLBuilder.toString());
-		Assert.assertNotNull(httpURLBuilder.toURL());
-		Assert.assertTrue(httpURLBuilder.canEqual(httpURLBuilder));
-		Assert.assertTrue(httpURLBuilder.equals(httpURLBuilder));
-		Assert.assertNotNull(httpURLBuilder.hashCode());
+	public void testHttpURLBuilderSecure() {
+		this.httpURLBuilder.setSecure(true);
+		this.httpURLBuilder.setPort(0);
+		Assert.assertEquals(443, this.httpURLBuilder.getPort());
+		Assert.assertNotNull(this.httpURLBuilder.toString());
+		Assert.assertNotNull(this.httpURLBuilder.toURL());
+		Assert.assertTrue(this.httpURLBuilder.canEqual(this.httpURLBuilder));
+		Assert.assertTrue(this.httpURLBuilder.equals(this.httpURLBuilder));
+		Assert.assertNotNull(this.httpURLBuilder.hashCode());
+	}
+
+	/**
+	 * Test various operation of HttpURLBuilder
+	 */
+	@Test
+	public void testHttpURLBuilderUnsecure() {
+		this.httpURLBuilder.setSingleValueParameters(this.map);
+		Assert.assertEquals("localhost", this.httpURLBuilder.getHost());
+		Assert.assertEquals("/xampp", this.httpURLBuilder.getPath());
+		Assert.assertEquals(80, this.httpURLBuilder.getPort());
+		Assert.assertEquals(this.map, this.httpURLBuilder.getSingleValueParameters());
+		Assert.assertFalse(this.httpURLBuilder.isSecure());
+		Assert.assertNotNull(this.httpURLBuilder.toString());
+		Assert.assertNotNull(this.httpURLBuilder.toURL());
 	}
 }
