@@ -17,15 +17,16 @@ package com.ajah.user.resetpw;
 
 import java.io.Serializable;
 
+import com.ajah.util.FromStringable;
+import com.ajah.util.ToStringable;
+
 /**
  * A wrapper around a String for typesafe user IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class ResetPasswordRequestId implements Serializable, Comparable<ResetPasswordRequestId> {
-
-	private static final long serialVersionUID = -6971666508360294979L;
+public class ResetPasswordRequestId implements Serializable, ToStringable, FromStringable, Comparable<ResetPasswordRequestId> {
 
 	private final String id;
 

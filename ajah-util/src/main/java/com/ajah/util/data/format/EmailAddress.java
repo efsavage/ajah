@@ -15,9 +15,9 @@
  */
 package com.ajah.util.data.format;
 
-import java.io.Serializable;
-
 import com.ajah.util.AjahUtils;
+import com.ajah.util.FromStringable;
+import com.ajah.util.ToStringable;
 import com.ajah.util.Validate;
 
 /**
@@ -26,9 +26,7 @@ import com.ajah.util.Validate;
  * @author Eric F. Savage, code@efsavage.com
  * 
  */
-public class EmailAddress implements Serializable {
-
-	private static final long serialVersionUID = 140721694310677320L;
+public class EmailAddress implements ToStringable, FromStringable {
 
 	private final String address;
 
