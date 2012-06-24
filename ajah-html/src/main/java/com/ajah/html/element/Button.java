@@ -17,10 +17,12 @@ package com.ajah.html.element;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import com.ajah.html.HtmlElement;
 import com.ajah.html.dtd.ButtonType;
 
 /**
@@ -36,6 +38,7 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 
 	private String text;
 	private ButtonType type;
+	protected List<HtmlElement<?>> leftChildren = null;
 
 	/**
 	 * Returns "button"
@@ -53,8 +56,20 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 	}
 
 	@Override
-	protected void renderBeforeChildren(final Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out, int depth) throws IOException {
 		out.write(this.text);
+		if (this.leftChildren != null) {
+			for (final HtmlElement<?> child : this.leftChildren) {
+				// TODO Make depth consistent
+				child.render(out, 0);
+			}
+		}
+		if (depth >= 0 && this.leftChildren != null) {
+			for (int i = 0; i < depth; i++) {
+				out.write("\t");
+			}
+		}
+
 	}
 
 	/**
@@ -86,6 +101,17 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 	public Button type(final ButtonType newType) {
 		setType(newType);
 		return this;
+	}
+
+	/**
+	 * Adds an element that should be rendered before this element's text is
+	 * rendered.
+	 * 
+	 * @param element
+	 *            The element to add.
+	 */
+	public void addBeforeText(HtmlElement<?> element) {
+		this.leftChildren.add(element);
 	}
 
 }

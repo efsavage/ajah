@@ -114,7 +114,7 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		if (depth >= 0 && this.children != null) {
 			out.write("\r\n");
 		}
-		renderBeforeChildren(out);
+		renderBeforeChildren(out, depth);
 		if (this.children != null) {
 			for (final HtmlElement<?> child : this.children) {
 				if (depth >= 0) {
@@ -156,10 +156,12 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	 * 
 	 * @param out
 	 *            The writer to write to.
+	 * @param depth
+	 *            The depth of the current item in the DOM tree.
 	 * @throws IOException
 	 *             If the writer cannot be written to.
 	 */
-	protected void renderBeforeChildren(final Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out, int depth) throws IOException {
 		// Empty
 	}
 

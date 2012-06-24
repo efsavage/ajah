@@ -57,7 +57,7 @@ public class H1 extends AbstractNestableHtmlCoreElement<H1> {
 	}
 
 	@Override
-	protected void renderBeforeChildren(final Writer out) throws IOException {
+	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
 		out.write(this.text);
 	}
 
