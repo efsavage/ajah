@@ -28,7 +28,6 @@ import com.ajah.user.resetpw.ResetPasswordRequest;
 import com.ajah.user.resetpw.ResetPasswordRequestId;
 import com.ajah.user.resetpw.ResetPasswordRequestNotFoundException;
 import com.ajah.user.resetpw.ResetPasswordRequestStatus;
-import com.ajah.user.resetpw.ResetPasswordRequestStatusImpl;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.RandomUtils;
 
@@ -81,7 +80,7 @@ public class ResetPasswordRequestManager {
 			throw new IllegalArgumentException("Request is not redeemable");
 		}
 		rpr.setRedeemed(new Date());
-		rpr.setStatus(ResetPasswordRequestStatusImpl.REDEEMED);
+		rpr.setStatus(ResetPasswordRequestStatus.REDEEMED);
 		this.resetPasswordRequestDao.update(rpr);
 	}
 
@@ -101,7 +100,7 @@ public class ResetPasswordRequestManager {
 		rpr.setUserId(user.getId());
 		rpr.setCode(code);
 		rpr.setCreated(new Date());
-		rpr.setStatus(ResetPasswordRequestStatusImpl.NEW);
+		rpr.setStatus(ResetPasswordRequestStatus.NEW);
 		this.resetPasswordRequestDao.insert(rpr);
 		return rpr;
 	}

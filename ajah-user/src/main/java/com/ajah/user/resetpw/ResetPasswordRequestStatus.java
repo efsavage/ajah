@@ -15,6 +15,8 @@
  */
 package com.ajah.user.resetpw;
 
+import com.ajah.util.Identifiable;
+
 /**
  * All reset password requests must be in some state, which determines the
  * permitted operations. Common statuses might be NEW, SENT, REDEEMED
@@ -22,14 +24,51 @@ package com.ajah.user.resetpw;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface ResetPasswordRequestStatus {
+public enum ResetPasswordRequestStatus implements Identifiable<String> {
 
 	/**
-	 * The internal ID of the status.
-	 * 
-	 * @return The internal ID of the status. Cannot be null.
+	 * New user, unverified/unpaid.
 	 */
-	String getId();
+	NEW("0", "New", "New", "New", true),
+	/**
+	 * This request was successfully redeemed.
+	 */
+	REDEEMED("1", "Active", "Active", "Active", false),
+	/**
+	 * This request expired and cannot be redeemed.
+	 */
+	EXPIRED("2", "Expired", "Expired", "Expired", false);
+
+	/**
+	 * Finds a ResetPasswordRequestStatus that matches the id on id, name, or
+	 * name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching ResetPasswordRequestStatus, or null.
+	 */
+	public static ResetPasswordRequestStatus get(final String id) {
+		for (final ResetPasswordRequestStatus type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	private final String id;
+	private final String code;
+	private final String name;
+	private final String description;
+	private final boolean redeemable;
+
+	private ResetPasswordRequestStatus(final String id, final String code, final String name, final String description, final boolean redeemable) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+		this.redeemable = redeemable;
+	}
 
 	/**
 	 * The short, display-friendly code of the status. If no code is applicable,
@@ -37,7 +76,28 @@ public interface ResetPasswordRequestStatus {
 	 * 
 	 * @return The short, display-friendly code of the status. Cannot be null.
 	 */
-	String getCode();
+	public String getCode() {
+		return this.code;
+	}
+
+	/**
+	 * The display-friendly description of the status.
+	 * 
+	 * @return The display-friendly description of the status. May be null.
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * The internal ID of the status.
+	 * 
+	 * @return The internal ID of the status. Cannot be null.
+	 */
+	@Override
+	public String getId() {
+		return this.id;
+	}
 
 	/**
 	 * The display-friendly name of the status. If no name is applicable, it
@@ -45,14 +105,9 @@ public interface ResetPasswordRequestStatus {
 	 * 
 	 * @return The display-friendly name of the status. Cannot be null.
 	 */
-	String getName();
-
-	/**
-	 * The display-friendly description of the status.
-	 * 
-	 * @return The display-friendly description of the status. May be null.
-	 */
-	String getDescription();
+	public String getName() {
+		return this.name;
+	}
 
 	/**
 	 * Can this request be used to reset the password?
@@ -60,6 +115,13 @@ public interface ResetPasswordRequestStatus {
 	 * @return True if this request be used to reset the password, otherwise
 	 *         false.
 	 */
-	boolean isRedeemable();
+	public boolean isRedeemable() {
+		return this.redeemable;
+	}
+
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
+	}
 
 }
