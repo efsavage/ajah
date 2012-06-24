@@ -37,4 +37,14 @@ public @interface Submit {
 	 */
 	String value();
 
+	/**
+	 * The icon to use in the submit button, to the left of the text, optional.
+	 */
+	Icon iconLeft() default Icon.NONE;
+
+	/**
+	 * The icon to use in the submit button, to the right of the text, optional.
+	 */
+	Icon iconRight() default Icon.NONE;
+
 }
