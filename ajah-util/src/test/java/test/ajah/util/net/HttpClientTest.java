@@ -37,7 +37,7 @@ public class HttpClientTest {
 	byte[] bytes;
 	String string;
 	XmlString xmlString;
-	String url = "http://localhost/xampp";
+	String url = "http://efsavage.com/";
 
 	/**
 	 * Initialization required for running tests
@@ -99,4 +99,26 @@ public class HttpClientTest {
 		this.xmlString = HttpClient.getXml(this.url);
 		Assert.assertNotNull(this.xmlString);
 	}
+
+	/**
+	 * 
+	 * Tests {@link HttpClient#getBytes(String)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testBytes() throws IOException {
+		Assert.assertTrue(HttpClient.getBytes("http://efsavage.com/blog/wp-content/uploads/2012/01/barcode-150x150.png").length > 0);
+	}
+
+	/**
+	 * Tests {@link HttpClient#getString(String)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testString() throws IOException {
+		Assert.assertTrue(HttpClient.getString("http://efsavage.com").length() > 0);
+	}
+
 }
