@@ -223,13 +223,24 @@ public enum LargeDataSizeUnit {
 	 * large units.
 	 * 
 	 * @return The number of bytes for this unit.
-	 * @throws IllegalArgumentException
+	 * @throws UnsupportedOperationException
+	 *             If the current unit is larger than {@link Long#MAX_VALUE}.
 	 */
-	public long getBytes() {
+	public long getBytesLong() {
 		if (this.bytesLong < 0) {
 			throw new UnsupportedOperationException();
 		}
 		return this.bytesLong;
+	}
+
+	/**
+	 * Return the number of bytes for this unit. If you're dealing strictly with
+	 * smaller units, {@link #getBytesLong()} may be more efficient.
+	 * 
+	 * @return The number of bytes for this unit.
+	 */
+	public BigInteger getBytes() {
+		return this.bytes;
 	}
 
 	/**
