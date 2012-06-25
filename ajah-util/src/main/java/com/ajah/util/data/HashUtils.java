@@ -105,9 +105,8 @@ public class HashUtils {
 		AjahUtils.requireParam(data, "data");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
-			byte[] bytes = new byte[40];
 			md.update(data, 0, data.length);
-			bytes = md.digest();
+			byte[] bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
@@ -125,9 +124,30 @@ public class HashUtils {
 		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
-			byte[] bytes = new byte[40];
 			md.update(string.getBytes("iso-8859-1"), 0, string.length());
-			bytes = md.digest();
+			byte[] bytes = md.digest();
+			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
+		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		} catch (final UnsupportedEncodingException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	/**
+	 * Creates a SHA-256 digest of string and returns it as a hexadecimal
+	 * number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
+	public static String sha256Hex(String string) {
+		AjahUtils.requireParam(string, "string");
+		try {
+			final MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(string.getBytes("iso-8859-1"), 0, string.length());
+			byte[] bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
