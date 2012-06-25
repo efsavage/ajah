@@ -47,7 +47,7 @@ public class Crypto {
 
 	/**
 	 * Accepts a hexadecimal encoded version of the encrypted data and decrypts
-	 * it.
+	 * it. Uses the crypto.key.aes property as the encryption key.
 	 * 
 	 * @param encrypted
 	 *            hexadecimal encoded version of the encrypted data
@@ -57,6 +57,22 @@ public class Crypto {
 	 */
 	public static String fromAES(final String encrypted) {
 		final String keyString = Config.i.get("crypto.key.aes", null);
+		return fromAES(encrypted, keyString);
+	}
+
+	/**
+	 * Accepts a hexadecimal encoded version of the encrypted data and decrypts
+	 * it.
+	 * 
+	 * @param encrypted
+	 *            hexadecimal encoded version of the encrypted data
+	 * @param keyString
+	 *            The key to use to decrypt the data.
+	 * @return Decrypted version.
+	 * @throws UnsupportedOperationException
+	 *             If there is a cryptographic error.
+	 */
+	public static String fromAES(final String encrypted, String keyString) {
 		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
 			final Cipher cipher = Cipher.getInstance("AES");
@@ -165,7 +181,7 @@ public class Crypto {
 
 	/**
 	 * Encodes a value in aes and returns the hexadecimal encoded version of the
-	 * encrypted data.
+	 * encrypted data. Uses the crypto.key.aes property as the encryption key.
 	 * 
 	 * @param secret
 	 *            Data to encrypt.
@@ -176,6 +192,22 @@ public class Crypto {
 	public static String toAES(final String secret) {
 		final String keyString = Config.i.get("crypto.key.aes", null);
 		AjahUtils.requireParam(keyString, "crypto.key.aes");
+		return toAES(secret, keyString);
+	}
+
+	/**
+	 * Encodes a value in aes and returns the hexadecimal encoded version of the
+	 * encrypted data.
+	 * 
+	 * @param secret
+	 *            Data to encrypt.
+	 * @param keyString
+	 *            The key to use to encrypt the data.
+	 * @return Hexadecimal encoded version of the encrypted data.
+	 * @throws UnsupportedOperationException
+	 *             If there is a cryptographic error.
+	 */
+	public static String toAES(final String secret, String keyString) {
 		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
 			final Cipher cipher = Cipher.getInstance("AES");
