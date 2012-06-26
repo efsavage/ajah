@@ -835,7 +835,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				selectWithTablePrefix.append(", ");
 			}
 
-			select.append(colName);
+			select.append("`" + colName + "`");
 			selectWithTablePrefix.append(this.tableName + "." + colName);
 			if (!field.getName().equals("id")) {
 				newUpdateFields.add(colName);
