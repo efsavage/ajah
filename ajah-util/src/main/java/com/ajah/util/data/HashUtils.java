@@ -143,12 +143,24 @@ public class HashUtils {
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String sha256Hex(String string) {
+		byte[] bytes = sha256(string);
+		return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
+	}
+
+	/**
+	 * Creates a SHA-256 digest of string and returns it as a hexadecimal
+	 * number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
+	public static byte[] sha256(String string) {
 		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-256");
 			md.update(string.getBytes("iso-8859-1"), 0, string.length());
-			byte[] bytes = md.digest();
-			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
+			return md.digest();
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
 		} catch (final UnsupportedEncodingException e) {
