@@ -22,6 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.ajah.html.dtd.InputType;
+import com.ajah.util.StringUtils;
 
 /**
  * Basic Input class. May become obsolete as other Input classes are implmented.
@@ -71,7 +72,9 @@ public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implem
 	 */
 	public InputImpl(final String label, final String name, final String value, final InputType type) {
 		this(name, value, type);
-		this.label = new Label(this, label).css(type.name().toLowerCase());
+		if (!StringUtils.isBlank(label)) {
+			this.label = new Label(this, label).css(type.name().toLowerCase());
+		}
 	}
 
 	@Override
