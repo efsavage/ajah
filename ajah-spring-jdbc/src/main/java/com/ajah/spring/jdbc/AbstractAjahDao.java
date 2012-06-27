@@ -862,7 +862,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				if (uf.length() > 0) {
 					uf.append(",");
 				}
-				uf.append(field);
+				uf.append("`" + field + "`");
 				uf.append("=?");
 			}
 			this.updateFields = uf.toString();
