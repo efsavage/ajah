@@ -41,19 +41,24 @@ import com.ajah.html.element.Input;
 import com.ajah.html.element.InputImpl;
 import com.ajah.html.element.Italic;
 import com.ajah.html.element.ListItem;
+import com.ajah.html.element.Option;
 import com.ajah.html.element.Script;
+import com.ajah.html.element.Select;
 import com.ajah.html.element.TextArea;
 import com.ajah.html.element.UnorderedList;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.AutoFormUtils;
+import com.ajah.spring.mvc.form.Hidden;
 import com.ajah.spring.mvc.form.HtmlText;
 import com.ajah.spring.mvc.form.Icon;
 import com.ajah.spring.mvc.form.LongText;
 import com.ajah.spring.mvc.form.Submit;
 import com.ajah.spring.mvc.form.validation.Match;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.format.EmailAddress;
+import com.ajah.util.reflect.IntrospectionUtils;
 
 /**
  * Renders an AutoForm.
@@ -189,12 +194,19 @@ public class AutoFormTag extends SpringTag {
 
 	private Input<?> getInput(final Field field, final Field[] allFields) throws IllegalArgumentException, IllegalAccessException {
 
-		final String label = AutoFormUtils.getLabel(field);
+		String label = AutoFormUtils.getLabel(field);
 
 		Input<?> input = null;
 		log.fine(field.getType().toString());
 		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
-		if (field.getType().equals(String.class)) {
+		if (field.isAnnotationPresent(Hidden.class)) {
+			// A hidden input
+			if (IntrospectionUtils.isToStringable(field)) {
+				input = new InputImpl(field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.HIDDEN);
+			} else {
+				throw new IllegalArgumentException(field.getType().getName() + " not supported with a @Hidden annotation");
+			}
+		} else if (field.getType().equals(String.class)) {
 			if (field.isAnnotationPresent(HtmlText.class)) {
 				// An HTML-enabled textarea input
 				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT, true);
@@ -220,6 +232,15 @@ public class AutoFormTag extends SpringTag {
 		} else if (field.getType().equals(Double.class)) {
 			// An floating point input
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
+		} else if (IntrospectionUtils.isIdentifiableEnum(field)) {
+			Select select = new Select(label, field.getName());
+			Identifiable<?>[] options = (Identifiable<?>[]) field.getType().getEnumConstants();
+			for (Identifiable<?> enumOption : options) {
+				log.fine(enumOption.getId().toString() + " / " + enumOption.toString());
+				Option option = new Option(enumOption.getId().toString(), AutoFormUtils.getLabel(field, enumOption));
+				select.add(option);
+			}
+			input = select;
 		} else {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
 		}

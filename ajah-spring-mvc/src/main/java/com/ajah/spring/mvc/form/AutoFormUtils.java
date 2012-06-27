@@ -20,7 +20,9 @@ import java.lang.reflect.Field;
 import lombok.extern.java.Log;
 
 import com.ajah.util.AjahUtils;
+import com.ajah.util.Named;
 import com.ajah.util.StringUtils;
+import com.ajah.util.reflect.IntrospectionUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
@@ -48,6 +50,30 @@ public class AutoFormUtils {
 			label = field.getAnnotation(Label.class).value();
 		}
 		return label;
+	}
+
+	/**
+	 * Returns a human-readable version of an {@link AutoForm}'s field name. If
+	 * there is a {@link Label} annotation, that will be used, otherwise the
+	 * field name will be de-camelcased.
+	 * 
+	 * @see StringUtils#splitCamelCase(String)
+	 * @param field
+	 *            The field to derive the label of, required.
+	 * @param object
+	 *            The instance to get the label of.
+	 * @return The label of the field, should not be null.
+	 */
+	public static String getLabel(final Field field, Object object) {
+		if (IntrospectionUtils.isEnum(field) && IntrospectionUtils.isNamed(field)) {
+			String name = ((Named) object).getName();
+			if (!StringUtils.isBlank(name)) {
+				return name;
+			}
+		}
+		log.finest("isEnum: " + IntrospectionUtils.isEnum(field));
+		log.finest("isNamed: " + IntrospectionUtils.isNamed(field));
+		return getLabel(field);
 	}
 
 }
