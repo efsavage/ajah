@@ -48,7 +48,6 @@ import com.ajah.html.element.TextArea;
 import com.ajah.html.element.UnorderedList;
 import com.ajah.spring.mvc.form.AutoForm;
 import com.ajah.spring.mvc.form.AutoFormUtils;
-import com.ajah.spring.mvc.form.Hidden;
 import com.ajah.spring.mvc.form.HtmlText;
 import com.ajah.spring.mvc.form.Icon;
 import com.ajah.spring.mvc.form.LongText;
@@ -199,27 +198,20 @@ public class AutoFormTag extends SpringTag {
 		Input<?> input = null;
 		log.fine(field.getType().toString());
 		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
-		if (field.isAnnotationPresent(Hidden.class)) {
-			// A hidden input
-			if (IntrospectionUtils.isToStringable(field)) {
-				input = new InputImpl(field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.HIDDEN);
-			} else {
-				throw new IllegalArgumentException(field.getType().getName() + " not supported with a @Hidden annotation");
-			}
-		} else if (field.getType().equals(String.class)) {
+		if (field.getType().equals(String.class)) {
 			if (field.isAnnotationPresent(HtmlText.class)) {
 				// An HTML-enabled textarea input
-				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT, true);
+				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), AutoFormUtils.getInputType(field), true);
 			} else if (field.isAnnotationPresent(LongText.class)) {
 				// A textarea input
-				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT, false);
+				input = new TextArea(label, field.getName(), (String) field.get(this.autoForm), AutoFormUtils.getInputType(field), false);
 			} else {
 				// A normal text input
-				input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), InputType.TEXT);
+				input = new InputImpl(label, field.getName(), (String) field.get(this.autoForm), AutoFormUtils.getInputType(field));
 			}
 		} else if (field.getType().equals(EmailAddress.class)) {
 			// An email input
-			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), AutoFormUtils.getInputType(field));
 		} else if (field.getType().isAssignableFrom(Password.class)) {
 			// A password input
 			input = new InputImpl(label, field.getName(), "", InputType.PASSWORD);
@@ -228,10 +220,10 @@ public class AutoFormTag extends SpringTag {
 			input = new Checkbox(label, field.getName(), "true", field.getBoolean(this.autoForm));
 		} else if (field.getType().equals(Long.class) || field.getType().equals(long.class) || field.getType().equals(Integer.class) || field.getType().equals(int.class)) {
 			// An integer input
-			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), AutoFormUtils.getInputType(field));
 		} else if (field.getType().equals(Double.class)) {
 			// An floating point input
-			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), InputType.TEXT);
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), AutoFormUtils.getInputType(field));
 		} else if (IntrospectionUtils.isIdentifiableEnum(field)) {
 			Select select = new Select(label, field.getName());
 			Identifiable<?>[] options = (Identifiable<?>[]) field.getType().getEnumConstants();
@@ -241,6 +233,9 @@ public class AutoFormTag extends SpringTag {
 				select.add(option);
 			}
 			input = select;
+		} else if (IntrospectionUtils.isToStringable(field) && IntrospectionUtils.isFromStringable(field)) {
+			log.finest("label: " + label);
+			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), AutoFormUtils.getInputType(field));
 		} else {
 			throw new IllegalArgumentException(field.getType().getName() + " not supported");
 		}

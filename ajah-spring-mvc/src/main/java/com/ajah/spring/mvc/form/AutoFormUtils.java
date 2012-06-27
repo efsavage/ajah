@@ -19,6 +19,7 @@ import java.lang.reflect.Field;
 
 import lombok.extern.java.Log;
 
+import com.ajah.html.dtd.InputType;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Named;
 import com.ajah.util.StringUtils;
@@ -44,6 +45,9 @@ public class AutoFormUtils {
 	 */
 	public static String getLabel(final Field field) {
 		AjahUtils.requireParam(field, "field");
+		if (field.isAnnotationPresent(Hidden.class)) {
+			return null;
+		}
 		String label = StringUtils.capitalize(StringUtils.splitCamelCase(field.getName()));
 		if (field.isAnnotationPresent(Label.class)) {
 			log.fine("@Label is present");
@@ -76,4 +80,24 @@ public class AutoFormUtils {
 		return getLabel(field);
 	}
 
+	/**
+	 * Looks for {@link Hidden} and {@link Password} annotations to determine
+	 * the input type.
+	 * 
+	 * @param field
+	 *            The field to inspect.
+	 * @return The input type, default value is {@link InputType#TEXT}
+	 */
+	public static InputType getInputType(final Field field) {
+		if (field.isAnnotationPresent(Hidden.class)) {
+			log.finest("Field " + field.getName() + " is hidden");
+			return InputType.HIDDEN;
+		}
+		if (field.isAnnotationPresent(com.ajah.spring.mvc.form.Password.class)) {
+			log.finest("Field " + field.getName() + " is a password");
+			return InputType.PASSWORD;
+		}
+		log.finest("Field " + field.getName() + " is text");
+		return InputType.TEXT;
+	}
 }
