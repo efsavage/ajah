@@ -640,6 +640,19 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	/**
+	 * Find a list of entities by a simple field match, ideal for searching by
+	 * related entity IDs.
+	 * 
+	 * @param value
+	 *            The value to use to build the query.
+	 * @return List of entities if found, otherwise null.
+	 * @since 1.0.1
+	 */
+	public List<T> list(final ToStringable value) {
+		return list(new Criteria().eq(value));
+	}
+
+	/**
 	 * Find a list of entities by non-unique match.
 	 * 
 	 * @param criteria
