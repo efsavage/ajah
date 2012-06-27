@@ -115,6 +115,16 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 			out.write("\r\n");
 		}
 		renderBeforeChildren(out, depth);
+		renderChildren(out, depth);
+		out.write("</");
+		out.write(getName());
+		out.write(">");
+		if (depth >= 0) {
+			out.write("\r\n");
+		}
+	}
+
+	protected void renderChildren(Writer out, int depth) throws IOException {
 		if (this.children != null) {
 			for (final HtmlElement<?> child : this.children) {
 				if (depth >= 0) {
@@ -128,12 +138,6 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 			for (int i = 0; i < depth; i++) {
 				out.write("\t");
 			}
-		}
-		out.write("</");
-		out.write(getName());
-		out.write(">");
-		if (depth >= 0) {
-			out.write("\r\n");
 		}
 	}
 
