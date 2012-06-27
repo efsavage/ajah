@@ -35,6 +35,10 @@ public enum InputType {
 	/**
 	 * "submit"
 	 */
-	SUBMIT;
+	SUBMIT,
+	/**
+	 * "hidden"
+	 */
+	HIDDEN;
 
 }
