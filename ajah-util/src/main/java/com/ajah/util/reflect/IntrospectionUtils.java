@@ -21,6 +21,7 @@ import java.util.Date;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.FromStringable;
 import com.ajah.util.Identifiable;
+import com.ajah.util.Named;
 import com.ajah.util.ToStringable;
 
 /**
@@ -165,6 +166,18 @@ public class IntrospectionUtils {
 	public static boolean isToStringable(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return ToStringable.class.isAssignableFrom(field.getType());
+	}
+
+	/**
+	 * Checks to see if the field's type implements {@link Named}.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type implements Named.
+	 */
+	public static boolean isNamed(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return Named.class.isAssignableFrom(field.getType());
 	}
 
 }
