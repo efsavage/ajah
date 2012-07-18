@@ -18,6 +18,7 @@ package com.ajah.spring.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.Identifiable;
 
 /**
@@ -56,10 +57,10 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @param id
 	 *            The unique ID of the record.
 	 * @return The matching record, or null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	T load(final K id) throws DatabaseAccessException;
+	T load(final K id) throws DataOperationException;
 
 	/**
 	 * Inserts a record.
@@ -67,10 +68,10 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @param entity
 	 *            The entity to insert as a record.
 	 * @return The number of rows inserted.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	int insert(final T entity) throws DatabaseAccessException;
+	int insert(final T entity) throws DataOperationException;
 
 	/**
 	 * Inserts a record.
@@ -78,10 +79,10 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @param entity
 	 *            The entity to update.
 	 * @return The number of rows updated.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	int update(final T entity) throws DatabaseAccessException;
+	int update(final T entity) throws DataOperationException;
 
 	/**
 	 * Deletes a record, or marks it as deleted.
@@ -89,9 +90,9 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @param entity
 	 *            The entity to delete.
 	 * @return The number of rows deleted or marked as deleted.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	int delete(final T entity) throws DatabaseAccessException;
+	int delete(final T entity) throws DataOperationException;
 
 }

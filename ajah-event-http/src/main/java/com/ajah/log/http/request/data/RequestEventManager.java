@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.log.http.request.RequestEvent;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Persistence management for {@link RequestEvent}s.
@@ -44,9 +44,9 @@ public class RequestEventManager {
 	 * there's no need to edit the records at this time.
 	 * 
 	 * @param requestEvent
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public void save(final RequestEvent requestEvent) throws DatabaseAccessException {
+	public void save(final RequestEvent requestEvent) throws DataOperationException {
 		this.requestEventDao.insert(requestEvent, true);
 		log.finest(requestEvent.getId().toString() + " saved");
 	}

@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.crypto.Password;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserType;
 import com.ajah.user.data.UserManager;
@@ -59,10 +59,10 @@ public class SignUpManager {
 	 * @param type
 	 *            Type of signUp attempt
 	 * @return SignUp record, will never return null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the queries could not be completed.
 	 */
-	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DatabaseAccessException {
+	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DataOperationException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
 		signUp.setIp(ip);

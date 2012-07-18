@@ -16,7 +16,7 @@ package com.ajah.user.data;
 
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 
@@ -36,10 +36,10 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @param password
 	 *            The user's password.
 	 * @return The number of rows inserted.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	public int insert(final User user, final Password password) throws DatabaseAccessException;
+	public int insert(final User user, final Password password) throws DataOperationException;
 
 	/**
 	 * Updates a user's password in the database.
@@ -49,10 +49,10 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @param password
 	 *            The user's new password.
 	 * @return The number of rows inserted.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	public int update(final UserId userId, final Password password) throws DatabaseAccessException;
+	public int update(final UserId userId, final Password password) throws DataOperationException;
 
 	/**
 	 * Finds a user by username field.
@@ -60,10 +60,10 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @param username
 	 *            The username to query
 	 * @return The user, if found, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findByUsername(final String username) throws DatabaseAccessException;
+	public User findByUsername(final String username) throws DataOperationException;
 
 	/**
 	 * Finds a user by username and password.
@@ -73,9 +73,9 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @param password
 	 *            The (hashed) password to query.
 	 * @return The user, if found, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findByUsernameAndPassword(final String username, final String password) throws DatabaseAccessException;
+	public User findByUsernameAndPassword(final String username, final String password) throws DataOperationException;
 
 }

@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.spring.jdbc;
+package com.ajah.spring.jdbc.err;
 
 /**
  * Happens when a query is unable to be executed.
@@ -22,6 +22,7 @@ package com.ajah.spring.jdbc;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Deprecated
 public class DatabaseAccessException extends Exception {
 
 	/**

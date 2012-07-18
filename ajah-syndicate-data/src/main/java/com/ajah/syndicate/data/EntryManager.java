@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
 import com.ajah.syndicate.FeedSourceId;
@@ -50,9 +50,9 @@ public class EntryManager {
 	 * @param htmlUrlSha1
 	 *            The SHA-1 of the Entry's html url.
 	 * @return The Entry, if found, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DatabaseAccessException {
+	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException {
 		// TODO this field may not necessarily be unique, order by something?
 		return this.entryDao.findByHtmlUrlSha1(feedSourceId, htmlUrlSha1);
 	}
@@ -63,10 +63,10 @@ public class EntryManager {
 	 * 
 	 * @param entry
 	 *            The entry to save.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             if the entry could not be saved.
 	 */
-	public void save(final Entry entry) throws DatabaseAccessException {
+	public void save(final Entry entry) throws DataOperationException {
 		AjahUtils.requireParam(entry.getFeedId(), "entry.feedId");
 		AjahUtils.requireParam(entry.getFeedSourceId(), "entry.feedSourceId");
 		if (entry.getCreated() == null) {

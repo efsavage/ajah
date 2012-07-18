@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailNotFoundException;
@@ -47,9 +47,9 @@ public class EmailManager {
 	 * @return The Email, if found.
 	 * @throws EmailNotFoundException
 	 *             If no Email is found.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public Email getEmail(final EmailId emailId) throws EmailNotFoundException, DatabaseAccessException {
+	public Email getEmail(final EmailId emailId) throws EmailNotFoundException, DataOperationException {
 		AjahUtils.requireParam(emailId, "emailId");
 		final Email email = this.emailDao.load(emailId);
 		if (email == null) {

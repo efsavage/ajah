@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.resetpw.ResetPasswordRequest;
 import com.ajah.user.resetpw.ResetPasswordRequestId;
@@ -69,13 +69,13 @@ public class ResetPasswordRequestManager {
 	 * @see ResetPasswordRequestStatus#isRedeemable()
 	 * @param rpr
 	 *            The {@link ResetPasswordRequest} to redeem.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws IllegalArgumentException
 	 *             If the {@link ResetPasswordRequest} is not in a redeemable
 	 *             state.
 	 */
-	public void redeem(final ResetPasswordRequest rpr) throws DatabaseAccessException {
+	public void redeem(final ResetPasswordRequest rpr) throws DataOperationException {
 		if (!rpr.getStatus().isRedeemable()) {
 			throw new IllegalArgumentException("Request is not redeemable");
 		}
@@ -90,10 +90,10 @@ public class ResetPasswordRequestManager {
 	 * @param user
 	 * @return The ResetPasswordRequest if creation/transport was successful.
 	 *         Will not return null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public ResetPasswordRequest sendResetPassword(final User user) throws DatabaseAccessException {
+	public ResetPasswordRequest sendResetPassword(final User user) throws DataOperationException {
 		final long code = RandomUtils.getRandomNumber(1000000000000000L, 9999999999999999L);
 		final ResetPasswordRequest rpr = new ResetPasswordRequest();
 		rpr.setId(new ResetPasswordRequestId(UUID.randomUUID().toString()));

@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajah.crypto.Crypto;
 import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserNotFoundException;
@@ -79,10 +79,10 @@ public class LogInManager {
 	 * @param type
 	 *            Type of login attempt
 	 * @return Login record, will never return null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public LogIn login(final String username, final Password password, final String ip, final LogInSource source, final LogInType type) throws DatabaseAccessException {
+	public LogIn login(final String username, final Password password, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by user/pass attempt for: " + username);
 		final LogIn login = new LogIn();
 		login.setIp(ip);
@@ -122,10 +122,10 @@ public class LogInManager {
 	 * @param type
 	 *            Type of login attempt
 	 * @return Login record, will never be null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) throws DatabaseAccessException {
+	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by token attempt for: " + token);
 		final String decrypted = Crypto.fromAES(token);
 		log.fine("token contents: " + decrypted);

@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
@@ -46,9 +46,9 @@ public class FeedManager {
 	 * @param feedSource
 	 *            The feed source to query on.
 	 * @return The most recent feed for the feed source, or null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public Feed getLatestFeed(final FeedSource feedSource) throws DatabaseAccessException {
+	public Feed getLatestFeed(final FeedSource feedSource) throws DataOperationException {
 		return this.feedDao.getLatestFeed(feedSource);
 	}
 
@@ -57,10 +57,10 @@ public class FeedManager {
 	 * 
 	 * @param feed
 	 *            The feed to insert.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the feed could not be inserted.
 	 */
-	public void insert(final Feed feed) throws DatabaseAccessException {
+	public void insert(final Feed feed) throws DataOperationException {
 		this.feedDao.insert(feed);
 	}
 
@@ -69,10 +69,10 @@ public class FeedManager {
 	 * 
 	 * @param feed
 	 *            The feed to save.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the feed could not be saved.
 	 */
-	public void save(final Feed feed) throws DatabaseAccessException {
+	public void save(final Feed feed) throws DataOperationException {
 		if (feed.getId() == null) {
 			feed.setId(new FeedId(UUID.randomUUID().toString()));
 			this.feedDao.insert(feed);

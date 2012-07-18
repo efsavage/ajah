@@ -21,7 +21,7 @@ import lombok.extern.java.Log;
 
 import com.ajah.log.http.request.RequestEvent;
 import com.ajah.log.http.request.data.RequestEventManager;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * A simple async task that saves the request event.
@@ -53,7 +53,7 @@ public class RequestEventHandler implements Runnable {
 	public void run() {
 		try {
 			this.requestEventManager.save(this.requestEvent);
-		} catch (final DatabaseAccessException e) {
+		} catch (final DataOperationException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}

@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.crypto.Password;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
@@ -72,10 +72,10 @@ public class UserManager {
 	 *            The ID of the user to update.
 	 * @param password
 	 *            The new password.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public void changePassword(final UserId userId, final Password password) throws DatabaseAccessException {
+	public void changePassword(final UserId userId, final Password password) throws DataOperationException {
 		this.userDao.update(userId, password);
 	}
 
@@ -93,10 +93,10 @@ public class UserManager {
 	 * @param type
 	 *            Type of user to create, required.
 	 * @return New user, if save was successful.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the queries could not be completed.
 	 */
-	public User createUser(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DatabaseAccessException {
+	public User createUser(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DataOperationException {
 		final User user = new UserImpl();
 		user.setId(new UserId(UUID.randomUUID().toString()));
 		user.setUsername(emailAddress.toString());
@@ -126,10 +126,10 @@ public class UserManager {
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findUserByEmail(final String address) throws UserNotFoundException, DatabaseAccessException {
+	public User findUserByEmail(final String address) throws UserNotFoundException, DataOperationException {
 		final Email email = this.emailDao.findByAddress(address);
 		if (email != null) {
 			log.fine("Found email " + email.getAddress());
@@ -150,10 +150,10 @@ public class UserManager {
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findUserByUsername(final String username) throws UserNotFoundException, DatabaseAccessException {
+	public User findUserByUsername(final String username) throws UserNotFoundException, DataOperationException {
 		final User user = this.userDao.findByUsername(username);
 		if (user != null) {
 			log.fine("Found user by username: " + user.getUsername());
@@ -171,10 +171,10 @@ public class UserManager {
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findUserByUsernameOrEmail(final String usernameOrEmail) throws UserNotFoundException, DatabaseAccessException {
+	public User findUserByUsernameOrEmail(final String usernameOrEmail) throws UserNotFoundException, DataOperationException {
 		if (Validate.isEmail(usernameOrEmail)) {
 			return findUserByEmail(usernameOrEmail);
 		}
@@ -194,10 +194,10 @@ public class UserManager {
 	 *             If the password was not correct
 	 * @throws UserNotFoundException
 	 *             If no user could be found for the username supplied
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User getUser(final String username, final Password password) throws AuthenicationFailureException, UserNotFoundException, DatabaseAccessException {
+	public User getUser(final String username, final Password password) throws AuthenicationFailureException, UserNotFoundException, DataOperationException {
 		AjahUtils.requireParam(username, "username");
 		final User user = this.userDao.findByUsernameAndPassword(username, password.toString());
 		if (user != null) {
@@ -214,9 +214,9 @@ public class UserManager {
 	 *            User ID of the user that we want the info about. *
 	 * @return UserInfo from the database if possible, otherwise a new/empty one
 	 *         will be returned with the UserId set.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public UserInfo getUserInfo(final UserId userId) throws DatabaseAccessException {
+	public UserInfo getUserInfo(final UserId userId) throws DataOperationException {
 		final UserInfo userInfo = this.userInfoDao.load(userId);
 		if (userInfo != null) {
 			return userInfo;

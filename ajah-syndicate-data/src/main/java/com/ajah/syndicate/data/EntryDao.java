@@ -18,7 +18,7 @@ package com.ajah.syndicate.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
 import com.ajah.syndicate.FeedSourceId;
@@ -39,11 +39,11 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 * @param entry
 	 *            The entry to update.
 	 * @return The number of rows affected by the update.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(final Entry entry) throws DatabaseAccessException;
+	int update(final Entry entry) throws DataOperationException;
 
 	/**
 	 * Finds an entry by {@link Entry#getHtmlUrlSha1()} and feed source.

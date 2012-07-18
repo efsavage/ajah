@@ -50,6 +50,8 @@ import org.springframework.jdbc.core.RowMapper;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Limit;
 import com.ajah.spring.jdbc.criteria.Where;
+import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Identifiable;
@@ -242,10 +244,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param field
 	 *            The field to decrease.
 	 * @return Number of rows affected.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int decrement(final T entity, final String field) throws DatabaseAccessException {
+	public int decrement(final T entity, final String field) throws DataOperationException {
 		return increment(entity, field, -1);
 	}
 
@@ -267,15 +269,15 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param id
 	 *            Value to match against the entity.entity_id column, required.
 	 * @return Entity if found, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int deleteById(final K id) throws DatabaseAccessException {
+	public int deleteById(final K id) throws DataOperationException {
 		AjahUtils.requireParam(id, "id");
 		try {
 			return getJdbcTemplate().update("DELETE FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() });
 		} catch (final DataAccessException e) {
-			throw new DatabaseAccessException(e);
+			throw DataOperationExceptionUtils.translate(e);
 		}
 
 	}
@@ -564,10 +566,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param field
 	 *            The field to increase.
 	 * @return Number of rows affected.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int increment(final T entity, final String field) throws DatabaseAccessException {
+	public int increment(final T entity, final String field) throws DataOperationException {
 		return increment(entity, field, 1);
 	}
 
@@ -581,10 +583,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param amount
 	 *            The amount to increase the field by.
 	 * @return Number of rows affected.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int increment(final T entity, final String field, final int amount) throws DatabaseAccessException {
+	public int increment(final T entity, final String field, final int amount) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -595,7 +597,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			return this.jdbcTemplate.update(sql, entity.getId().toString());
 		} catch (final DataAccessException e) {
-			throw new DatabaseAccessException(e);
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -605,11 +607,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param entity
 	 *            Entity to insert into the table.
 	 * @return Number of rows inserted.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
 	@Override
-	public int insert(final T entity) throws DatabaseAccessException {
+	public int insert(final T entity) throws DataOperationException {
 		return insert(entity, false);
 	}
 
@@ -621,10 +623,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param delayed
 	 *            Use a DELAYED insert.
 	 * @return Number of rows inserted.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int insert(final T entity, final boolean delayed) throws DatabaseAccessException {
+	public int insert(final T entity, final boolean delayed) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -635,7 +637,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			return this.jdbcTemplate.update(sql, getInsertValues(entity));
 		} catch (final DataAccessException e) {
-			throw new DatabaseAccessException(e);
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -800,11 +802,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param id
 	 *            Value to match against the entity.entity_id column, required.
 	 * @return Entity if found, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
 	@Override
-	public T load(final K id) throws DatabaseAccessException {
+	public T load(final K id) throws DataOperationException {
 		AjahUtils.requireParam(id, "id");
 		try {
 			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }, getRowMapper());
@@ -812,7 +814,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.finest(e.getMessage());
 			return null;
 		} catch (final DataAccessException e) {
-			throw new DatabaseAccessException(e);
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -981,11 +983,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param entity
 	 *            Entity to update.
 	 * @return Number of rows affected.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
 	@Override
-	public int update(final T entity) throws DatabaseAccessException {
+	public int update(final T entity) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -996,7 +998,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
 		} catch (final DataAccessException e) {
-			throw new DatabaseAccessException(e);
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 

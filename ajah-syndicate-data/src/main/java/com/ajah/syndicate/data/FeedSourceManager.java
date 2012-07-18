@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ajah.spring.jdbc.DatabaseAccessException;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceId;
 
@@ -45,9 +45,9 @@ public class FeedSourceManager {
 	 * @param feedUrlSha1
 	 *            The SHA-1 of the feed url.
 	 * @return The feed source, if found, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DatabaseAccessException {
+	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DataOperationException {
 		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
 	}
 
@@ -56,9 +56,9 @@ public class FeedSourceManager {
 	 * 
 	 * @return A feed source where the next_poll_date field is in the past, if
 	 *         available, otherwise null.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 */
-	public FeedSource getStaleFeedSource() throws DatabaseAccessException {
+	public FeedSource getStaleFeedSource() throws DataOperationException {
 		return this.feedDao.getStaleFeedSource();
 	}
 
@@ -67,10 +67,10 @@ public class FeedSourceManager {
 	 * 
 	 * @param feedSource
 	 *            The feed source to save.
-	 * @throws DatabaseAccessException
+	 * @throws DataOperationException
 	 *             If the feed source could not be saved.
 	 */
-	public void save(final FeedSource feedSource) throws DatabaseAccessException {
+	public void save(final FeedSource feedSource) throws DataOperationException {
 		if (feedSource.getId() == null) {
 			feedSource.setId(new FeedSourceId(UUID.randomUUID().toString()));
 			this.feedDao.insert(feedSource);
