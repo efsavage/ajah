@@ -213,4 +213,22 @@ public class StringUtils {
 		return string;
 	}
 
+	/**
+	 * Shorthand method for passing varargs to methods requiring arrays.
+	 * 
+	 * @param strings
+	 *            The array of strings.
+	 * @return The same object, but cast as an array automatically by Java.
+	 */
+	public static String[] asArray(String... strings) {
+		return strings;
+	}
+
+	public static String toCleanUrlToken(String string) {
+		if (StringUtils.isBlank(string)) {
+			throw new IllegalArgumentException("Non-blank string required");
+		}
+		return splitCamelCase(string.trim()).toLowerCase().replaceAll("[\\W_]+", "-");
+	}
+
 }
