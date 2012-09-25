@@ -15,30 +15,19 @@
  */
 package com.ajah.spring.jdbc.err;
 
-import lombok.extern.java.Log;
-
-import org.springframework.dao.DataAccessException;
-
 /**
+ * This is thrown when an insert or update would violate a unique key.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-@Log
-public class DataOperationExceptionUtils {
+public class DuplicateKeyException extends DataOperationException {
 
 	/**
-	 * Translates a Spring JDBC exception to an Ajah exception.
-	 * 
-	 * @param e
-	 *            The Spring JDBC exception.
-	 * @return The Equivalent Ajah exception;
+	 * @see DataOperationException#DataOperationException(Throwable)
 	 */
-	public static DataOperationException translate(DataAccessException e) {
-		if (e instanceof org.springframework.dao.DuplicateKeyException) {
-			return new DuplicateKeyException(e);
-		}
-		log.warning("Unknown: " + e.getClass().getName());
-		return new UnknownDataOperationException(e);
+	public DuplicateKeyException(final Throwable cause) {
+		super(cause);
 	}
 
 }
