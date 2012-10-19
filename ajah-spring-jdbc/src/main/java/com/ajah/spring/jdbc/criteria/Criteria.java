@@ -17,7 +17,11 @@ package com.ajah.spring.jdbc.criteria;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
+import lombok.extern.java.Log;
+
+import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
@@ -31,9 +35,11 @@ import com.ajah.util.lang.NameValuePair;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class Criteria {
 
 	private List<NameValuePair<String>> eqs = null;
+	private List<NameValuePair<String>> likes = null;
 	private List<NameValuePair<String>> joins = null;
 	private List<NameValuePair<Order>> orderBys = null;
 	private int offset = 0;
@@ -47,6 +53,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria asc(final String field) {
+		AjahUtils.requireParam(field, "field");
 		return orderBy(field, Order.ASC);
 	}
 
@@ -58,6 +65,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria desc(final String field) {
+		AjahUtils.requireParam(field, "field");
 		return orderBy(field, Order.DESC);
 	}
 
@@ -74,6 +82,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria eq(final String field, final Identifiable<?> value) {
+		AjahUtils.requireParam(field, "field");
 		if (value == null) {
 			return eq(field, (String) null);
 		}
@@ -90,6 +99,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria eq(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
 		return eq(field, String.valueOf(value));
 	}
 
@@ -103,10 +113,30 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria eq(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
 		if (this.eqs == null) {
 			this.eqs = new ArrayList<>();
 		}
 		this.eqs.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A LIKE field match. Uses the query as-is (i.e. add your own wildcards).
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param pattern
+	 *            The pattern the field must match.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria like(final String field, final String pattern) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(pattern, "pattern");
+		if (this.likes == null) {
+			this.likes = new ArrayList<>();
+		}
+		this.likes.add(new NameValuePair<>(field, pattern));
 		return this;
 	}
 
@@ -120,6 +150,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria eq(final String field, final ToStringable value) {
+		AjahUtils.requireParam(field, "field");
 		if (value == null) {
 			return eq(field, (String) null);
 		}
@@ -136,6 +167,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria eq(final ToStringable value) {
+		AjahUtils.requireParam(value, "value");
 		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
 	}
 
@@ -219,6 +251,23 @@ public class Criteria {
 				where.append(join.getValue());
 			}
 		}
+		if (!CollectionUtils.isEmpty(this.likes)) {
+			for (final NameValuePair<String> like : this.likes) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append(like.getName());
+				where.append(" LIKE '");
+				where.append(like.getValue());
+				where.append("'");
+			}
+		}
+		if (log.isLoggable(Level.FINEST)) {
+			log.finest(where.toString());
+		}
 		return new Where(where.toString(), values);
 	}
 
@@ -280,6 +329,8 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria orderBy(final String field, final Order order) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(order, "order");
 		if (this.orderBys == null) {
 			this.orderBys = new ArrayList<>();
 		}

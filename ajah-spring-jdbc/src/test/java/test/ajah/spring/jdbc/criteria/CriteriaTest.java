@@ -38,4 +38,14 @@ public class CriteriaTest {
 		Assert.assertEquals("1234", criteria.getWhere().getValues().get(0));
 	}
 
+	/**
+	 * Tests a simple {@link Criteria#eq(com.ajah.util.ToStringable)} operation.
+	 */
+	@Test
+	public void testLike() {
+		final Criteria criteria = new Criteria().like("object_id", "%foo?");
+		Assert.assertEquals(" WHERE object_id LIKE '%foo?'", criteria.getWhere().getSql());
+		Assert.assertEquals(0, criteria.getWhere().getValues().size());
+	}
+
 }
