@@ -15,7 +15,6 @@
  */
 package com.ajah.spring.jdbc.err;
 
-
 /**
  * This is thrown as a last resort, if no better matching exception could be
  * found.
@@ -30,6 +29,19 @@ public class UnknownDataOperationException extends DataOperationException {
 	 */
 	public UnknownDataOperationException(final Throwable cause) {
 		super(cause);
+	}
+
+	/**
+	 * Thrown when a message and cause is available.
+	 * 
+	 * @param message
+	 *            The message for this exception.
+	 * @param cause
+	 *            The wrapped cause of this exception.
+	 * @see DataOperationException#DataOperationException(Throwable)
+	 */
+	public UnknownDataOperationException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }
