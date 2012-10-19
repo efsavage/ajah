@@ -16,6 +16,7 @@
 package com.ajah.user.email.data;
 
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 
@@ -36,7 +37,9 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 * @param address
 	 *            The address to query, required.
 	 * @return The matching email, if found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	Email findByAddress(final String address);
+	Email findByAddress(final String address) throws DataOperationException;
 
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
@@ -38,7 +39,7 @@ public class FeedDaoImpl extends AbstractAjahDao<FeedId, Feed, Feed> implements 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Feed getLatestFeed(final FeedSource feedSource) {
+	public Feed getLatestFeed(final FeedSource feedSource) throws DataOperationException {
 		return find(new Criteria().eq("feed_source_id", feedSource).orderBy("created", Order.DESC));
 	}
 

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
 import com.ajah.syndicate.FeedSourceId;
@@ -37,7 +38,7 @@ public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> impleme
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) {
+	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException {
 		return find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
 	}
 

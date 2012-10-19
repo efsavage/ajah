@@ -18,6 +18,7 @@ package com.ajah.syndicate.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceId;
 import com.ajah.syndicate.PollStatus;
@@ -36,7 +37,7 @@ public class FeedSourceDaoImpl extends AbstractAjahDao<FeedSourceId, FeedSource,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) {
+	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DataOperationException {
 		return findByField("feed_url_sha_1", feedUrlSha1);
 	}
 
@@ -44,7 +45,7 @@ public class FeedSourceDaoImpl extends AbstractAjahDao<FeedSourceId, FeedSource,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FeedSource getStaleFeedSource() {
+	public FeedSource getStaleFeedSource() throws DataOperationException {
 		return findByWhere("poll_status=" + PollStatus.ACTIVE.getId() + " AND next_poll_date < (unix_timestamp() * 1000)");
 	}
 

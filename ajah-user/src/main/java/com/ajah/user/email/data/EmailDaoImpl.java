@@ -18,6 +18,7 @@ package com.ajah.user.email.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailImpl;
@@ -33,7 +34,7 @@ import com.ajah.util.AjahUtils;
 public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, EmailImpl> implements EmailDao {
 
 	@Override
-	public Email findByAddress(final String address) {
+	public Email findByAddress(final String address) throws DataOperationException {
 		return super.findByField("address", address);
 	}
 

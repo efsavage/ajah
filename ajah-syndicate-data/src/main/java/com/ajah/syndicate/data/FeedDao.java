@@ -51,7 +51,9 @@ public interface FeedDao extends AjahDao<FeedId, Feed> {
 	 * @param feedSource
 	 *            The feed source to match on.
 	 * @return The latest feed, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	Feed getLatestFeed(final FeedSource feedSource);
+	Feed getLatestFeed(final FeedSource feedSource) throws DataOperationException;
 
 }

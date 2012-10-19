@@ -215,7 +215,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	protected long count(final Criteria criteria) {
+	protected long count(final Criteria criteria) throws DataOperationException {
 		try {
 			final String sql = "SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
@@ -223,16 +223,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
-	protected long count(final String sql) {
+	protected long count(final String sql) throws DataOperationException {
 		try {
 			sqlLog.finest(sql);
 			return getJdbcTemplate().queryForInt(sql);
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -288,8 +292,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param criteria
 	 *            The criteria to use to find the object.
 	 * @return The object, if found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
 	 */
-	public T find(final Criteria criteria) {
+	public T find(final Criteria criteria) throws DataOperationException {
 		if (criteria.getLimit().getCount() > 1) {
 			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
 		}
@@ -305,8 +311,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param limit
 	 *            The Object to create the LIMIT statement.
 	 * @return The object, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	public T find(final Where where, final Limit limit) {
+	public T find(final Where where, final Limit limit) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		if (limit != null && limit.getCount() > 1) {
 			throw new IllegalArgumentException("Cannot use singular find method with a limit greater than 1 (" + limit.getCount() + ")");
@@ -317,6 +325,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return getJdbcTemplate().queryForObject(sql, where.getValues().toArray(), getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -328,14 +338,18 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param value
 	 *            Value to match against the entity.field column, required.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
 	 */
-	public T findByField(final String field, final Object value) {
+	public T findByField(final String field, final Object value) throws DataOperationException {
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
 			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ?", new Object[] { value }, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -347,8 +361,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param values
 	 *            Values to match against the entity.field column, required.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	public T findByFields(final String[] fields, final Object[] values) {
+	public T findByFields(final String[] fields, final Object[] values) throws DataOperationException {
 		AjahUtils.requireParam(fields, "fields");
 		AjahUtils.requireParam(values, "values");
 		try {
@@ -364,6 +380,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -373,8 +391,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param ids
 	 *            Values to match against the entity.entity_id column, required.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	public List<T> findByIds(final Collection<K> ids) {
+	public List<T> findByIds(final Collection<K> ids) throws DataOperationException {
 		AjahUtils.requireParam(ids, "ids");
 		try {
 			final StringBuffer sql = new StringBuffer();
@@ -401,6 +421,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -410,8 +432,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param where
 	 *            The WHERE clause to include in the query.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	public T findByWhere(final String where) {
+	public T findByWhere(final String where) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		try {
 			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where + " LIMIT 1";
@@ -419,6 +443,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return getJdbcTemplate().queryForObject(sql, null, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
 		}
 	}
 
@@ -776,6 +802,21 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public List<T> listByField(final String field, final ToStringable value) {
 		AjahUtils.requireParam(value, "value");
 		return listByField(field, value.toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(final String field, final Identifiable<? extends ToStringable> value) {
+		AjahUtils.requireParam(value, "value");
+		AjahUtils.requireParam(value.getId(), "value.id");
+		return listByField(field, value.getId().toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
 	}
 
 	/**

@@ -52,8 +52,10 @@ public class ResetPasswordRequestManager {
 	 * @return The {@link ResetPasswordRequest}, if found.
 	 * @throws ResetPasswordRequestNotFoundException
 	 *             If no {@link ResetPasswordRequest} is found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed
 	 */
-	public ResetPasswordRequest getResetPasswordRequestByCode(final long code) throws ResetPasswordRequestNotFoundException {
+	public ResetPasswordRequest getResetPasswordRequestByCode(final long code) throws ResetPasswordRequestNotFoundException, DataOperationException {
 		AjahUtils.requireParam(code, "code", 1);
 		final ResetPasswordRequest rpr = this.resetPasswordRequestDao.findByField("code", Long.valueOf(code));
 		if (rpr == null) {

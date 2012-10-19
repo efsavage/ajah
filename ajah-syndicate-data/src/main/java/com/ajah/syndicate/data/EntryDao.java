@@ -53,7 +53,8 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 * @param htmlUrlSha1
 	 *            The SHA-1 of the URL.
 	 * @return The matching entry, if found, otherwise null.
+	 * @throws DataOperationException 
 	 */
-	Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1);
+	Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException;
 
 }

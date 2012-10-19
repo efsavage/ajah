@@ -37,12 +37,12 @@ import com.ajah.util.AjahUtils;
 public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> implements UserDao {
 
 	@Override
-	public User findByUsername(final String username) {
+	public User findByUsername(final String username) throws DataOperationException {
 		return super.findByField("username", username);
 	}
 
 	@Override
-	public User findByUsernameAndPassword(final String username, final String password) {
+	public User findByUsernameAndPassword(final String username, final String password) throws DataOperationException {
 		return super.findByFields(new String[] { "username", "password" }, new String[] { username, password });
 	}
 
