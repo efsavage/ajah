@@ -15,10 +15,13 @@
  */
 package com.ajah.user.data;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
@@ -52,14 +55,20 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *            The user to save, required.
 	 * @param password
 	 *            The password for the user, required.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
 	 */
 	@Override
-	public int insert(final User user, final Password password) {
+	public int insert(final User user, final Password password) throws DataOperationException {
 		AjahUtils.requireParam(user, "user");
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)",
-				new Object[] { user.getId().toString(), user.getUsername(), password.toString(), user.getStatus().getId() + "", user.getType().getId() + "" });
+		try {
+			return this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)",
+					new Object[] { user.getId().toString(), user.getUsername(), password.toString(), user.getStatus().getId() + "", user.getType().getId() + "" });
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
+		}
 	}
 
 	/**
@@ -69,13 +78,19 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *            ID of user to update, required.
 	 * @param password
 	 *            Password to update to, required.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
 	 */
 	@Override
-	public int update(final UserId userId, final Password password) {
+	public int update(final UserId userId, final Password password) throws DataOperationException {
 		AjahUtils.requireParam(userId, "userId");
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
+		try {
+			return this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e);
+		}
 	}
 
 }
