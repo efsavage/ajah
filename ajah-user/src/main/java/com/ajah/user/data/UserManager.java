@@ -224,4 +224,16 @@ public class UserManager {
 		return new UserInfoImpl(userId);
 	}
 
+	/**
+	 * Is this username already in use?
+	 * 
+	 * @param username
+	 * @return true if the username exists, otherwise false.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public boolean usernameExists(String username) throws DataOperationException {
+		return this.userDao.findByUsername(username) != null;
+	}
+
 }
