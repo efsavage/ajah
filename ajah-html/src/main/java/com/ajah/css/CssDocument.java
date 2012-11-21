@@ -48,6 +48,18 @@ public class CssDocument {
 	}
 
 	/**
+	 * Add a rule to this document.
+	 * 
+	 * @param newRule
+	 *            The rule to add.
+	 * @return This document.
+	 */
+	public CssDocument add(final CssRule newRule) {
+		this.rules.add(newRule);
+		return this;
+	}
+
+	/**
 	 * Returns the valid, usable version of this document with
 	 * {@link Compact#NONE}.
 	 * 
