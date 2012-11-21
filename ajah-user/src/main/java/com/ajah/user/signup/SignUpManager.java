@@ -61,8 +61,11 @@ public class SignUpManager {
 	 * @return SignUp record, will never return null.
 	 * @throws DataOperationException
 	 *             If the queries could not be completed.
+	 * @throws UsernameExistsException
+	 *             If a user with that username already exists.
 	 */
-	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DataOperationException {
+	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DataOperationException,
+			UsernameExistsException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
 		signUp.setIp(ip);
@@ -70,20 +73,13 @@ public class SignUpManager {
 		signUp.setSource(source);
 		signUp.setStatus(SignUpStatus.SUCCESS);
 		// TODO signup should be saved
+		if (this.userManager.usernameExists(emailAddress.toString())) {
+			log.fine(emailAddress.toString() + " is in use");
+			throw new UsernameExistsException(emailAddress.toString());
+		}
+
 		final User user = this.userManager.createUser(emailAddress, password, ip, source, type);
 		log.info(user.getUsername() + " created!");
-		// try {
-		// } catch (RuntimeException e) {
-		// log.log(Level.SEVERE, e.getMessage(), e);
-		// signUp.setStatus(SignUpStatus.ABORT);
-		// } catch (AuthenicationFailureException e) {
-		// log.log(Level.INFO, e.getMessage());
-		// signUp.setUsername(e.getUsername());
-		// signUp.setStatus(SignUpStatus.FAIL);
-		// } catch (UserNotFoundException e) {
-		// log.log(Level.INFO, e.getMessage());
-		// signUp.setStatus(SignUpStatus.FAIL);
-		// }
 		return signUp;
 	}
 
