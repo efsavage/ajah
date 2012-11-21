@@ -15,6 +15,8 @@
  */
 package com.ajah.css;
 
+import com.ajah.util.compare.CompareUtils;
+
 import lombok.Data;
 
 /**
@@ -52,7 +54,7 @@ public class CssDeclaration implements Comparable<CssDeclaration> {
 	public int compareTo(final CssDeclaration other) {
 		int retVal = this.property.getName().compareTo(other.getProperty().getName());
 		if (retVal == 0) {
-			retVal = this.value.compareTo(other.getValue());
+			retVal = CompareUtils.compare(this.value, other.getValue());
 		}
 		return retVal;
 	}
