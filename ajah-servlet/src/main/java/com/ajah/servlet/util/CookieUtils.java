@@ -64,8 +64,10 @@ public class CookieUtils {
 		AjahUtils.requireParam(request, "request");
 		AjahUtils.requireParam(response, "response");
 		final Cookie cookie = getCookie(request, cookieName);
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);
+		if (cookie != null) {
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+		}
 	}
 
 	/**
