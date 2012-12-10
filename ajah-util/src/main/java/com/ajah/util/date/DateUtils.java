@@ -20,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.ajah.util.AjahUtils;
-
 /**
  * Utilities for dealing with Dates, times, intervals, etc.
  * 
@@ -266,13 +264,15 @@ public class DateUtils {
 	 * returned.
 	 * 
 	 * @param date
-	 *            Date to format, required.
+	 *            Date to format.
 	 * @param largestUnit
 	 *            The largest unit to use as the format unit.
 	 * @return The formatted date.
 	 */
 	public static String niceFormatRelative(final Date date, final CalendarUnit largestUnit) {
-		AjahUtils.requireParam(date, "date");
+		if (date == null) {
+			return "Never";
+		}
 		final long interval = System.currentTimeMillis() - date.getTime();
 		if (interval > 0) {
 			if (interval < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
