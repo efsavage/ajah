@@ -12,6 +12,7 @@
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
+		<relativePath>../ajah-base/pom.xml</relativePath>
 	</parent>
 
 </project>
