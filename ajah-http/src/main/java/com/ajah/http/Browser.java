@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2012 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -28,23 +28,38 @@ public enum Browser {
 	/**
 	 * Internet Explorer
 	 */
-	IE,
+	IE(1, "Internet Explorer", "IE"),
 	/**
 	 * Mozilla Firefox
 	 */
-	FIREFOX,
+	FIREFOX(2, "Firefox", "FF"),
 	/**
 	 * Google Chrome
 	 */
-	CHROME,
+	CHROME(3, "Chrome", "CHR"),
 	/**
 	 * Opera
 	 */
-	OPERA,
+	OPERA(4, "Opera", "OP"),
+	/**
+	 * Safari
+	 */
+	SAFARI(5, "Safari", "SAF"),
 	/**
 	 * Unknown
 	 */
-	UNKNOWN;
+	UNKNOWN(0, "Unknown", "?");
+
+	private final int id;
+	private final String name;
+	private final String abbreviation;
+
+	private Browser(int id, String name, String abbreviation) {
+		this.id = id;
+		this.name = name;
+		this.abbreviation = abbreviation;
+
+	}
 
 	/**
 	 * Looks at user agent string and extracts browser.
@@ -70,6 +85,34 @@ public enum Browser {
 			return CHROME;
 		}
 		return UNKNOWN;
+	}
+
+	/**
+	 * Returns the unique ID of this browser. Note that this value is arbitrary
+	 * and does not come from the browser itself.
+	 * 
+	 * @return the id The unique internal ID of the browser.
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+	/**
+	 * Returns the common name of the browser. E.G. "Internet Explorer".
+	 * 
+	 * @return the common name of the browser.
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Returns the common abbreviation of the browser. E.G. "IE".
+	 * 
+	 * @return the common abbreviation of the browser.
+	 */
+	public String getAbbreviation() {
+		return this.abbreviation;
 	}
 
 }
