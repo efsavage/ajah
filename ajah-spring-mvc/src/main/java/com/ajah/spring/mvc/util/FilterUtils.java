@@ -78,6 +78,24 @@ public class FilterUtils {
 	}
 
 	/**
+	 * Convenience method for adding a filter that is available as a Spring
+	 * bean/service to a servlet.
+	 * 
+	 * @see ServletContext#addFilter(String, Class)
+	 * @param filterClass
+	 *            The class of Filter to instantiate.
+	 * @param servletContext
+	 * @param servletRegistration
+	 *            The servlet to add this filter to.
+	 * @return The Dynamic Mapping created by this method.
+	 */
+	public static Dynamic add(final Class<? extends Filter> filterClass, final ServletContext servletContext, final Registration servletRegistration) {
+		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
+		reg.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST), false, servletRegistration.getName());
+		return reg;
+	}
+
+	/**
 	 * Convenience method for adding a filter to all requests.
 	 * 
 	 * @see ServletContext#addFilter(String, Class)
