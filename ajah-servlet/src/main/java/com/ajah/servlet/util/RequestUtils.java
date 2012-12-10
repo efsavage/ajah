@@ -15,7 +15,11 @@
  */
 package com.ajah.servlet.util;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+
+import com.ajah.http.UserAgent;
+import com.ajah.util.AjahUtils;
 
 /**
  * Utilities related to HTTP requests.
@@ -34,6 +38,19 @@ public class RequestUtils {
 	 */
 	public static String getIp(final HttpServletRequest request) {
 		return request.getRemoteAddr();
+	}
+
+	/**
+	 * Returns the {@link UserAgent} from a request.
+	 * 
+	 * @param request
+	 *            The request to analyze.
+	 * @return The user agent.
+	 * @see UserAgent#from(String)
+	 */
+	public static UserAgent getUserAgent(HttpServletRequest request) {
+		AjahUtils.requireParam(request, "request");
+		return UserAgent.from(request.getHeader("User-Agent"));
 	}
 
 }
