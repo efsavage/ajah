@@ -204,6 +204,8 @@ public class UserManager {
 			log.fine("getUser successful");
 			return user;
 		}
+		log.fine("getUser failed");
+
 		throw new AuthenicationFailureException(username + " authentication failed");
 	}
 
