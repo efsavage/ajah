@@ -15,7 +15,6 @@
  */
 package com.ajah.servlet.util;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ajah.http.UserAgent;
@@ -48,7 +47,7 @@ public class RequestUtils {
 	 * @return The user agent.
 	 * @see UserAgent#from(String)
 	 */
-	public static UserAgent getUserAgent(HttpServletRequest request) {
+	public static UserAgent getUserAgent(final HttpServletRequest request) {
 		AjahUtils.requireParam(request, "request");
 		return UserAgent.from(request.getHeader("User-Agent"));
 	}

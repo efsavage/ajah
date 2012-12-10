@@ -44,7 +44,7 @@ public enum S3ACL {
 
 	private final AccessControlList jets3t;
 
-	private S3ACL(AccessControlList jets3t) {
+	private S3ACL(final AccessControlList jets3t) {
 		this.jets3t = jets3t;
 	}
 

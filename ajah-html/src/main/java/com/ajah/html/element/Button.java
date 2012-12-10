@@ -41,6 +41,17 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 	protected List<HtmlElement<?>> leftChildren = null;
 
 	/**
+	 * Adds an element that should be rendered before this element's text is
+	 * rendered.
+	 * 
+	 * @param element
+	 *            The element to add.
+	 */
+	public void addBeforeText(final HtmlElement<?> element) {
+		this.leftChildren.add(element);
+	}
+
+	/**
 	 * Returns "button"
 	 * 
 	 * @see com.ajah.html.element.AbstractNestableHtmlCoreElement#getName()
@@ -56,7 +67,14 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 	}
 
 	@Override
-	protected void renderBeforeChildren(final Writer out, int depth) throws IOException {
+	protected void renderAttributes(final Writer out) throws IOException {
+		if (this.type != null) {
+			write(out, "type", this.type.name().toLowerCase());
+		}
+	}
+
+	@Override
+	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
 		out.write(this.text);
 		if (this.leftChildren != null) {
 			for (final HtmlElement<?> child : this.leftChildren) {
@@ -84,13 +102,6 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 		return this;
 	}
 
-	@Override
-	protected void renderAttributes(final Writer out) throws IOException {
-		if (this.type != null) {
-			write(out, "type", this.type.name().toLowerCase());
-		}
-	}
-
 	/**
 	 * Fluent alias to {@link #setType(ButtonType)}.
 	 * 
@@ -101,17 +112,6 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 	public Button type(final ButtonType newType) {
 		setType(newType);
 		return this;
-	}
-
-	/**
-	 * Adds an element that should be rendered before this element's text is
-	 * rendered.
-	 * 
-	 * @param element
-	 *            The element to add.
-	 */
-	public void addBeforeText(HtmlElement<?> element) {
-		this.leftChildren.add(element);
 	}
 
 }

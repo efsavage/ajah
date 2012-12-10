@@ -48,6 +48,17 @@ public class HttpClientTest {
 	}
 
 	/**
+	 * 
+	 * Tests {@link HttpClient#getBytes(String)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testBytes() throws IOException {
+		Assert.assertTrue(HttpClient.getBytes("http://efsavage.com/blog/wp-content/uploads/2012/01/barcode-150x150.png").length > 0);
+	}
+
+	/**
 	 * Null Check
 	 * 
 	 * @throws IOException
@@ -98,17 +109,6 @@ public class HttpClientTest {
 	public void testHttpClientGetXmlString() throws IOException {
 		this.xmlString = HttpClient.getXml(this.url);
 		Assert.assertNotNull(this.xmlString);
-	}
-
-	/**
-	 * 
-	 * Tests {@link HttpClient#getBytes(String)}.
-	 * 
-	 * @throws IOException
-	 */
-	@Test
-	public void testBytes() throws IOException {
-		Assert.assertTrue(HttpClient.getBytes("http://efsavage.com/blog/wp-content/uploads/2012/01/barcode-150x150.png").length > 0);
 	}
 
 	/**

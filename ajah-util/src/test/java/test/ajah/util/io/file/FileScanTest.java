@@ -40,6 +40,19 @@ public class FileScanTest {
 	File file = null;
 
 	/**
+	 * Scans the /tmp directory.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void runScan() throws IOException {
+		// TODO What's the best way to unit test files?
+		final Report report = new Report();
+		report.set(log);
+		new FileScan(this.file, report).scan();
+	}
+
+	/**
 	 * Create a random file to use for testing.
 	 * 
 	 * @throws IOException
@@ -50,19 +63,6 @@ public class FileScanTest {
 		this.file.mkdirs();
 		new File(this.file, UUID.randomUUID().toString()).createNewFile();
 		new File(this.file, UUID.randomUUID().toString()).mkdirs();
-	}
-
-	/**
-	 * Scans the /tmp directory.
-	 * 
-	 * @throws IOException
-	 */
-	@Test
-	public void runScan() throws IOException {
-		// TODO What's the best way to unit test files?
-		Report report = new Report();
-		report.set(log);
-		new FileScan(this.file, report).scan();
 	}
 
 	/**

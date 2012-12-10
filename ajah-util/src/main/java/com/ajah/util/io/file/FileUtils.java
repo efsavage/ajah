@@ -280,6 +280,36 @@ public class FileUtils {
 	}
 
 	/**
+	 * Writes a collection of strings to a file.
+	 * 
+	 * @param file
+	 *            The file to write to.
+	 * @param lines
+	 *            The lines to write. Note that the strings should not already
+	 *            have line-ending characters as they will be added
+	 *            automatically.
+	 * @return The number of lines written.
+	 * @throws IOException
+	 *             If the file could not be written to.
+	 */
+	public static int write(final File file, final Collection<String> lines) throws IOException {
+		// TODO Write to temp file then rename
+		BufferedOutputStream out = null;
+		try {
+			file.getParentFile().mkdirs();
+			out = new BufferedOutputStream(new FileOutputStream(file));
+			for (final String line : lines) {
+				out.write(line.getBytes());
+				out.write('\n');
+			}
+			log.finest("Wrote " + lines.size() + " lines");
+			return lines.size();
+		} finally {
+			IOUtils.safeClose(out);
+		}
+	}
+
+	/**
 	 * Writes an {@link InputStream} to a {@link File}. Will create parent
 	 * directories for the file if necessary.
 	 * 
@@ -308,36 +338,6 @@ public class FileUtils {
 			}
 			log.finest("Wrote " + total + " bytes to " + file.getAbsolutePath());
 			return total;
-		} finally {
-			IOUtils.safeClose(out);
-		}
-	}
-
-	/**
-	 * Writes a collection of strings to a file.
-	 * 
-	 * @param file
-	 *            The file to write to.
-	 * @param lines
-	 *            The lines to write. Note that the strings should not already
-	 *            have line-ending characters as they will be added
-	 *            automatically.
-	 * @return The number of lines written.
-	 * @throws IOException
-	 *             If the file could not be written to.
-	 */
-	public static int write(final File file, final Collection<String> lines) throws IOException {
-		// TODO Write to temp file then rename
-		BufferedOutputStream out = null;
-		try {
-			file.getParentFile().mkdirs();
-			out = new BufferedOutputStream(new FileOutputStream(file));
-			for (final String line : lines) {
-				out.write(line.getBytes());
-				out.write('\n');
-			}
-			log.finest("Wrote " + lines.size() + " lines");
-			return lines.size();
 		} finally {
 			IOUtils.safeClose(out);
 		}

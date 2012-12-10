@@ -232,7 +232,7 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public boolean usernameExists(String username) throws DataOperationException {
+	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
 	}
 

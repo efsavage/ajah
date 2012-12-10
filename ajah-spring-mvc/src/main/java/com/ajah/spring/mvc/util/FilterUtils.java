@@ -78,6 +78,18 @@ public class FilterUtils {
 	}
 
 	/**
+	 * Convenience method for adding a filter to all requests.
+	 * 
+	 * @see ServletContext#addFilter(String, Class)
+	 * @param filterClass
+	 *            The class of Filter to instantiate.
+	 * @param servletContext
+	 */
+	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext) {
+		add(filterClass, servletContext, "/*");
+	}
+
+	/**
 	 * Convenience method for adding a filter that is available as a Spring
 	 * bean/service to a servlet.
 	 * 
@@ -96,18 +108,6 @@ public class FilterUtils {
 	}
 
 	/**
-	 * Convenience method for adding a filter to all requests.
-	 * 
-	 * @see ServletContext#addFilter(String, Class)
-	 * @param filterClass
-	 *            The class of Filter to instantiate.
-	 * @param servletContext
-	 */
-	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext) {
-		add(filterClass, servletContext, "/*");
-	}
-
-	/**
 	 * Convenience method for adding a filter to certain requests.
 	 * 
 	 * @see ServletContext#addFilter(String, Class)
@@ -118,7 +118,7 @@ public class FilterUtils {
 	 * @param urlPattern
 	 *            The pattern of the URL this filter should be applied to.
 	 */
-	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext, String urlPattern) {
+	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext, final String urlPattern) {
 		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
 		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPattern);
 	}

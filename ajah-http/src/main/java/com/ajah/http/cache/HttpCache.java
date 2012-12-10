@@ -85,5 +85,5 @@ public interface HttpCache {
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
 	public byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode, URISyntaxException;
-	
+
 }

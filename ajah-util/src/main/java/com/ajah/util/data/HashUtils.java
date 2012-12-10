@@ -106,7 +106,7 @@ public class HashUtils {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
 			md.update(data, 0, data.length);
-			byte[] bytes = md.digest();
+			final byte[] bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
@@ -125,7 +125,7 @@ public class HashUtils {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
 			md.update(string.getBytes("iso-8859-1"), 0, string.length());
-			byte[] bytes = md.digest();
+			final byte[] bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
@@ -142,20 +142,7 @@ public class HashUtils {
 	 *            The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
-	public static String sha256Hex(String string) {
-		byte[] bytes = sha256(string);
-		return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
-	}
-
-	/**
-	 * Creates a SHA-256 digest of string and returns it as a hexadecimal
-	 * number.
-	 * 
-	 * @param string
-	 *            The string to digest.
-	 * @return The hexadecimal result of the digest.
-	 */
-	public static byte[] sha256(String string) {
+	public static byte[] sha256(final String string) {
 		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -166,6 +153,19 @@ public class HashUtils {
 		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
+	}
+
+	/**
+	 * Creates a SHA-256 digest of string and returns it as a hexadecimal
+	 * number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
+	public static String sha256Hex(final String string) {
+		final byte[] bytes = sha256(string);
+		return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 	}
 
 }

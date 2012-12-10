@@ -218,6 +218,16 @@ public enum LargeDataSizeUnit {
 	}
 
 	/**
+	 * Return the number of bytes for this unit. If you're dealing strictly with
+	 * smaller units, {@link #getBytesLong()} may be more efficient.
+	 * 
+	 * @return The number of bytes for this unit.
+	 */
+	public BigInteger getBytes() {
+		return this.bytes;
+	}
+
+	/**
 	 * Return the number of bytes for this unit. Note that due to long being a
 	 * 64-bit number, this will throw an illegal argument exception for very
 	 * large units.
@@ -231,16 +241,6 @@ public enum LargeDataSizeUnit {
 			throw new UnsupportedOperationException();
 		}
 		return this.bytesLong;
-	}
-
-	/**
-	 * Return the number of bytes for this unit. If you're dealing strictly with
-	 * smaller units, {@link #getBytesLong()} may be more efficient.
-	 * 
-	 * @return The number of bytes for this unit.
-	 */
-	public BigInteger getBytes() {
-		return this.bytes;
 	}
 
 	/**

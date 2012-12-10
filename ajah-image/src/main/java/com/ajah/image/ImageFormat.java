@@ -68,7 +68,7 @@ public enum ImageFormat {
 
 	private final AjahMimeType mimeType;
 
-	private ImageFormat(final String suffix, AjahMimeType mimeType, final String... aliases) {
+	private ImageFormat(final String suffix, final AjahMimeType mimeType, final String... aliases) {
 		this.suffix = suffix;
 		this.mimeType = mimeType;
 		this.aliases = aliases;
@@ -84,20 +84,20 @@ public enum ImageFormat {
 	}
 
 	/**
-	 * Returns the canonical suffix for this image format.
-	 * 
-	 * @return the canonical suffix for this image format.
-	 */
-	public String getSuffix() {
-		return this.suffix;
-	}
-
-	/**
 	 * Returns the mimeType for this image format.
 	 * 
 	 * @return the mimeType for this image format.
 	 */
 	public AjahMimeType getMimeType() {
 		return this.mimeType;
+	}
+
+	/**
+	 * Returns the canonical suffix for this image format.
+	 * 
+	 * @return the canonical suffix for this image format.
+	 */
+	public String getSuffix() {
+		return this.suffix;
 	}
 }

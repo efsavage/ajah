@@ -31,13 +31,6 @@ import java.lang.annotation.Target;
 public @interface Submit {
 
 	/**
-	 * Value attribute of the submit button.
-	 * 
-	 * @return Value attribute of the submit button, no default value.
-	 */
-	String value();
-
-	/**
 	 * The icon to use in the submit button, to the left of the text, optional.
 	 */
 	Icon iconLeft() default Icon.NONE;
@@ -46,5 +39,12 @@ public @interface Submit {
 	 * The icon to use in the submit button, to the right of the text, optional.
 	 */
 	Icon iconRight() default Icon.NONE;
+
+	/**
+	 * Value attribute of the submit button.
+	 * 
+	 * @return Value attribute of the submit button, no default value.
+	 */
+	String value();
 
 }

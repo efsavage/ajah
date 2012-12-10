@@ -132,7 +132,7 @@ public class S3Client {
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
-	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip, AjahMimeType mimeType, S3ACL acl) throws S3Exception {
+	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip, final AjahMimeType mimeType, final S3ACL acl) throws S3Exception {
 		if (data == null || data.length == 0) {
 			log.warning("Data is empty, skipping upload");
 			return;

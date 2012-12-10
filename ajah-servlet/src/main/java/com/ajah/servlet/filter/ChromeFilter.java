@@ -22,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,7 +48,7 @@ public class ChromeFilter extends BaseFilter {
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		Browser browser = RequestUtils.getUserAgent((HttpServletRequest) request).getBrowser();
+		final Browser browser = RequestUtils.getUserAgent((HttpServletRequest) request).getBrowser();
 		if (browser != Browser.CHROME) {
 			log.finest("Browser " + browser.getName() + " blocked");
 			((HttpServletRequest) request).getRequestDispatcher(this.failureUrl).forward(request, response);

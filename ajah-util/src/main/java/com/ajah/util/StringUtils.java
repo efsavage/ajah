@@ -28,6 +28,17 @@ public class StringUtils {
 	public static final char NBSP = (char) 160;
 
 	/**
+	 * Shorthand method for passing varargs to methods requiring arrays.
+	 * 
+	 * @param strings
+	 *            The array of strings.
+	 * @return The same object, but cast as an array automatically by Java.
+	 */
+	public static String[] asArray(final String... strings) {
+		return strings;
+	}
+
+	/**
 	 * Capitalizes first letter of a String.
 	 * 
 	 * @see Character#toTitleCase(char)
@@ -190,6 +201,13 @@ public class StringUtils {
 		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 
+	public static String toCleanUrlToken(final String string) {
+		if (StringUtils.isBlank(string)) {
+			throw new IllegalArgumentException("Non-blank string required");
+		}
+		return splitCamelCase(string.trim()).toLowerCase().replaceAll("[\\W_]+", "-");
+	}
+
 	/**
 	 * Truncates a string if it is longer than desired.
 	 * 
@@ -211,24 +229,6 @@ public class StringUtils {
 			return string.substring(0, maxLength);
 		}
 		return string;
-	}
-
-	/**
-	 * Shorthand method for passing varargs to methods requiring arrays.
-	 * 
-	 * @param strings
-	 *            The array of strings.
-	 * @return The same object, but cast as an array automatically by Java.
-	 */
-	public static String[] asArray(String... strings) {
-		return strings;
-	}
-
-	public static String toCleanUrlToken(String string) {
-		if (StringUtils.isBlank(string)) {
-			throw new IllegalArgumentException("Non-blank string required");
-		}
-		return splitCamelCase(string.trim()).toLowerCase().replaceAll("[\\W_]+", "-");
 	}
 
 }

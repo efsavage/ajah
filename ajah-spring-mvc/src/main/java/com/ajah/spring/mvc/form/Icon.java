@@ -38,7 +38,7 @@ public enum Icon {
 
 	private final String bootstrapClass;
 
-	private Icon(String bootstrapClass) {
+	private Icon(final String bootstrapClass) {
 		this.bootstrapClass = bootstrapClass;
 
 	}

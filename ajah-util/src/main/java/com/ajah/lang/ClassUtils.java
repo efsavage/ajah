@@ -31,10 +31,10 @@ public class ClassUtils {
 	 *            The fully-qualified name of the class.
 	 * @return true if the class could be found, otherwise false.
 	 */
-	public static boolean exists(String className) {
+	public static boolean exists(final String className) {
 		try {
 			return Class.forName(className) != null;
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			return false;
 		}
 	}

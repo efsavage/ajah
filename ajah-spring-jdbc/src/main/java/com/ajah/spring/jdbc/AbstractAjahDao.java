@@ -124,6 +124,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return null;
 	}
 
+	protected static int now() {
+		return (int) (System.currentTimeMillis() / 1000);
+	}
+
 	private final Map<String, Field> colMap = new HashMap<>();
 
 	private List<String> columns;
@@ -668,19 +672,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	/**
-	 * Find a list of entities by a simple field match, ideal for searching by
-	 * related entity IDs.
-	 * 
-	 * @param value
-	 *            The value to use to build the query.
-	 * @return List of entities if found, otherwise null.
-	 * @since 1.0.1
-	 */
-	public List<T> list(final ToStringable value) {
-		return list(new Criteria().eq(value));
-	}
-
-	/**
 	 * Find a list of entities by non-unique match.
 	 * 
 	 * @param criteria
@@ -723,6 +714,34 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.fine(e.getMessage());
 			return Collections.emptyList();
 		}
+	}
+
+	/**
+	 * Find a list of entities by a simple field match, ideal for searching by
+	 * related entity IDs.
+	 * 
+	 * @param value
+	 *            The value to use to build the query.
+	 * @return List of entities if found, otherwise null.
+	 * @since 1.0.1
+	 */
+	public List<T> list(final ToStringable value) {
+		return list(new Criteria().eq(value));
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param field
+	 *            Column to match against, required.
+	 * @param value
+	 *            Value to match against the entity.field column, required.
+	 * @return Entity if found, otherwise null.
+	 */
+	public List<T> listByField(final String field, final Identifiable<? extends ToStringable> value) {
+		AjahUtils.requireParam(value, "value");
+		AjahUtils.requireParam(value.getId(), "value.id");
+		return listByField(field, value.getId().toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -802,21 +821,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public List<T> listByField(final String field, final ToStringable value) {
 		AjahUtils.requireParam(value, "value");
 		return listByField(field, value.toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
-	}
-
-	/**
-	 * Find a list of entities by non-unique match.
-	 * 
-	 * @param field
-	 *            Column to match against, required.
-	 * @param value
-	 *            Value to match against the entity.field column, required.
-	 * @return Entity if found, otherwise null.
-	 */
-	public List<T> listByField(final String field, final Identifiable<? extends ToStringable> value) {
-		AjahUtils.requireParam(value, "value");
-		AjahUtils.requireParam(value.getId(), "value.id");
-		return listByField(field, value.getId().toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -974,10 +978,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.fine(e.getMessage());
 			return 0;
 		}
-	}
-
-	protected static int now() {
-		return (int) (System.currentTimeMillis() / 1000);
 	}
 
 	private void propSet(final T entity, final PropertyDescriptor prop, final Object value) {

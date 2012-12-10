@@ -124,23 +124,6 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 		}
 	}
 
-	protected void renderChildren(Writer out, int depth) throws IOException {
-		if (this.children != null) {
-			for (final HtmlElement<?> child : this.children) {
-				if (depth >= 0) {
-					child.render(out, depth + 1);
-				} else {
-					child.render(out, depth);
-				}
-			}
-		}
-		if (depth >= 0 && this.children != null) {
-			for (int i = 0; i < depth; i++) {
-				out.write("\t");
-			}
-		}
-	}
-
 	/**
 	 * Called after the standard attributes are written, while still in the
 	 * opening tag. Does nothing unless overridden.
@@ -165,8 +148,25 @@ public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCor
 	 * @throws IOException
 	 *             If the writer cannot be written to.
 	 */
-	protected void renderBeforeChildren(final Writer out, int depth) throws IOException {
+	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
 		// Empty
+	}
+
+	protected void renderChildren(final Writer out, final int depth) throws IOException {
+		if (this.children != null) {
+			for (final HtmlElement<?> child : this.children) {
+				if (depth >= 0) {
+					child.render(out, depth + 1);
+				} else {
+					child.render(out, depth);
+				}
+			}
+		}
+		if (depth >= 0 && this.children != null) {
+			for (int i = 0; i < depth; i++) {
+				out.write("\t");
+			}
+		}
 	}
 
 }

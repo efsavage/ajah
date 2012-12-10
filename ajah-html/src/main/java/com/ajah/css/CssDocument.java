@@ -36,18 +36,6 @@ public class CssDocument {
 	private final List<CssRule> rules = new ArrayList<>();
 
 	/**
-	 * Add these rules to this document.
-	 * 
-	 * @param newRules
-	 *            The rules to add.
-	 * @return This document.
-	 */
-	public CssDocument addAll(final List<CssRule> newRules) {
-		this.rules.addAll(newRules);
-		return this;
-	}
-
-	/**
 	 * Add a rule to this document.
 	 * 
 	 * @param newRule
@@ -56,6 +44,18 @@ public class CssDocument {
 	 */
 	public CssDocument add(final CssRule newRule) {
 		this.rules.add(newRule);
+		return this;
+	}
+
+	/**
+	 * Add these rules to this document.
+	 * 
+	 * @param newRules
+	 *            The rules to add.
+	 * @return This document.
+	 */
+	public CssDocument addAll(final List<CssRule> newRules) {
+		this.rules.addAll(newRules);
 		return this;
 	}
 

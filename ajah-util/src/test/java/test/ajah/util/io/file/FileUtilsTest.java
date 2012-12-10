@@ -49,6 +49,14 @@ public class FileUtilsTest {
 	}
 
 	/**
+	 * Remove the random file.
+	 */
+	@After
+	public void teardown() {
+		this.file.delete();
+	}
+
+	/**
 	 * Test string write/read.
 	 * 
 	 * @throws IOException
@@ -57,17 +65,9 @@ public class FileUtilsTest {
 	public void writeFile() throws IOException {
 		FileUtils.write(this.file, getClass().getName());
 		Assert.assertEquals(getClass().getName(), FileUtils.readFile(this.file));
-		String lipsum = LoremIpsum.getParagraph() + "\n\n" + LoremIpsum.getParagraph();
+		final String lipsum = LoremIpsum.getParagraph() + "\n\n" + LoremIpsum.getParagraph();
 		FileUtils.write(this.file, lipsum);
 		Assert.assertEquals(lipsum, FileUtils.readFile(this.file));
-	}
-
-	/**
-	 * Remove the random file.
-	 */
-	@After
-	public void teardown() {
-		this.file.delete();
 	}
 
 }

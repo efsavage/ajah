@@ -110,20 +110,6 @@ public class Http {
 		return EntityUtils.toByteArray(internalGet(uri));
 	}
 
-	private static HttpEntity internalGet(final URI uri) throws IOException, ClientProtocolException, NotFoundException, UnexpectedResponseCode {
-		final HttpClient httpclient = new DefaultHttpClient();
-		final HttpGet httpget = new HttpGet(uri);
-		final HttpResponse response = httpclient.execute(httpget);
-		if (response.getStatusLine().getStatusCode() == 200) {
-			final HttpEntity entity = response.getEntity();
-			return entity;
-		} else if (response.getStatusLine().getStatusCode() == 404) {
-			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
-		} else {
-			throw new UnexpectedResponseCode(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
-		}
-	}
-
 	/**
 	 * Calls {@link #get(URI)} but returns null instead of throwing exceptions.
 	 * 
@@ -140,6 +126,20 @@ public class Http {
 		} catch (final HttpException e) {
 			log.log(Level.WARNING, e.getMessage(), e);
 			return null;
+		}
+	}
+
+	private static HttpEntity internalGet(final URI uri) throws IOException, ClientProtocolException, NotFoundException, UnexpectedResponseCode {
+		final HttpClient httpclient = new DefaultHttpClient();
+		final HttpGet httpget = new HttpGet(uri);
+		final HttpResponse response = httpclient.execute(httpget);
+		if (response.getStatusLine().getStatusCode() == 200) {
+			final HttpEntity entity = response.getEntity();
+			return entity;
+		} else if (response.getStatusLine().getStatusCode() == 404) {
+			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
+		} else {
+			throw new UnexpectedResponseCode(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
 		}
 	}
 

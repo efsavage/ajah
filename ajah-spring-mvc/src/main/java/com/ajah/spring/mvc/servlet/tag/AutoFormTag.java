@@ -133,7 +133,7 @@ public class AutoFormTag extends SpringTag {
 			Icon iconLeft = null;
 			Icon iconRight = null;
 			if (this.autoForm.getClass().isAnnotationPresent(Submit.class)) {
-				Submit submit = this.autoForm.getClass().getAnnotation(Submit.class);
+				final Submit submit = this.autoForm.getClass().getAnnotation(Submit.class);
 				submitText = submit.value();
 				if (submit.iconLeft() != null && submit.iconLeft() != Icon.NONE) {
 					iconLeft = submit.iconLeft();
@@ -193,7 +193,7 @@ public class AutoFormTag extends SpringTag {
 
 	private Input<?> getInput(final Field field, final Field[] allFields) throws IllegalArgumentException, IllegalAccessException {
 
-		String label = AutoFormUtils.getLabel(field);
+		final String label = AutoFormUtils.getLabel(field);
 
 		Input<?> input = null;
 		log.fine(field.getType().toString());
@@ -225,11 +225,11 @@ public class AutoFormTag extends SpringTag {
 			// An floating point input
 			input = new InputImpl(label, field.getName(), StringUtils.safeToString(field.get(this.autoForm)), AutoFormUtils.getInputType(field));
 		} else if (IntrospectionUtils.isIdentifiableEnum(field)) {
-			Select select = new Select(label, field.getName());
-			Identifiable<?>[] options = (Identifiable<?>[]) field.getType().getEnumConstants();
-			for (Identifiable<?> enumOption : options) {
+			final Select select = new Select(label, field.getName());
+			final Identifiable<?>[] options = (Identifiable<?>[]) field.getType().getEnumConstants();
+			for (final Identifiable<?> enumOption : options) {
 				log.fine(enumOption.getId().toString() + " / " + enumOption.toString());
-				Option option = new Option(enumOption.getId().toString(), AutoFormUtils.getLabel(field, enumOption));
+				final Option option = new Option(enumOption.getId().toString(), AutoFormUtils.getLabel(field, enumOption));
 				select.add(option);
 			}
 			input = select;

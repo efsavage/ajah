@@ -34,6 +34,27 @@ import com.ajah.util.reflect.IntrospectionUtils;
 public class AutoFormUtils {
 
 	/**
+	 * Looks for {@link Hidden} and {@link Password} annotations to determine
+	 * the input type.
+	 * 
+	 * @param field
+	 *            The field to inspect.
+	 * @return The input type, default value is {@link InputType#TEXT}
+	 */
+	public static InputType getInputType(final Field field) {
+		if (field.isAnnotationPresent(Hidden.class)) {
+			log.finest("Field " + field.getName() + " is hidden");
+			return InputType.HIDDEN;
+		}
+		if (field.isAnnotationPresent(com.ajah.spring.mvc.form.Password.class)) {
+			log.finest("Field " + field.getName() + " is a password");
+			return InputType.PASSWORD;
+		}
+		log.finest("Field " + field.getName() + " is text");
+		return InputType.TEXT;
+	}
+
+	/**
 	 * Returns a human-readable version of an {@link AutoForm}'s field name. If
 	 * there is a {@link Label} annotation, that will be used, otherwise the
 	 * field name will be de-camelcased.
@@ -68,9 +89,9 @@ public class AutoFormUtils {
 	 *            The instance to get the label of.
 	 * @return The label of the field, should not be null.
 	 */
-	public static String getLabel(final Field field, Object object) {
+	public static String getLabel(final Field field, final Object object) {
 		if (IntrospectionUtils.isEnum(field) && IntrospectionUtils.isNamed(field)) {
-			String name = ((Named) object).getName();
+			final String name = ((Named) object).getName();
 			if (!StringUtils.isBlank(name)) {
 				return name;
 			}
@@ -78,26 +99,5 @@ public class AutoFormUtils {
 		log.finest("isEnum: " + IntrospectionUtils.isEnum(field));
 		log.finest("isNamed: " + IntrospectionUtils.isNamed(field));
 		return getLabel(field);
-	}
-
-	/**
-	 * Looks for {@link Hidden} and {@link Password} annotations to determine
-	 * the input type.
-	 * 
-	 * @param field
-	 *            The field to inspect.
-	 * @return The input type, default value is {@link InputType#TEXT}
-	 */
-	public static InputType getInputType(final Field field) {
-		if (field.isAnnotationPresent(Hidden.class)) {
-			log.finest("Field " + field.getName() + " is hidden");
-			return InputType.HIDDEN;
-		}
-		if (field.isAnnotationPresent(com.ajah.spring.mvc.form.Password.class)) {
-			log.finest("Field " + field.getName() + " is a password");
-			return InputType.PASSWORD;
-		}
-		log.finest("Field " + field.getName() + " is text");
-		return InputType.TEXT;
 	}
 }

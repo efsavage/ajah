@@ -122,25 +122,6 @@ public class Criteria {
 	}
 
 	/**
-	 * A LIKE field match. Uses the query as-is (i.e. add your own wildcards).
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param pattern
-	 *            The pattern the field must match.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria like(final String field, final String pattern) {
-		AjahUtils.requireParam(field, "field");
-		AjahUtils.requireParam(pattern, "pattern");
-		if (this.likes == null) {
-			this.likes = new ArrayList<>();
-		}
-		this.likes.add(new NameValuePair<>(field, pattern));
-		return this;
-	}
-
-	/**
 	 * A field match. Supports nulls (as "IS NULL").
 	 * 
 	 * @param field
@@ -304,6 +285,25 @@ public class Criteria {
 			this.joins = new ArrayList<>();
 		}
 		this.joins.add(new NameValuePair<>(table1 + "." + field1, table2 + "." + field2));
+		return this;
+	}
+
+	/**
+	 * A LIKE field match. Uses the query as-is (i.e. add your own wildcards).
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param pattern
+	 *            The pattern the field must match.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria like(final String field, final String pattern) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(pattern, "pattern");
+		if (this.likes == null) {
+			this.likes = new ArrayList<>();
+		}
+		this.likes.add(new NameValuePair<>(field, pattern));
 		return this;
 	}
 

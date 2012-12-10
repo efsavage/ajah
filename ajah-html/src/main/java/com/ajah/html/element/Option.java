@@ -53,22 +53,10 @@ public class Option extends AbstractHtmlCoreElement<Option> {
 	}
 
 	/**
-	 * Fluent alias to {@link #setText(String)}.
-	 * 
-	 * @param newText
-	 *            The text to set.
-	 * @return The current instance.
-	 */
-	public Option text(final String newText) {
-		setText(newText);
-		return this;
-	}
-
-	/**
 	 * @see com.ajah.html.HtmlElement#render(java.io.Writer, int)
 	 */
 	@Override
-	public void render(Writer out, int depth) throws IOException {
+	public void render(final Writer out, final int depth) throws IOException {
 		for (int i = 0; i < depth; i++) {
 			out.write("\t");
 		}
@@ -80,6 +68,18 @@ public class Option extends AbstractHtmlCoreElement<Option> {
 		if (depth >= 0) {
 			out.write("\r\n");
 		}
+	}
+
+	/**
+	 * Fluent alias to {@link #setText(String)}.
+	 * 
+	 * @param newText
+	 *            The text to set.
+	 * @return The current instance.
+	 */
+	public Option text(final String newText) {
+		setText(newText);
+		return this;
 	}
 
 }

@@ -29,7 +29,7 @@ public class UsernameExistsException extends Exception {
 	 * @param username
 	 *            The username that was used.
 	 */
-	public UsernameExistsException(String username) {
+	public UsernameExistsException(final String username) {
 		super("USERNAME: " + username);
 	}
 

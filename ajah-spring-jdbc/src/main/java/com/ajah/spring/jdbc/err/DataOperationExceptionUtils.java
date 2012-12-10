@@ -33,7 +33,7 @@ public class DataOperationExceptionUtils {
 	 *            The Spring JDBC exception.
 	 * @return The Equivalent Ajah exception;
 	 */
-	public static DataOperationException translate(DataAccessException e) {
+	public static DataOperationException translate(final DataAccessException e) {
 		if (e instanceof org.springframework.dao.DuplicateKeyException) {
 			return new DuplicateKeyException(e);
 		}

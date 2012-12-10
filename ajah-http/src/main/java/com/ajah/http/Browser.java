@@ -50,17 +50,6 @@ public enum Browser {
 	 */
 	UNKNOWN(0, "Unknown", "?");
 
-	private final int id;
-	private final String name;
-	private final String abbreviation;
-
-	private Browser(int id, String name, String abbreviation) {
-		this.id = id;
-		this.name = name;
-		this.abbreviation = abbreviation;
-
-	}
-
 	/**
 	 * Looks at user agent string and extracts browser.
 	 * 
@@ -87,6 +76,27 @@ public enum Browser {
 		return UNKNOWN;
 	}
 
+	private final int id;
+	private final String name;
+
+	private final String abbreviation;
+
+	private Browser(final int id, final String name, final String abbreviation) {
+		this.id = id;
+		this.name = name;
+		this.abbreviation = abbreviation;
+
+	}
+
+	/**
+	 * Returns the common abbreviation of the browser. E.G. "IE".
+	 * 
+	 * @return the common abbreviation of the browser.
+	 */
+	public String getAbbreviation() {
+		return this.abbreviation;
+	}
+
 	/**
 	 * Returns the unique ID of this browser. Note that this value is arbitrary
 	 * and does not come from the browser itself.
@@ -104,15 +114,6 @@ public enum Browser {
 	 */
 	public String getName() {
 		return this.name;
-	}
-
-	/**
-	 * Returns the common abbreviation of the browser. E.G. "IE".
-	 * 
-	 * @return the common abbreviation of the browser.
-	 */
-	public String getAbbreviation() {
-		return this.abbreviation;
 	}
 
 }

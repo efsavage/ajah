@@ -70,16 +70,6 @@ public class Report {
 	}
 
 	/**
-	 * Sets a logger to receive the report.
-	 * 
-	 * @param _log
-	 *            The logger to log to.
-	 */
-	public void set(final Logger _log) {
-		this.log = _log;
-	}
-
-	/**
 	 * Adds an OutputStream to write the report to, wrapped by a
 	 * {@link PrintWriter}.
 	 * 
@@ -159,6 +149,16 @@ public class Report {
 	 */
 	public void rule() {
 		println(EQUAL_40);
+	}
+
+	/**
+	 * Sets a logger to receive the report.
+	 * 
+	 * @param _log
+	 *            The logger to log to.
+	 */
+	public void set(final Logger _log) {
+		this.log = _log;
 	}
 
 }

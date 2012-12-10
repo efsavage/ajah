@@ -15,9 +15,9 @@
  */
 package com.ajah.css;
 
-import com.ajah.util.compare.CompareUtils;
-
 import lombok.Data;
+
+import com.ajah.util.compare.CompareUtils;
 
 /**
  * Represents a CSS declaration (property/value within a rule).

@@ -34,17 +34,17 @@ public class LargeDataSizeUnitTest {
 	/**
 	 * Tests calling for long value of a large unit.
 	 */
-	@Test(expected = UnsupportedOperationException.class)
-	public void testYobiBytesLong() {
-		Assert.assertEquals(2 ^ 80, LargeDataSizeUnit.YOBIBYTE.getBytesLong());
+	@Test
+	public void testYobiBytes() {
+		Assert.assertEquals(BigInteger.valueOf(2).pow(80), LargeDataSizeUnit.YOBIBYTE.getBytes());
 	}
 
 	/**
 	 * Tests calling for long value of a large unit.
 	 */
-	@Test
-	public void testYobiBytes() {
-		Assert.assertEquals(BigInteger.valueOf(2).pow(80), LargeDataSizeUnit.YOBIBYTE.getBytes());
+	@Test(expected = UnsupportedOperationException.class)
+	public void testYobiBytesLong() {
+		Assert.assertEquals(2 ^ 80, LargeDataSizeUnit.YOBIBYTE.getBytesLong());
 	}
 
 }
