@@ -72,7 +72,7 @@ public class Crypto {
 	 * @throws UnsupportedOperationException
 	 *             If there is a cryptographic error.
 	 */
-	public static String fromAES(final String encrypted, String keyString) {
+	public static String fromAES(final String encrypted, final String keyString) {
 		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
 			final Cipher cipher = Cipher.getInstance("AES");
@@ -201,15 +201,23 @@ public class Crypto {
 	 * 
 	 * @param secret
 	 *            Data to encrypt.
-	 * @param keyString
+	 * @param key
 	 *            The key to use to encrypt the data.
 	 * @return Hexadecimal encoded version of the encrypted data.
 	 * @throws UnsupportedOperationException
 	 *             If there is a cryptographic error.
 	 */
-	public static String toAES(final String secret, String keyString) {
-		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
+	public static String toAES(final String secret, final byte[] key) {
+		AjahUtils.requireParam(secret, "secret");
+		AjahUtils.requireParam(key, "key");
+		log.finest("key is " + key.length + " bytes long");
 		try {
+			final int maxKeyLen = Cipher.getMaxAllowedKeyLength("AES");
+			log.finest("maximum key length is " + maxKeyLen + " bytes");
+			if (key.length > maxKeyLen) {
+				throw new IllegalArgumentException("Key length of " + key.length + " is longer than maximum allowed " + maxKeyLen);
+			}
+			final SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
 			final Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
 			final byte[] encrypted = cipher.doFinal(secret.getBytes());
@@ -225,7 +233,22 @@ public class Crypto {
 		} catch (final NoSuchPaddingException e) {
 			throw new UnsupportedOperationException(e);
 		}
+	}
 
+	/**
+	 * Encodes a value in aes and returns the hexadecimal encoded version of the
+	 * encrypted data.
+	 * 
+	 * @param secret
+	 *            Data to encrypt.
+	 * @param keyString
+	 *            The key to use to encrypt the data.
+	 * @return Hexadecimal encoded version of the encrypted data.
+	 * @throws UnsupportedOperationException
+	 *             If there is a cryptographic error.
+	 */
+	public static String toAES(final String secret, final String keyString) {
+		return toAES(secret, new BigInteger(keyString, 16).toByteArray());
 	}
 
 }
