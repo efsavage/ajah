@@ -15,6 +15,9 @@
  */
 package com.ajah.spring.jdbc.err;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import lombok.extern.java.Log;
 
 import org.springframework.dao.DataAccessException;
@@ -26,16 +29,28 @@ import org.springframework.dao.DataAccessException;
 @Log
 public class DataOperationExceptionUtils {
 
+	static final Pattern mysqlUnknownColumn = Pattern.compile("Unknown column '(.*?)' in 'field list'");
+
 	/**
 	 * Translates a Spring JDBC exception to an Ajah exception.
 	 * 
 	 * @param e
 	 *            The Spring JDBC exception.
+	 * @param tableName 
 	 * @return The Equivalent Ajah exception;
 	 */
-	public static DataOperationException translate(final DataAccessException e) {
+	public static DataOperationException translate(final DataAccessException e, String tableName) {
 		if (e instanceof org.springframework.dao.DuplicateKeyException) {
 			return new DuplicateKeyException(e);
+		} else if (e instanceof org.springframework.jdbc.BadSqlGrammarException) {
+			if (e.getCause() != null && e.getCause().getMessage().matches(mysqlUnknownColumn.pattern())) {
+				Matcher matcher = mysqlUnknownColumn.matcher(e.getCause().getMessage());
+				matcher.find();
+				String columnName = matcher.group(1);
+				return new UnknownColumnException(columnName, tableName, e);
+			}
+			System.out.println(e.getCause().getMessage());
+			return new QuerySyntaxException(e);
 		}
 		log.warning("Unknown: " + e.getClass().getName());
 		return new UnknownDataOperationException(e);

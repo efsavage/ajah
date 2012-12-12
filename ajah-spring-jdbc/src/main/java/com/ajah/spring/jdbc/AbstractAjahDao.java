@@ -228,7 +228,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.fine(e.getMessage());
 			return 0;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -240,7 +240,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.fine(e.getMessage());
 			return 0;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, null);
 		}
 	}
 
@@ -285,7 +285,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		try {
 			return getJdbcTemplate().update("DELETE FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() });
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 
 	}
@@ -330,7 +330,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -353,7 +353,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -385,7 +385,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.fine(e.getMessage());
 			return null;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -426,7 +426,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.fine(e.getMessage());
 			return null;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -448,7 +448,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -627,7 +627,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			return this.jdbcTemplate.update(sql, entity.getId().toString());
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -667,7 +667,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			return this.jdbcTemplate.update(sql, getInsertValues(entity));
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -859,7 +859,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.finest(e.getMessage());
 			return null;
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -1039,7 +1039,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 

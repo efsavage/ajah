@@ -67,7 +67,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 			return this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)",
 					new Object[] { user.getId().toString(), user.getUsername(), password.toString(), user.getStatus().getId() + "", user.getType().getId() + "" });
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, "user");
 		}
 	}
 
@@ -89,7 +89,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		try {
 			return this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
 		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e);
+			throw DataOperationExceptionUtils.translate(e, "user");
 		}
 	}
 
