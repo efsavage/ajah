@@ -238,4 +238,23 @@ public class UserManager {
 		return this.userDao.findByUsername(username) != null;
 	}
 
+	/**
+	 * Loads a user by unique ID.
+	 * 
+	 * @param userId
+	 *            The ID of the user, required.
+	 * @return The matching user, will not be null.
+	 * @throws UserNotFoundException
+	 *             If the user could not be found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public User load(UserId userId) throws UserNotFoundException, DataOperationException {
+		User user = this.userDao.load(userId);
+		if (user == null) {
+			throw new UserNotFoundException(userId);
+		}
+		return user;
+	}
+
 }

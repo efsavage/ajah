@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2012 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -28,9 +28,10 @@ public class UserNotFoundException extends Exception {
 
 	private static final long serialVersionUID = -1591254351139322758L;
 	private final String username;
+	private final UserId userId;
 
 	/**
-	 * Thrown when a user is requested that does not exist.
+	 * Thrown when a user is requested by a username that does not exist.
 	 * 
 	 * @param username
 	 *            Username that was sought.
@@ -38,6 +39,19 @@ public class UserNotFoundException extends Exception {
 	public UserNotFoundException(final String username) {
 		super("user: " + username + " not found");
 		this.username = username;
+		this.userId = null;
+	}
+
+	/**
+	 * Thrown when a user is requested by an ID that does not exist.
+	 * 
+	 * @param userId
+	 *            User ID that was sought.
+	 */
+	public UserNotFoundException(UserId userId) {
+		super("id: " + userId + " not found");
+		this.userId = userId;
+		this.username = null;
 	}
 
 }
