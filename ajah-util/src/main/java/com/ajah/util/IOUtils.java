@@ -31,13 +31,30 @@ import lombok.extern.java.Log;
 public class IOUtils {
 
 	/**
+	 * Closes a {@link AutoCloseable} object, checking for null and ignoring
+	 * (logging as warning) {@link IOException}s.
+	 * 
+	 * @param closeable
+	 *            AutoCloseable object, may be null.
+	 */
+	public static void safeClose(final AutoCloseable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (final Exception e) {
+				log.log(Level.WARNING, e.getMessage(), e);
+			}
+		}
+	}
+
+	/**
 	 * Closes a {@link Closeable} object, checking for null and ignoring
 	 * (logging as warning) {@link IOException}s.
 	 * 
 	 * @param closeable
 	 *            Closeable object, may be null.
 	 */
-	public static void safeClose(final AutoCloseable closeable) {
+	public static void safeClose(final Closeable closeable) {
 		if (closeable != null) {
 			try {
 				closeable.close();
