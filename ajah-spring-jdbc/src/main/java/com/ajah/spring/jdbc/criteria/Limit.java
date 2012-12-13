@@ -28,8 +28,8 @@ import lombok.Data;
 @Data
 public class Limit {
 
-	private final int offset;
-	private final int count;
+	private final long offset;
+	private final long count;
 
 	/**
 	 * Creates a LIMIT clause from this instances variables.

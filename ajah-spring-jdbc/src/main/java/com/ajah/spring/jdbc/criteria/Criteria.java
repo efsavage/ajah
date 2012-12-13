@@ -42,8 +42,8 @@ public class Criteria {
 	private List<NameValuePair<String>> likes = null;
 	private List<NameValuePair<String>> joins = null;
 	private List<NameValuePair<Order>> orderBys = null;
-	private int offset = 0;
-	private int rowCount = 0;
+	private long offset = 0;
+	private long rowCount = 0;
 
 	/**
 	 * Add an "ORDER BY" clause for the field with an ascending order.
@@ -314,7 +314,7 @@ public class Criteria {
 	 *            The offset, i.e. the position of the first result.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria offset(final int offsetIndex) {
+	public Criteria offset(final long offsetIndex) {
 		this.offset = offsetIndex;
 		return this;
 	}
@@ -345,7 +345,7 @@ public class Criteria {
 	 *            The maximum number of rows to fetch.
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public Criteria rows(final int maximumRowsFetched) {
+	public Criteria rows(final long maximumRowsFetched) {
 		this.rowCount = maximumRowsFetched;
 		return this;
 	}
