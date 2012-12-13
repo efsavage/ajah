@@ -201,6 +201,16 @@ public class StringUtils {
 		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 
+	/**
+	 * Converts a string into a "clean" token suitable for URLs. It will be
+	 * converted to lowercase, have non-word characters replaced with hyphens,
+	 * and be split if it apepars to be camelcase.
+	 * 
+	 * @see #splitCamelCase(String)
+	 * @param string
+	 *            The string to convert.
+	 * @return The converted string.
+	 */
 	public static String toCleanUrlToken(final String string) {
 		if (StringUtils.isBlank(string)) {
 			throw new IllegalArgumentException("Non-blank string required");
@@ -229,6 +239,35 @@ public class StringUtils {
 			return string.substring(0, maxLength);
 		}
 		return string;
+	}
+
+	/**
+	 * Joins a list of strings, separating them by delimeter if they are not
+	 * blank.
+	 * 
+	 * @param delimiter
+	 *            The delimiter to use between strings.
+	 * @param strings
+	 *            The list of strings to join.
+	 * @return A joined list of strings, may be empty or null;
+	 */
+	public static String join(String delimiter, String... strings) {
+		if (strings == null || strings.length < 1) {
+			return null;
+		}
+		StringBuilder retVal = null;
+		for (String string : strings) {
+			if (StringUtils.isBlank(string)) {
+				continue;
+			}
+			if (retVal == null) {
+				retVal = new StringBuilder();
+			} else {
+				retVal.append(delimiter);
+			}
+			retVal.append(string);
+		}
+		return retVal == null ? null : retVal.toString();
 	}
 
 }
