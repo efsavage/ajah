@@ -175,4 +175,50 @@ public class AjahUtils {
 		// Empty, private constructor
 	}
 
+	/**
+	 * Handles a Long and returns a valid value.
+	 * 
+	 * @param value
+	 *            The candidate value.
+	 * @param defaultValue
+	 *            The value if the candidate is null.
+	 * @param minValue
+	 *            The minimum value to return (does not apply to defaultValue)
+	 * @param maxValue
+	 *            The maximum value to return (does not apply to defaultValue)
+	 * @return The value, or the default value if that is null, or the minimum
+	 *         or maximum value if the candidate does not fall between them.
+	 */
+	public static long safeLong(Long value, long defaultValue, long minValue, long maxValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+		long retVal = value.longValue();
+		if (retVal < minValue) {
+			return minValue;
+		}
+		if (retVal > maxValue) {
+			return maxValue;
+		}
+		return retVal;
+	}
+
+	/**
+	 * Handles a Long and returns a valid value. Uses
+	 * {@link #safeLong(Long, long, long, long)} with the defaultValue set to
+	 * minValue.
+	 * 
+	 * @param value
+	 *            The candidate value.
+	 * @param minValue
+	 *            The minimum value to return (does not apply to defaultValue)
+	 * @param maxValue
+	 *            The maximum value to return (does not apply to defaultValue)
+	 * @return The value, or the minimum value if that is null, or the minimum
+	 *         or maximum value if the candidate does not fall between them.
+	 */
+	public static long safeLong(Long value, long minValue, long maxValue) {
+		return safeLong(value, minValue, minValue, maxValue);
+	}
+
 }
