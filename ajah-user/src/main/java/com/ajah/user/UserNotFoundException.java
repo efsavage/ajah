@@ -48,7 +48,7 @@ public class UserNotFoundException extends Exception {
 	 * @param userId
 	 *            User ID that was sought.
 	 */
-	public UserNotFoundException(UserId userId) {
+	public UserNotFoundException(final UserId userId) {
 		super("id: " + userId + " not found");
 		this.userId = userId;
 		this.username = null;

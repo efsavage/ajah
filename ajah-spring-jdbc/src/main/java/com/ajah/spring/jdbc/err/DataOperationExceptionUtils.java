@@ -40,19 +40,19 @@ public class DataOperationExceptionUtils {
 	 * @param tableName
 	 * @return The Equivalent Ajah exception;
 	 */
-	public static DataOperationException translate(final DataAccessException e, String tableName) {
+	public static DataOperationException translate(final DataAccessException e, final String tableName) {
 		if (e instanceof org.springframework.dao.DuplicateKeyException) {
 			return new DuplicateKeyException(e);
 		} else if (e instanceof org.springframework.jdbc.BadSqlGrammarException) {
 			if (e.getCause() != null && e.getCause().getMessage().matches(mysqlUnknownColumn.pattern())) {
-				Matcher matcher = mysqlUnknownColumn.matcher(e.getCause().getMessage());
+				final Matcher matcher = mysqlUnknownColumn.matcher(e.getCause().getMessage());
 				matcher.find();
-				String columnName = matcher.group(1);
+				final String columnName = matcher.group(1);
 				return new UnknownColumnException(columnName, tableName, e);
 			} else if (e.getCause() != null && e.getCause().getMessage().matches(mysqlUnknownTable.pattern())) {
-				Matcher matcher = mysqlUnknownTable.matcher(e.getCause().getMessage());
+				final Matcher matcher = mysqlUnknownTable.matcher(e.getCause().getMessage());
 				matcher.find();
-				String fullTableName = matcher.group(1);
+				final String fullTableName = matcher.group(1);
 				return new UnknownTableException(fullTableName, e);
 			}
 			System.out.println(e.getCause().getMessage());

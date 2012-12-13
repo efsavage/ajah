@@ -227,18 +227,6 @@ public class UserManager {
 	}
 
 	/**
-	 * Is this username already in use?
-	 * 
-	 * @param username
-	 * @return true if the username exists, otherwise false.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public boolean usernameExists(final String username) throws DataOperationException {
-		return this.userDao.findByUsername(username) != null;
-	}
-
-	/**
 	 * Loads a user by unique ID.
 	 * 
 	 * @param userId
@@ -249,12 +237,24 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User load(UserId userId) throws UserNotFoundException, DataOperationException {
-		User user = this.userDao.load(userId);
+	public User load(final UserId userId) throws UserNotFoundException, DataOperationException {
+		final User user = this.userDao.load(userId);
 		if (user == null) {
 			throw new UserNotFoundException(userId);
 		}
 		return user;
+	}
+
+	/**
+	 * Is this username already in use?
+	 * 
+	 * @param username
+	 * @return true if the username exists, otherwise false.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public boolean usernameExists(final String username) throws DataOperationException {
+		return this.userDao.findByUsername(username) != null;
 	}
 
 }

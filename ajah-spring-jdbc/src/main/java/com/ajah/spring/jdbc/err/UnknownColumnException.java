@@ -31,7 +31,7 @@ public class UnknownColumnException extends QuerySyntaxException {
 	 * @param tableName
 	 * @param e
 	 */
-	public UnknownColumnException(String columnName, String tableName, Throwable e) {
+	public UnknownColumnException(final String columnName, final String tableName, final Throwable e) {
 		super(tableName + "." + columnName, e);
 	}
 

@@ -30,7 +30,7 @@ public class UnknownTableException extends QuerySyntaxException {
 	 *            The name of the missing table.
 	 * @param e
 	 */
-	public UnknownTableException(String tableName, Throwable e) {
+	public UnknownTableException(final String tableName, final Throwable e) {
 		super(tableName, e);
 	}
 

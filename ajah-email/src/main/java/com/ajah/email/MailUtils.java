@@ -26,6 +26,7 @@ import com.sun.mail.imap.IMAPFolder;
 
 /**
  * Utilities for dealing with Mail
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
@@ -39,11 +40,11 @@ public class MailUtils {
 	 * @param folder
 	 *            The folder to close.
 	 */
-	public static void safeClose(IMAPFolder folder) {
+	public static void safeClose(final IMAPFolder folder) {
 		if (folder != null && folder.isOpen()) {
 			try {
 				folder.close(false);
-			} catch (MessagingException e) {
+			} catch (final MessagingException e) {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 		}
@@ -56,11 +57,11 @@ public class MailUtils {
 	 * @param store
 	 *            The store to close.
 	 */
-	public static void safeClose(Store store) {
+	public static void safeClose(final Store store) {
 		if (store != null && store.isConnected()) {
 			try {
 				store.close();
-			} catch (MessagingException e) {
+			} catch (final MessagingException e) {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 		}
