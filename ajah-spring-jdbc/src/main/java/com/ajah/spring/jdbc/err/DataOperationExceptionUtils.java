@@ -30,13 +30,14 @@ import org.springframework.dao.DataAccessException;
 public class DataOperationExceptionUtils {
 
 	static final Pattern mysqlUnknownColumn = Pattern.compile("Unknown column '(.*?)' in 'field list'");
+	static final Pattern mysqlUnknownTable = Pattern.compile("Table '(.*?)' doesn't exist'");
 
 	/**
 	 * Translates a Spring JDBC exception to an Ajah exception.
 	 * 
 	 * @param e
 	 *            The Spring JDBC exception.
-	 * @param tableName 
+	 * @param tableName
 	 * @return The Equivalent Ajah exception;
 	 */
 	public static DataOperationException translate(final DataAccessException e, String tableName) {
@@ -48,6 +49,11 @@ public class DataOperationExceptionUtils {
 				matcher.find();
 				String columnName = matcher.group(1);
 				return new UnknownColumnException(columnName, tableName, e);
+			} else if (e.getCause() != null && e.getCause().getMessage().matches(mysqlUnknownTable.pattern())) {
+				Matcher matcher = mysqlUnknownTable.matcher(e.getCause().getMessage());
+				matcher.find();
+				String fullTableName = matcher.group(1);
+				return new UnknownTableException(fullTableName, e);
 			}
 			System.out.println(e.getCause().getMessage());
 			return new QuerySyntaxException(e);
