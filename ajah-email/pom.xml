@@ -2,7 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ajah-email</groupId>
 	<artifactId>ajah-email</artifactId>
 	<name>Ajah Email Library</name>
 	<description>The Ajah Email Library offers simplified ways to send ad-hoc and templated emails.</description>
