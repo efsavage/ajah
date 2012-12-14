@@ -884,7 +884,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			} else if (Collection.class.isAssignableFrom(field.getType())) {
 				log.finest("Ignoring Collection field " + field.getName());
 				continue;
+			} else if (field.getName().startsWith("$SWITCH_TABLE")) {
+				log.finest("Ignoring switch statement method");
+				continue;
 			}
+
 			final String colName = JDBCMapperUtils.getColumnName(getTableName(), field);
 			columnList.add(colName);
 			this.colMap.put(colName, field);
