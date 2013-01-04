@@ -293,6 +293,8 @@
 		<module>../ajah-spring</module>
 		<module>../ajah-spring-jdbc</module>
 		<module>../ajah-spring-mvc</module>
+		<module>../ajah-syndicate</module>
+		<module>../ajah-syndicate-data</module>
 		<module>../ajah-user</module>
 		<module>../ajah-amazon-s3</module>
 	</modules>
