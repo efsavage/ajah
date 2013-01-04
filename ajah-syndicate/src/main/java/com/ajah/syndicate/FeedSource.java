@@ -45,6 +45,8 @@ public class FeedSource implements Identifiable<FeedSourceId> {
 	private FeedSourceType type;
 	private FeedSourceStatus status;
 	private Date nextPoll;
+	private Date created;
+	private Date modified;
 
 	/**
 	 * Returns the SHA-1 of the feedUrl field, if it is available.
