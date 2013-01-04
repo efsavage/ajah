@@ -16,7 +16,11 @@
 package com.ajah.spring.mvc.editor;
 
 import java.beans.PropertyEditorSupport;
+import java.util.logging.Level;
 
+import lombok.extern.java.Log;
+
+import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
 import com.ajah.util.StringUtils;
@@ -28,6 +32,7 @@ import com.ajah.util.StringUtils;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Log
 public class PasswordEditor extends PropertyEditorSupport {
 
 	/**
@@ -48,7 +53,12 @@ public class PasswordEditor extends PropertyEditorSupport {
 	 */
 	@Override
 	public void setAsText(final String text) {
-		setValue(StringUtils.isBlank(text) ? null : new HmacSha1Password(text, false));
+		try {
+			setValue(StringUtils.isBlank(text) ? null : new HmacSha1Password(text, false));
+		} catch (CryptoException e) {
+			log.log(Level.WARNING, e.getMessage(), e);
+			setValue(null);
+		}
 	}
 
 }

@@ -13,34 +13,26 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package test.ajah.util.crypto;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import com.ajah.crypto.CryptoException;
-import com.ajah.crypto.HmacSha1Password;
-import com.ajah.util.config.Config;
+package com.ajah.crypto;
 
 /**
- * Tests {@link HmacSha1Password}.
+ * This is thrown when there is an error with a cryptographic operation, such as
+ * an invalid key length.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public class CryptoTest {
+public class CryptoException extends Exception {
 
 	/**
-	 * Tests that a value is being hashed properly.
+	 * Public constructor.
 	 * 
-	 * @throws CryptoException
-	 *             If there is a cryptographic error.
+	 * @see Exception#Exception(Throwable)
+	 * @param t
+	 *            The cause.
 	 */
-	@Test
-	public void hmacSha1PasswordTest() throws CryptoException {
-		Config.i.set("crypto.key.hmacsha1", "1234567890");
-		final HmacSha1Password hmacSha1Password = new HmacSha1Password("foobar", false);
-		Assert.assertEquals("-305dc59cb5a82c23fcef84a3c60ea0aca890f03e", hmacSha1Password.toString());
+	public CryptoException(Throwable t) {
+		super(t);
 	}
+
 }

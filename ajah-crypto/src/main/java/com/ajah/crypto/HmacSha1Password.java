@@ -33,8 +33,10 @@ public class HmacSha1Password implements Password {
 	 *            Password, or hash.
 	 * @param hashed
 	 *            true if the value is hashed (will not be re-hashed)
+	 * @throws CryptoException
+	 *             If there is a cryptographic error.
 	 */
-	public HmacSha1Password(final String value, final boolean hashed) {
+	public HmacSha1Password(final String value, final boolean hashed) throws CryptoException {
 		if (hashed) {
 			this.hash = value;
 		} else {

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ajah.crypto.Crypto;
+import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.err.DataOperationException;
@@ -55,8 +56,10 @@ public class LogInManager {
 	 * @param password
 	 *            Password object for user to include in the token.
 	 * @return Token that can be used to authenticate.
+	 * @throws CryptoException
+	 *             If there is a cryptographic error.
 	 */
-	public static String getTokenValue(final User user, final Password password) {
+	public static String getTokenValue(final User user, final Password password) throws CryptoException {
 		return Crypto.toAES(user.getUsername() + "|" + password.toString());
 	}
 
@@ -125,10 +128,19 @@ public class LogInManager {
 	 */
 	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by token attempt for: " + token);
-		final String decrypted = Crypto.fromAES(token);
-		log.fine("token contents: " + decrypted);
-		final String username = decrypted.split("\\|")[0];
-		final Password password = new HmacSha1Password(decrypted.split("\\|")[1], true);
-		return login(username, password, ip, source, type);
+		try {
+			String decrypted = Crypto.fromAES(token);
+			log.fine("token contents: " + decrypted);
+			final String username = decrypted.split("\\|")[0];
+			final Password password = new HmacSha1Password(decrypted.split("\\|")[1], true);
+			return login(username, password, ip, source, type);
+		} catch (CryptoException e) {
+			final LogIn login = new LogIn();
+			login.setIp(ip);
+			login.setCreated(new Date());
+			login.setSource(source);
+			login.setStatus(LogInStatus.ERROR);
+			return login;
+		}
 	}
 }

@@ -52,10 +52,10 @@ public class Crypto {
 	 * @param encrypted
 	 *            hexadecimal encoded version of the encrypted data
 	 * @return Decrypted version.
-	 * @throws UnsupportedOperationException
+	 * @throws CryptoException
 	 *             If there is a cryptographic error.
 	 */
-	public static String fromAES(final String encrypted) {
+	public static String fromAES(final String encrypted) throws CryptoException {
 		final String keyString = Config.i.get("crypto.key.aes", null);
 		return fromAES(encrypted, keyString);
 	}
@@ -69,10 +69,10 @@ public class Crypto {
 	 * @param keyString
 	 *            The key to use to decrypt the data.
 	 * @return Decrypted version.
-	 * @throws UnsupportedOperationException
+	 * @throws CryptoException
 	 *             If there is a cryptographic error.
 	 */
-	public static String fromAES(final String encrypted, final String keyString) {
+	public static String fromAES(final String encrypted, final String keyString) throws CryptoException {
 		final SecretKeySpec skeySpec = new SecretKeySpec(new BigInteger(keyString, 16).toByteArray(), "AES");
 		try {
 			final Cipher cipher = Cipher.getInstance("AES");
@@ -80,15 +80,15 @@ public class Crypto {
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 			return new String(cipher.doFinal(new BigInteger(encrypted, 16).toByteArray()));
 		} catch (final InvalidKeyException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final IllegalBlockSizeException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final BadPaddingException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final NoSuchPaddingException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		}
 	}
 
@@ -98,8 +98,10 @@ public class Crypto {
 	 * @param secret
 	 *            String to process.
 	 * @return Digest of hash.
+	 * @throws CryptoException
+	 *             If there is a cryptographic error.
 	 */
-	public static byte[] getHmacSha1(final byte[] secret) {
+	public static byte[] getHmacSha1(final byte[] secret) throws CryptoException {
 		try {
 			final String keyString = Config.i.get("crypto.key.hmacsha1", null);
 			if (StringUtils.isBlank(keyString)) {
@@ -111,9 +113,9 @@ public class Crypto {
 			m.update(secret);
 			return m.doFinal();
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final InvalidKeyException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		}
 	}
 
@@ -123,13 +125,15 @@ public class Crypto {
 	 * @param secret
 	 *            String to process.
 	 * @return Digest of hash.
+	 * @throws CryptoException
+	 *             If there is a cryptographic error.
 	 */
-	public static String getHmacSha1Hex(final String secret) {
+	public static String getHmacSha1Hex(final String secret) throws CryptoException {
 		AjahUtils.requireParam(secret, "secret");
 		return new BigInteger(getHmacSha1(secret.getBytes())).toString(16);
 	}
 
-	private static void keyGen() {
+	private static void keyGen() throws CryptoException {
 		final SecureRandom sr = new SecureRandom();
 		final byte[] keyBytes = new byte[128];
 		sr.nextBytes(keyBytes);
@@ -142,6 +146,7 @@ public class Crypto {
 			final String secret = scanner.nextLine();
 			System.out.print(getHmacSha1Hex(secret));
 		}
+		scanner.close();
 	}
 
 	private static void listProviders() {
@@ -186,10 +191,10 @@ public class Crypto {
 	 * @param secret
 	 *            Data to encrypt.
 	 * @return Hexadecimal encoded version of the encrypted data.
-	 * @throws UnsupportedOperationException
+	 * @throws CryptoException
 	 *             If there is a cryptographic error.
 	 */
-	public static String toAES(final String secret) {
+	public static String toAES(final String secret) throws CryptoException {
 		final String keyString = Config.i.get("crypto.key.aes", null);
 		AjahUtils.requireParam(keyString, "crypto.key.aes");
 		return toAES(secret, keyString);
@@ -204,10 +209,10 @@ public class Crypto {
 	 * @param key
 	 *            The key to use to encrypt the data.
 	 * @return Hexadecimal encoded version of the encrypted data.
-	 * @throws UnsupportedOperationException
+	 * @throws CryptoException
 	 *             If there is a cryptographic error.
 	 */
-	public static String toAES(final String secret, final byte[] key) {
+	public static String toAES(final String secret, final byte[] key) throws CryptoException {
 		AjahUtils.requireParam(secret, "secret");
 		AjahUtils.requireParam(key, "key");
 		log.finest("key is " + key.length + " bytes long");
@@ -223,15 +228,15 @@ public class Crypto {
 			final byte[] encrypted = cipher.doFinal(secret.getBytes());
 			return new BigInteger(encrypted).toString(16);
 		} catch (final InvalidKeyException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final IllegalBlockSizeException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final BadPaddingException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		} catch (final NoSuchPaddingException e) {
-			throw new UnsupportedOperationException(e);
+			throw new CryptoException(e);
 		}
 	}
 
@@ -244,10 +249,10 @@ public class Crypto {
 	 * @param keyString
 	 *            The key to use to encrypt the data.
 	 * @return Hexadecimal encoded version of the encrypted data.
-	 * @throws UnsupportedOperationException
+	 * @throws CryptoException
 	 *             If there is a cryptographic error.
 	 */
-	public static String toAES(final String secret, final String keyString) {
+	public static String toAES(final String secret, final String keyString) throws CryptoException {
 		return toAES(secret, new BigInteger(keyString, 16).toByteArray());
 	}
 
