@@ -15,6 +15,7 @@
  */
 package com.ajah.syndicate.data;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceId;
+import com.ajah.syndicate.FeedSourceStatus;
+import com.ajah.syndicate.FeedSourceType;
+import com.ajah.syndicate.PollStatus;
+import com.ajah.util.data.HashUtils;
 
 /**
  * Manages persistence of {@link FeedSource}s.
@@ -46,6 +51,7 @@ public class FeedSourceManager {
 	 *            The SHA-1 of the feed url.
 	 * @return The feed source, if found, otherwise null.
 	 * @throws DataOperationException
+	 *             If a query could not be executed.
 	 */
 	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DataOperationException {
 		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
@@ -73,11 +79,66 @@ public class FeedSourceManager {
 	public void save(final FeedSource feedSource) throws DataOperationException {
 		if (feedSource.getId() == null) {
 			feedSource.setId(new FeedSourceId(UUID.randomUUID().toString()));
+			feedSource.setCreated(new Date());
+			feedSource.setModified(feedSource.getCreated());
 			this.feedDao.insert(feedSource);
 		} else {
+			feedSource.setModified(new Date());
 			this.feedDao.update(feedSource);
 		}
 
+	}
+
+	/**
+	 * Finds a feed by it's full URL.
+	 * 
+	 * @param url
+	 *            The URL of the {@link FeedSource}.
+	 * @return The matching source, if found.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public FeedSource findByFeedUrl(String url) throws DataOperationException {
+		return this.findByFeedUrlSha1(HashUtils.sha1Hex(url));
+	}
+
+	/**
+	 * Finds a feed by it's full URL. If none is found, creates a new one.
+	 * 
+	 * @param url
+	 *            The URL of the {@link FeedSource}.
+	 * @return The new or matching source.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public FeedSource findOrCreateByFeedUrl(String url) throws DataOperationException {
+		FeedSource feedSource = this.findByFeedUrlSha1(HashUtils.sha1Hex(url));
+		if (feedSource == null) {
+			feedSource = create(url);
+		}
+		return feedSource;
+	}
+
+	/**
+	 * Creates a new source.
+	 * 
+	 * @param url
+	 *            The URL of the {@link FeedSource}.
+	 * @return The new source.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	private FeedSource create(String url) throws DataOperationException {
+		FeedSource feedSource = new FeedSource();
+		feedSource.setFeedUrl(url);
+		feedSource.setTitle(url);
+		feedSource.setFeedUrlSha1(HashUtils.sha1Hex(url));
+		feedSource.setPollStatus(PollStatus.ACTIVE);
+		feedSource.setType(FeedSourceType.RSS);
+		feedSource.setStatus(FeedSourceStatus.ACTIVE);
+		feedSource.setNextPoll(new Date());
+		save(feedSource);
+		return feedSource;
 	}
 
 }
