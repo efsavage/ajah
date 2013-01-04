@@ -71,6 +71,8 @@ public class HttpClient {
 			final Object content = conn.getContent();
 			if (content instanceof String) {
 				return (String) content;
+			} else if (InputStream.class.isAssignableFrom(content.getClass())) {
+				return new String(StreamUtils.toByteArray((InputStream) content));
 			}
 			return content.toString();
 		} catch (final MalformedURLException e) {

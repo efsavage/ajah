@@ -25,6 +25,7 @@ import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.rome.RomeUtils;
+import com.ajah.util.data.XmlString;
 import com.ajah.util.net.HttpClient;
 import com.sun.syndication.io.FeedException;
 
@@ -48,9 +49,12 @@ public class SimpleFeedTest {
 	 * @throws IOException
 	 */
 	@Test
-	public static void getFeed() throws IllegalArgumentException, FeedException, IOException {
+	public void getFeed() throws IllegalArgumentException, FeedException, IOException {
 		final FeedSource feedSource = new FeedSource();
-		final Feed feed = RomeUtils.createFeed(HttpClient.getXml(TEST_FEED), feedSource);
+		XmlString xml = HttpClient.getXml(TEST_FEED);
+		System.out.println("FEED");
+		System.out.println(xml.toString());
+		final Feed feed = RomeUtils.createFeed(xml, feedSource);
 		log.info(feed.getEntries().size() + " entries");
 		for (final Entry entry : feed.getEntries()) {
 			log.info("Title: " + entry.getTitle());
