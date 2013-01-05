@@ -31,6 +31,7 @@ public class DataOperationExceptionUtils {
 
 	static final Pattern mysqlUnknownColumn = Pattern.compile("Unknown column '(.*?)' in 'field list'");
 	static final Pattern mysqlUnknownTable = Pattern.compile("Table '(.*?)' doesn't exist'");
+	static final Pattern mysqlNotNullColumn = Pattern.compile("Column '(.*?)' cannot be null");
 
 	/**
 	 * Translates a Spring JDBC exception to an Ajah exception.
@@ -43,7 +44,16 @@ public class DataOperationExceptionUtils {
 	public static DataOperationException translate(final DataAccessException e, final String tableName) {
 		if (e instanceof org.springframework.dao.DuplicateKeyException) {
 			return new DuplicateKeyException(e);
-		} else if (e instanceof org.springframework.jdbc.BadSqlGrammarException) {
+		}
+		if (e instanceof org.springframework.dao.DataIntegrityViolationException) {
+			if (e.getCause() != null && e.getCause().getMessage().matches(mysqlNotNullColumn.pattern())) {
+				final Matcher matcher = mysqlNotNullColumn.matcher(e.getCause().getMessage());
+				matcher.find();
+				final String columnName = matcher.group(1);
+				return new RequiredColumnException(columnName, tableName, e);
+			}
+		}
+		if (e instanceof org.springframework.jdbc.BadSqlGrammarException) {
 			if (e.getCause() != null && e.getCause().getMessage().matches(mysqlUnknownColumn.pattern())) {
 				final Matcher matcher = mysqlUnknownColumn.matcher(e.getCause().getMessage());
 				matcher.find();
