@@ -19,6 +19,7 @@ import java.util.logging.Level;
 
 import javax.mail.MessagingException;
 import javax.mail.Store;
+import javax.mail.Transport;
 
 import lombok.extern.java.Log;
 
@@ -61,6 +62,23 @@ public class MailUtils {
 		if (store != null && store.isConnected()) {
 			try {
 				store.close();
+			} catch (final MessagingException e) {
+				log.log(Level.WARNING, e.getMessage(), e);
+			}
+		}
+	}
+
+	/**
+	 * Closes an {@link Transport}, logging but ignoring any errors that occur
+	 * while doing so.
+	 * 
+	 * @param store
+	 *            The store to close.
+	 */
+	public static void safeClose(Transport transport) {
+		if (transport != null && transport.isConnected()) {
+			try {
+				transport.close();
 			} catch (final MessagingException e) {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
