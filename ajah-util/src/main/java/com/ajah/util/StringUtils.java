@@ -270,4 +270,20 @@ public class StringUtils {
 		return retVal == null ? null : retVal.toString();
 	}
 
+	/**
+	 * Trims a string, accepting null values. If a null value is passed, returns
+	 * an empty string. Useful for concatenating so you don't get literal "null"
+	 * strings.
+	 * 
+	 * @param string
+	 *            The string to trim, may be null.
+	 * @return The trimmed string.
+	 */
+	public static String safeTrim(String string) {
+		if (string == null) {
+			return "";
+		}
+		return string.trim();
+	}
+
 }
