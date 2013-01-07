@@ -30,7 +30,7 @@ import org.springframework.dao.DataAccessException;
 public class DataOperationExceptionUtils {
 
 	static final Pattern mysqlUnknownColumn = Pattern.compile("Unknown column '(.*?)' in 'field list'");
-	static final Pattern mysqlUnknownTable = Pattern.compile("Table '(.*?)' doesn't exist'");
+	static final Pattern mysqlUnknownTable = Pattern.compile("Table '(.*?)' doesn't exist");
 	static final Pattern mysqlNotNullColumn = Pattern.compile("Column '(.*?)' cannot be null");
 
 	/**
