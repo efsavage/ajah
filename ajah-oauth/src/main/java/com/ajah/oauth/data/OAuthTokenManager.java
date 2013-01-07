@@ -175,8 +175,9 @@ public class OAuthTokenManager {
 	 * @throws OAuthTokenNotFoundException
 	 *             If the token could not be located.
 	 */
-	public String verify(final User user, final String oauthToken, final String oauthVerifier, final AjahOAuthService service) throws DataOperationException, OAuthTokenNotFoundException {
-		final OAuthToken token = loadToken(OAuthProvider.TWITTER, user.getId(), oauthToken);
+	public String verify(final User user, final OAuthProvider provider, final String oauthToken, final String oauthVerifier, final AjahOAuthService service) throws DataOperationException,
+			OAuthTokenNotFoundException {
+		final OAuthToken token = loadToken(provider, user.getId(), oauthToken);
 		final OAuthAccessToken accessToken = service.verify(token, oauthVerifier);
 		save(accessToken);
 		token.setOAuthAccessTokenId(accessToken.getId());

@@ -28,25 +28,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ajah.oauth.OAuthProvider;
 import com.ajah.oauth.data.OAuthTokenManager;
 import com.ajah.oauth.data.OAuthTokenNotFoundException;
-import com.ajah.oauth.service.TwitterOAuthService;
+import com.ajah.oauth.service.FacebookOAuthService;
 import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Controllers for dealing with OAuth operations for
- * {@link OAuthProvider#TWITTER}.
+ * {@link OAuthProvider#FACEBOOK}.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Controller
 @Slf4j
-public class TwitterOAuthController extends AbstractOAuthController {
+public class FacebookOAuthController extends AbstractOAuthController {
 
 	@Autowired
 	OAuthTokenManager oAuthTokenManager;
 
 	@Autowired
-	TwitterOAuthService twitterService;
+	FacebookOAuthService facebookService;
 
 	/**
 	 * Verifies a token, this should commonly be the callback (the token
@@ -64,10 +64,10 @@ public class TwitterOAuthController extends AbstractOAuthController {
 	 * @throws OAuthTokenNotFoundException
 	 *             If the token could not be found.
 	 */
-	@RequestMapping(value = "/oauth/twitter", method = RequestMethod.GET)
-	public String twitter(@RequestParam("oauth_token") final String oauthToken, @RequestParam("oauth_verifier") final String oauthVerifier, final HttpServletRequest request)
-			throws DataOperationException, OAuthTokenNotFoundException {
-		final String successUrl = this.oAuthTokenManager.verify(getUser(request), OAuthProvider.TWITTER, oauthToken, oauthVerifier, this.twitterService);
+	@RequestMapping(value = "/oauth/facebook", method = RequestMethod.GET)
+	public String facebook(@RequestParam("token") final String oauthToken, @RequestParam("code") final String oauthVerifier, final HttpServletRequest request) throws DataOperationException,
+			OAuthTokenNotFoundException {
+		final String successUrl = this.oAuthTokenManager.verify(getUser(request), OAuthProvider.FACEBOOK, oauthToken, oauthVerifier, this.facebookService);
 		log.debug("Verification successful, redirecting to " + successUrl);
 		return "redirect:" + successUrl;
 	}

@@ -36,7 +36,11 @@ public enum OAuthProvider implements Identifiable<String> {
 	/**
 	 * Google.
 	 */
-	GOOGLE("3", "google", "Google", "Google.");
+	GOOGLE("3", "google", "Google", "Google."),
+	/**
+	 * Facebook.
+	 */
+	FACEBOOK("4", "facebook", "Facebook", "Facebook.");
 
 	/**
 	 * Finds a ContactLocationType that matches the id on id, name, or name().

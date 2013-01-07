@@ -26,7 +26,7 @@ import com.ajah.user.login.LogIn;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public abstract class OAuthController {
+public abstract class AbstractOAuthController {
 
 	protected User getUser(final HttpServletRequest request) {
 		final LogIn logIn = (LogIn) request.getSession().getAttribute("jjLogIn");
