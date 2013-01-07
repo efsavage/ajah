@@ -129,12 +129,12 @@ public class LogInManager {
 	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by token attempt for: " + token);
 		try {
-			String decrypted = Crypto.fromAES(token);
+			final String decrypted = Crypto.fromAES(token);
 			log.fine("token contents: " + decrypted);
 			final String username = decrypted.split("\\|")[0];
 			final Password password = new HmacSha1Password(decrypted.split("\\|")[1], true);
 			return login(username, password, ip, source, type);
-		} catch (CryptoException e) {
+		} catch (final CryptoException e) {
 			final LogIn login = new LogIn();
 			login.setIp(ip);
 			login.setCreated(new Date());

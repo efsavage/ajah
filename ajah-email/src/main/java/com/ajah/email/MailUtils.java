@@ -75,7 +75,7 @@ public class MailUtils {
 	 * @param store
 	 *            The store to close.
 	 */
-	public static void safeClose(Transport transport) {
+	public static void safeClose(final Transport transport) {
 		if (transport != null && transport.isConnected()) {
 			try {
 				transport.close();

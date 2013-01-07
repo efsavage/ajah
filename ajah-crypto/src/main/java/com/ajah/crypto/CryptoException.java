@@ -31,7 +31,7 @@ public class CryptoException extends Exception {
 	 * @param t
 	 *            The cause.
 	 */
-	public CryptoException(Throwable t) {
+	public CryptoException(final Throwable t) {
 		super(t);
 	}
 

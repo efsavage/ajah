@@ -94,6 +94,35 @@ public class StringUtils {
 	}
 
 	/**
+	 * Joins a list of strings, separating them by delimeter if they are not
+	 * blank.
+	 * 
+	 * @param delimiter
+	 *            The delimiter to use between strings.
+	 * @param strings
+	 *            The list of strings to join.
+	 * @return A joined list of strings, may be empty or null;
+	 */
+	public static String join(final String delimiter, final String... strings) {
+		if (strings == null || strings.length < 1) {
+			return null;
+		}
+		StringBuilder retVal = null;
+		for (final String string : strings) {
+			if (StringUtils.isBlank(string)) {
+				continue;
+			}
+			if (retVal == null) {
+				retVal = new StringBuilder();
+			} else {
+				retVal.append(delimiter);
+			}
+			retVal.append(string);
+		}
+		return retVal == null ? null : retVal.toString();
+	}
+
+	/**
 	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
 	 * of Strings, may be empty or null.
 	 * 
@@ -189,6 +218,22 @@ public class StringUtils {
 	}
 
 	/**
+	 * Trims a string, accepting null values. If a null value is passed, returns
+	 * an empty string. Useful for concatenating so you don't get literal "null"
+	 * strings.
+	 * 
+	 * @param string
+	 *            The string to trim, may be null.
+	 * @return The trimmed string.
+	 */
+	public static String safeTrim(final String string) {
+		if (string == null) {
+			return "";
+		}
+		return string.trim();
+	}
+
+	/**
 	 * Converts camelCase text to regular text. Example: "canOfSoda" converts to
 	 * "can of soda". Source: <a href=
 	 * "http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java"
@@ -239,51 +284,6 @@ public class StringUtils {
 			return string.substring(0, maxLength);
 		}
 		return string;
-	}
-
-	/**
-	 * Joins a list of strings, separating them by delimeter if they are not
-	 * blank.
-	 * 
-	 * @param delimiter
-	 *            The delimiter to use between strings.
-	 * @param strings
-	 *            The list of strings to join.
-	 * @return A joined list of strings, may be empty or null;
-	 */
-	public static String join(String delimiter, String... strings) {
-		if (strings == null || strings.length < 1) {
-			return null;
-		}
-		StringBuilder retVal = null;
-		for (String string : strings) {
-			if (StringUtils.isBlank(string)) {
-				continue;
-			}
-			if (retVal == null) {
-				retVal = new StringBuilder();
-			} else {
-				retVal.append(delimiter);
-			}
-			retVal.append(string);
-		}
-		return retVal == null ? null : retVal.toString();
-	}
-
-	/**
-	 * Trims a string, accepting null values. If a null value is passed, returns
-	 * an empty string. Useful for concatenating so you don't get literal "null"
-	 * strings.
-	 * 
-	 * @param string
-	 *            The string to trim, may be null.
-	 * @return The trimmed string.
-	 */
-	public static String safeTrim(String string) {
-		if (string == null) {
-			return "";
-		}
-		return string.trim();
 	}
 
 }

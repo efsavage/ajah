@@ -55,7 +55,7 @@ public class PasswordEditor extends PropertyEditorSupport {
 	public void setAsText(final String text) {
 		try {
 			setValue(StringUtils.isBlank(text) ? null : new HmacSha1Password(text, false));
-		} catch (CryptoException e) {
+		} catch (final CryptoException e) {
 			log.log(Level.WARNING, e.getMessage(), e);
 			setValue(null);
 		}

@@ -45,6 +45,41 @@ public class FeedSourceManager {
 	private FeedSourceDao feedDao;
 
 	/**
+	 * Creates a new source.
+	 * 
+	 * @param url
+	 *            The URL of the {@link FeedSource}.
+	 * @return The new source.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	private FeedSource create(final String url) throws DataOperationException {
+		final FeedSource feedSource = new FeedSource();
+		feedSource.setFeedUrl(url);
+		feedSource.setTitle(url);
+		feedSource.setFeedUrlSha1(HashUtils.sha1Hex(url));
+		feedSource.setPollStatus(PollStatus.ACTIVE);
+		feedSource.setType(FeedSourceType.RSS);
+		feedSource.setStatus(FeedSourceStatus.ACTIVE);
+		feedSource.setNextPoll(new Date());
+		save(feedSource);
+		return feedSource;
+	}
+
+	/**
+	 * Finds a feed by it's full URL.
+	 * 
+	 * @param url
+	 *            The URL of the {@link FeedSource}.
+	 * @return The matching source, if found.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public FeedSource findByFeedUrl(final String url) throws DataOperationException {
+		return findByFeedUrlSha1(HashUtils.sha1Hex(url));
+	}
+
+	/**
 	 * Finds a feed source by the SHA-1 of the feed url.
 	 * 
 	 * @param feedUrlSha1
@@ -55,6 +90,23 @@ public class FeedSourceManager {
 	 */
 	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DataOperationException {
 		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
+	}
+
+	/**
+	 * Finds a feed by it's full URL. If none is found, creates a new one.
+	 * 
+	 * @param url
+	 *            The URL of the {@link FeedSource}.
+	 * @return The new or matching source.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public FeedSource findOrCreateByFeedUrl(final String url) throws DataOperationException {
+		FeedSource feedSource = findByFeedUrlSha1(HashUtils.sha1Hex(url));
+		if (feedSource == null) {
+			feedSource = create(url);
+		}
+		return feedSource;
 	}
 
 	/**
@@ -87,58 +139,6 @@ public class FeedSourceManager {
 			this.feedDao.update(feedSource);
 		}
 
-	}
-
-	/**
-	 * Finds a feed by it's full URL.
-	 * 
-	 * @param url
-	 *            The URL of the {@link FeedSource}.
-	 * @return The matching source, if found.
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 */
-	public FeedSource findByFeedUrl(String url) throws DataOperationException {
-		return this.findByFeedUrlSha1(HashUtils.sha1Hex(url));
-	}
-
-	/**
-	 * Finds a feed by it's full URL. If none is found, creates a new one.
-	 * 
-	 * @param url
-	 *            The URL of the {@link FeedSource}.
-	 * @return The new or matching source.
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 */
-	public FeedSource findOrCreateByFeedUrl(String url) throws DataOperationException {
-		FeedSource feedSource = this.findByFeedUrlSha1(HashUtils.sha1Hex(url));
-		if (feedSource == null) {
-			feedSource = create(url);
-		}
-		return feedSource;
-	}
-
-	/**
-	 * Creates a new source.
-	 * 
-	 * @param url
-	 *            The URL of the {@link FeedSource}.
-	 * @return The new source.
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 */
-	private FeedSource create(String url) throws DataOperationException {
-		FeedSource feedSource = new FeedSource();
-		feedSource.setFeedUrl(url);
-		feedSource.setTitle(url);
-		feedSource.setFeedUrlSha1(HashUtils.sha1Hex(url));
-		feedSource.setPollStatus(PollStatus.ACTIVE);
-		feedSource.setType(FeedSourceType.RSS);
-		feedSource.setStatus(FeedSourceStatus.ACTIVE);
-		feedSource.setNextPoll(new Date());
-		save(feedSource);
-		return feedSource;
 	}
 
 }
