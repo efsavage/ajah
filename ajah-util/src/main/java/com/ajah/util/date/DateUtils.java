@@ -286,7 +286,7 @@ public class DateUtils {
 			} else if (interval < 36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
 				return interval / CalendarUnit.WEEK.getMillis() + " weeks ago";
 			} else if (interval < 36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH) {
-				return interval / CalendarUnit.HOUR.getMillis() + " months ago";
+				return interval / CalendarUnit.MONTH.getMillis() + " months ago";
 			} else {
 				return interval / CalendarUnit.YEAR.getMillis() + " years ago";
 			}
@@ -302,7 +302,7 @@ public class DateUtils {
 		} else if (interval > -36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
 			return "in " + -interval / CalendarUnit.WEEK.getMillis() + " weeks";
 		} else if (interval > -36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH) {
-			return "in " + -interval / CalendarUnit.HOUR.getMillis() + " months";
+			return "in " + -interval / CalendarUnit.MONTH.getMillis() + " months";
 		} else {
 			return "in " + -interval / CalendarUnit.YEAR.getMillis() + " years";
 		}
