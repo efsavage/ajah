@@ -672,6 +672,25 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	/**
+	 * Find a list of all entities.
+	 * 
+	 * @return Entity if found, otherwise null.
+	 * @since 1.0.2
+	 */
+	protected List<T> list() {
+		try {
+			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName();
+			if (log.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
+			return getJdbcTemplate().query(sql, getRowMapper());
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return Collections.emptyList();
+		}
+	}
+	
+	/**
 	 * Find a list of entities by non-unique match.
 	 * 
 	 * @param criteria
