@@ -60,7 +60,14 @@ public class DateUtils {
 	 * @return The current time plus the the number of days specified.
 	 */
 	public static Date addDays(final Date date, final int days) {
-		return new Date(date.getTime() + (days * DAY_IN_MILLIS));
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_YEAR, days);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
 	}
 
 	/**
