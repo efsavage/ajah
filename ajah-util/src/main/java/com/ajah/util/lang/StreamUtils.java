@@ -48,4 +48,23 @@ public class StreamUtils {
 		return output.toByteArray();
 	}
 
+	/**
+	 * Converts an {@link InputStream} into a string.
+	 * 
+	 * @param inputStream
+	 *            The stream to convert, required.
+	 * @return byte array with the contents of the stream.
+	 * @throws IOException
+	 */
+	public static String toString(final InputStream inputStream) throws IOException {
+		AjahUtils.requireParam(inputStream, "inputStream");
+		final byte[] buffer = new byte[1024];
+		int read;
+		final ByteArrayOutputStream output = new ByteArrayOutputStream();
+		while ((read = inputStream.read(buffer)) != -1) {
+			output.write(buffer, 0, read);
+		}
+		return new String(output.toByteArray(), "UTF-8");
+	}
+
 }
