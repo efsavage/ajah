@@ -280,6 +280,7 @@
 	<modules>
 		<module>../ajah-util</module>
 		<module>../ajah-crypto</module>
+		<module>../ajah-csv</module>
 		<module>../ajah-geo</module>
 		<module>../ajah-html</module>
 		<module>../ajah-http</module>
