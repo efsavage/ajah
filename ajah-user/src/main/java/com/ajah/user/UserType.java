@@ -26,9 +26,17 @@ import com.ajah.util.Identifiable;
 public enum UserType implements Identifiable<String> {
 
 	/**
+	 * Bot user, has no permissions except those explicitly assigned to it.
+	 */
+	BOT("0", "Bot", "Bot User", "Bot user, has no implicit permissions.", false, true),
+	/**
 	 * Regular user, should be the default.
 	 */
-	NORMAL("1", "Normal", "Normal", "Normal");
+	NORMAL("1", "Normal", "Normal User", "Normal user, has default set of permissions.", false, false),
+	/**
+	 * Super (root) user, has all permissions.
+	 */
+	SUPER_USER("2", "Super", "Super User", "Super user, has all permissions.", true, false);
 
 	/**
 	 * Finds a UserType that matches the id on id, name, or name().
@@ -50,12 +58,16 @@ public enum UserType implements Identifiable<String> {
 	private final String code;
 	private final String name;
 	private final String description;
+	private final boolean superUser;
+	private final boolean botUser;
 
-	private UserType(final String id, final String code, final String name, final String description) {
+	private UserType(final String id, final String code, final String name, final String description, final boolean superUser, final boolean botUser) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
+		this.superUser = superUser;
+		this.botUser = botUser;
 	}
 
 	/**
@@ -100,6 +112,27 @@ public enum UserType implements Identifiable<String> {
 	@Override
 	public void setId(final String id) {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Returns if this user type is a super user, meaning it has full access and
+	 * all permissions. This is similar to being a root or administrator user.
+	 * 
+	 * @return the superUser True if the user is a super user.
+	 */
+	public boolean isSuperUser() {
+		return this.superUser;
+	}
+
+	/**
+	 * Returns if this user type is a bot user, meaning it probably has a single
+	 * purpose related to automation. It has no default permissions, including
+	 * being able to log in, and must specifically assigned any access levels.
+	 * 
+	 * @return the botUser
+	 */
+	public boolean isBotUser() {
+		return this.botUser;
 	}
 
 }
