@@ -17,12 +17,17 @@ package com.ajah.csv;
 
 import java.util.List;
 
+import lombok.extern.java.Log;
+
+import com.ajah.util.StringUtils;
+
 /**
  * Represents a row from a CSV file, functions similarly to a map.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class CsvRow {
 
 	private List<String> fieldNames;
@@ -57,4 +62,57 @@ public class CsvRow {
 		}
 		return this.fieldValues[index];
 	}
+
+	/**
+	 * Returns the field value for a given name as an int. If the field is empty
+	 * or not a number, returns a default value.
+	 * 
+	 * @param fieldName
+	 *            The name of the field to return.
+	 * @param defaultValue
+	 *            The default value to return if the value is not a number.
+	 * @return The value of the field as an int.
+	 */
+	public int getInt(String fieldName, int defaultValue) {
+		int index = this.fieldNames.indexOf(fieldName);
+		if (index < 0) {
+			throw new IllegalArgumentException(fieldName + " is not in " + this.fieldNames.toString());
+		}
+		if (StringUtils.isBlank(this.fieldValues[index])) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(this.fieldValues[index]);
+		} catch (NumberFormatException e) {
+			log.finest("Invalid value " + this.fieldValues[index] + " returning " + defaultValue);
+			return defaultValue;
+		}
+	}
+
+	/**
+	 * Returns the field value for a given name as an double. If the field is empty
+	 * or not a number, returns a default value.
+	 * 
+	 * @param fieldName
+	 *            The name of the field to return.
+	 * @param defaultValue
+	 *            The default value to return if the value is not a number.
+	 * @return The value of the field as an double.
+	 */
+	public double getDouble(String fieldName, double defaultValue) {
+		int index = this.fieldNames.indexOf(fieldName);
+		if (index < 0) {
+			throw new IllegalArgumentException(fieldName + " is not in " + this.fieldNames.toString());
+		}
+		if (StringUtils.isBlank(this.fieldValues[index])) {
+			return defaultValue;
+		}
+		try {
+			return Double.parseDouble(this.fieldValues[index]);
+		} catch (NumberFormatException e) {
+			log.finest("Invalid value " + this.fieldValues[index] + " returning " + defaultValue);
+			return defaultValue;
+		}
+	}
+	
 }
