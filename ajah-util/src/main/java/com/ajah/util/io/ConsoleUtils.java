@@ -57,4 +57,59 @@ public class ConsoleUtils {
 			return answer;
 		}
 	}
+
+	/**
+	 * Asks a question with a text answer, appending the default value if
+	 * present.
+	 * 
+	 * @param message
+	 *            The question to ask, required.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
+	@SuppressWarnings("resource")
+	// Don't need to close System.in
+	public static String ask(String message, String defaultAnswer) {
+		Scanner in = new Scanner(System.in);
+		System.out.println(message + (!StringUtils.isBlank(defaultAnswer) ? " [" + defaultAnswer + "]" : ""));
+		String response = in.nextLine().trim();
+		if (StringUtils.isBlank(response)) {
+			return defaultAnswer;
+		}
+		return response;
+	}
+
+	/**
+	 * Asks a question, requiring a numerical answer, appending the default
+	 * value.
+	 * 
+	 * @param message
+	 *            The question to ask.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
+	@SuppressWarnings("resource")
+	// Don't need to close System.in
+	public static double ask(String message, double defaultAnswer) {
+		while (true) {
+			double answer = defaultAnswer;
+			Scanner in = new Scanner(System.in);
+			System.out.println(message + " [" + defaultAnswer + "]");
+			String response = in.nextLine().trim();
+			if (StringUtils.isBlank(response)) {
+				answer = defaultAnswer;
+			} else {
+				try {
+					answer = Double.parseDouble(response);
+				} catch (NumberFormatException e) {
+					System.out.println("Unrecognized response, please answer 'y' or 'n'");
+					continue;
+				}
+			}
+			return answer;
+		}
+	}
+
 }
