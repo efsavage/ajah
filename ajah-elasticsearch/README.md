@@ -1,7 +1,7 @@
-Ajah CSV Library
+Ajah Elastic Search Library
 =============
 
-This library provides various utility methods and helper classes for dealing with CSV (Comma-separated value) files, notably an iterable, map-based parser that allows for much cleaner code.
+This library provides various utility methods and helper classes, notably parameterized clients.
 
 Maven
 -------
@@ -9,7 +9,7 @@ If you're using [Apache Maven](http://maven.apache.org) to build your project, a
 
 		<dependency>
 			<groupId>com.ajah</groupId>
-			<artifactId>ajah-csv</artifactId>
+			<artifactId>ajah-elasticsearch</artifactId>
 			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 

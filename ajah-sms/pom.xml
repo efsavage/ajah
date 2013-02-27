@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ajah-csv</artifactId>
+	<artifactId>ajah-sms</artifactId>
 	<name>Ajah CSV Library</name>
-	<url>http://efsavage.github.com/ajah/csv/</url>
-	<description>The Ajah CSV Library provides some utilities for dealing with CSV files.</description>
+	<url>http://efsavage.github.com/ajah/sms/</url>
+	<description>The Ajah CSVs Library provides some utilities for dealing with CSV files.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
@@ -15,10 +15,18 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>2.3</version>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio-java-sdk</artifactId>
+			<version>3.3.10</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-logback</artifactId>
+			<version>1.0.2-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>
