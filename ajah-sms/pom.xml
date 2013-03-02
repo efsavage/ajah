@@ -14,6 +14,13 @@
 	</parent>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-util</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.twilio.sdk</groupId>
 			<artifactId>twilio-java-sdk</artifactId>
@@ -23,7 +30,7 @@
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-logback</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 
