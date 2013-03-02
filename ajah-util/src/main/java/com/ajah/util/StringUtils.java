@@ -16,6 +16,7 @@
 package com.ajah.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -150,6 +151,35 @@ public class StringUtils {
 	}
 
 	/**
+	 * Joins a list of strings, separating them by delimeter if they are not
+	 * blank.
+	 * 
+	 * @param delimiter
+	 *            The delimiter to use between strings.
+	 * @param strings
+	 *            The list of strings to join.
+	 * @return A joined list of strings, may be empty or null;
+	 */
+	public static String join(final String delimiter, final Collection<String> strings) {
+		if (strings == null || strings.size() < 1) {
+			return null;
+		}
+		StringBuilder retVal = null;
+		for (final String string : strings) {
+			if (StringUtils.isBlank(string)) {
+				continue;
+			}
+			if (retVal == null) {
+				retVal = new StringBuilder();
+			} else {
+				retVal.append(delimiter);
+			}
+			retVal.append(string);
+		}
+		return retVal == null ? null : retVal.toString();
+	}
+
+	/**
 	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
 	 * of Strings, may be empty or null.
 	 * 
@@ -175,6 +205,7 @@ public class StringUtils {
 	 *         array was null or empty or contained only null or empty Strings,
 	 *         returns null.
 	 */
+	@Deprecated
 	public static String join(final String[] array, final String delimiter) {
 		if (array == null || array.length == 0) {
 			return null;
