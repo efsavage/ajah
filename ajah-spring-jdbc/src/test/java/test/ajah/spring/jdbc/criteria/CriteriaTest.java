@@ -34,7 +34,7 @@ public class CriteriaTest {
 	@Test
 	public void testCriteria() {
 		final Criteria criteria = new Criteria().eq("object_id", "1234");
-		Assert.assertEquals(" WHERE object_id=?", criteria.getWhere().getSql());
+		Assert.assertEquals(" WHERE `object_id`=?", criteria.getWhere().getSql());
 		Assert.assertEquals("1234", criteria.getWhere().getValues().get(0));
 	}
 
@@ -44,7 +44,7 @@ public class CriteriaTest {
 	@Test
 	public void testLike() {
 		final Criteria criteria = new Criteria().like("object_id", "%foo?");
-		Assert.assertEquals(" WHERE object_id LIKE '%foo?'", criteria.getWhere().getSql());
+		Assert.assertEquals(" WHERE `object_id` LIKE '%foo?'", criteria.getWhere().getSql());
 		Assert.assertEquals(0, criteria.getWhere().getValues().size());
 	}
 

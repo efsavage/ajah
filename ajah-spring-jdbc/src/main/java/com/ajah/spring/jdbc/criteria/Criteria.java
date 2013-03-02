@@ -210,7 +210,9 @@ public class Criteria {
 				} else {
 					where.append(" AND ");
 				}
+				where.append("`");
 				where.append(eq.getName());
+				where.append("`");
 				if (eq.getValue() == null) {
 					where.append(" IS NULL");
 				} else {
@@ -227,7 +229,9 @@ public class Criteria {
 				} else {
 					where.append(" AND ");
 				}
+				where.append("`");
 				where.append(join.getName());
+				where.append("`");
 				where.append("=");
 				where.append(join.getValue());
 			}
@@ -240,7 +244,9 @@ public class Criteria {
 				} else {
 					where.append(" AND ");
 				}
+				where.append("`");
 				where.append(like.getName());
+				where.append("`");
 				where.append(" LIKE '");
 				where.append(like.getValue());
 				where.append("'");
