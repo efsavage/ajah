@@ -15,6 +15,10 @@
  */
 package com.ajah.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Utilities for dealing with Strings.
  * 
@@ -51,6 +55,29 @@ public class StringUtils {
 			return string;
 		}
 		return Character.toTitleCase(string.charAt(0)) + string.substring(1);
+	}
+
+	/**
+	 * Performs a {@link String#split(String)} but {@link String#trim()}s all
+	 * values and omits blank values.
+	 * 
+	 * @param string
+	 *            The string to split. If null, an empty list will be returned.
+	 * @param regex
+	 *            The pattern to split on. This should not contain whitespace.
+	 * @return List of trimmed, non-blank tokens.
+	 */
+	public static List<String> cleanSplit(final String string, final String regex) {
+		if (isBlank(string)) {
+			return Collections.emptyList();
+		}
+		final List<String> list = new ArrayList<>();
+		for (final String token : string.split(regex)) {
+			if (!isBlank(token)) {
+				list.add(token.trim());
+			}
+		}
+		return list;
 	}
 
 	/**
