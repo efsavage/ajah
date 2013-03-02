@@ -49,11 +49,12 @@ public class CsvReader implements AutoCloseable, Iterable<CsvRow>, Iterator<CsvR
 	public CsvReader(final File file) throws IOException {
 		this.reader = new CSVReader(new FileReader(file));
 		String[] headers = this.reader.readNext();
-		for (String header : headers) {
+		for (String rawHeader : headers) {
+			String header = rawHeader.trim();
 			if (this.fieldNames.contains(header)) {
 				throw new IllegalArgumentException("Field " + header + " is defined twice");
 			}
-			this.fieldNames.add(header);
+			this.fieldNames.add(header.trim());
 		}
 		this.next = this.reader.readNext();
 	}
