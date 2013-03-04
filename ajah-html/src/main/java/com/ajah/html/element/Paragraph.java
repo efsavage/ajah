@@ -57,7 +57,7 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		if (StringUtils.isBlank(this.text)) {
+		if (!StringUtils.isBlank(this.text)) {
 			out.write(this.text);
 		}
 	}

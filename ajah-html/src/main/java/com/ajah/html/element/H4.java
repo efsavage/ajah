@@ -60,7 +60,7 @@ public class H4 extends AbstractNestableHtmlCoreElement<H4> {
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		if (StringUtils.isBlank(this.text)) {
+		if (!StringUtils.isBlank(this.text)) {
 			out.write(this.text);
 		}
 	}

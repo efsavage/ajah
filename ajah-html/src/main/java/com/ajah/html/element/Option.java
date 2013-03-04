@@ -65,7 +65,7 @@ public class Option extends AbstractHtmlCoreElement<Option> {
 		out.write("<option value=\"");
 		out.write(this.value);
 		out.write("\">");
-		if (StringUtils.isBlank(this.text)) {
+		if (!StringUtils.isBlank(this.text)) {
 			out.write(this.text);
 		}
 		out.write("</option>");
