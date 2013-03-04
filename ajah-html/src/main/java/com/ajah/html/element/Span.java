@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,16 +15,13 @@
  */
 package com.ajah.html.element;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * p element
+ * span element
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -34,29 +31,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
-
-	private String text;
+public class Span extends AbstractNestableHtmlCoreElement<Span> {
 
 	/**
-	 * Returns "paragraph"
+	 * Returns "span"
 	 * 
 	 * @see com.ajah.html.element.AbstractNestableHtmlCoreElement#getName()
 	 */
 	@Override
 	public String getName() {
-		return "p";
+		return "span";
 	}
 
 	@Override
-	public Paragraph getThis() {
+	public Span getThis() {
 		return this;
 	}
 
-	@Override
-	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
-	}
+	private String text;
 
 	/**
 	 * Fluent alias to {@link #setText(String)}.
@@ -65,9 +57,8 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 	 *            The text to set.
 	 * @return The current instance.
 	 */
-	public Paragraph text(final String newText) {
+	public Span text(final String newText) {
 		setText(newText);
 		return this;
 	}
-
 }
