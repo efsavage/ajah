@@ -33,6 +33,10 @@ public class DateUtils {
 	 */
 	public static final long MINUTE_IN_MILLIS = 60000L;
 	/**
+	 * Milliseconds in an hour (3,600,000)
+	 */
+	public static final long HOUR_IN_MILLIS = 3_600_000L;
+	/**
 	 * Milliseconds in a day (86,400,000)
 	 */
 	public static final long DAY_IN_MILLIS = 86400 * 1000L;
@@ -97,6 +101,17 @@ public class DateUtils {
 	 */
 	public static Date addMinutes(final int minutes) {
 		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
+	}
+
+	/**
+	 * Adds a number of hours to the current time.
+	 * 
+	 * @param hours
+	 *            The number of hours to add, may be negative.
+	 * @return The current time plus the the number of hours specified.
+	 */
+	public static Date addHours(final int hours) {
+		return new Date(System.currentTimeMillis() + (hours * HOUR_IN_MILLIS));
 	}
 
 	/**
