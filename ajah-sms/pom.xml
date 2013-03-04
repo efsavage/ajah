@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-sms</artifactId>
-	<name>Ajah CSV Library</name>
+	<name>Ajah SMS Library</name>
 	<url>http://efsavage.github.com/ajah/sms/</url>
-	<description>The Ajah CSVs Library provides some utilities for dealing with CSV files.</description>
+	<description>The Ajah SMS Library provides some utilities for sending and receiving SMS.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
