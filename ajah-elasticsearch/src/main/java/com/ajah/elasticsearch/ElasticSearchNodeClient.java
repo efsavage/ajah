@@ -117,6 +117,9 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 
 		this.node = NodeBuilder.nodeBuilder().clusterName(this.clusterName).data(data).node();
 		this.client = this.node.client();
+		log.fine("Waiting for green status");
+		this.client.admin().cluster().prepareHealth().setWaitForGreenStatus().execute().actionGet();
+		log.fine("Green status achieved");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -158,13 +161,9 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 * @throws IOException
 	 *             If the query failed to execute.
 	 */
-	public List<C> search(final String query) throws JsonParseException, JsonMappingException, IOException {
-		if (true) {
-			// TODO Not finished yet
-			throw new UnsupportedOperationException();
-		}
+	public List<C> search(final String query) throws IOException {
 		List<C> results = new ArrayList<>();
-		SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.matchAllQuery()).execute()
+		SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.fieldQuery("_all", query)).execute()
 				.actionGet();
 		for (SearchHit hit : response.getHits()) {
 			C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
@@ -180,6 +179,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 */
 	@Override
 	public void close() throws Exception {
+		this.node.stop();
 		this.node.close();
 	}
 
