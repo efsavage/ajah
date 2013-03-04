@@ -119,4 +119,23 @@ public class EntryManager {
 		return entry;
 	}
 
+	/**
+	 * Loads an entry by its ID.
+	 * 
+	 * @param entryId
+	 *            The ID to load.
+	 * @return The entry, will not be null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws EntryNotFoundException
+	 *             If no entry could be found with the specified ID.
+	 */
+	public Entry load(EntryId entryId) throws DataOperationException, EntryNotFoundException {
+		Entry entry = this.entryDao.load(entryId);
+		if (entry == null) {
+			throw new EntryNotFoundException(entryId);
+		}
+		return entry;
+	}
+	
 }
