@@ -36,6 +36,8 @@ import com.ajah.util.lang.NameValuePair;
  * 
  */
 @Log
+// TODO Add solo criteria for auto rows=1
+// TODO add gt/lt/ge/le/ne
 public class Criteria {
 
 	private List<NameValuePair<String>> eqs = null;
@@ -229,9 +231,7 @@ public class Criteria {
 				} else {
 					where.append(" AND ");
 				}
-				where.append("`");
 				where.append(join.getName());
-				where.append("`");
 				where.append("=");
 				where.append(join.getValue());
 			}
@@ -290,7 +290,7 @@ public class Criteria {
 		if (this.joins == null) {
 			this.joins = new ArrayList<>();
 		}
-		this.joins.add(new NameValuePair<>(table1 + "." + field1, table2 + "." + field2));
+		this.joins.add(new NameValuePair<>("`" + table1 + "`.`" + field1 + "`", "`" + table2 + "`.`" + field2 + "`"));
 		return this;
 	}
 
