@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-elasticsearch</artifactId>
-	<name>Ajah CSV Library</name>
+	<name>Ajah Elastic Search Library</name>
 	<url>http://efsavage.github.com/ajah/elasticsearch/</url>
 	<description>The Ajah Elastic Search Library provides some utilities for dealing with Elastic Search.</description>
 
