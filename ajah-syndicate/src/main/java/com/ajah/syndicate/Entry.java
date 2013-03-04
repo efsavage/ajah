@@ -45,6 +45,7 @@ public class Entry implements Identifiable<EntryId> {
 	private Date created;
 	private Date updated;
 	private String content;
+	private String contentSha1;
 	private AjahMimeType contentType;
 	private String description;
 	private FeedId feedId;
@@ -60,6 +61,18 @@ public class Entry implements Identifiable<EntryId> {
 			this.htmlUrlSha1 = HashUtils.sha1Hex(this.htmlUrl);
 		}
 		return this.htmlUrlSha1;
+	}
+
+	/**
+	 * Returns the SHA-1 of the contentUrl field, if it is available.
+	 * 
+	 * @return The SHA-1 of the contentUrl field, or null if contentUrl is null.
+	 */
+	public String getContentUrlSha1() {
+		if (this.contentSha1 == null && this.content != null) {
+			this.contentSha1 = HashUtils.sha1Hex(this.content);
+		}
+		return this.contentSha1;
 	}
 
 }

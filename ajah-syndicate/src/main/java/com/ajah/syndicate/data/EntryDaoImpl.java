@@ -42,4 +42,13 @@ public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> impleme
 		return find(new Criteria().eq("feed_source_id", feedSourceId).eq("html_url_sha_1", htmlUrlSha1));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @throws DataOperationException 
+	 */
+	@Override
+	public Entry findMatch(FeedSourceId feedSourceId, String htmlUrlSha1, String contentSha1) throws DataOperationException {
+		return find(new Criteria().eq(feedSourceId).eq("html_url_sha_1", htmlUrlSha1).eq("content_sha_1", contentSha1));
+	}
+
 }
