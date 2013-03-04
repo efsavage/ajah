@@ -24,6 +24,7 @@ import org.junit.Test;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedSource;
+import com.ajah.syndicate.SyndicationException;
 import com.ajah.syndicate.rome.RomeUtils;
 import com.ajah.util.data.XmlString;
 import com.ajah.util.net.HttpClient;
@@ -47,9 +48,10 @@ public class SimpleFeedTest {
 	 * @throws IllegalArgumentException
 	 * @throws FeedException
 	 * @throws IOException
+	 * @throws SyndicationException
 	 */
 	@Test
-	public void getFeed() throws IllegalArgumentException, FeedException, IOException {
+	public void getFeed() throws IllegalArgumentException, FeedException, IOException, SyndicationException {
 		final FeedSource feedSource = new FeedSource();
 		final XmlString xml = HttpClient.getXml(TEST_FEED);
 		System.out.println("FEED");

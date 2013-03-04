@@ -32,7 +32,9 @@ import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
+import com.ajah.syndicate.SyndicationException;
 import com.ajah.util.StringUtils;
+import com.ajah.util.data.HashUtils;
 import com.ajah.util.data.XmlString;
 import com.ajah.util.net.AjahMimeType;
 import com.sun.syndication.feed.synd.SyndContent;
@@ -85,6 +87,7 @@ public class RomeUtils {
 		entry.setAuthor(syndEntry.getAuthor());
 		entry.setTitle(syndEntry.getTitle());
 		entry.setHtmlUrl(syndEntry.getUri());
+		entry.setHtmlUrlSha1(HashUtils.sha1Hex(syndEntry.getUri()));
 		entry.setPublished(syndEntry.getPublishedDate());
 		entry.setUpdated(syndEntry.getUpdatedDate());
 		@SuppressWarnings("unchecked")
@@ -103,6 +106,8 @@ public class RomeUtils {
 				entry.setContentType(AjahMimeType.get(content.getType()));
 			}
 			entry.setContent(content.getValue());
+			entry.setContentSha1(HashUtils.sha1Hex(content.getValue()));
+
 			if (!entry.getContentType().isText()) {
 				log.warning("Non-text type of content: " + content.getType());
 			}
@@ -178,16 +183,19 @@ public class RomeUtils {
 	 * @param feedSource
 	 *            The source of the feed.
 	 * @return A Feed instance created from the XML.
-	 * @throws FeedException
-	 *             if the xml could not be parsed or did not have valid data.
+	 * @throws SyndicationException
+	 *             If the xml could not be parsed or did not have valid data.
+	 * 
 	 */
-	public static Feed createFeed(final XmlString xmlString, final FeedSource feedSource) throws FeedException {
+	public static Feed createFeed(final XmlString xmlString, final FeedSource feedSource) throws SyndicationException {
 		final SyndFeedInput input = new SyndFeedInput();
 		try {
 			final SyndFeed syndFeed = input.build(new StringReader(xmlString.toString()));
 			return createFeed(syndFeed, xmlString.getSha1(), feedSource);
 		} catch (final IllegalArgumentException e) {
-			throw new FeedException(e.getMessage());
+			throw new SyndicationException(e.getMessage());
+		} catch (FeedException e) {
+			throw new SyndicationException(e);
 		}
 	}
 }

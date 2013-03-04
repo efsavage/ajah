@@ -29,6 +29,7 @@ import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceStatus;
 import com.ajah.syndicate.FeedSourceType;
 import com.ajah.syndicate.PollStatus;
+import com.ajah.syndicate.SyndicationException;
 import com.ajah.syndicate.opml.Opml;
 import com.ajah.syndicate.opml.Outline;
 import com.ajah.util.CollectionUtils;
@@ -126,11 +127,16 @@ public class OpmlUtils {
 	 * @param doc
 	 *            The document to parse.
 	 * @return The constructed Opml instance.
-	 * @throws FeedException
+	 * @throws SyndicationException
 	 *             if the document could not be parsed.
 	 */
-	public static Opml parse(final Document doc) throws FeedException {
-		final com.sun.syndication.feed.opml.Opml syndOpml = (com.sun.syndication.feed.opml.Opml) new OPML10Parser().parse(doc, false);
+	public static Opml parse(final Document doc) throws SyndicationException {
+		com.sun.syndication.feed.opml.Opml syndOpml;
+		try {
+			syndOpml = (com.sun.syndication.feed.opml.Opml) new OPML10Parser().parse(doc, false);
+		} catch (IllegalArgumentException | FeedException e) {
+			throw new SyndicationException(e);
+		}
 		final Opml opml = new Opml();
 		opml.setOutlines(createOutlines(syndOpml));
 		return opml;
@@ -144,15 +150,17 @@ public class OpmlUtils {
 	 * @param file
 	 *            The file to parse.
 	 * @return The constructed Opml instance.
-	 * @throws FeedException
-	 *             if the document could not be parsed.
-	 * @throws JDOMException
-	 *             If the document could not be parsed by JDOM.
 	 * @throws IOException
 	 *             If the file could not be read.
+	 * @throws SyndicationException
 	 */
-	public static Opml parse(final File file) throws FeedException, JDOMException, IOException {
-		final Document doc = new SAXBuilder(false).build(file);
+	public static Opml parse(final File file) throws IOException, SyndicationException {
+		Document doc;
+		try {
+			doc = new SAXBuilder(false).build(file);
+		} catch (JDOMException e) {
+			throw new SyndicationException(e);
+		}
 		return parse(doc);
 	}
 }

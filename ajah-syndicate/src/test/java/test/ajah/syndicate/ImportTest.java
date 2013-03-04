@@ -24,6 +24,7 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
+import com.ajah.syndicate.SyndicationException;
 import com.ajah.syndicate.opml.Opml;
 import com.ajah.syndicate.opml.Outline;
 import com.ajah.syndicate.rome.OpmlUtils;
@@ -69,10 +70,11 @@ public class ImportTest {
 	 * @throws FeedException
 	 * @throws JDOMException
 	 * @throws IOException
+	 * @throws SyndicationException
 	 */
 	@Test
-	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException {
-		final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/scoble.opml"));
+	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException, SyndicationException {
+		final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/subscriptions.xml"));
 		final Opml opml = OpmlUtils.parse(doc);
 		printOutlines(opml.getOutlines());
 	}
