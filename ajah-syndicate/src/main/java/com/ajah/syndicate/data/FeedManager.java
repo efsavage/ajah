@@ -15,6 +15,8 @@
  */
 package com.ajah.syndicate.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
@@ -39,6 +42,9 @@ public class FeedManager {
 
 	@Autowired
 	private FeedDao feedDao;
+
+	@Autowired
+	private EntryManager entryManager;
 
 	/**
 	 * Finds the most recent version of a feed for a {@link FeedSource}.
@@ -69,16 +75,30 @@ public class FeedManager {
 	 * 
 	 * @param feed
 	 *            The feed to save.
+	 * @param saveEntries
+	 *            If true, also save the entries for this feed.
 	 * @throws DataOperationException
 	 *             If the feed could not be saved.
 	 */
-	public void save(final Feed feed) throws DataOperationException {
+	public void save(final Feed feed, boolean saveEntries) throws DataOperationException {
+		List<Entry> entries = new ArrayList<>();
 		if (feed.getId() == null) {
 			feed.setId(new FeedId(UUID.randomUUID().toString()));
 			this.feedDao.insert(feed);
 		} else {
 			this.feedDao.update(feed);
 		}
+		if (saveEntries && feed.getEntries() != null) {
+			for (Entry entry : feed.getEntries()) {
+				if (entry.getId() != null) {
+					entries.add(entry);
+					this.entryManager.save(entry);
+				} else {
+					Entry match = this.entryManager.matchAndSave(entry);
+					entries.add(match);
+				}
+			}
+			feed.setEntries(entries);
+		}
 	}
-
 }

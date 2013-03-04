@@ -18,6 +18,8 @@ package com.ajah.syndicate.data;
 import java.util.Date;
 import java.util.UUID;
 
+import lombok.extern.java.Log;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
 import com.ajah.syndicate.FeedSourceId;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.data.HashUtils;
 
 /**
  * Manages persistence of {@link Entry}s.
@@ -37,6 +40,7 @@ import com.ajah.util.AjahUtils;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@Log
 public class EntryManager {
 
 	@Autowired
@@ -67,6 +71,10 @@ public class EntryManager {
 	 *             if the entry could not be saved.
 	 */
 	public void save(final Entry entry) throws DataOperationException {
+		if (entry.getPublished().getTime() < 0) {
+			log.warning("Very old date, ignoring");
+			entry.setPublished(new Date(0));
+		}
 		AjahUtils.requireParam(entry.getFeedId(), "entry.feedId");
 		AjahUtils.requireParam(entry.getFeedSourceId(), "entry.feedSourceId");
 		if (entry.getCreated() == null) {
@@ -78,6 +86,37 @@ public class EntryManager {
 		} else {
 			this.entryDao.update(entry);
 		}
+	}
+
+	/**
+	 * This will attempt to match an Entry to avoid duplicates.
+	 * 
+	 * @param entry
+	 *            The entry to try and match.
+	 * @return The entry or the matched replacement.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public Entry matchAndSave(Entry entry) throws DataOperationException {
+		Entry match = this.entryDao.findMatch(entry.getFeedSourceId(), entry.getHtmlUrlSha1(), entry.getContentSha1());
+		if (match != null) {
+			log.finest("Exact match found replacing");
+			return match;
+		}
+		// Lets see if this is an update
+		match = this.entryDao.findByHtmlUrlSha1(entry.getFeedSourceId(), entry.getHtmlUrlSha1());
+		if (match != null) {
+			match.setContent(entry.getContent());
+			match.setContentSha1(HashUtils.sha1Hex(entry.getContent()));
+			match.setFeedId(entry.getFeedId());
+			log.finest("Match found updating and replacing");
+			save(match);
+			return match;
+		}
+		// TODO match on title or other fields?
+		log.finest("Appears to be a new post");
+		save(entry);
+		return entry;
 	}
 
 }
