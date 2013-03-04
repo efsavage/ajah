@@ -33,6 +33,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Cite extends AbstractNestableHtmlCoreElement<Cite> {
 
+	private String text;
+
 	/**
 	 * Returns "cite"
 	 * 
@@ -47,8 +49,6 @@ public class Cite extends AbstractNestableHtmlCoreElement<Cite> {
 	public Cite getThis() {
 		return this;
 	}
-
-	private String text;
 
 	/**
 	 * Fluent alias to {@link #setText(String)}.

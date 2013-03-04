@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 
 import com.ajah.html.HtmlElement;
 import com.ajah.html.dtd.ButtonType;
+import com.ajah.util.StringUtils;
 
 /**
  * button element
@@ -75,7 +76,9 @@ public class Button extends AbstractNestableHtmlCoreElement<Button> implements I
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 		if (this.leftChildren != null) {
 			for (final HtmlElement<?> child : this.leftChildren) {
 				// TODO Make depth consistent

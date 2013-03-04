@@ -22,6 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import com.ajah.util.StringUtils;
+
 /**
  * p element
  * 
@@ -63,7 +65,9 @@ public class Option extends AbstractHtmlCoreElement<Option> {
 		out.write("<option value=\"");
 		out.write(this.value);
 		out.write("\">");
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 		out.write("</option>");
 		if (depth >= 0) {
 			out.write("\r\n");

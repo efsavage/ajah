@@ -33,6 +33,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Span extends AbstractNestableHtmlCoreElement<Span> {
 
+	private String text;
+
 	/**
 	 * Returns "span"
 	 * 
@@ -47,8 +49,6 @@ public class Span extends AbstractNestableHtmlCoreElement<Span> {
 	public Span getThis() {
 		return this;
 	}
-
-	private String text;
 
 	/**
 	 * Fluent alias to {@link #setText(String)}.

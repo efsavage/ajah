@@ -23,6 +23,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import com.ajah.util.StringUtils;
+
 /**
  * h4 element
  * 
@@ -58,7 +60,9 @@ public class H4 extends AbstractNestableHtmlCoreElement<H4> {
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 	}
 
 }

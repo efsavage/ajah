@@ -21,6 +21,8 @@ import java.io.Writer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import com.ajah.util.StringUtils;
+
 /**
  * script element
  * 
@@ -57,7 +59,9 @@ public class Script extends AbstractNestableHtmlCoreElement<Script> {
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 	}
 
 }

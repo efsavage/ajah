@@ -21,6 +21,8 @@ import java.io.Writer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import com.ajah.util.StringUtils;
+
 /**
  * h3 element
  * 
@@ -51,7 +53,9 @@ public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 	}
 
 	/**

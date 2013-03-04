@@ -23,6 +23,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import com.ajah.util.StringUtils;
+
 /**
  * p element
  * 
@@ -55,7 +57,9 @@ public class Paragraph extends AbstractNestableHtmlCoreElement<Paragraph> {
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 	}
 
 	/**

@@ -24,6 +24,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import com.ajah.util.StringUtils;
+
 /**
  * a element
  * 
@@ -37,8 +39,14 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 
+	/**
+	 * _blank
+	 */
+	public static final String TARGET_BLANK = "_blank";
+
 	private String href;
 	private String text;
+	private String target;
 
 	/**
 	 * Public constructor.
@@ -74,11 +82,14 @@ public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 	@Override
 	protected void renderAttributes(final Writer out) throws IOException {
 		write(out, "href", this.href);
+		write(out, "target", this.target);
 	}
 
 	@Override
 	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
-		out.write(this.text);
+		if (StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 	}
 
 }
