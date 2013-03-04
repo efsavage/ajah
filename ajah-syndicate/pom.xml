@@ -27,6 +27,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-html</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.rometools</groupId>
 			<artifactId>rome-opml</artifactId>
 			<version>1.0</version>
