@@ -18,7 +18,7 @@ package com.ajah.syndicate;
 import com.ajah.util.Identifiable;
 
 /**
- * Denotes the polling behavior of a {@link FeedSource}..
+ * Denotes the polling behavior of a {@link FeedSource}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -28,20 +28,20 @@ public enum PollStatus implements Identifiable<String> {
 	/**
 	 * Feed should actively be polled.
 	 */
-	ACTIVE("0", "Active", "Active", "Active"),
+	ACTIVE("0", "Active", "Active", "Active", true),
 	/**
 	 * Feed has experienced an error, but should be retried at some point.
 	 */
-	ERROR_TMP("-1", "error-tmp", "Error (Temporary)", "FeedSource has experienced an error that it might recover from."),
+	ERROR_TMP("-1", "error-tmp", "Error (Temporary)", "FeedSource has experienced an error that it might recover from.", true),
 	/**
 	 * Feed has experienced an error that is not recoverable and must be
 	 * manually reactivated.
 	 */
-	ERROR_PERM("-2", "error-perm", "Error (Permanent)", "FeedSource has experienced an unrecoverable error or too many temporary errors."),
+	ERROR_PERM("-2", "error-perm", "Error (Permanent)", "FeedSource has experienced an unrecoverable error or too many temporary errors.", false),
 	/**
 	 * Feed should not be polled.
 	 */
-	BLOCKED("-3", "blocked", "Blocked", "Blocked");
+	BLOCKED("-3", "blocked", "Blocked", "Blocked", false);
 
 	/**
 	 * Finds a PollStatus that matches the id on id, name, or name().
@@ -63,12 +63,14 @@ public enum PollStatus implements Identifiable<String> {
 	private final String code;
 	private final String name;
 	private final String description;
+	private final boolean active;
 
-	private PollStatus(final String id, final String code, final String name, final String description) {
+	private PollStatus(final String id, final String code, final String name, final String description, final boolean active) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
+		this.active = active;
 	}
 
 	/**
@@ -113,6 +115,15 @@ public enum PollStatus implements Identifiable<String> {
 	@Override
 	public void setId(final String id) {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Is this status active? Should it be polled?
+	 * 
+	 * @return true if the feed source should be polled.
+	 */
+	public boolean isActive() {
+		return this.active;
 	}
 
 }

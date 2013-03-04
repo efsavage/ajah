@@ -42,6 +42,7 @@ public class FeedSource implements Identifiable<FeedSourceId> {
 	private String feedUrlSha1;
 	private String description;
 	private PollStatus pollStatus;
+	private Date pollStatusSince;
 	private FeedSourceType type;
 	private FeedSourceStatus status;
 	private Date nextPoll;
