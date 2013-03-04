@@ -18,9 +18,10 @@ package com.ajah.syndicate.data;
 import java.util.Date;
 import java.util.UUID;
 
+import lombok.extern.java.Log;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
@@ -38,7 +39,7 @@ import com.ajah.util.data.HashUtils;
  * 
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Log
 public class FeedSourceManager {
 
 	@Autowired
@@ -129,6 +130,9 @@ public class FeedSourceManager {
 	 *             If the feed source could not be saved.
 	 */
 	public void save(final FeedSource feedSource) throws DataOperationException {
+		if (feedSource.getNextPoll() == null) {
+			feedSource.setNextPoll(new Date());
+		}
 		if (feedSource.getId() == null) {
 			feedSource.setId(new FeedSourceId(UUID.randomUUID().toString()));
 			feedSource.setCreated(new Date());
@@ -139,6 +143,28 @@ public class FeedSourceManager {
 			this.feedDao.update(feedSource);
 		}
 
+	}
+
+	/**
+	 * Attempts to find a matching feed source, and creates a new one if
+	 * necessary.
+	 * 
+	 * @param candidate
+	 *            The candidate source to me matched or saved.
+	 * @return The matched or saved feed source.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public FeedSource findOrCreate(FeedSource candidate) throws DataOperationException {
+		FeedSource feedSource = findByFeedUrlSha1(HashUtils.sha1Hex(candidate.getFeedUrl()));
+		if (feedSource == null) {
+			feedSource = candidate;
+			save(feedSource);
+		} else {
+			log.fine("Duplicate feed found");
+			// TODO Update other information?
+		}
+		return feedSource;
 	}
 
 }
