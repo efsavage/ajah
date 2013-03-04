@@ -140,6 +140,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 		log.finest(json);
 		irb.setSource(json);
 		ListenableActionFuture<IndexResponse> result = irb.execute();
+		log.finest("Executed");
 		return result.actionGet();
 
 	}
