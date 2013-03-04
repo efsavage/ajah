@@ -43,7 +43,7 @@ import com.ajah.util.data.HashUtils;
 public class FeedSourceManager {
 
 	@Autowired
-	private FeedSourceDao feedDao;
+	private FeedSourceDao feedSourceDao;
 
 	/**
 	 * Creates a new source.
@@ -90,7 +90,7 @@ public class FeedSourceManager {
 	 *             If a query could not be executed.
 	 */
 	public FeedSource findByFeedUrlSha1(final String feedUrlSha1) throws DataOperationException {
-		return this.feedDao.findByFeedUrlSha1(feedUrlSha1);
+		return this.feedSourceDao.findByFeedUrlSha1(feedUrlSha1);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class FeedSourceManager {
 	 * @throws DataOperationException
 	 */
 	public FeedSource getStaleFeedSource() throws DataOperationException {
-		return this.feedDao.getStaleFeedSource();
+		return this.feedSourceDao.getStaleFeedSource();
 	}
 
 	/**
@@ -137,10 +137,10 @@ public class FeedSourceManager {
 			feedSource.setId(new FeedSourceId(UUID.randomUUID().toString()));
 			feedSource.setCreated(new Date());
 			feedSource.setModified(feedSource.getCreated());
-			this.feedDao.insert(feedSource);
+			this.feedSourceDao.insert(feedSource);
 		} else {
 			feedSource.setModified(new Date());
-			this.feedDao.update(feedSource);
+			this.feedSourceDao.update(feedSource);
 		}
 
 	}
@@ -167,4 +167,22 @@ public class FeedSourceManager {
 		return feedSource;
 	}
 
+	/**
+	 * Loads an feed source by its ID.
+	 * 
+	 * @param feedSourceId
+	 *            The ID to load.
+	 * @return The feed source, will not be null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws FeedSourceNotFoundException
+	 *             If no feed source could be found with the specified ID.
+	 */
+	public FeedSource load(FeedSourceId feedSourceId) throws DataOperationException, FeedSourceNotFoundException {
+		FeedSource feedSource = this.feedSourceDao.load(feedSourceId);
+		if (feedSource == null) {
+			throw new FeedSourceNotFoundException(feedSourceId);
+		}
+		return feedSource;
+	}
 }
