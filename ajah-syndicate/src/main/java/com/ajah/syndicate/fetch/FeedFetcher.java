@@ -34,6 +34,7 @@ import com.ajah.syndicate.data.EntryManager;
 import com.ajah.syndicate.data.FeedManager;
 import com.ajah.syndicate.data.FeedSourceManager;
 import com.ajah.syndicate.rome.RomeUtils;
+import com.ajah.util.StringUtils;
 import com.ajah.util.data.XmlString;
 import com.ajah.util.date.DateUtils;
 
@@ -94,6 +95,12 @@ public class FeedFetcher {
 					for (Entry entry : feed.getEntries()) {
 						entryListener.handle(entry);
 					}
+				}
+				if (!StringUtils.isBlank(feed.getTitle())) {
+					feedSource.setTitle(feed.getTitle());
+				}
+				if (!StringUtils.isBlank(feed.getLink())) {
+					feedSource.setHtmlUrl(feed.getLink());
 				}
 				feedSource.setNextPoll(DateUtils.addHours(6));
 				this.feedSourceManager.save(feedSource);

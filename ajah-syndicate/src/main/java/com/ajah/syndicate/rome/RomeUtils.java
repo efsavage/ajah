@@ -168,6 +168,7 @@ public class RomeUtils {
 		} else {
 			feed.setTitle(syndFeed.getTitle());
 		}
+		feed.setLink(syndFeed.getLink());
 		feed.setEntries(createEntries(syndFeed, feed));
 		feed.setCreated(new Date());
 		feed.setPublished(syndFeed.getPublishedDate());
