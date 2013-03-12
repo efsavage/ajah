@@ -74,9 +74,9 @@ public class ImportTest {
 	 */
 	@Test
 	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException, SyndicationException {
-		final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/subscriptions.xml"));
-		final Opml opml = OpmlUtils.parse(doc);
-		printOutlines(opml.getOutlines());
+	//	final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/subscriptions.xml"));
+	//	final Opml opml = OpmlUtils.parse(doc);
+	//	printOutlines(opml.getOutlines());
 	}
 
 }
