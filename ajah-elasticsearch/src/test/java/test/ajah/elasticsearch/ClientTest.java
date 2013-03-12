@@ -15,11 +15,13 @@
  */
 package test.ajah.elasticsearch;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,12 +39,27 @@ import com.ajah.util.text.LoremIpsum;
 @Slf4j
 public class ClientTest {
 
+	private TestElasticSearchNodeClient client = null;
+
 	/**
 	 * Initialize logging.
 	 */
 	@Before
 	public void setup() {
 		LogbackUtils.bridge();
+		client = new TestElasticSearchNodeClient();
+	}
+
+	/**
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void testSearch() throws IOException {
+		List<TestEntity> results = this.client.search("foobar ipsum");
+		for (TestEntity testEntity : results) {
+			log.debug(testEntity.getBody());
+		}
 	}
 
 	/**
@@ -50,9 +67,7 @@ public class ClientTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test
 	public void testClient() throws Exception {
-		TestElasticSearchNodeClient client = new TestElasticSearchNodeClient();
 		int count = 10;
 		for (int i = 0; i < count * 5; i++) {
 			TestEntity testEntity = new TestEntity();
@@ -73,5 +88,10 @@ public class ClientTest {
 		}
 		client.close();
 		Assert.assertEquals(count, results.size());
+	}
+
+	@After
+	public void teardown() throws Exception {
+		client.close();
 	}
 }
