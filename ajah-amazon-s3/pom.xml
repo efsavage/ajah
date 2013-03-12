@@ -1,6 +1,6 @@
-<project xmlns="amazon-s3://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="amazon-s3://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="amazon-s3://maven.apache.org/POM/4.0.0 amazon-s3://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ajah-amazon-s3</artifactId>
 	<name>Ajah Amazon S3 Library</name>
