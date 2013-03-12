@@ -296,7 +296,6 @@
 		<module>../ajah-event-http</module>
 		<module>../ajah-image</module>
 		<module>../ajah-logback</module>
-		<module>../ajah-oauth</module>
 		<module>../ajah-sms</module>
 		<module>../ajah-spring</module>
 		<module>../ajah-spring-jdbc</module>
