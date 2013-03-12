@@ -77,4 +77,22 @@ public class SmsClient {
 		}
 	}
 
+	/**
+	 * Fetches inbound messages.
+	 */
+	public void getInboundMessages() {
+		// SmsList messages = this.mainAccount.getSmsMessages();
+		// log.warning(messages.getTotal() + " messages");
+		// for (Sms message : messages) {
+		// log.warning(message.getFrom() + ": " + message.getBody());
+		// }
+		//
+	}
+
+	/**
+	 * Fetches outbound messages.
+	 */
+	public void getOutboundMessages() {
+	}
+
 }
