@@ -49,9 +49,12 @@ public class ThreadUtils {
 	 * {@link InterruptedException}, just return.
 	 * 
 	 * @param ms
-	 *            The number of ms to sleep, must be 0 or greater.
+	 *            The number of ms to sleep, if 0 or less, returns immediately.
 	 */
 	public static void sleep(final long ms) {
+		if (ms <= 0) {
+			return;
+		}
 		try {
 			Thread.sleep(ms);
 		} catch (final InterruptedException e) {
