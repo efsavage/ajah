@@ -366,7 +366,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * Writes a string to a file.
+	 * Writes a string to a file. Overwrites existing files.
 	 * 
 	 * @param file
 	 *            The file to write to.
@@ -377,7 +377,28 @@ public class FileUtils {
 	 *             If the file could not be written to.
 	 */
 	public static int write(final File file, final String string) throws IOException {
+		return write(file, string, true);
+	}
+
+	/**
+	 * Writes a string to a file.
+	 * 
+	 * @param file
+	 *            The file to write to.
+	 * @param string
+	 *            The string to write.
+	 * @param overwrite
+	 *            Overwrite the file if it exists?
+	 * @return The number of bytes written.
+	 * @throws IOException
+	 *             If the file could not be written to.
+	 */
+	public static int write(final File file, final String string, boolean overwrite) throws IOException {
 		// TODO Write to temp file then rename
+		if (file.exists() && !overwrite) {
+			log.fine(file.getAbsolutePath() + " exists and overwrite is false, aborting");
+			return 0;
+		}
 		BufferedOutputStream out = null;
 		try {
 			file.getParentFile().mkdirs();
