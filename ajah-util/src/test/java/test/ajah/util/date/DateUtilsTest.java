@@ -17,8 +17,7 @@ package test.ajah.util.date;
 
 import java.util.Date;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.date.DateUtils;
@@ -50,4 +49,5 @@ public class DateUtilsTest {
 		Date newDate = DateUtils.addDays(date, 1);
 //		Assert.assertEquals(86300000L, newDate.getTime() - date.getTime());
 	}
+
 }
