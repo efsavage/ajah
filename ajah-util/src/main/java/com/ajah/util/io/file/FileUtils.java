@@ -248,7 +248,7 @@ public class FileUtils {
 
 	/**
 	 * Writes a byte array to a {@link File}. Will create parent directories for
-	 * the file if necessary.
+	 * the file if necessary. Will overwite existing files.
 	 * 
 	 * @param file
 	 *            The file to write to, required.
@@ -258,8 +258,29 @@ public class FileUtils {
 	 * @throws IOException
 	 */
 	public static long write(final File file, final byte[] data) throws IOException {
+		return write(file, data, true);
+	}
+
+	/**
+	 * Writes a byte array to a {@link File}. Will create parent directories for
+	 * the file if necessary.
+	 * 
+	 * @param file
+	 *            The file to write to, required.
+	 * @param data
+	 *            The data to write.
+	 * @param overwrite
+	 *            Overwrite the file if it exists?
+	 * @return The number of bytes read/written.
+	 * @throws IOException
+	 */
+	public static long write(final File file, final byte[] data, final boolean overwrite) throws IOException {
 		// TODO Write to temp file then rename
 		AjahUtils.requireParam(data, "data");
+		if (file.exists() && !overwrite) {
+			log.fine(file.getAbsolutePath() + " exists and overwrite is false, aborting");
+			return 0;
+		}
 		BufferedOutputStream out = null;
 		try {
 			if (file.getParentFile() != null) {
