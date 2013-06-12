@@ -17,9 +17,15 @@ package com.ajah.util.log;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
+
+import com.ajah.util.compare.EntryValueComparator;
 
 /**
  * An atomic counter for keeping track of things, intended but not restricted to
@@ -83,10 +89,19 @@ public class Tally<T> {
 	 * Write a report with totals to the configured output.
 	 */
 	public void report() {
-		this.out.println(Report.HYPEN35);
+		report(0);
+	}
+
+	/**
+	 * Write a report with totals to the configured output.
+	 */
+	public void report(long threshold) {
+		this.out.println(ReportWriter.HYPEN35);
 		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
 		for (final T t : this.map.keySet()) {
-			this.out.println(t.toString() + ": " + this.map.get(t));
+			if (this.map.get(t).longValue() >= threshold) {
+				this.out.println(t.toString() + ": " + this.map.get(t));
+			}
 		}
 	}
 
@@ -98,7 +113,7 @@ public class Tally<T> {
 	 *            The interval to space reports by
 	 * @see #report()
 	 */
-	public void report(final int interval) {
+	public void intervalReport(final int interval) {
 		if (getTotal() > 0 && (getTotal() % interval) == 0) {
 			report();
 		}
@@ -136,6 +151,17 @@ public class Tally<T> {
 		} else {
 			final Long newValue = Long.valueOf(oldValue.intValue() + increment);
 			this.map.replace(tallyObject, oldValue, newValue);
+		}
+	}
+
+	public void reportTop(int number) {
+		this.out.println(ReportWriter.HYPEN35);
+		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
+		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
+		Collections.sort(top, new EntryValueComparator<T, Long>());
+		top = top.subList(0, number);
+		for (final Entry<T, Long> entry : top) {
+			this.out.println(entry.getKey().toString() + ": " + entry.getValue());
 		}
 	}
 
