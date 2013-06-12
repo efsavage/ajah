@@ -163,17 +163,18 @@ public class FileUtils {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 
-		final FileInputStream in = new FileInputStream(file);
-		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		final DataOutputStream dos = new DataOutputStream(baos);
-		final byte[] data = new byte[4096];
-		int count = in.read(data);
-		while (count != -1) {
-			dos.write(data, 0, count);
-			count = in.read(data);
-		}
+		try (FileInputStream in = new FileInputStream(file)) {
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			final DataOutputStream dos = new DataOutputStream(baos);
+			final byte[] data = new byte[4096];
+			int count = in.read(data);
+			while (count != -1) {
+				dos.write(data, 0, count);
+				count = in.read(data);
+			}
 
-		return baos.toByteArray();
+			return baos.toByteArray();
+		}
 	}
 
 	/**
