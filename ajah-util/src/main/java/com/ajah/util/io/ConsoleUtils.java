@@ -81,6 +81,28 @@ public class ConsoleUtils {
 	}
 
 	/**
+	 * Asks a question with a text answer, appending the default value if
+	 * present.
+	 * 
+	 * @param message
+	 *            The question to ask, required.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
+	@SuppressWarnings("resource")
+	// Don't need to close System.in
+	public static String ask(String message) {
+		Scanner in = new Scanner(System.in);
+		String response = null;
+		while (StringUtils.isBlank(response)) {
+			System.out.println(message);
+			response = in.nextLine().trim();
+		}
+		return response;
+	}
+
+	/**
 	 * Asks a question, requiring a numerical answer, appending the default
 	 * value.
 	 * 
