@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.csv;
+package com.ajah.flatfile.csv;
 
 import java.util.List;
 
@@ -90,8 +90,8 @@ public class CsvRow {
 	}
 
 	/**
-	 * Returns the field value for a given name as an double. If the field is empty
-	 * or not a number, returns a default value.
+	 * Returns the field value for a given name as an double. If the field is
+	 * empty or not a number, returns a default value.
 	 * 
 	 * @param fieldName
 	 *            The name of the field to return.
@@ -113,6 +113,18 @@ public class CsvRow {
 			log.finest("Invalid value " + this.fieldValues[index] + " returning " + defaultValue);
 			return defaultValue;
 		}
+	}
+
+	/**
+	 * Determines if the row defines the specified field.
+	 * 
+	 * @param fieldName
+	 *            The name of the field.
+	 * @return true if the field is defined(it may still be empty), otherwise
+	 *         false.
+	 */
+	public boolean has(String fieldName) {
+		return this.fieldNames.indexOf(fieldName) >= 0;
 	}
 	
 }
