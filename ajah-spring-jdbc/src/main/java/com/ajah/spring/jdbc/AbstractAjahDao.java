@@ -55,6 +55,7 @@ import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.StringUtils;
 import com.ajah.util.ToStringable;
 import com.ajah.util.data.Audited;
 import com.ajah.util.reflect.IntrospectionUtils;
@@ -77,7 +78,7 @@ import com.ajah.util.reflect.ReflectionUtils;
 @Log
 public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements AjahDao<K, T> {
 
-	private static final Logger sqlLog = Logger.getLogger("ajah.sql");
+	protected static final Logger sqlLog = Logger.getLogger("ajah.sql");
 
 	private static String getFieldsClause(final String[] fields) {
 		final StringBuffer stringBuffer = new StringBuffer();
@@ -221,7 +222,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	protected long count(final Criteria criteria) throws DataOperationException {
 		try {
-			final String sql = "SELECT COUNT(*) FROM " + getTableName() + criteria.getWhere().getSql();
+			final String sql = "SELECT COUNT(*) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
 			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
@@ -283,7 +284,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public int deleteById(final K id) throws DataOperationException {
 		AjahUtils.requireParam(id, "id");
 		try {
-			return getJdbcTemplate().update("DELETE FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() });
+			return getJdbcTemplate().update("DELETE FROM `" + getTableName() + "` WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() });
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
@@ -304,7 +305,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
 		}
 		criteria.rows(1);
-		return find(criteria.getWhere(), criteria.getLimit());
+		return find(criteria.getWhere(), criteria.getLimit(), criteria.getOrderBySql());
 	}
 
 	/**
@@ -314,19 +315,30 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *            The Object to create the WHERE statement.
 	 * @param limit
 	 *            The Object to create the LIMIT statement.
+	 * @param orderBySql
+	 *            The SQL for the "ORDER BY" clause. Should start with
+	 *            "ORDER BY", or can be blank.
 	 * @return The object, if found, otherwise null.
 	 * @throws DataOperationException
 	 *             If the query could not be executed
 	 */
-	public T find(final Where where, final Limit limit) throws DataOperationException {
+	public T find(final Where where, final Limit limit, final String orderBySql) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		if (limit != null && limit.getCount() > 1) {
 			throw new IllegalArgumentException("Cannot use singular find method with a limit greater than 1 (" + limit.getCount() + ")");
 		}
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + where.getSql() + (limit == null ? " LIMIT 1" : " " + limit.getSql());
-			sqlLog.finest(sql);
-			return getJdbcTemplate().queryForObject(sql, where.getValues().toArray(), getRowMapper());
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + where.getSql() + (StringUtils.isBlank(orderBySql) ? "" : orderBySql)
+					+ (limit == null ? " LIMIT 1" : " " + limit.getSql());
+			Object[] values = where.getValues().toArray();
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+				sqlLog.finest(values.length + " values");
+				for (int i = 0; i < values.length; i++) {
+					sqlLog.finest("value " + i + ": " + values[i].toString());
+				}
+			}
+			return getJdbcTemplate().queryForObject(sql, values, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
 		} catch (final DataAccessException e) {
@@ -349,7 +361,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ?", new Object[] { value }, getRowMapper());
+			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + field + " = ?", new Object[] { value }, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
 		} catch (final DataAccessException e) {
@@ -373,8 +385,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(values, "values");
 		try {
 			// TODO Optimize for single values
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getFieldsClause(fields);
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + getFieldsClause(fields);
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 				for (final Object value : values) {
 					log.finest(value.toString());
@@ -402,7 +414,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(ids, "ids");
 		try {
 			final StringBuffer sql = new StringBuffer();
-			sql.append("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE ");
+			sql.append("SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE ");
 			boolean first = true;
 			final String[] idArray = new String[ids.size()];
 			int i = 0;
@@ -415,7 +427,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				sql.append(getTableName() + "_id = ?");
 				idArray[i++] = id.toString();
 			}
-			if (log.isLoggable(Level.FINEST)) {
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				log.finest(sql.toString());
 				for (final Object value : ids) {
 					log.finest(value.toString());
@@ -442,7 +454,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public T findByWhere(final String where) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where + " LIMIT 1";
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + where + " LIMIT 1";
 			sqlLog.finest(sql);
 			return getJdbcTemplate().queryForObject(sql, null, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
@@ -487,7 +499,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			for (int i = 0; i < values.length; i++) {
 				final Field field = this.colMap.get(this.columns.get(i));
 				values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
-				if (log.isLoggable(Level.FINEST)) {
+				if (sqlLog.isLoggable(Level.FINEST)) {
 					log.finest(field.getName() + " set to " + values[i]);
 				}
 			}
@@ -543,6 +555,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @return The table name for this class, may be null.
 	 */
 	public String getTableName() {
+		// TODO Add marker interface or annotation?
 		if (this.tableName == null) {
 			loadColumns();
 		}
@@ -621,8 +634,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			final String sql = "UPDATE " + getTableName() + " SET " + field + "=" + field + " + " + amount + " WHERE " + getTableName() + "_id = ?";
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "UPDATE `" + getTableName() + "` SET " + field + "=" + field + " + " + amount + " WHERE " + getTableName() + "_id = ?";
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
 			return this.jdbcTemplate.update(sql, entity.getId().toString());
@@ -661,8 +674,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			final String sql = "INSERT " + (delayed ? "DELAYED " : "") + "INTO " + getTableName() + "(" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "INSERT " + (delayed ? "DELAYED " : "") + "INTO `" + getTableName() + "` (" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
 			return this.jdbcTemplate.update(sql, getInsertValues(entity));
@@ -675,34 +688,40 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * Find a list of all entities.
 	 * 
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 * @since 1.0.2
 	 */
-	protected List<T> list() {
+	protected List<T> list() throws DataOperationException {
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName();
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`";
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
 			return getJdbcTemplate().query(sql, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return Collections.emptyList();
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
-	
+
 	/**
 	 * Find a list of entities by non-unique match.
 	 * 
 	 * @param criteria
 	 *            The criteria object to use to build the query.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 * @since 1.0.1
 	 */
-	public List<T> list(final Criteria criteria) {
+	public List<T> list(final Criteria criteria) throws DataOperationException {
 		AjahUtils.requireParam(criteria, "criteria");
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + criteria.getWhere().getSql() + criteria.getOrderBySql() + criteria.getLimit().getSql();
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + criteria.getWhere().getSql() + criteria.getOrderBySql() + criteria.getLimit().getSql();
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 				log.finest(criteria.getWhere().getValues().toString());
 			}
@@ -710,6 +729,23 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return Collections.emptyList();
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
+	public List<T> list(int page, int count) throws DataOperationException {
+		try {
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` LIMIT " + (page * count) + "," + count;
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
+			return getJdbcTemplate().query(sql, getRowMapper());
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return Collections.emptyList();
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -720,18 +756,22 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *            The WHERE clause, required. Do not include the actual "WHERE"
 	 *            phrase as it is inserted automatically.
 	 * @return The list of entities satisfying the WHERE, may be null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> list(final String where) {
+	public List<T> list(final String where) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + where;
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + where;
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
 			return getJdbcTemplate().query(sql, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return Collections.emptyList();
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -742,9 +782,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param value
 	 *            The value to use to build the query.
 	 * @return List of entities if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 * @since 1.0.1
 	 */
-	public List<T> list(final ToStringable value) {
+	public List<T> list(final ToStringable value) throws DataOperationException {
 		return list(new Criteria().eq(value));
 	}
 
@@ -756,8 +798,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param value
 	 *            Value to match against the entity.field column, required.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> listByField(final String field, final Identifiable<? extends ToStringable> value) {
+	public List<T> listByField(final String field, final Identifiable<? extends ToStringable> value) throws DataOperationException {
 		AjahUtils.requireParam(value, "value");
 		AjahUtils.requireParam(value.getId(), "value.id");
 		return listByField(field, value.getId().toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
@@ -771,8 +815,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param value
 	 *            Value to match against the entity.field column, required.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> listByField(final String field, final String value) {
+	public List<T> listByField(final String field, final String value) throws DataOperationException {
 		AjahUtils.requireParam(value, "value");
 		return listByField(field, value, getTableName() + "_id", 0, Integer.MAX_VALUE);
 	}
@@ -787,8 +833,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param count
 	 *            The maximum number of rows to fetch.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> listByField(final String field, final String value, final int count) {
+	public List<T> listByField(final String field, final String value, final int count) throws DataOperationException {
 		AjahUtils.requireParam(value, "value");
 		return listByField(field, value, getTableName() + "_id", 0, count);
 	}
@@ -807,17 +855,22 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param count
 	 *            Number of results per page to return.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> listByField(final String field, final String value, final String orderBy, final int page, final int count) {
+	public List<T> listByField(final String field, final String value, final String orderBy, final int page, final int count) throws DataOperationException {
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		try {
 			if (value.equals("NULL")) {
-				final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " IS NULL ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
+				final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + field + " IS NULL ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
+				if (sqlLog.isLoggable(Level.FINEST)) {
+					sqlLog.finest(sql);
+				}
 				return getJdbcTemplate().query(sql, getRowMapper());
 			}
-			final String sql = "SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + field + " = ? ORDER BY " + orderBy + " LIMIT " + (page * count) + "," + count;
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 				log.finest(value.toString());
 			}
@@ -825,6 +878,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return Collections.emptyList();
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -836,8 +891,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param value
 	 *            Value to match against the entity.field column, required.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> listByField(final String field, final ToStringable value) {
+	public List<T> listByField(final String field, final ToStringable value) throws DataOperationException {
 		AjahUtils.requireParam(value, "value");
 		return listByField(field, value.toString(), getTableName() + "_id", 0, Integer.MAX_VALUE);
 	}
@@ -855,8 +912,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @param count
 	 *            Number of results per page to return.
 	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
-	public List<T> listByField(final String field, final ToStringable value, final String orderBy, final int page, final int count) {
+	public List<T> listByField(final String field, final ToStringable value, final String orderBy, final int page, final int count) throws DataOperationException {
 		return listByField(field, value.toString(), orderBy, page, count);
 	}
 
@@ -873,7 +932,12 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public T load(final K id) throws DataOperationException {
 		AjahUtils.requireParam(id, "id");
 		try {
-			return getJdbcTemplate().queryForObject("SELECT " + getSelectFields() + " FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }, getRowMapper());
+			String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + getTableName() + "_id = ?";
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+				log.finest(id.toString());
+			}
+			return getJdbcTemplate().queryForObject(sql, new Object[] { id.toString() }, getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			log.finest(e.getMessage());
 			return null;
@@ -963,43 +1027,63 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	}
 
-	protected int maxInt(final String field, final Criteria criteria) {
+	protected int maxInt(final String field, final Criteria criteria) throws DataOperationException {
 		try {
-			final String sql = "SELECT MAX(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			final String sql = "SELECT MAX(" + field + ") FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
 			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
-	protected long maxLong(final String field, final Criteria criteria) {
+	protected long maxLong(final String field, final Criteria criteria) throws DataOperationException {
 		try {
-			final String sql = "SELECT MAX(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			final String sql = "SELECT MAX(" + field + ") FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
 			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
-	protected int minInt(final String field, final Criteria criteria) {
+	protected int minInt(final String field, final Criteria criteria) throws DataOperationException {
 		try {
-			final String sql = "SELECT MIN(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			final String sql = "SELECT MIN(" + field + ") FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
 			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
-	protected long minLong(final String field, final Criteria criteria) {
+	protected long minLong(final String field, final Criteria criteria) throws DataOperationException {
 		try {
-			final String sql = "SELECT MIN(" + field + ") FROM " + getTableName() + criteria.getWhere().getSql();
+			final String sql = "SELECT MIN(" + field + ") FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
 			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues().toArray());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -1056,8 +1140,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			final String sql = "UPDATE " + getTableName() + " SET " + getUpdateFields() + " WHERE " + getTableName() + "_id = ?";
-			if (log.isLoggable(Level.FINEST)) {
+			final String sql = "UPDATE `" + getTableName() + "` SET " + getUpdateFields() + " WHERE " + getTableName() + "_id = ?";
+			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
 			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
