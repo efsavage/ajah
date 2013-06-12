@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+
+import lombok.extern.java.Log;
 
 /**
  * Extension of {@link HashMap} that has a methods to make dealing with the
@@ -30,11 +33,15 @@ import java.util.List;
  * @param <K>
  * @param <V>
  */
+@Log
 public class ListMap<K, V> extends HashMap<K, List<V>> {
 
 	/**
 	 * Returns the list found at the specified key or an empty list. Avoids
 	 * {@link NullPointerException} for iterators.
+	 * 
+	 * If no list is found, {@link Collections#emptyList()} will be returned. If
+	 * an empty, mutable list is desired, use {@link #getList(Object, Class)}.
 	 * 
 	 * @param key
 	 *            The key to look up the value list.
@@ -44,6 +51,30 @@ public class ListMap<K, V> extends HashMap<K, List<V>> {
 		final List<V> list = get(key);
 		if (list == null) {
 			return Collections.emptyList();
+		}
+		return list;
+	}
+
+	/**
+	 * Returns the list found at the specified key or an empty list. Avoids
+	 * {@link NullPointerException} for iterators.
+	 * 
+	 * @param key
+	 *            The key to look up the value list.
+	 * @param listClass
+	 *            The class of list to return if one needs to be created.
+	 * @return The value list, may be empty, will not be null.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<V> getList(final K key, Class<? extends List> listClass) {
+		List<V> list = get(key);
+		if (list == null) {
+			try {
+				list = listClass.newInstance();
+				put(key, list);
+			} catch (InstantiationException | IllegalAccessException e) {
+				log.log(Level.SEVERE, e.getMessage(), e);
+			}
 		}
 		return list;
 	}
