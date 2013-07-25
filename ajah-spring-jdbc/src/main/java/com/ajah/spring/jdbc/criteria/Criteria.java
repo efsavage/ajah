@@ -38,6 +38,7 @@ import com.ajah.util.lang.NameValuePair;
 @Log
 // TODO Add solo criteria for auto rows=1
 // TODO add gt/lt/ge/le/ne
+// TODO handle Date params
 public class Criteria {
 
 	private List<NameValuePair<String>> eqs = null;
@@ -103,6 +104,21 @@ public class Criteria {
 	public Criteria eq(final String field, final long value) {
 		AjahUtils.requireParam(field, "field");
 		return eq(field, String.valueOf(value));
+	}
+
+	/**
+	 * A field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria eq(final String field, final boolean value) {
+		// TODO This should probably be 0 or !0.
+		AjahUtils.requireParam(field, "field");
+		return eq(field, value ? 1 : 0);
 	}
 
 	/**
