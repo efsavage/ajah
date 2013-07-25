@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 /**
  * This class allows applications that are rate-limited via a quota/restore rate
@@ -30,6 +31,7 @@ import lombok.Setter;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class RestorativeQuota {
 
 	@Getter
@@ -58,7 +60,7 @@ public class RestorativeQuota {
 		this.quota = quota;
 		this.restorationDelay = restorationDelay;
 		if (this.sleepDelay < restorationDelay) {
-			this.sleepDelay = restorationDelay;
+			this.sleepDelay = restorationDelay / quota;
 		}
 	}
 
@@ -87,6 +89,7 @@ public class RestorativeQuota {
 			}
 			boolean sleep = true;
 			while (this.lastPurge + this.restorationDelay < now) {
+				log.finest("Purging");
 				sleep = false;
 				// At least one item has been purged, so we'll pop them off and
 				// advance the timer to the present.
@@ -98,9 +101,20 @@ public class RestorativeQuota {
 
 			if (sleep) {
 				// No requests were purged, so we'll sleep and try again
+				log.finest("Sleeping for " + this.sleepDelay + "ms");
 				Thread.sleep(this.sleepDelay);
 			}
 		}
+	}
+
+	/**
+	 * Used to set the available requests on a quota to zero and mark is as
+	 * purged. Used when a remote service returns an error that a request has
+	 * been throttled, perhaps because a previous process has exhausted it.
+	 */
+	public void exhaust() {
+		this.lastPurge = System.currentTimeMillis();
+		this.requests.set(this.quota);
 	}
 
 }
