@@ -137,6 +137,9 @@ public class S3Client {
 			log.warning("Data is empty, skipping upload");
 			return;
 		}
+		if (name.startsWith("/")) {
+			log.warning("Name starts with \"/\", could cause unpredictable results");
+		}
 		try {
 			log.finest(data.length + " bytes to upload");
 			S3Object object;
