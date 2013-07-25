@@ -180,4 +180,16 @@ public class IntrospectionUtils {
 		return ToStringable.class.isAssignableFrom(field.getType());
 	}
 
+	/**
+	 * Checks to see if the field's type is a double.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a double
+	 */
+	public static boolean isDouble(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return double.class.isAssignableFrom(field.getType()) || Double.class.isAssignableFrom(field.getType());
+	}
+
 }

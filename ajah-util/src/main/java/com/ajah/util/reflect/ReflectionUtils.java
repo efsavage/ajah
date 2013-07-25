@@ -151,6 +151,9 @@ public class ReflectionUtils {
 		} else if (IntrospectionUtils.isLong(field)) {
 			// It's a long
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else if (IntrospectionUtils.isDouble(field)) {
+			// It's a double
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isBoolean(field)) {
 			// It's a boolean
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
