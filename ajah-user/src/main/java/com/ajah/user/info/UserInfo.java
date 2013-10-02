@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -163,4 +163,18 @@ public interface UserInfo extends Identifiable<UserId> {
 	 *            THe creation date of the user.
 	 */
 	void setCreated(final Date date);
+
+	/**
+	 * Returns the full name in the format [Last], [First] [Middle]
+	 * 
+	 * @return The full name of the user.
+	 */
+	String getFullNameLastFirst();
+
+	/**
+	 * Returns the full name in the format [First] [Middle] [Last].
+	 * 
+	 * @return The full name of the user.
+	 */
+	String getFullName();
 }

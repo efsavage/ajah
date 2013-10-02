@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import lombok.Data;
 import com.ajah.user.UserId;
 import com.ajah.user.email.EmailId;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.StringUtils;
 import com.ajah.util.data.Month;
 
 /**
@@ -47,6 +48,7 @@ public class UserInfoImpl implements UserInfo {
 	private Integer birthDay;
 	private Integer birthYear;
 	private EmailId primaryEmailId;
+	private Integer displayName;
 
 	/**
 	 * Empty public constructor.
@@ -66,4 +68,63 @@ public class UserInfoImpl implements UserInfo {
 		this.id = userId;
 	}
 
+	/**
+	 * Returns the full name in the format [First] [Middle] [Last].
+	 * 
+	 * @return The full name of the user.
+	 */
+	@Override
+	public String getFullName() {
+		if (StringUtils.isBlank(this.lastName)) {
+			if (StringUtils.isBlank(this.firstName)) {
+				if (StringUtils.isBlank(this.middleName)) {
+					return "";
+				}
+				return this.middleName + (this.middleName.length() == 1 ? "." : "");
+			}
+			return this.lastName;
+		}
+		// Last name is populated
+		if (StringUtils.isBlank(this.firstName)) {
+			if (StringUtils.isBlank(this.middleName)) {
+				return this.lastName;
+			}
+			return (this.middleName.length() == 1 ? "." : "") + this.lastName;
+		}
+		// First and last name are populated
+		if (StringUtils.isBlank(this.middleName)) {
+			return this.firstName + " " + this.lastName;
+		}
+		return this.firstName + " " + (this.middleName.length() == 1 ? "." : "") + " " + this.lastName;
+	}
+
+	/**
+	 * Returns the full name in the format [Last], [First] [Middle]
+	 * 
+	 * @return The full name of the user.
+	 */
+	@Override
+	public String getFullNameLastFirst() {
+		if (StringUtils.isBlank(this.lastName)) {
+			if (StringUtils.isBlank(this.firstName)) {
+				if (StringUtils.isBlank(this.middleName)) {
+					return "";
+				}
+				return this.middleName + (this.middleName.length() == 1 ? "." : "");
+			}
+			return this.lastName;
+		}
+		// Last name is populated
+		if (StringUtils.isBlank(this.firstName)) {
+			if (StringUtils.isBlank(this.middleName)) {
+				return this.lastName;
+			}
+			return this.lastName + ", " + (this.middleName.length() == 1 ? "." : "");
+		}
+		// First and last name are populated
+		if (StringUtils.isBlank(this.middleName)) {
+			return this.lastName + ", " + this.firstName;
+		}
+		return this.lastName + ", " + this.firstName + " " + (this.middleName.length() == 1 ? "." : "");
+	}
 }
