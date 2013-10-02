@@ -124,7 +124,7 @@ public class FlatFileRow {
 		if (StringUtils.isBlank(value)) {
 			return 0;
 		}
-		return Double.parseDouble(get(column));
+		return Double.parseDouble(value);
 	}
 
 	/**
