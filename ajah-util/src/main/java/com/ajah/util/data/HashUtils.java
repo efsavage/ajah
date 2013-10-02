@@ -119,6 +119,27 @@ public class HashUtils {
 	}
 
 	/**
+	 * Creates an MD5 digest of byte array and returns it as a Base 64 encoded
+	 * number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
+	public static String md5Base64(final byte[] bytes) {
+		AjahUtils.requireParam(bytes, "bytes");
+		try {
+			final MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digest = new byte[32];
+			md.update(bytes, 0, bytes.length);
+			digest = md.digest();
+			return DatatypeConverter.printBase64Binary(digest);
+		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	/**
 	 * Creates a SHA-1 digest of byte array and returns it as a hexadecimal
 	 * number.
 	 * 
