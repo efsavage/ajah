@@ -20,11 +20,14 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
+import com.ajah.user.UserStatus;
+import com.ajah.user.UserType;
 import com.ajah.util.AjahUtils;
 
 /**
@@ -91,6 +94,22 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
+	}
+
+	/**
+	 * @see com.ajah.user.data.UserDao#count(com.ajah.user.UserType,
+	 *      com.ajah.user.UserStatus)
+	 */
+	@Override
+	public long count(UserType type, UserStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
 	}
 
 }

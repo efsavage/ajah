@@ -17,13 +17,12 @@ package com.ajah.user.account.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.account.Account;
 import com.ajah.user.account.AccountId;
 import com.ajah.user.account.AccountStatus;
 import com.ajah.user.account.AccountType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link Account}.
@@ -49,5 +48,18 @@ public interface AccountDao extends AjahDao<AccountId, Account> {
 	 *             If the query could not be executed.
 	 */
 	List<Account> list(AccountType type, AccountStatus status, long page, long count) throws DataOperationException;
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The account type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	long count(AccountType type, AccountStatus status) throws DataOperationException;
 
 }

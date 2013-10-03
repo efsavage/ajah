@@ -150,4 +150,30 @@ public class AccountManager {
 		return result;
 	}
 
+	/**
+	 * Returns a count of all records.
+	 * 
+	 * @return Count of all records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count() throws DataOperationException {
+		return count(null, null);
+	}
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The account type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count(final AccountType type, final AccountStatus status) throws DataOperationException {
+		return this.accountDao.count(type, status);
+	}
+
 }

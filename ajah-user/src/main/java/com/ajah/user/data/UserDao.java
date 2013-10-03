@@ -19,6 +19,8 @@ import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
+import com.ajah.user.UserStatus;
+import com.ajah.user.UserType;
 
 /**
  * Data operations on the "user" table.
@@ -77,5 +79,18 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 *             If the query could not be executed.
 	 */
 	public User findByUsernameAndPassword(final String username, final String password) throws DataOperationException;
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The user type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	long count(UserType type, UserStatus status) throws DataOperationException;
 
 }

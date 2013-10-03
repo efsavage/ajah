@@ -17,21 +17,19 @@ package com.ajah.user.account.data;
 
 import java.util.List;
 
-import com.ajah.user.account.Account;
-import com.ajah.user.account.AccountId;
-import com.ajah.user.account.AccountStatus;
-import com.ajah.user.account.AccountType;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
-
+import com.ajah.user.account.Account;
+import com.ajah.user.account.AccountId;
+import com.ajah.user.account.AccountStatus;
+import com.ajah.user.account.AccountType;
 
 /**
- *  MySQL-based implementation of {@link AccountDao}. 
+ * MySQL-based implementation of {@link AccountDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -49,6 +47,22 @@ public class AccountDaoImpl extends AbstractAjahDao<AccountId, Account, Account>
 			criteria.eq("status", status);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+	}
+
+	/**
+	 * @see com.ajah.user.account.data.AccountDao#count(com.ajah.user.account.AccountType,
+	 *      com.ajah.user.account.AccountStatus)
+	 */
+	@Override
+	public long count(AccountType type, AccountStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
 	}
 
 }
