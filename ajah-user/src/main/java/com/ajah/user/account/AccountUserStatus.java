@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package com.ajah.user.account;
 import com.ajah.util.Identifiable;
 
 /**
- * Valid states of Account entities.
+ * Valid states of AccountUser entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum AccountStatus implements Identifiable<String> {
+public enum AccountUserStatus implements Identifiable<String> {
 
 	/**
 	 * Inactive.
@@ -49,8 +49,8 @@ public enum AccountStatus implements Identifiable<String> {
 	 *            Value to match against id, name, or name()
 	 * @return Matching AddressBookType, or null.
 	 */
-	public static AccountStatus get(final String id) {
-		for (final AccountStatus type : values()) {
+	public static AccountUserStatus get(final String id) {
+		for (final AccountUserStatus type : values()) {
 			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
 				return type;
 			}
@@ -66,7 +66,7 @@ public enum AccountStatus implements Identifiable<String> {
 	private final boolean error;
 	private final boolean deleted;
 
-	private AccountStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
+	private AccountUserStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

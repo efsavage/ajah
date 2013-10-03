@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,29 +18,21 @@ package com.ajah.user.account;
 import com.ajah.util.Identifiable;
 
 /**
- * Valid states of Account entities.
+ * Valid states of AccountUser entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum AccountStatus implements Identifiable<String> {
+public enum AccountUserType implements Identifiable<String> {
 
 	/**
-	 * Inactive.
+	 * Standard.
 	 */
-	INACTIVE("0", "ina", "Inactive", "Inactive.", false, false, false),
+	STANDARD("0", "std", "Standard", "Standard."),
 	/**
-	 * Active.
+	 * Special.
 	 */
-	ACTIVE("1", "act", "Active", "Active.", true, false, false),
-	/**
-	 * Error.
-	 */
-	ERROR("-2", "err", "Error", "Error.", false, true, false),
-	/**
-	 * Deleted.
-	 */
-	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
+	SPECIAL("1", "spe", "Special", "Special.");
 
 	/**
 	 * Finds a AddressBookType that matches the id on id, name, or name().
@@ -49,8 +41,8 @@ public enum AccountStatus implements Identifiable<String> {
 	 *            Value to match against id, name, or name()
 	 * @return Matching AddressBookType, or null.
 	 */
-	public static AccountStatus get(final String id) {
-		for (final AccountStatus type : values()) {
+	public static AccountUserType get(final String id) {
+		for (final AccountUserType type : values()) {
 			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
 				return type;
 			}
@@ -62,18 +54,12 @@ public enum AccountStatus implements Identifiable<String> {
 	private final String code;
 	private final String name;
 	private final String description;
-	private final boolean active;
-	private final boolean error;
-	private final boolean deleted;
 
-	private AccountStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
+	private AccountUserType(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
-		this.active = active;
-		this.error = error;
-		this.deleted = deleted;
 	}
 
 	/**
@@ -120,30 +106,4 @@ public enum AccountStatus implements Identifiable<String> {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Does this status mean that the entity is active?
-	 * 
-	 * @return true if active, otherwise false
-	 */
-	public boolean isActive() {
-		return this.active;
-	}
-
-	/**
-	 * Does this status mean that the entity is in an error state?
-	 * 
-	 * @return true if in error state, otherwise false
-	 */
-	public boolean isError() {
-		return this.error;
-	}
-
-	/**
-	 * Does this status mean that the entity has been deleted?
-	 * 
-	 * @return true if deleted, otherwise false
-	 */
-	public boolean isDeleted() {
-		return this.deleted;
-	}
 }

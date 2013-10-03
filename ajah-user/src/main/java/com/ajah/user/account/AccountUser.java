@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,23 +19,16 @@ import java.util.Date;
 
 import lombok.Data;
 
-import com.ajah.user.User;
 import com.ajah.util.Identifiable;
 
-/**
- * An Account corresponds to a billing or non-person entity. Accounts have
- * many-to-many relationships with {@link User}s via {@link AccountUser}.
- * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- */
-@Data
-public class Account implements Identifiable<AccountId> {
 
-	private AccountId id;
+@Data
+public class AccountUser implements Identifiable<AccountUserId> {
+
+	private AccountUserId id;
 	private String name;
-	private AccountStatus status;
-	private AccountType type;
+	private AccountUserStatus status;
+	private AccountUserType type;
 	private Date created;
 
 }

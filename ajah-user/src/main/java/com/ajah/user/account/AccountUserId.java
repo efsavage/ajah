@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
 /**
- * A wrapper around a String for typesafe {@link Account} IDs.
+ * A wrapper around a String for typesafe {@link AccountUser} IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Data
-public class AccountId implements Serializable, ToStringable, FromStringable, Comparable<AccountId> {
+public class AccountUserId implements Serializable, ToStringable, FromStringable, Comparable<AccountUserId> {
 
 	private final String id;
 
@@ -39,7 +39,7 @@ public class AccountId implements Serializable, ToStringable, FromStringable, Co
 	 * @param id
 	 *            UID of item, cannot be null.
 	 */
-	public AccountId(final String id) {
+	public AccountUserId(final String id) {
 		this.id = id;
 	}
 
@@ -47,7 +47,7 @@ public class AccountId implements Serializable, ToStringable, FromStringable, Co
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(final AccountId other) {
+	public int compareTo(final AccountUserId other) {
 		return this.id.compareTo(other.getId());
 	}
 

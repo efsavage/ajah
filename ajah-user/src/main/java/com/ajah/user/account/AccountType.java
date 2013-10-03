@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,22 +15,52 @@
  */
 package com.ajah.user.account;
 
+import com.ajah.util.Identifiable;
+
 /**
- * All accounts must be of some type, which determines the permitted operations.
- * Common types might be FREE, PREMIUM, DEVELOPER, PRESS, etc. This can be
- * further specified via permissions.
+ * Valid states of Account entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface AccountType {
+public enum AccountType implements Identifiable<String> {
 
 	/**
-	 * The internal ID of the type.
-	 * 
-	 * @return The internal ID of the type. Cannot be null.
+	 * Standard.
 	 */
-	String getId();
+	STANDARD("0", "std", "Standard", "Standard."),
+	/**
+	 * Special.
+	 */
+	SPECIAL("1", "spe", "Special", "Special.");
+
+	/**
+	 * Finds a AddressBookType that matches the id on id, name, or name().
+	 * 
+	 * @param id
+	 *            Value to match against id, name, or name()
+	 * @return Matching AddressBookType, or null.
+	 */
+	public static AccountType get(final String id) {
+		for (final AccountType type : values()) {
+			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	private final String id;
+	private final String code;
+	private final String name;
+	private final String description;
+
+	private AccountType(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+	}
 
 	/**
 	 * The short, display-friendly code of the type. If no code is applicable,
@@ -38,7 +68,28 @@ public interface AccountType {
 	 * 
 	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
-	String getCode();
+	public String getCode() {
+		return this.code;
+	}
+
+	/**
+	 * The display-friendly description of the type.
+	 * 
+	 * @return The display-friendly description of the type. May be null.
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * The internal ID of the type.
+	 * 
+	 * @return The internal ID of the type. Cannot be null.
+	 */
+	@Override
+	public String getId() {
+		return this.id;
+	}
 
 	/**
 	 * The display-friendly name of the type. If no name is applicable, it
@@ -46,13 +97,13 @@ public interface AccountType {
 	 * 
 	 * @return The display-friendly name of the type. Cannot be null.
 	 */
-	String getName();
+	public String getName() {
+		return this.name;
+	}
 
-	/**
-	 * The display-friendly description of the type.
-	 * 
-	 * @return The display-friendly description of the type. May be null.
-	 */
-	String getDescription();
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
+	}
 
 }

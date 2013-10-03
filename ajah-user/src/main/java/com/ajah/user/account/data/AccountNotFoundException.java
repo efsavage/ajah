@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,29 +13,27 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.account;
+package com.ajah.user.account.data;
 
-import java.util.Date;
-
-import lombok.Data;
-
-import com.ajah.user.User;
-import com.ajah.util.Identifiable;
+import com.ajah.user.account.Account;
+import com.ajah.user.account.AccountId;
 
 /**
- * An Account corresponds to a billing or non-person entity. Accounts have
- * many-to-many relationships with {@link User}s via {@link AccountUser}.
+ * Thrown when an {@link Account} was expected to be found, but was not.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-@Data
-public class Account implements Identifiable<AccountId> {
+public class AccountNotFoundException extends Exception {
 
-	private AccountId id;
-	private String name;
-	private AccountStatus status;
-	private AccountType type;
-	private Date created;
+	/**
+	 * Thrown when an {@link Account} could not be found by it's internal ID.
+	 * 
+	 * @param id
+	 *            The internal ID that was sought.
+	 */
+	public AccountNotFoundException(final AccountId id) {
+		super("ID: " + id);
+	}
 
 }
