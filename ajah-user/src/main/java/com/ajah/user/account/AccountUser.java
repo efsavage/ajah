@@ -19,14 +19,22 @@ import java.util.Date;
 
 import lombok.Data;
 
+import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
 
-
+/**
+ * An account-user is a relationship between a user and an account, such as an
+ * employee (User) being part of a company (Account).
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ */
 @Data
 public class AccountUser implements Identifiable<AccountUserId> {
 
 	private AccountUserId id;
-	private String name;
+	private AccountId accountId;
+	private UserId userId;
 	private AccountUserStatus status;
 	private AccountUserType type;
 	private Date created;

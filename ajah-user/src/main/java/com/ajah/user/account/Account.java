@@ -37,5 +37,6 @@ public class Account implements Identifiable<AccountId> {
 	private AccountStatus status;
 	private AccountType type;
 	private Date created;
+	private String legacyId;
 
 }
