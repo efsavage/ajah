@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -268,7 +268,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @see #deleteById(Comparable)
 	 */
 	@Override
-	public int delete(final T entity) {
+	public DataOperationResult<T> delete(final T entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -654,7 +654,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *             If an error occurs executing the query.
 	 */
 	@Override
-	public int insert(final T entity) throws DataOperationException {
+	public DataOperationResult<T> insert(final T entity) throws DataOperationException {
 		return insert(entity, false);
 	}
 
@@ -669,7 +669,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int insert(final T entity, final boolean delayed) throws DataOperationException {
+	public DataOperationResult<T> insert(final T entity, final boolean delayed) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -678,7 +678,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return this.jdbcTemplate.update(sql, getInsertValues(entity));
+			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, getInsertValues(entity)));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
@@ -734,9 +734,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	/**
+	 * Lists an entity, ordering by it's ID field.
+	 * 
+	 * @param page
+	 *            Page of results (offset).
+	 * @param count
+	 *            Number of results per page to return.
+	 * @return List of entities, or an empty list.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
+	 */
 	public List<T> list(int page, int count) throws DataOperationException {
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` LIMIT " + (page * count) + "," + count;
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` ORDER BY " + this.getTableName() + "_id LIMIT " + (page * count) + "," + count;
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
@@ -1135,7 +1146,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *             If an error occurs executing the query.
 	 */
 	@Override
-	public int update(final T entity) throws DataOperationException {
+	public DataOperationResult<T> update(final T entity) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -1144,7 +1155,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return this.jdbcTemplate.update(sql, getUpdateValues(entity));
+			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, getUpdateValues(entity)));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}

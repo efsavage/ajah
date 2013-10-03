@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	int insert(final T entity) throws DataOperationException;
+	DataOperationResult<T> insert(final T entity) throws DataOperationException;
 
 	/**
 	 * Inserts a record.
@@ -82,7 +82,7 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	int update(final T entity) throws DataOperationException;
+	DataOperationResult<T> update(final T entity) throws DataOperationException;
 
 	/**
 	 * Deletes a record, or marks it as deleted.
@@ -93,6 +93,6 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @throws DataOperationException
 	 *             if the query could not be executed.
 	 */
-	int delete(final T entity) throws DataOperationException;
+	DataOperationResult<T> delete(final T entity) throws DataOperationException;
 
 }
