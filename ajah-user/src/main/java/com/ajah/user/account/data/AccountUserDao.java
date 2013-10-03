@@ -17,13 +17,14 @@ package com.ajah.user.account.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.User;
+import com.ajah.user.UserId;
 import com.ajah.user.account.AccountUser;
 import com.ajah.user.account.AccountUserId;
 import com.ajah.user.account.AccountUserStatus;
 import com.ajah.user.account.AccountUserType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link AccountUser}.
@@ -49,5 +50,16 @@ public interface AccountUserDao extends AjahDao<AccountUserId, AccountUser> {
 	 *             If the query could not be executed.
 	 */
 	List<AccountUser> list(AccountUserType type, AccountUserStatus status, long page, long count) throws DataOperationException;
+
+	/**
+	 * Lists {@link AccountUser}s for a given {@link User}.
+	 * 
+	 * @param userId
+	 *            The userId to search on.
+	 * @return A list of {@link AccountUser}s, or an empty list.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	List<AccountUser> list(UserId userId) throws DataOperationException;
 
 }

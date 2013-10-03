@@ -23,6 +23,7 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.account.AccountUser;
 import com.ajah.user.account.AccountUserId;
 import com.ajah.user.account.AccountUserStatus;
@@ -46,11 +47,19 @@ public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUs
 		if (status != null) {
 			criteria.eq("status", status);
 		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}
 
 	@Override
 	public String getTableName() {
 		return "account__user";
+	}
+
+	/**
+	 * @see com.ajah.user.account.data.AccountUserDao#list(com.ajah.user.UserId)
+	 */
+	@Override
+	public List<AccountUser> list(UserId userId) throws DataOperationException {
+		return super.list(userId);
 	}
 }

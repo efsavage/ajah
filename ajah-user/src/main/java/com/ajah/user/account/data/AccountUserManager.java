@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.User;
+import com.ajah.user.UserId;
 import com.ajah.user.account.AccountUser;
 import com.ajah.user.account.AccountUserId;
 import com.ajah.user.account.AccountUserStatus;
@@ -124,7 +126,6 @@ public class AccountUserManager {
 	 */
 	public DataOperationResult<AccountUser> create(String name, AccountUserType type, AccountUserStatus status) throws DataOperationException {
 		AccountUser accountUser = new AccountUser();
-		accountUser.setName(name);
 		accountUser.setType(type);
 		accountUser.setStatus(status);
 		DataOperationResult<AccountUser> result = save(accountUser);
@@ -148,6 +149,19 @@ public class AccountUserManager {
 		accountUser.setStatus(AccountUserStatus.DELETED);
 		DataOperationResult<AccountUser> result = save(accountUser);
 		return result;
+	}
+
+	/**
+	 * Lists {@link AccountUser}s for a given {@link User}.
+	 * 
+	 * @param userId
+	 *            The userId to search on.
+	 * @return A list of {@link AccountUser}s, or an empty list.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<AccountUser> list(UserId userId) throws DataOperationException {
+		return this.accountUserDao.list(userId);
 	}
 
 }
