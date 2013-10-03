@@ -18,6 +18,7 @@ package com.ajah.log.http.request.data;
 import com.ajah.log.http.request.RequestEvent;
 import com.ajah.log.http.request.RequestEventId;
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
@@ -36,11 +37,11 @@ public interface RequestEventDao extends AjahDao<RequestEventId, RequestEvent> {
 	 *            The requestEvent to insert.
 	 * @param delayed
 	 *            Should the insert be delayed?
-	 * @return The number of rows insertd. If delayed is true will always be
-	 *         zero.
+	 * @return The result of the operation. If delayed is true the number of
+	 *         rows affected will always be zero.
 	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	int insert(final RequestEvent requestEvent, final boolean delayed) throws DataOperationException;
+	DataOperationResult<RequestEvent> insert(final RequestEvent requestEvent, final boolean delayed) throws DataOperationException;
 
 }

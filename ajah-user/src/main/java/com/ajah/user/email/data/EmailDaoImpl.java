@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.ajah.user.email.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
@@ -46,12 +47,12 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, EmailImpl> imp
 	 * @return Number of rows affected.
 	 */
 	@Override
-	public int insert(final Email email) {
+	public DataOperationResult<Email> insert(final Email email) {
 		// TODO Necessary?
 		AjahUtils.requireParam(email, "email");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(), email.getUserId().getId(),
-				email.getAddress().toString(), email.getStatus().getId() });
+		return new DataOperationResult<>(email, this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
+				email.getUserId().getId(), email.getAddress().toString(), email.getStatus().getId() }));
 	}
 
 }

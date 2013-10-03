@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.ajah.syndicate.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.EntryId;
@@ -43,7 +44,7 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(final Entry entry) throws DataOperationException;
+	DataOperationResult<Entry> update(final Entry entry) throws DataOperationException;
 
 	/**
 	 * Finds an entry by {@link Entry#getHtmlUrlSha1()} and feed source.

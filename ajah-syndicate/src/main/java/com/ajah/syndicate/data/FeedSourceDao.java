@@ -18,6 +18,7 @@ package com.ajah.syndicate.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceId;
@@ -42,7 +43,7 @@ public interface FeedSourceDao extends AjahDao<FeedSourceId, FeedSource> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(final FeedSource feedSource) throws DataOperationException;
+	DataOperationResult<FeedSource> update(final FeedSource feedSource) throws DataOperationException;
 
 	/**
 	 * Finds an active, stale feed source that needs to be polled.

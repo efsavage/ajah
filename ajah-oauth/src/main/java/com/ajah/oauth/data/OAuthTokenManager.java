@@ -29,6 +29,7 @@ import com.ajah.oauth.OAuthProvider;
 import com.ajah.oauth.OAuthToken;
 import com.ajah.oauth.OAuthTokenId;
 import com.ajah.oauth.service.AjahOAuthService;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
@@ -127,7 +128,7 @@ public class OAuthTokenManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int save(final OAuthAccessToken oAuthAccessToken) throws DataOperationException {
+	public DataOperationResult<OAuthAccessToken> save(final OAuthAccessToken oAuthAccessToken) throws DataOperationException {
 		if (oAuthAccessToken.getId() == null) {
 			oAuthAccessToken.setId(new OAuthAccessTokenId(UUID.randomUUID().toString()));
 			oAuthAccessToken.setCreated(new Date());
@@ -147,7 +148,7 @@ public class OAuthTokenManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int save(final OAuthToken oAuthToken) throws DataOperationException {
+	public DataOperationResult<OAuthToken> save(final OAuthToken oAuthToken) throws DataOperationException {
 		if (oAuthToken.getId() == null) {
 			oAuthToken.setId(new OAuthTokenId(UUID.randomUUID().toString()));
 			oAuthToken.setCreated(new Date());

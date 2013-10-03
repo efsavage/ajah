@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.AbstractAjahRowMapper;
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.user.UserId;
 import com.ajah.user.message.UserMessage;
 import com.ajah.user.message.UserMessageId;
@@ -121,12 +122,11 @@ public class UserMessageDao extends AbstractAjahDao<UserMessageId, UserMessage, 
 	 *            UserMessage entity to insert, required.
 	 */
 	@Override
-	public int insert(final UserMessage message) {
+	public DataOperationResult<UserMessage> insert(final UserMessage message) {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
+		return new DataOperationResult<>(message, this.jdbcTemplate.update("INSERT INTO " + getTableName() + " (" + getSelectFields() + ") VALUES (?,?,?,?,?,?,?,?,?,?)",
 				new Object[] { message.getId().getId(), DateUtils.safeToLong(message.getCreated()), message.getSender().getId(), fromUserIds(message.getTo()), fromUserIds(message.getCc()),
-						fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(), message.getStatus().getId() });
+						fromUserIds(message.getBcc()), message.getSubject(), message.getBody(), message.getType().getId(), message.getStatus().getId() }));
 	}
-
 }

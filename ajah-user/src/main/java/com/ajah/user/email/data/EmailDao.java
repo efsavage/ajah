@@ -16,6 +16,7 @@
 package com.ajah.user.email.data;
 
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
@@ -29,7 +30,7 @@ import com.ajah.user.email.EmailId;
 public interface EmailDao extends AjahDao<EmailId, Email> {
 
 	@Override
-	int insert(final Email email);
+	DataOperationResult<Email> insert(final Email email);
 
 	/**
 	 * Finds an email record by its email address.

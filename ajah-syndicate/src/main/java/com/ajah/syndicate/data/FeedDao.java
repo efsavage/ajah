@@ -18,6 +18,7 @@ package com.ajah.syndicate.data;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
@@ -43,7 +44,7 @@ public interface FeedDao extends AjahDao<FeedId, Feed> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	int update(final Feed feed) throws DataOperationException;
+	DataOperationResult<Feed> update(final Feed feed) throws DataOperationException;
 
 	/**
 	 * Finds the most recent feed for a feed source.
