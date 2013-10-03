@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ajah</groupId>
 	<artifactId>ajah-base</artifactId>
-	<version>1.0.6-SNAPSHOT</version>
+	<version>1.0.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Ajah Base Project</name>
 
