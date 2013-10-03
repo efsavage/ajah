@@ -344,4 +344,29 @@ public class StringUtils {
 		return string;
 	}
 
+	/**
+	 * Limits a string to a set of choices, with a default value if there is no
+	 * match.
+	 * 
+	 * @param string
+	 *            The string to match.
+	 * @param validStrings
+	 *            The array of valid strings.
+	 * @param defaultValue
+	 *            The default value if there is no match.
+	 * @return The string if it is valid, otherwise the default value.
+	 */
+	public static String whitelist(String string, String[] validStrings, String defaultValue) {
+		AjahUtils.requireParam(validStrings, "validStrings");
+		if (string == null) {
+			return defaultValue;
+		}
+		for (String validString : validStrings) {
+			if (string.equals(validString)) {
+				return string;
+			}
+		}
+		return defaultValue;
+	}
+
 }
