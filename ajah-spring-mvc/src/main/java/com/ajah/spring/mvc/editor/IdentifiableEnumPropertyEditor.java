@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.ajah.spring.mvc.editor;
 import java.beans.PropertyEditorSupport;
 
 import com.ajah.util.Identifiable;
+import com.ajah.util.IdentifiableEnum;
 
 /**
  * Generic class that will map an enum based on its {@link Identifiable#getId()}
@@ -29,9 +30,44 @@ import com.ajah.util.Identifiable;
  * 
  * @param <E>
  */
-public class IdentifiableEnumPropertyEditor<E extends Identifiable<?>> extends PropertyEditorSupport {
+public class IdentifiableEnumPropertyEditor<E extends IdentifiableEnum<?>> extends PropertyEditorSupport {
 
 	private final E[] values;
+	private final boolean matchId;
+	private final boolean matchEnumName;
+	private final boolean matchName;
+	private final boolean matchCode;
+	private final boolean caseSensitive;
+
+	/**
+	 * Pass the result of Enum.getValues() because I can't seem to find a way to
+	 * derive this from the type parameter.
+	 * 
+	 * Matches on ID only, case-sensitive. See
+	 * {@link #IdentifiableEnumPropertyEditor(IdentifiableEnum[], boolean, boolean, boolean, boolean, boolean)}
+	 * for other options.
+	 * 
+	 * @param values
+	 *            The values of the enum.
+	 */
+	public IdentifiableEnumPropertyEditor(final E[] values) {
+		this(values, true, false, false, false, true);
+	}
+
+	/**
+	 * Pass the result of Enum.getValues() because I can't seem to find a way to
+	 * derive this from the type parameter.
+	 * 
+	 * This is the most flexible option, with all matching enabled.
+	 * 
+	 * @param values
+	 *            The values of the enum.
+	 * @param caseSensitive
+	 *            Should matching be case sensitive?
+	 */
+	public IdentifiableEnumPropertyEditor(final E[] values, boolean caseSensitive) {
+		this(values, true, true, true, true, caseSensitive);
+	}
 
 	/**
 	 * Pass the result of Enum.getValues() because I can't seem to find a way to
@@ -39,9 +75,24 @@ public class IdentifiableEnumPropertyEditor<E extends Identifiable<?>> extends P
 	 * 
 	 * @param values
 	 *            The values of the enum.
+	 * @param matchId
+	 *            Match on the enum's ID?
+	 * @param matchEnumName
+	 *            Match on the enum's name() value?
+	 * @param matchName
+	 *            Match on the enum's getName() value?
+	 * @param matchCode
+	 *            Match on the enum's code ID?
+	 * @param caseSensitive
+	 *            Should matching be case sensitive?
 	 */
-	public IdentifiableEnumPropertyEditor(final E[] values) {
+	public IdentifiableEnumPropertyEditor(final E[] values, boolean matchId, boolean matchEnumName, boolean matchName, boolean matchCode, boolean caseSensitive) {
 		this.values = values;
+		this.matchId = matchId;
+		this.matchEnumName = matchEnumName;
+		this.matchName = matchName;
+		this.matchCode = matchCode;
+		this.caseSensitive = caseSensitive;
 	}
 
 	/**
@@ -73,12 +124,41 @@ public class IdentifiableEnumPropertyEditor<E extends Identifiable<?>> extends P
 	@Override
 	public void setAsText(final String text) throws java.lang.IllegalArgumentException {
 		for (final E candidate : this.values) {
-			if (candidate.getId().toString().equals(text)) {
+			if (this.matchId && equals(candidate.getId().toString(), text)) {
+				setValue(candidate);
+				return;
+			}
+			if (this.matchEnumName && equals(candidate.name(), text)) {
+				setValue(candidate);
+				return;
+			}
+			if (this.matchName && equals(candidate.getName(), text)) {
+				setValue(candidate);
+				return;
+			}
+			if (this.matchCode && equals(candidate.getCode(), text)) {
 				setValue(candidate);
 				return;
 			}
 		}
 		throw new java.lang.IllegalArgumentException(text);
+	}
+
+	/**
+	 * Matches strings, is aware of the caseSensitive property.
+	 * 
+	 * @param first
+	 *            The first string to match.
+	 * @param second
+	 *            The second string to match.
+	 * @return The results of {@link String#equals(Object)} or
+	 *         {@link String#equalsIgnoreCase(String)} as appropriate.
+	 */
+	private boolean equals(String first, String second) {
+		if (this.caseSensitive) {
+			return first.equals(second);
+		}
+		return first.equalsIgnoreCase(second);
 	}
 
 }
