@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package com.ajah.user;
 
-import com.ajah.util.Identifiable;
+import com.ajah.util.IdentifiableEnum;
 
 /**
  * Basic implementations of UserType.
@@ -23,7 +23,7 @@ import com.ajah.util.Identifiable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum UserType implements Identifiable<String> {
+public enum UserType implements IdentifiableEnum<String> {
 
 	/**
 	 * Bot user, has no permissions except those explicitly assigned to it.

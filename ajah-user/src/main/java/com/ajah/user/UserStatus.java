@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package com.ajah.user;
 
-import com.ajah.util.Identifiable;
+import com.ajah.util.IdentifiableEnum;
 
 /**
  * Basic implementations of UserStatus.
@@ -23,7 +23,7 @@ import com.ajah.util.Identifiable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum UserStatus implements Identifiable<String> {
+public enum UserStatus implements IdentifiableEnum<String> {
 
 	/**
 	 * New user, unverified/unpaid.

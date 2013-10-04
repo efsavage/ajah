@@ -26,7 +26,11 @@ public enum UserSourceImpl implements UserSource {
 	/**
 	 * Direct signup (no other attribution)
 	 */
-	DIRECT("1", "direct", "Direct", "Direct signups, no other attribution available.");
+	DIRECT("1", "direct", "Direct", "Direct signups, no other attribution available."),
+	/**
+	 * Users created by an administrator
+	 */
+	ADMIN_CREATE("2", "admin", "Admin", "Created by an administrator.");
 
 	private final String id;
 

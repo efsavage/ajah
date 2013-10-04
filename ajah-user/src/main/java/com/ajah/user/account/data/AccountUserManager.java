@@ -26,6 +26,7 @@ import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
+import com.ajah.user.account.AccountId;
 import com.ajah.user.account.AccountUser;
 import com.ajah.user.account.AccountUserId;
 import com.ajah.user.account.AccountUserStatus;
@@ -113,8 +114,10 @@ public class AccountUserManager {
 	/**
 	 * Creates a new {@link AccountUser} with the given properties.
 	 * 
-	 * @param name
-	 *            The name of the accountUser, required.
+	 * @param userId
+	 *            The user ID
+	 * @param accountId
+	 *            The account ID
 	 * @param type
 	 *            The type of accountUser, required.
 	 * @param status
@@ -124,8 +127,10 @@ public class AccountUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<AccountUser> create(String name, AccountUserType type, AccountUserStatus status) throws DataOperationException {
+	public DataOperationResult<AccountUser> create(AccountId accountId, UserId userId, AccountUserType type, AccountUserStatus status) throws DataOperationException {
 		AccountUser accountUser = new AccountUser();
+		accountUser.setAccountId(accountId);
+		accountUser.setUserId(userId);
 		accountUser.setType(type);
 		accountUser.setStatus(status);
 		DataOperationResult<AccountUser> result = save(accountUser);
@@ -155,13 +160,34 @@ public class AccountUserManager {
 	 * Lists {@link AccountUser}s for a given {@link User}.
 	 * 
 	 * @param userId
-	 *            The userId to search on.
+	 *            The user ID to search on.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
 	 * @return A list of {@link AccountUser}s, or an empty list.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<AccountUser> list(UserId userId) throws DataOperationException {
-		return this.accountUserDao.list(userId);
+	public List<AccountUser> list(UserId userId, int page, int count) throws DataOperationException {
+		return this.accountUserDao.list(userId, page, count);
+	}
+
+	/**
+	 * Lists {@link AccountUser}s for a given {@link User}.
+	 * 
+	 * @param accountId
+	 *            The account ID to search on.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link AccountUser}s, or an empty list.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<AccountUser> list(AccountId accountId, int page, int count) throws DataOperationException {
+		return this.accountUserDao.list(accountId, page, count);
 	}
 
 }

@@ -15,7 +15,7 @@
  */
 package com.ajah.user.account;
 
-import com.ajah.util.Identifiable;
+import com.ajah.util.IdentifiableEnum;
 
 /**
  * Valid states of Account entities.
@@ -23,7 +23,7 @@ import com.ajah.util.Identifiable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum AccountType implements Identifiable<String> {
+public enum AccountType implements IdentifiableEnum<String> {
 
 	/**
 	 * Standard.

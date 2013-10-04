@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.crypto.Password;
+import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
@@ -283,4 +284,11 @@ public class UserManager {
 		return this.userDao.count(type, status);
 	}
 
+	public DataOperationResult<UserInfo> save(UserInfo userInfo) throws DataOperationException {
+		if (userInfo.getCreated() == null) {
+			userInfo.setCreated(new Date());
+		}
+		DataOperationResult<UserInfo> result = this.userInfoDao.update(userInfo);
+		return result;
+	}
 }

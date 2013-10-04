@@ -28,6 +28,7 @@ import com.ajah.user.account.Account;
 import com.ajah.user.account.AccountId;
 import com.ajah.user.account.AccountStatus;
 import com.ajah.user.account.AccountType;
+import com.ajah.util.StringUtils;
 
 /**
  * Manages data operations for {@link Account}.
@@ -125,6 +126,7 @@ public class AccountManager {
 	public DataOperationResult<Account> create(String name, AccountType type, AccountStatus status) throws DataOperationException {
 		Account account = new Account();
 		account.setName(name);
+		account.setUrlToken(StringUtils.toCleanUrlToken(name));
 		account.setType(type);
 		account.setStatus(status);
 		DataOperationResult<Account> result = save(account);

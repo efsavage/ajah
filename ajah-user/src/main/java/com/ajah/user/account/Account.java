@@ -38,5 +38,6 @@ public class Account implements Identifiable<AccountId> {
 	private AccountType type;
 	private Date created;
 	private String legacyId;
+	private String urlToken;
 
 }
