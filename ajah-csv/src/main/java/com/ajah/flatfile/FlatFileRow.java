@@ -118,6 +118,8 @@ public class FlatFileRow {
 	 * @param column
 	 *            The name of the column
 	 * @return The value, parsed as a double. Returns 0 if blank.
+	 * @throws NumberFormatException
+	 *             If the number could not be parsed.
 	 */
 	public double getDouble(String column) {
 		String value = get(column);
@@ -139,4 +141,46 @@ public class FlatFileRow {
 		set(name, dateTimeFormat.format(date));
 	}
 
+	/**
+	 * Fetches the value of a column as an integer.
+	 * 
+	 * @see Integer#parseInt(String)
+	 * @see #get(String)
+	 * @param column
+	 *            The name of the column
+	 * @return The value, parsed as an int. Returns 0 if blank.
+	 * @throws NumberFormatException
+	 *             If the number could not be parsed.
+	 */
+	public int getInt(String column) {
+		String value = get(column);
+		if (StringUtils.isBlank(value)) {
+			return 0;
+		}
+		return Integer.parseInt(value);
+	}
+
+	/**
+	 * Fetches the value of a column as an integer with a default value.
+	 * 
+	 * @see Integer#parseInt(String)
+	 * @see #get(String)
+	 * @param column
+	 *            The name of the column
+	 * @param defaultValue
+	 *            The default value if an integer cannot be parsed.
+	 * @return The value, parsed as an int. Returns the default value if blank
+	 *         or if it cannot be parsed as a number.
+	 */
+	public int getInt(String column, int defaultValue) {
+		String value = get(column);
+		if (StringUtils.isBlank(value)) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
 }
