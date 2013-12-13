@@ -21,6 +21,8 @@ import lombok.Data;
 
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A wrapper around a String for typesafe {@link Account} IDs.
@@ -39,7 +41,8 @@ public class AccountId implements Serializable, ToStringable, FromStringable, Co
 	 * @param id
 	 *            UID of item, cannot be null.
 	 */
-	public AccountId(final String id) {
+	@JsonCreator
+	public AccountId(@JsonProperty("id") final String id) {
 		this.id = id;
 	}
 
