@@ -90,4 +90,21 @@ public class RandomUtils {
 	public static long getRandomNumber(final long from, final long to) {
 		return from + (long) (random.nextDouble() * (to - from));
 	}
+
+	/**
+	 * Returns a random element from an array.
+	 * 
+	 * @param <T>
+	 *            Type of element.
+	 * @param array
+	 *            The array to find a random element in.
+	 * @return A random element from the array , or null if the array is null or
+	 *         empty.
+	 */
+	public static <T> T getRandomElement(final T[] array) {
+		if (array == null || array.length == 0) {
+			return null;
+		}
+		return array[getRandomNumber(0, array.length - 1)];
+	}
 }
