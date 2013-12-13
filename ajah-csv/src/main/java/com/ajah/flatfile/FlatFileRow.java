@@ -35,14 +35,33 @@ public class FlatFileRow {
 	private Map<String, FlatFileColumn> columns;
 	private Map<FlatFileColumn, String> values = new HashMap<>();
 
+	private FlatFileReader reader;
+	private FlatFileWriter writer;
+
 	/**
 	 * Create an empty row based on a column set.
 	 * 
 	 * @param columns
 	 *            The columns in the row.
+	 * @param reader
+	 *            The reader that created this row.
 	 */
-	public FlatFileRow(Map<String, FlatFileColumn> columns) {
+	public FlatFileRow(Map<String, FlatFileColumn> columns, FlatFileReader reader) {
 		this.columns = columns;
+		this.reader = reader;
+	}
+
+	/**
+	 * Create an empty row based on a column set.
+	 * 
+	 * @param columns
+	 *            The columns in the row.
+	 * @param writer
+	 *            The writer that created this row.
+	 */
+	public FlatFileRow(Map<String, FlatFileColumn> columns, FlatFileWriter writer) {
+		this.columns = columns;
+		this.writer = writer;
 	}
 
 	/**
@@ -182,5 +201,23 @@ public class FlatFileRow {
 		} catch (NumberFormatException e) {
 			return defaultValue;
 		}
+	}
+
+	/**
+	 * The reader for this row.
+	 * 
+	 * @return the reader that created this row.
+	 */
+	public FlatFileReader getReader() {
+		return this.reader;
+	}
+
+	/**
+	 * The writer for this row.
+	 * 
+	 * @return the writer that created this row.
+	 */
+	public FlatFileWriter getWriter() {
+		return this.writer;
 	}
 }

@@ -90,7 +90,7 @@ public class FlatFileWriter implements Closeable {
 		} else {
 			writeRow();
 		}
-		this.row = new FlatFileRow(this.map);
+		this.row = new FlatFileRow(this.map, this);
 		return this.row;
 	}
 

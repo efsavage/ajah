@@ -157,7 +157,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 
 	@Override
 	public FlatFileRow next() {
-		this.row = new FlatFileRow(this.map);
+		this.row = new FlatFileRow(this.map, this);
 		String line;
 		try {
 			line = this.reader.readLine();
