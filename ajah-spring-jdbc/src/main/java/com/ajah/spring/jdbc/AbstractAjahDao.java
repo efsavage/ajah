@@ -256,7 +256,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int decrement(final T entity, final String field) throws DataOperationException {
+	public DataOperationResult<T> decrement(final T entity, final String field) throws DataOperationException {
 		return increment(entity, field, -1);
 	}
 
@@ -266,9 +266,12 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * 
 	 * @see com.ajah.spring.jdbc.AjahDao#delete(com.ajah.util.Identifiable)
 	 * @see #deleteById(Comparable)
+	 * 
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
 	 */
 	@Override
-	public DataOperationResult<T> delete(final T entity) {
+	public DataOperationResult<T> delete(final T entity) throws DataOperationException {
 		throw new UnsupportedOperationException();
 	}
 
@@ -281,10 +284,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int deleteById(final K id) throws DataOperationException {
+	public DataOperationResult<T> deleteById(final K id) throws DataOperationException {
 		AjahUtils.requireParam(id, "id");
 		try {
-			return getJdbcTemplate().update("DELETE FROM `" + getTableName() + "` WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() });
+			return new DataOperationResult<>(null, this.jdbcTemplate.update("DELETE FROM `" + getTableName() + "` WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
@@ -301,6 +304,24 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *             If the query could not be executed.
 	 */
 	public T find(final Criteria criteria) throws DataOperationException {
+		if (criteria.getLimit().getCount() > 1) {
+			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
+		}
+		criteria.rows(1);
+		return find(criteria.getWhere(), criteria.getLimit(), criteria.getOrderBySql());
+	}
+
+	/**
+	 * Finds a single object by the Criteria specified.
+	 * 
+	 * @param criteria
+	 *            The criteria to use to find the object.
+	 * @return The object, if found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public T find(final ToStringable value) throws DataOperationException {
+		Criteria criteria = new Criteria().eq(value);
 		if (criteria.getLimit().getCount() > 1) {
 			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
 		}
@@ -612,7 +633,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int increment(final T entity, final String field) throws DataOperationException {
+	public DataOperationResult<T> increment(final T entity, final String field) throws DataOperationException {
 		return increment(entity, field, 1);
 	}
 
@@ -629,7 +650,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public int increment(final T entity, final String field, final int amount) throws DataOperationException {
+	public DataOperationResult<T> increment(final T entity, final String field, final int amount) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
@@ -638,7 +659,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return this.jdbcTemplate.update(sql, entity.getId().toString());
+			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, entity.getId().toString()));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
@@ -799,6 +820,25 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 */
 	public List<T> list(final ToStringable value) throws DataOperationException {
 		return list(new Criteria().eq(value));
+	}
+
+	/**
+	 * Find a list of entities by a simple field match, ideal for searching by
+	 * related entity IDs.
+	 * 
+	 * @param value
+	 *            The value to use to build the query.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return List of entities if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
+	 * @since 1.0.7
+	 */
+	public List<T> list(final ToStringable value, int page, int count) throws DataOperationException {
+		return list(new Criteria().eq(value).rows(count).offset(page * count));
 	}
 
 	/**
