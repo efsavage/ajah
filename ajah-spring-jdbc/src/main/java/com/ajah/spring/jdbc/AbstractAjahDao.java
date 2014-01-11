@@ -41,6 +41,7 @@ import javax.sql.DataSource;
 
 import lombok.extern.java.Log;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -54,6 +55,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.ArrayUtils;
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
 import com.ajah.util.ToStringable;
@@ -201,6 +203,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					propSet(entity, getProp(field, props), Boolean.valueOf(rs.getBoolean(column)));
 				} else if (IntrospectionUtils.isEnum(field)) {
 					log.warning("Can't handle non-Identifiable enum for column " + column + " [" + field.getType() + "]");
+				} else if (LocalDate.class.isAssignableFrom(field.getType())) {
+					int[] parts = ArrayUtils.parseInt(rs.getString(column).split("-"));
+					LocalDate localDate = new LocalDate(parts[0], parts[1], parts[2]);
+					propSet(entity, getProp(field, props), localDate);
 				} else {
 					log.warning("Can't handle auto-populating of column " + column + " of type " + field.getType());
 				}
@@ -242,6 +248,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return 0;
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, null);
+		}
+	}
+
+	protected long sum(String field, final Criteria criteria) throws DataOperationException {
+		try {
+			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			sqlLog.finest(sql);
+			Long sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Long.class);
+			return sum == null ? 0 : sum.longValue();
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return 0;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
 	}
 
@@ -519,7 +539,16 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < values.length; i++) {
 				final Field field = this.colMap.get(this.columns.get(i));
-				values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
+				if (LocalDate.class.isAssignableFrom(field.getType())) {
+					LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
+					if (localDate != null) {
+						values[i] = StringUtils.join("-", localDate.getYear(), localDate.getMonthOfYear(), localDate.getDayOfMonth());
+					} else {
+						values[i] = null;
+					}
+				} else {
+					values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
+				}
 				if (sqlLog.isLoggable(Level.FINEST)) {
 					log.finest(field.getName() + " set to " + values[i]);
 				}
