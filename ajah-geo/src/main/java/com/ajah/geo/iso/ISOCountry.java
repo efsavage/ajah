@@ -16,6 +16,7 @@
 package com.ajah.geo.iso;
 
 import com.ajah.geo.Country;
+import com.ajah.util.IdentifiableEnum;
 
 /**
  * This is the <a
@@ -30,7 +31,7 @@ import com.ajah.geo.Country;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum ISOCountry implements Country {
+public enum ISOCountry implements Country, IdentifiableEnum<String> {
 
 	/** Andorra */
 	AD("ad", "AND", "Andorra"),
@@ -604,6 +605,19 @@ public enum ISOCountry implements Country {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see com.ajah.util.IdentifiableEnum#getCode()
+	 */
+	@Override
+	public String getCode() {
+		return getAbbr3();
 	}
 
 }
