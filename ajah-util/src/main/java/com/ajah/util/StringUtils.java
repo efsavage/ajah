@@ -180,6 +180,31 @@ public class StringUtils {
 	}
 
 	/**
+	 * Joins a list of ints, separating them by delimiter if they are not blank.
+	 * 
+	 * @param delimiter
+	 *            The delimiter to use between numbers.
+	 * @param numbers
+	 *            The list of numbers to join.
+	 * @return A joined list of numbers, may be empty or null;
+	 */
+	public static String join(final String delimiter, final int... numbers) {
+		if (numbers == null || numbers.length < 1) {
+			return null;
+		}
+		StringBuilder retVal = null;
+		for (final int number : numbers) {
+			if (retVal == null) {
+				retVal = new StringBuilder();
+			} else {
+				retVal.append(delimiter);
+			}
+			retVal.append(number);
+		}
+		return retVal == null ? null : retVal.toString();
+	}
+
+	/**
 	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
 	 * of Strings, may be empty or null.
 	 * 
