@@ -242,4 +242,25 @@ public class ArrayUtils {
 		return trimmed.toArray(new String[trimmed.size()]);
 	}
 
+	/**
+	 * Parses each element of a String array into an int array.
+	 * 
+	 * @param array
+	 *            The array to parse.
+	 * @return Returns An int array of the same size with each string parsed as
+	 *         an integer.
+	 * @throws NumberFormatException
+	 *             If a string could not be parsed.
+	 */
+	public static int[] parseInt(final String[] array) {
+		if (array == null || array.length < 1) {
+			return new int[0];
+		}
+		int[] retVal = new int[array.length];
+		for (int i = 0; i < array.length; i++) {
+			retVal[i] = Integer.parseInt(array[i]);
+		}
+		return retVal;
+	}
+
 }
