@@ -48,7 +48,7 @@ public class UserInfoImpl implements UserInfo {
 	private Integer birthDay;
 	private Integer birthYear;
 	private EmailId primaryEmailId;
-	private Integer displayName;
+	private String displayName;
 
 	/**
 	 * Empty public constructor.
