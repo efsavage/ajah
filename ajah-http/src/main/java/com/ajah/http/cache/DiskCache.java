@@ -63,7 +63,7 @@ public class DiskCache implements HttpCache {
 	 *             not handle.
 	 */
 	public static String get(final URI uri, final long maxAge) throws NotFoundException, IOException, UnexpectedResponseCode {
-		return new String(getBytes(uri, maxAge));
+		return new String(getBytes(uri, maxAge), "UTF-8");
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class DiskCache implements HttpCache {
 					log.finest("Expiration is " + new Date(System.currentTimeMillis() - maxAge));
 				}
 				if (mod + maxAge > System.currentTimeMillis()) {
-					log.fine("Cache hit for " + uri + " (expires in " + DateUtils.formatInterval(System.currentTimeMillis() - mod) + ")");
+					log.finest("Cache hit for " + uri + " (expires in " + DateUtils.formatInterval(maxAge - (System.currentTimeMillis() - mod)) + ")");
 					return FileUtils.readFileAsBytes(f);
 				}
 				log.fine("Cache expired; getting " + uri);
