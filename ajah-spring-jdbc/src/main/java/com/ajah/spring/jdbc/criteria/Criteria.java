@@ -36,15 +36,18 @@ import com.ajah.util.lang.NameValuePair;
  * 
  */
 @Log
-// TODO Add solo criteria for auto rows=1
 // TODO add gt/lt/ge/le/ne
 // TODO handle Date params
 public class Criteria {
 
 	private List<NameValuePair<String>> eqs = null;
+	private List<NameValuePair<String>> gtes = null;
+	private List<NameValuePair<String>> ltes = null;
 	private List<NameValuePair<String>> likes = null;
 	private List<NameValuePair<String>> joins = null;
 	private List<NameValuePair<Order>> orderBys = null;
+	private List<SubCriteria> ands = null;
+	private List<SubCriteria> ors = null;
 	private long offset = 0;
 	private long rowCount = 0;
 
@@ -107,6 +110,34 @@ public class Criteria {
 	}
 
 	/**
+	 * A greater-than or equal to match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gte(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
+		return gte(field, String.valueOf(value));
+	}
+
+	/**
+	 * A greater-than or equal to match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria lte(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
+		return lte(field, String.valueOf(value));
+	}
+
+	/**
 	 * A field match.
 	 * 
 	 * @param field
@@ -136,6 +167,74 @@ public class Criteria {
 			this.eqs = new ArrayList<>();
 		}
 		this.eqs.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A greater-than or equal-to field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gte(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.gtes == null) {
+			this.gtes = new ArrayList<>();
+		}
+		this.gtes.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A less-than or equal-to field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be less than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria lte(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.ltes == null) {
+			this.ltes = new ArrayList<>();
+		}
+		this.ltes.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A subclause, included as an AND, but may contain ORs.
+	 * 
+	 * @param subCriteria
+	 *            The subCriteria to include
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria and(SubCriteria subCriteria) {
+		AjahUtils.requireParam(subCriteria, "field");
+		if (this.ands == null) {
+			this.ands = new ArrayList<>();
+		}
+		this.ands.add(subCriteria);
+		return this;
+	}
+
+	/**
+	 * A subclause, included as an AND, but may contain ORs.
+	 * 
+	 * @param subCriteria
+	 *            The subCriteria to include
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria or(SubCriteria subCriteria) {
+		AjahUtils.requireParam(subCriteria, "field");
+		if (this.ors == null) {
+			this.ors = new ArrayList<>();
+		}
+		this.ors.add(subCriteria);
 		return this;
 	}
 
@@ -239,6 +338,36 @@ public class Criteria {
 				}
 			}
 		}
+		if (!CollectionUtils.isEmpty(this.gtes)) {
+			for (final NameValuePair<String> gte : this.gtes) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append("`");
+				where.append(gte.getName());
+				where.append("`");
+				where.append(">=?");
+				values.add(gte.getValue());
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.ltes)) {
+			for (final NameValuePair<String> lte : this.ltes) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append("`");
+				where.append(lte.getName());
+				where.append("`");
+				where.append("<=?");
+				values.add(lte.getValue());
+			}
+		}
 		if (!CollectionUtils.isEmpty(this.joins)) {
 			for (final NameValuePair<String> join : this.joins) {
 				if (first) {
@@ -266,6 +395,30 @@ public class Criteria {
 				where.append(" LIKE '");
 				where.append(like.getValue());
 				where.append("'");
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.ands)) {
+			for (final SubCriteria and : this.ands) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append(and.getWhere().getSql());
+				values.addAll(and.getWhere().getValues());
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.ors)) {
+			for (final SubCriteria or : this.ors) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" OR ");
+				}
+				where.append(or.getWhere().getSql());
+				values.addAll(or.getWhere().getValues());
 			}
 		}
 		if (log.isLoggable(Level.FINEST)) {
@@ -369,6 +522,17 @@ public class Criteria {
 	 */
 	public Criteria rows(final long maximumRowsFetched) {
 		this.rowCount = maximumRowsFetched;
+		return this;
+	}
+
+	/**
+	 * Sets the number of rows to fetch to 1.
+	 * 
+	 * @see Criteria#rows(long)
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria unique() {
+		this.rowCount = 1;
 		return this;
 	}
 
