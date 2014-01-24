@@ -106,7 +106,31 @@ public class AccountManager {
 	 *             If the query could not be executed.
 	 */
 	public List<Account> list(AccountType type, AccountStatus status, long page, long count) throws DataOperationException {
-		return this.accountDao.list(type, status, page, count);
+		return this.accountDao.list(type, status, page, count, null, null);
+	}
+
+	/**
+	 * Returns a list of {@link Account}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of account, optional.
+	 * @param status
+	 *            The status of the account, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @param search
+	 *            A search term to limit results by. Accepts wildcards (%).
+	 * @param searchFields
+	 *            The fields to search on. If null, and search is not empty,
+	 *            will search 'name' field only.
+	 * @return A list of {@link Account}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<Account> list(AccountType type, AccountStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException {
+		return this.accountDao.list(type, status, page, count, search, searchFields);
 	}
 
 	/**

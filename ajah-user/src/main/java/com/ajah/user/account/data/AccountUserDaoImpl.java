@@ -29,6 +29,7 @@ import com.ajah.user.account.AccountUser;
 import com.ajah.user.account.AccountUserId;
 import com.ajah.user.account.AccountUserStatus;
 import com.ajah.user.account.AccountUserType;
+import com.ajah.util.StringUtils;
 
 /**
  * MySQL-based implementation of {@link AccountUserDao}.
@@ -40,13 +41,16 @@ import com.ajah.user.account.AccountUserType;
 public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUser, AccountUser> implements AccountUserDao {
 
 	@Override
-	public List<AccountUser> list(AccountUserType type, AccountUserStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public List<AccountUser> list(AccountId accountId, AccountUserType type, AccountUserStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException {
+		Criteria criteria = new Criteria().eq(accountId);
 		if (type != null) {
 			criteria.eq("type", type);
 		}
 		if (status != null) {
 			criteria.eq("status", status);
+		}
+		if (!StringUtils.isBlank(search)) {
+
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}

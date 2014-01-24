@@ -43,11 +43,16 @@ public interface AccountDao extends AjahDao<AccountId, Account> {
 	 *            The page of results to fetch.
 	 * @param count
 	 *            The number of results per page.
+	 * @param search
+	 *            A search term to limit results by. Accepts wildcards (%).
+	 * @param searchFields
+	 *            The fields to search on. If null, and search is not empty,
+	 *            will search 'name' field only.
 	 * @return A list of {@link Account}s, which may be empty.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<Account> list(AccountType type, AccountStatus status, long page, long count) throws DataOperationException;
+	List<Account> list(AccountType type, AccountStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.

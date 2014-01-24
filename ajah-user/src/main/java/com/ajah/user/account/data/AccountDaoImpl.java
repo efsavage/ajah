@@ -22,11 +22,14 @@ import org.springframework.stereotype.Repository;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.criteria.SubCriteria;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.account.Account;
 import com.ajah.user.account.AccountId;
 import com.ajah.user.account.AccountStatus;
 import com.ajah.user.account.AccountType;
+import com.ajah.util.ArrayUtils;
+import com.ajah.util.StringUtils;
 
 /**
  * MySQL-based implementation of {@link AccountDao}.
@@ -38,13 +41,27 @@ import com.ajah.user.account.AccountType;
 public class AccountDaoImpl extends AbstractAjahDao<AccountId, Account, Account> implements AccountDao {
 
 	@Override
-	public List<Account> list(AccountType type, AccountStatus status, long page, long count) throws DataOperationException {
+	public List<Account> list(AccountType type, AccountStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException {
 		Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
 		if (status != null) {
 			criteria.eq("status", status);
+		}
+		if (!StringUtils.isBlank(search)) {
+			if (ArrayUtils.isEmpty(searchFields)) {
+				criteria.like("name", search);
+			} else if (searchFields.length == 1) {
+				criteria.like("name", search);
+			} else {
+				SubCriteria subCriteria = new SubCriteria();
+				for (String searchField : searchFields) {
+					subCriteria.orLike(searchField, search);
+				}
+				criteria.and(subCriteria);
+			}
+
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
 	}
