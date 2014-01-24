@@ -44,4 +44,22 @@ public class URLUtils {
 		return domain;
 	}
 
+	/**
+	 * Since URIs are often hard-coded, needing to catch a syntax exception is
+	 * mostly unecessary.
+	 * 
+	 * @param uri
+	 *            The URI to construct.
+	 * @return The URI.
+	 * @throws IllegalArgumentException
+	 *             If URISyntaxException is encountered.
+	 */
+	public static URI getURI(final String uri) {
+		try {
+			return new URI(uri);
+		} catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Invalid Syntax: " + uri);
+		}
+	}
+
 }
