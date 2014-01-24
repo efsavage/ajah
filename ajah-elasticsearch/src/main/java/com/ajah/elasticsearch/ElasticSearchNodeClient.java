@@ -29,6 +29,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -145,7 +146,6 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 		ListenableActionFuture<IndexResponse> result = irb.execute();
 		log.finest("Executed");
 		return result.actionGet();
-
 	}
 
 	/**
@@ -163,11 +163,15 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 */
 	public List<C> search(final String query) throws IOException {
 		List<C> results = new ArrayList<>();
-		SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.fieldQuery("_all", query)).execute()
-				.actionGet();
-		for (SearchHit hit : response.getHits()) {
-			C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
-			results.add(result);
+		try {
+			SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.fieldQuery("_all", query))
+					.execute().actionGet();
+			for (SearchHit hit : response.getHits()) {
+				C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
+				results.add(result);
+			}
+		} catch (IndexMissingException e) {
+			log.warning(e.getMessage());
 		}
 		return results;
 	}
