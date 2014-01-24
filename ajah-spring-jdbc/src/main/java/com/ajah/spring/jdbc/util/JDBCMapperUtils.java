@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joda.time.LocalDate;
+
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
 
@@ -52,18 +54,32 @@ public class JDBCMapperUtils {
 			return columnName;
 		}
 
-		columnName = StringUtils.splitCamelCase(field.getName()).replaceAll("\\W+", "_").toLowerCase();
+		columnName = getColumnName(field.getName());
 		if (field.getName().equals("id")) {
 			columnName = tableName + "_id";
 		} else if (field.getType().isEnum()) {
 			// Enums are stored as-is, even if they implement other interfaces
 		} else if (Date.class.isAssignableFrom(field.getType())) {
 			columnName += "_date";
+		} else if (LocalDate.class.isAssignableFrom(field.getType())) {
+			columnName += "_date";
 		} else if (!field.getType().isEnum() && Identifiable.class.isAssignableFrom(field.getType())) {
 			columnName += "_id";
 		}
 		columnNameCache.get(tableName).put(field, columnName);
 		return columnName;
+	}
+
+	/**
+	 * Converts a field name to a table column name, per standard database
+	 * naming convention.
+	 * 
+	 * @param fieldName
+	 *            The name of the field to derive the name from.
+	 * @return Column name
+	 */
+	public static String getColumnName(String fieldName) {
+		return StringUtils.splitCamelCase(fieldName).replaceAll("\\W+", "_").toLowerCase();
 	}
 
 	/**

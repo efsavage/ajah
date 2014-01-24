@@ -42,6 +42,8 @@ import javax.sql.DataSource;
 import lombok.extern.java.Log;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -81,6 +83,8 @@ import com.ajah.util.reflect.ReflectionUtils;
 public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements AjahDao<K, T> {
 
 	protected static final Logger sqlLog = Logger.getLogger("ajah.sql");
+
+	private static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
 	private static String getFieldsClause(final String[] fields) {
 		final StringBuffer stringBuffer = new StringBuffer();
@@ -542,7 +546,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				if (LocalDate.class.isAssignableFrom(field.getType())) {
 					LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
 					if (localDate != null) {
-						values[i] = StringUtils.join("-", localDate.getYear(), localDate.getMonthOfYear(), localDate.getDayOfMonth());
+						values[i] = localDate.toString(LOCAL_DATE_FORMAT);
 					} else {
 						values[i] = null;
 					}
@@ -642,7 +646,16 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < (values.length - 1); i++) {
 				final Field field = this.colMap.get(this.updateFieldsList.get(i));
-				values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
+				if (LocalDate.class.isAssignableFrom(field.getType())) {
+					LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
+					if (localDate != null) {
+						values[i] = StringUtils.join("-", localDate.getYear(), localDate.getMonthOfYear(), localDate.getDayOfMonth());
+					} else {
+						values[i] = null;
+					}
+				} else {
+					values[i] = ReflectionUtils.propGetSafeAuto(entity, field, getProp(field, props));
+				}
 			}
 			values[values.length - 1] = entity.getId().toString();
 		} catch (final IntrospectionException e) {
