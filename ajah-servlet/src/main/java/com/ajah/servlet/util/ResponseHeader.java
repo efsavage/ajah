@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,31 +15,36 @@
  */
 package com.ajah.servlet.util;
 
-import javax.servlet.http.HttpServletResponse;
-
-import com.ajah.util.date.CalendarUnit;
-
 /**
- * Utilities related to HTTP responses.
+ * A list of headers that are valid to send back on a response.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
-public class ResponseUtils {
+public enum ResponseHeader {
 
 	/**
-	 * Sets the expires header on a response.
-	 * 
-	 * @param response
-	 *            The response to expire, required.
-	 * @param quantity
-	 *            The quantity of time
-	 * @param calendarUnit
-	 *            The unit of time
+	 * Access-Control-Allow-Origin
 	 */
-	public static void setExpires(final HttpServletResponse response, final long quantity, final CalendarUnit calendarUnit) {
-		response.setDateHeader(ResponseHeader.EXPIRES.getHeader(), System.currentTimeMillis() + (calendarUnit.getMillis() * quantity));
+	ACCESS_CONTROL_ALLOW_ORIGIN("Access-Control-Allow-Origin"),
+	/**
+	 * Expires
+	 */
+	EXPIRES("Expires");
+
+	private final String header;
+
+	private ResponseHeader(String header) {
+		this.header = header;
+
 	}
 
+	/**
+	 * Returns the actual header value to use.
+	 * 
+	 * @return the header
+	 */
+	public String getHeader() {
+		return this.header;
+	}
 }
