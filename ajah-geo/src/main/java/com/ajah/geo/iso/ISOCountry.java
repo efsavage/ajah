@@ -187,6 +187,18 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	GA("ga", "GAB", "Gabon"),
 	/** United Kingdom */
 	GB("gb", "GBR", "United Kingdom"),
+	/** Channel Islands (subdivision of United Kingdom) */
+	GB_CHA("gb-cha", "GB-CHA", "Channel Islands", GB),
+	/** England (subdivision of United Kingdom) */
+	GB_ENG("gb-eng", "GB-ENG", "England", GB),
+	/** Isle of Man (subdivision of United Kingdom) */
+	GB_IOM("gb-iom", "GB-IOM", "Isle of Man", GB),
+	/** Northern Ireland (subdivision of United Kingdom) */
+	GB_NIR("gb-nir", "GB-NIR", "Northern Ireland", GB),
+	/** Scotland (subdivision of United Kingdom) */
+	GB_SCT("gb-sct", "GB-SCT", "Scotland", GB),
+	/** Wales (subdivision of United Kingdom) */
+	GB_WLS("gb-wls", "GB-WLS", "Wales", GB),
 	/** Grenada */
 	GD("gd", "GRD", "Grenada"),
 	/** Georgia */
@@ -536,11 +548,22 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 
 	private final String name;
 
+	private final ISOCountry parent;
+
 	private ISOCountry(final String id, final String abbr3, final String name) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;
 		this.name = name;
+		this.parent = null;
+	}
+
+	private ISOCountry(final String id, final String abbr3, final String name, ISOCountry parent) {
+		this.id = id;
+		this.abbr2 = id.toUpperCase();
+		this.abbr3 = abbr3;
+		this.name = name;
+		this.parent = parent;
 	}
 
 	/**
@@ -618,6 +641,31 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	@Override
 	public String getCode() {
 		return getAbbr3();
+	}
+
+	/**
+	 * Finds a PlayerType that matches the id on id, name, or name().
+	 * 
+	 * @param string
+	 *            Value to match against id, name, or name()
+	 * @return Matching PlayerType, or null.
+	 */
+	public static ISOCountry get(final String string) {
+		for (final ISOCountry type : values()) {
+			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the parent of this country (making it a subdivision).
+	 * 
+	 * @return the parent Country, if applicable, otherwise null.
+	 */
+	public ISOCountry getParent() {
+		return this.parent;
 	}
 
 }
