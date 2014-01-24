@@ -149,8 +149,8 @@ public class S3Client {
 			} else {
 				object = new S3Object(name);
 				object.setDataInputStream(new ByteArrayInputStream(data));
+				object.setContentLength(data.length);
 			}
-			object.setContentLength(data.length);
 			if (mimeType != null) {
 				object.setContentType(mimeType.getBaseType());
 			}
