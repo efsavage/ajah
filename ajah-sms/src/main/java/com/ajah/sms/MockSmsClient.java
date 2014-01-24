@@ -1,5 +1,4 @@
 /*
-/*
  *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,9 @@
  */
 package com.ajah.sms;
 
+import lombok.extern.java.Log;
+
+import com.ajah.util.config.Config;
 import com.twilio.sdk.TwilioRestClient;
 
 /**
@@ -24,7 +26,18 @@ import com.twilio.sdk.TwilioRestClient;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public interface SmsClient {
+@Log
+public class MockSmsClient implements SmsClient {
+
+	private String defaultSender;
+
+	/**
+	 * Constructs a client using configuration properties twilio.sid,
+	 * twilio.token and twilio.sender.default.
+	 */
+	public MockSmsClient() {
+		this.defaultSender = Config.i.get("twilio.sender.default");
+	}
 
 	/**
 	 * Sends an Sms to a phone number.
@@ -36,15 +49,20 @@ public interface SmsClient {
 	 * @throws SmsException
 	 *             If the message could not be sent.
 	 */
-	public void send(String to, String message) throws SmsException;
+	public void send(String to, String message) throws SmsException {
+		log.info("SMS from " + to + ": " + message + " (using mock client, not sent)");
+	}
 
 	/**
 	 * Fetches inbound messages.
 	 */
-	public void getInboundMessages();
+	public void getInboundMessages() {
+	}
 
 	/**
 	 * Fetches outbound messages.
 	 */
-	public void getOutboundMessages();
+	public void getOutboundMessages() {
+	}
+
 }
