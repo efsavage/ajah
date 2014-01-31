@@ -32,6 +32,10 @@ public enum ResponseHeader {
 	 */
 	EXPIRES("Expires"),
 	/**
+	 * Strict-Transport-Security
+	 */
+	STRICT_TRANSPORT_SECURITY("Strict-Transport-Security"),
+	/**
 	 * X-Frame-Options
 	 */
 	X_FRAME_OPTIONS("X-Frame-Options"),
