@@ -30,7 +30,11 @@ public enum ResponseHeader {
 	/**
 	 * Expires
 	 */
-	EXPIRES("Expires");
+	EXPIRES("Expires"),
+	/**
+	 * X-Frame-Options
+	 */
+	X_FRAME_OPTIONS("X-Frame-Options");
 
 	private final String header;
 
