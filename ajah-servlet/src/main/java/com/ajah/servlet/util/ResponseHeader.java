@@ -34,7 +34,11 @@ public enum ResponseHeader {
 	/**
 	 * X-Frame-Options
 	 */
-	X_FRAME_OPTIONS("X-Frame-Options");
+	X_FRAME_OPTIONS("X-Frame-Options"),
+	/**
+	 * X-Content-Type-Options
+	 */
+	X_CONTENT_TYPE_OPTIONS("X-Content-Type-Options");
 
 	private final String header;
 
