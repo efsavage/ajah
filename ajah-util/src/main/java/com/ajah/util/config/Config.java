@@ -148,6 +148,40 @@ public enum Config {
 	}
 
 	/**
+	 * Returns The value as a int.
+	 * 
+	 * @param key
+	 *            The property to return
+	 * @param defaultValue
+	 *            The value to return if the property is not found.
+	 * @return Returns true if the value is "true", case-insensitive.
+	 */
+	public int getInt(final String key, final int defaultValue) {
+		final String retVal = (String) this.properties.get(key);
+		if (StringUtils.isBlank(retVal)) {
+			return defaultValue;
+		}
+		return Integer.parseInt(retVal);
+	}
+
+	/**
+	 * Returns The value as a long.
+	 * 
+	 * @param key
+	 *            The property to return
+	 * @param defaultValue
+	 *            The value to return if the property is not found.
+	 * @return Returns true if the value is "true", case-insensitive.
+	 */
+	public long getLong(final String key, final long defaultValue) {
+		final String retVal = (String) this.properties.get(key);
+		if (StringUtils.isBlank(retVal)) {
+			return defaultValue;
+		}
+		return Long.parseLong(retVal);
+	}
+
+	/**
 	 * Returns the value, split on commas. Whitespace around the commas is
 	 * permitted and removed.
 	 * 
