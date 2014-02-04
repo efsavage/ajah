@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.7-SNAPSHOT</version>
+		<version>1.0.8-SNAPSHOT</version>
 		<relativePath>../ajah-base/pom.xml</relativePath>
 	</parent>
 
@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.1.2</version>
+			<version>${httpclient.version}</version>
 		</dependency>
 	</dependencies>
 

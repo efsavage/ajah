@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.0.7-SNAPSHOT</version>
+		<version>1.0.8-SNAPSHOT</version>
 		<relativePath>../ajah-base/pom.xml</relativePath>
 	</parent>
 

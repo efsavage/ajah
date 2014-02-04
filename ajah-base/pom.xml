@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ajah</groupId>
 	<artifactId>ajah-base</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Ajah Base Project</name>
 
@@ -11,14 +11,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<!-- Versions of things commonly used in child projects, but not listed as a dependency here. -->
-		<ch.qos.logback.version>1.0.13</ch.qos.logback.version>
-		<elasticsearch.version>0.90.5</elasticsearch.version>
-		<httpclient.version>4.3</httpclient.version>
-		<javamail.version>1.5.0</javamail.version>
+		<ch.qos.logback.version>1.1.0</ch.qos.logback.version>
+		<elasticsearch.version>0.90.11</elasticsearch.version>
+		<httpclient.version>4.3.2</httpclient.version>
+		<javamail.version>1.5.1</javamail.version>
 		<jets3t.version>0.9.0</jets3t.version>
-		<mysql.connector.version>5.1.26</mysql.connector.version>
+		<mysql.connector.version>5.1.29</mysql.connector.version>
 		<org.slf4j.version>1.7.5</org.slf4j.version>
-		<spring.version>3.2.4.RELEASE</spring.version>
+		<spring.version>4.0.1.RELEASE</spring.version>
 		<jackson.version>2.2.3</jackson.version>
 	</properties>
 
