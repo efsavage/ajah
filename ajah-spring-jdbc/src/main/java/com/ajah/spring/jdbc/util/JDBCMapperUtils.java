@@ -20,7 +20,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Table;
+
 import org.joda.time.LocalDate;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
@@ -96,6 +99,12 @@ public class JDBCMapperUtils {
 		if (tableNameCache.get(clazz) != null) {
 			return tableNameCache.get(clazz);
 		}
+		if (AnnotationUtils.isAnnotationDeclaredLocally(Table.class, clazz)) {
+			Table table = AnnotationUtils.findAnnotation(clazz, Table.class);
+			if (!StringUtils.isBlank(table.name())) {
+				return table.name();
+			}
+		}
 		String simpleName = clazz.getSimpleName();
 		if (simpleName.endsWith("Impl")) {
 			simpleName = simpleName.substring(0, simpleName.length() - 4);
@@ -104,5 +113,4 @@ public class JDBCMapperUtils {
 		tableNameCache.put(clazz, name);
 		return name;
 	}
-
 }
