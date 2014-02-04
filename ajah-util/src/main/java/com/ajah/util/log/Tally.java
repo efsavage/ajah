@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.ajah.util.compare.EntryValueComparator;
+import com.ajah.util.text.Strings;
 
 /**
  * An atomic counter for keeping track of things, intended but not restricted to
@@ -110,7 +111,7 @@ public class Tally<T> {
 	 * Write a report with totals to the configured output.
 	 */
 	public void report(final long threshold) {
-		this.out.println(ReportWriter.HYPEN35);
+		this.out.println(Strings.HYPEN35);
 		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
 		for (final T t : this.map.keySet()) {
 			if (this.map.get(t).longValue() >= threshold) {
@@ -120,7 +121,7 @@ public class Tally<T> {
 	}
 
 	public void reportTop(final int number) {
-		this.out.println(ReportWriter.HYPEN35);
+		this.out.println(Strings.HYPEN35);
 		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
 		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
 		Collections.sort(top, new EntryValueComparator<T, Long>());

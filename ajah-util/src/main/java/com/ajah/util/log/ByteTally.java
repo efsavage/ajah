@@ -18,6 +18,7 @@ package com.ajah.util.log;
 import java.io.PrintStream;
 
 import com.ajah.util.data.DataSizeUnit;
+import com.ajah.util.text.Strings;
 
 /**
  * Extends Tally with the ability to track bytes. Useful for tracking
@@ -42,7 +43,7 @@ public class ByteTally<T> extends Tally<T> {
 
 	@Override
 	public void report() {
-		this.out.println(Report.HYPEN35);
+		this.out.println(Strings.HYPEN35);
 		for (final T t : this.map.keySet()) {
 			System.out.println(t.toString() + ": " + DataSizeUnit.format(this.map.get(t).longValue()));
 		}
