@@ -1,12 +1,5 @@
-package com.ajah.thread;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.ajah.util.date.CalendarUnit;
-
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -20,6 +13,12 @@ import com.ajah.util.date.CalendarUnit;
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+package com.ajah.thread;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.ajah.util.date.CalendarUnit;
 
 /**
  * Utilities for dealing with threads and multithreading.
@@ -61,6 +60,18 @@ public class ThreadUtils {
 			log.log(Level.FINE, e.getMessage(), e);
 		}
 		return;
+	}
+
+	/**
+	 * Sleeps until a set time. If the time is in the pass, no sleep occurs.
+	 * 
+	 * @param timestamp
+	 *            The timestamp when the sleep should terminate.
+	 */
+	public static void sleepUntil(final long timestamp) {
+		if (System.currentTimeMillis() < timestamp) {
+			sleep(timestamp - System.currentTimeMillis());
+		}
 	}
 
 }
