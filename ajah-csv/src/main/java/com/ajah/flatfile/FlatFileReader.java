@@ -18,15 +18,17 @@ package com.ajah.flatfile;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -65,7 +67,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 *             If the file could not be read.
 	 */
 	public FlatFileReader(FlatFileFormat format, File file) throws IOException {
-		this(format, new BufferedReader(new FileReader(file)));
+		this(format, new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8")));
 	}
 
 	/**
@@ -225,6 +227,55 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 */
 	public boolean hasColumn(String column) {
 		return this.map.get(column) != null;
+	}
+
+	/**
+	 * Validates that required columns are present in the file.
+	 * 
+	 * @param requiredColumns
+	 *            The array of required columns, may be empty or null.
+	 * @throws MissingColumnException
+	 *             Thrown if columns are missing.
+	 */
+	public void require(String[] requiredColumns) throws MissingColumnException {
+		if (requiredColumns == null || requiredColumns.length < 1) {
+			return;
+		}
+		ArrayList<String> missingColumns = new ArrayList<>();
+		for (String requiredColumn : requiredColumns) {
+			if (!hasColumn(requiredColumn)) {
+				missingColumns.add(requiredColumn);
+			}
+		}
+		if (missingColumns.size() > 0) {
+			throw new MissingColumnException(StringUtils.join(",", missingColumns), missingColumns);
+		}
+	}
+
+	/**
+	 * Validates that the file only contains supported columns.
+	 * 
+	 * @param supportedColumns
+	 *            The columns supported by whatever is processing the file.
+	 * @throws UnsupportedColumnException
+	 *             If the file contains unsupported columns.
+	 */
+	public void validate(String[] supportedColumns) throws UnsupportedColumnException {
+		if (supportedColumns == null || supportedColumns.length < 1) {
+			throw new UnsupportedColumnException(StringUtils.join(",", this.map.keySet()), this.map.keySet());
+		}
+		Set<String> unsupportedColumns = new HashSet<>();
+		columnLoop: for (String column : this.map.keySet()) {
+			for (String supportedColumn : supportedColumns) {
+				if (column.equals(supportedColumn)) {
+					continue columnLoop;
+				}
+			}
+			unsupportedColumns.add(column);
+		}
+		if (unsupportedColumns.size() > 0) {
+			throw new UnsupportedColumnException(StringUtils.join(",", unsupportedColumns), unsupportedColumns);
+		}
 	}
 
 }
