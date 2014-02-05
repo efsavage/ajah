@@ -19,10 +19,12 @@ import java.util.Date;
 
 import lombok.Data;
 
+import com.ajah.geo.iso.ISOCountry;
 import com.ajah.user.UserId;
 import com.ajah.user.email.EmailId;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
+import com.ajah.util.data.Gender;
 import com.ajah.util.data.Month;
 
 /**
@@ -36,19 +38,20 @@ import com.ajah.util.data.Month;
 public class UserInfoImpl implements UserInfo {
 
 	private UserId id;
-	private UserSource source;
+	private UserSourceId source;
 	private Date created;
 	private Date passwordChanged;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private String title;
-	private String gender;
+	private Gender gender;
 	private Month birthMonth;
 	private Integer birthDay;
 	private Integer birthYear;
 	private EmailId primaryEmailId;
 	private String displayName;
+	private ISOCountry currentCountry;
 
 	/**
 	 * Empty public constructor.
@@ -95,7 +98,7 @@ public class UserInfoImpl implements UserInfo {
 		if (StringUtils.isBlank(this.middleName)) {
 			return this.firstName + " " + this.lastName;
 		}
-		return this.firstName + " " + (this.middleName.length() == 1 ? "." : "") + " " + this.lastName;
+		return this.firstName + " " + this.middleName + (this.middleName.length() == 1 ? "." : "") + " " + this.lastName;
 	}
 
 	/**

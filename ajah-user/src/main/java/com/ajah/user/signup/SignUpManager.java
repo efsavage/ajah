@@ -28,7 +28,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserType;
 import com.ajah.user.data.UserManager;
-import com.ajah.user.info.UserSource;
+import com.ajah.user.info.UserSourceId;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -64,7 +64,7 @@ public class SignUpManager {
 	 * @throws UsernameExistsException
 	 *             If a user with that username already exists.
 	 */
-	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DataOperationException,
+	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSourceId source, final UserType type) throws DataOperationException,
 			UsernameExistsException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
@@ -78,7 +78,7 @@ public class SignUpManager {
 			throw new UsernameExistsException(emailAddress.toString());
 		}
 
-		final User user = this.userManager.createUser(emailAddress, password, ip, source, type);
+		final User user = this.userManager.createUser(emailAddress.toString(), emailAddress, password, ip, source, type);
 		log.info(user.getUsername() + " created!");
 		return signUp;
 	}

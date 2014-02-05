@@ -17,10 +17,12 @@ package com.ajah.user.info;
 
 import java.util.Date;
 
+import com.ajah.geo.iso.ISOCountry;
 import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.util.Identifiable;
+import com.ajah.util.data.Gender;
 import com.ajah.util.data.Month;
 
 /**
@@ -177,4 +179,11 @@ public interface UserInfo extends Identifiable<UserId> {
 	 * @return The full name of the user.
 	 */
 	String getFullName();
+
+	Gender getGender();
+
+	void setGender(Gender gender);
+
+	void setCurrentCountry(ISOCountry isoCountry);
+	
 }

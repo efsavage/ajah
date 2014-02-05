@@ -21,7 +21,7 @@ import lombok.Data;
 
 import com.ajah.user.User;
 import com.ajah.user.UserType;
-import com.ajah.user.info.UserSource;
+import com.ajah.user.info.UserSourceId;
 
 /**
  * A signUp is a bean used during a registration attempt by a user.
@@ -35,7 +35,7 @@ public class SignUp {
 	protected String ip;
 	protected Date created;
 	protected SignUpStatus status;
-	protected UserSource source;
+	protected UserSourceId source;
 	protected UserType type;
 	protected String username;
 	protected User user;

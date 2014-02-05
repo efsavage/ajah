@@ -41,7 +41,7 @@ import com.ajah.user.email.EmailStatusImpl;
 import com.ajah.user.email.data.EmailDao;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
-import com.ajah.user.info.UserSource;
+import com.ajah.user.info.UserSourceId;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Validate;
 import com.ajah.util.data.format.EmailAddress;
@@ -83,6 +83,9 @@ public class UserManager {
 	/**
 	 * Creates a new user.
 	 * 
+	 * @param username
+	 *            The username, used to login. May be the same as email address
+	 *            for some applications.
 	 * @param emailAddress
 	 *            Email address, will be used as provisional username, required.
 	 * @param password
@@ -97,10 +100,11 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the queries could not be completed.
 	 */
-	public User createUser(final EmailAddress emailAddress, final Password password, final String ip, final UserSource source, final UserType type) throws DataOperationException {
+	public User createUser(final String username, final EmailAddress emailAddress, final Password password, final String ip, final UserSourceId source, final UserType type)
+			throws DataOperationException {
 		final User user = new UserImpl();
 		user.setId(new UserId(UUID.randomUUID().toString()));
-		user.setUsername(emailAddress.toString());
+		user.setUsername(username);
 		user.setStatus(UserStatus.NEW);
 		user.setType(UserType.NORMAL);
 		this.userDao.insert(user, password);
