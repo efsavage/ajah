@@ -15,6 +15,8 @@
  */
 package com.ajah.util.data;
 
+import com.ajah.util.IdentifiableEnum;
+
 /**
  * Enumeration of Months. Java has this data but it is often troublesome to get
  * to, especially in the case of partial dates.
@@ -22,7 +24,7 @@ package com.ajah.util.data;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public enum Month {
+public enum Month implements IdentifiableEnum<Integer> {
 	/**
 	 * January
 	 */
@@ -88,14 +90,14 @@ public enum Month {
 		return null;
 	}
 
-	private final int id;
+	private final Integer id;
 
 	private final String name;
 
 	private final String shortName;
 
 	private Month(final int id, final String name, final String shortName) {
-		this.id = id;
+		this.id = new Integer(id);
 		this.name = name;
 		this.shortName = shortName;
 	}
@@ -106,7 +108,8 @@ public enum Month {
 	 * 
 	 * @return ID/Ordinal value.
 	 */
-	public int getId() {
+	@Override
+	public Integer getId() {
 		return this.id;
 	}
 
@@ -115,6 +118,7 @@ public enum Month {
 	 * 
 	 * @return The full name of the month.
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -125,6 +129,19 @@ public enum Month {
 	 * @return The short name (3 characters) of the month.
 	 */
 	public String getShortName() {
+		return this.shortName;
+	}
+
+	@Override
+	public void setId(final Integer id) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @see com.ajah.util.IdentifiableEnum#getCode()
+	 */
+	@Override
+	public String getCode() {
 		return this.shortName;
 	}
 
