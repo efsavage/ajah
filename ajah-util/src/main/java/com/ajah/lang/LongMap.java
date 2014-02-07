@@ -43,8 +43,29 @@ public class LongMap<K> extends HashMap<K, Long> {
 		return value.longValue();
 	}
 
+	/**
+	 * Sets the value of a key to a long value.
+	 * 
+	 * @param key
+	 *            The key to set.
+	 * @param value
+	 *            The value to set.
+	 */
 	public void setLong(K key, long value) {
 		put(key, new Long(value));
+	}
+
+	/**
+	 * Increments a value at a key. If no value was set, the increment is the
+	 * new value.
+	 * 
+	 * @param key
+	 *            The key to increment.
+	 * @param increment
+	 *            The amount to increment by.
+	 */
+	public void increment(K key, long increment) {
+		setLong(key, getLong(key) + increment);
 	}
 
 }
