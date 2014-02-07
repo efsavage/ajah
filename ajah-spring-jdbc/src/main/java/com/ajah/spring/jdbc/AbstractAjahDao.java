@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -207,6 +208,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					propSet(entity, getProp(field, props), Boolean.valueOf(rs.getBoolean(column)));
 				} else if (IntrospectionUtils.isEnum(field)) {
 					log.warning("Can't handle non-Identifiable enum for column " + column + " [" + field.getType() + "]");
+				} else if (BigDecimal.class.isAssignableFrom(field.getType())) {
+					BigDecimal bigDecimal = rs.getBigDecimal(column);
+					propSet(entity, getProp(field, props), bigDecimal);
 				} else if (LocalDate.class.isAssignableFrom(field.getType())) {
 					int[] parts = ArrayUtils.parseInt(rs.getString(column).split("-"));
 					LocalDate localDate = new LocalDate(parts[0], parts[1], parts[2]);
