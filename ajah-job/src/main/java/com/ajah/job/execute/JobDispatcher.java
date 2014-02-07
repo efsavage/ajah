@@ -18,7 +18,7 @@ package com.ajah.job.execute;
 import java.util.List;
 
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -41,7 +41,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Service
-@Slf4j
+@Log
 public class JobDispatcher implements ApplicationContextAware {
 
 	@Autowired
@@ -58,9 +58,9 @@ public class JobDispatcher implements ApplicationContextAware {
 
 	@Scheduled(fixedDelay = 5000)
 	public void poll() throws DataOperationException {
-		log.debug("Polling jobs");
+		log.fine("Polling jobs");
 		final List<Job> jobs = this.jobManager.findRunnableJobs();
-		log.debug(jobs.size() + " runnable jobs found.");
+		log.fine(jobs.size() + " runnable jobs found.");
 		for (final Job job : jobs) {
 			run(job);
 		}
@@ -88,7 +88,7 @@ public class JobDispatcher implements ApplicationContextAware {
 			this.jobManager.save(job);
 			return;
 		}
-		log.debug("Using " + jobRunner.getClass().getName());
+		log.fine("Using " + jobRunner.getClass().getName());
 		jobRunner.run();
 	}
 

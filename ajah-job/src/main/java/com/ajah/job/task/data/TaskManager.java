@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
  * 
  */
 @Service
-@Slf4j
+@Log
 public class TaskManager {
 
 	@Autowired
@@ -174,11 +174,11 @@ public class TaskManager {
 		}
 		if (create) {
 			final DataOperationResult<Task> result = this.taskDao.insert(task);
-			log.debug("Created Task " + task.getName() + " [" + task.getId() + "]");
+			log.fine("Created Task " + task.getName() + " [" + task.getId() + "]");
 			return result;
 		}
 		final DataOperationResult<Task> result = this.taskDao.update(task);
-		log.debug("Updated Task " + task.getName() + " [" + task.getId() + "]");
+		log.fine("Updated Task " + task.getName() + " [" + task.getId() + "]");
 		return result;
 	}
 
