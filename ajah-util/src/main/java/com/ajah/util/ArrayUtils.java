@@ -16,6 +16,7 @@
 package com.ajah.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
@@ -261,6 +262,30 @@ public class ArrayUtils {
 			retVal[i] = Integer.parseInt(array[i]);
 		}
 		return retVal;
+	}
+
+	/**
+	 * Appends an element to an array, filling the first null spot. If no spots
+	 * are available, expands the array and puts the new element as the last
+	 * entry.
+	 * 
+	 * @param array
+	 *            The array to add to or copy.
+	 * @param object
+	 *            The object to add.
+	 * @return The original array if a spot was found, otherwise a new array
+	 *         that is one size larger.
+	 */
+	public static <T> T[] append(T[] array, T object) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == null) {
+				array[i] = object;
+				return array;
+			}
+		}
+		T[] newArray = Arrays.copyOf(array, array.length + 1);
+		newArray[newArray.length - 1] = object;
+		return newArray;
 	}
 
 }
