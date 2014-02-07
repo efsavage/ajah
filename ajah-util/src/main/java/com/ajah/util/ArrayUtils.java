@@ -221,6 +221,25 @@ public class ArrayUtils {
 	}
 
 	/**
+	 * Sums an array of doubles.
+	 * 
+	 * @param array
+	 *            Double array.
+	 * @return The sum of the values of the array. Returns 0 if the array is 0
+	 *         or empty.
+	 */
+	public static double sum(final double[] array) {
+		if (array == null || array.length == 0) {
+			return 0;
+		}
+		double retVal = array[0];
+		for (int i = 1; i < array.length; i++) {
+			retVal += array[i];
+		}
+		return retVal;
+	}
+
+	/**
 	 * Trims each element in an array of strings, and removes any null or blank
 	 * values.
 	 * 
