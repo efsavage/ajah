@@ -308,6 +308,7 @@
 		<module>../ajah-spring</module>
 		<module>../ajah-spring-jdbc</module>
 		<module>../ajah-spring-mvc</module>
+		<module>../ajah-swagger</module>
 		<module>../ajah-syndicate</module>
 		<module>../ajah-thread</module>
 		<module>../ajah-user</module>
