@@ -536,4 +536,16 @@ public class Criteria {
 		return this;
 	}
 
+	/**
+	 * A field that must be NULL.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria isNull(String field) {
+		AjahUtils.requireParam(field, "field");
+		return eq(field, (String) null);
+	}
+
 }
