@@ -59,7 +59,7 @@ public class SubCriteria {
 	 *            The field to match
 	 * @param pattern
 	 *            The pattern the field must match.
-	 * @return Criteria instance the method was invoked on (for chaining).
+	 * @return SubCriteria instance the method was invoked on (for chaining).
 	 */
 	public SubCriteria orLike(final String field, final String pattern) {
 		AjahUtils.requireParam(field, "field");
@@ -127,6 +127,15 @@ public class SubCriteria {
 
 	}
 
+	/**
+	 * Adds a "greater than" clause to the criteria.
+	 * 
+	 * @param field
+	 *            The field to query on.
+	 * @param value
+	 *            The value to be greater than.
+	 * @return SubCriteria instance the method was invoked on (for chaining).
+	 */
 	public SubCriteria gt(String field, Number value) {
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
@@ -136,4 +145,5 @@ public class SubCriteria {
 		this.gts.add(new NameValuePair<>(field, value));
 		return this;
 	}
+
 }
