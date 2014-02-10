@@ -41,6 +41,13 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	Class<? extends T> getTargetClass();
 
 	/**
+	 * Returns the ID class this DAO manages.
+	 * 
+	 * @return The class of the managed entity's ID.
+	 */
+	Class<K> getIdClass();
+
+	/**
 	 * Automatically fill in properties from the result set.
 	 * 
 	 * @param entity
