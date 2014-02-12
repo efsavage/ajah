@@ -20,6 +20,7 @@ import java.util.Date;
 
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.IdentifiableEnum;
 import com.ajah.util.StringUtils;
 import com.ajah.util.ToStringable;
 
@@ -392,6 +393,17 @@ public class CompareUtils {
 			return retVal;
 		}
 		return first.compareTo(second);
+	}
+
+	public static int compare(IdentifiableEnum<String> first, IdentifiableEnum<String> second, boolean nullsEqual) {
+		final int retVal = compareNulls(first, second, nullsEqual);
+		if (nullsEqual && retVal == 0 && first == null) {
+			return retVal;
+		}
+		if (retVal != 0) {
+			return retVal;
+		}
+		return first.getId().compareTo(second.getId());
 	}
 
 }
