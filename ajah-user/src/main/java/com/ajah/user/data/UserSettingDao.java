@@ -17,13 +17,12 @@ package com.ajah.user.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserSetting;
 import com.ajah.user.UserSettingId;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link UserSetting}.

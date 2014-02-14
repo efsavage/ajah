@@ -17,17 +17,16 @@ package com.ajah.user.data;
 
 import java.util.List;
 
-import com.ajah.user.UserSetting;
-import com.ajah.user.UserSettingId;
-import com.ajah.user.UserSettingStatus;
-import com.ajah.user.UserSettingType;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserSetting;
+import com.ajah.user.UserSettingId;
+import com.ajah.user.UserSettingStatus;
+import com.ajah.user.UserSettingType;
 
 
 /**
