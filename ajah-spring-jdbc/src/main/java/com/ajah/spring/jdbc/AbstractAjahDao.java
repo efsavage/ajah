@@ -24,8 +24,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,6 +40,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
@@ -49,11 +54,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Limit;
 import com.ajah.spring.jdbc.criteria.Where;
+import com.ajah.spring.jdbc.err.DataObjectCreationException;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.spring.jdbc.util.JDBCMapperUtils;
@@ -140,6 +149,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	private List<String> columns;
 
+	private List<String> insertColumns;
+
 	protected JdbcTemplate jdbcTemplate;
 
 	private String selectFields;
@@ -155,6 +166,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	private String insertPlaceholders;
 
 	private String tableName;
+
+	private Boolean autoIdAssign;
 
 	/**
 	 * Will automatically fill in properties from the result set. Currently
@@ -234,11 +247,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	protected long count(final Criteria criteria) throws DataOperationException {
+	protected int count(final Criteria criteria) throws DataOperationException {
 		try {
 			final String sql = "SELECT COUNT(*) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
-			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class).intValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -250,7 +263,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected long count(final String sql) throws DataOperationException {
 		try {
 			sqlLog.finest(sql);
-			return getJdbcTemplate().queryForInt(sql);
+			return getJdbcTemplate().queryForObject(sql, Integer.class).intValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -342,14 +355,33 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	/**
 	 * Finds a single object by the Criteria specified.
 	 * 
-	 * @param criteria
-	 *            The criteria to use to find the object.
+	 * @param value
+	 *            The value to use to find the object. The column name must
+	 *            match the class name (e.g. a UserId would query the user_id
+	 *            column).
 	 * @return The object, if found.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
 	public T find(final ToStringable value) throws DataOperationException {
 		Criteria criteria = new Criteria().eq(value);
+		criteria.rows(1);
+		return find(criteria.getWhere(), criteria.getLimit(), criteria.getOrderBySql());
+	}
+
+	/**
+	 * Finds a single object by the Criteria specified.
+	 * 
+	 * @param field
+	 *            The field to query.
+	 * @param value
+	 *            The value to match.
+	 * @return The object, if found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public T find(String field, String value) throws DataOperationException {
+		Criteria criteria = new Criteria().eq(field, value);
 		if (criteria.getLimit().getCount() > 1) {
 			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
 		}
@@ -526,27 +558,40 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		return this.columns;
 	}
 
-	private String getInsertFields() {
+	/**
+	 * Returns the list of columns for this class.
+	 * 
+	 * @return The list of columns for this class, may be empty but will not be
+	 *         null.
+	 */
+	public List<String> getInsertColumns() {
+		if (this.insertColumns == null) {
+			loadColumns();
+		}
+		return this.insertColumns;
+	}
+
+	protected String getInsertFields() {
 		if (this.insertFields == null) {
 			loadColumns();
 		}
 		return this.insertFields;
 	}
 
-	private String getInsertPlaceholders() {
+	protected String getInsertPlaceholders() {
 		if (this.insertPlaceholders == null) {
 			loadColumns();
 		}
 		return this.insertPlaceholders;
 	}
 
-	private Object[] getInsertValues(final T entity) {
-		final Object[] values = new Object[getColumns().size()];
+	Object[] getInsertValues(final T entity) {
+		final Object[] values = new Object[getInsertColumns().size()];
 		try {
 			final BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < values.length; i++) {
-				final Field field = this.colMap.get(this.columns.get(i));
+				final Field field = this.colMap.get(this.insertColumns.get(i));
 				if (LocalDate.class.isAssignableFrom(field.getType())) {
 					LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
 					if (localDate != null) {
@@ -627,6 +672,15 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	@SuppressWarnings("unchecked")
 	public Class<C> getTargetClass() {
 		return (Class<C>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public Class<K> getIdClass() {
+		return (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
 	private String getUpdateFields() {
@@ -741,13 +795,77 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(entity.getId(), "entity.id");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
+			if (isAutoIdAssign()) {
+				// Generated (auto_increment) ID
+				KeyHolder holder = new GeneratedKeyHolder();
+
+				int rows = getJdbcTemplate().update(new PreparedStatementCreator() {
+
+					@Override
+					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+						final String sql = "INSERT " + (delayed ? "DELAYED " : "") + "INTO `" + getTableName() + "` (" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
+						if (sqlLog.isLoggable(Level.FINEST)) {
+							sqlLog.finest(sql);
+						}
+						PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+						Object[] values = getInsertValues(entity);
+						for (int i = 0; i < values.length; i++) {
+							if (sqlLog.isLoggable(Level.FINEST)) {
+								sqlLog.finest("Setting value " + (i + 1) + " to " + values[i]);
+							}
+							setPreparedStatement(ps, i + 1, values[i]);
+						}
+						return ps;
+					}
+
+				}, holder);
+				int id = holder.getKey().intValue();
+				entity.setId(getIdClass().getConstructor(String.class).newInstance(String.valueOf(id)));
+				return new DataOperationResult<>(entity, rows);
+			}
+			// Pre-assigned ID
 			final String sql = "INSERT " + (delayed ? "DELAYED " : "") + "INTO `" + getTableName() + "` (" + getInsertFields() + ") VALUES (" + getInsertPlaceholders() + ")";
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
 			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, getInsertValues(entity)));
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException e) {
+			throw new DataObjectCreationException(e);
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
+	protected boolean isAutoIdAssign() {
+		if (this.autoIdAssign == null) {
+			try {
+				Field field = getTargetClass().getDeclaredField("id");
+				if (field.isAnnotationPresent(GeneratedValue.class)) {
+					this.autoIdAssign = Boolean.TRUE;
+				} else {
+					this.autoIdAssign = Boolean.FALSE;
+				}
+			} catch (NoSuchFieldException | SecurityException e) {
+				this.autoIdAssign = Boolean.FALSE;
+			}
+		}
+		return this.autoIdAssign.booleanValue();
+	}
+
+	protected static void setPreparedStatement(PreparedStatement ps, int index, Object value) throws SQLException {
+		if (value == null) {
+			ps.setNull(index, Types.NULL);
+		} else if (String.class.isAssignableFrom(value.getClass())) {
+			ps.setString(index, (String) value);
+		} else if (Integer.class.isAssignableFrom(value.getClass())) {
+			ps.setInt(index, ((Integer) value).intValue());
+		} else if (Long.class.isAssignableFrom(value.getClass())) {
+			ps.setLong(index, ((Long) value).longValue());
+		} else if (BigDecimal.class.isAssignableFrom(value.getClass())) {
+			ps.setBigDecimal(index, (BigDecimal) value);
+		} else {
+			log.warning("Unhandled type: " + value.getClass() + ", using toString()");
+			ps.setString(index, value.toString());
 		}
 	}
 
@@ -1093,10 +1211,21 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		if (this.selectFields == null) {
 			this.selectFields = select.toString();
 			this.selectFieldsWithTablePrefix = selectWithTablePrefix.toString();
-			this.insertFields = this.selectFields;
+			if (isAutoIdAssign()) {
+				this.insertFields = StringUtils.join(",", newUpdateFields);
+			} else {
+				this.insertFields = this.selectFields;
+			}
 		}
 		if (this.columns == null) {
 			this.columns = columnList;
+		}
+		if (this.insertColumns == null) {
+			if (isAutoIdAssign()) {
+				this.insertColumns = newUpdateFields;
+			} else {
+				this.insertColumns = columnList;
+			}
 		}
 		log.finest(this.columns.size() + " columns");
 
@@ -1114,7 +1243,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 
 		final StringBuffer iph = new StringBuffer();
-		for (int i = 0; i < this.columns.size(); i++) {
+		for (int i = 0; i < this.insertColumns.size(); i++) {
 			if (i > 0) {
 				iph.append(",");
 			}
@@ -1130,7 +1259,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class).intValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -1145,7 +1274,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues().toArray());
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class).intValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -1160,7 +1289,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return getJdbcTemplate().queryForInt(sql, criteria.getWhere().getValues().toArray());
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class).intValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -1175,7 +1304,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return getJdbcTemplate().queryForLong(sql, criteria.getWhere().getValues().toArray());
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Long.class).longValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
