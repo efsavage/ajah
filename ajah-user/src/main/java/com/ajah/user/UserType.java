@@ -76,6 +76,7 @@ public enum UserType implements IdentifiableEnum<String> {
 	 * 
 	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
+	@Override
 	public String getCode() {
 		return this.code;
 	}
@@ -105,13 +106,20 @@ public enum UserType implements IdentifiableEnum<String> {
 	 * 
 	 * @return The display-friendly name of the type. Cannot be null.
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	@Override
-	public void setId(final String id) {
-		throw new UnsupportedOperationException();
+	/**
+	 * Returns if this user type is a bot user, meaning it probably has a single
+	 * purpose related to automation. It has no default permissions, including
+	 * being able to log in, and must specifically assigned any access levels.
+	 * 
+	 * @return the botUser
+	 */
+	public boolean isBotUser() {
+		return this.botUser;
 	}
 
 	/**
@@ -124,15 +132,9 @@ public enum UserType implements IdentifiableEnum<String> {
 		return this.superUser;
 	}
 
-	/**
-	 * Returns if this user type is a bot user, meaning it probably has a single
-	 * purpose related to automation. It has no default permissions, including
-	 * being able to log in, and must specifically assigned any access levels.
-	 * 
-	 * @return the botUser
-	 */
-	public boolean isBotUser() {
-		return this.botUser;
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
 	}
 
 }

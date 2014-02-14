@@ -182,8 +182,8 @@ public interface UserInfo extends Identifiable<UserId> {
 
 	Gender getGender();
 
-	void setGender(Gender gender);
+	void setGender(final Gender gender);
 
-	void setCurrentCountry(ISOCountry isoCountry);
-	
+	void setCurrentCountry(final ISOCountry isoCountry);
+
 }

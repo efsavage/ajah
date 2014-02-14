@@ -81,6 +81,32 @@ public class UserManager {
 	}
 
 	/**
+	 * Returns a count of all records.
+	 * 
+	 * @return Count of all records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count() throws DataOperationException {
+		return count(null, null);
+	}
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The user type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count(final UserType type, final UserStatus status) throws DataOperationException {
+		return this.userDao.count(type, status);
+	}
+
+	/**
 	 * Creates a new user.
 	 * 
 	 * @param username
@@ -250,6 +276,14 @@ public class UserManager {
 		return user;
 	}
 
+	public DataOperationResult<UserInfo> save(final UserInfo userInfo) throws DataOperationException {
+		if (userInfo.getCreated() == null) {
+			userInfo.setCreated(new Date());
+		}
+		final DataOperationResult<UserInfo> result = this.userInfoDao.update(userInfo);
+		return result;
+	}
+
 	/**
 	 * Is this username already in use?
 	 * 
@@ -260,39 +294,5 @@ public class UserManager {
 	 */
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
-	}
-
-	/**
-	 * Returns a count of all records.
-	 * 
-	 * @return Count of all records.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public long count() throws DataOperationException {
-		return count(null, null);
-	}
-
-	/**
-	 * Counts the records available that match the criteria.
-	 * 
-	 * @param type
-	 *            The user type to limit to, optional.
-	 * @param status
-	 *            The status to limit to, optional.
-	 * @return The number of matching records.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public long count(final UserType type, final UserStatus status) throws DataOperationException {
-		return this.userDao.count(type, status);
-	}
-
-	public DataOperationResult<UserInfo> save(UserInfo userInfo) throws DataOperationException {
-		if (userInfo.getCreated() == null) {
-			userInfo.setCreated(new Date());
-		}
-		DataOperationResult<UserInfo> result = this.userInfoDao.update(userInfo);
-		return result;
 	}
 }

@@ -39,6 +39,22 @@ import com.ajah.util.AjahUtils;
 @Repository
 public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> implements UserDao {
 
+	/**
+	 * @see com.ajah.user.data.UserDao#count(com.ajah.user.UserType,
+	 *      com.ajah.user.UserStatus)
+	 */
+	@Override
+	public long count(final UserType type, final UserStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
 	@Override
 	public User findByUsername(final String username) throws DataOperationException {
 		return super.findByField("username", username);
@@ -94,22 +110,6 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
-	}
-
-	/**
-	 * @see com.ajah.user.data.UserDao#count(com.ajah.user.UserType,
-	 *      com.ajah.user.UserStatus)
-	 */
-	@Override
-	public long count(UserType type, UserStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
 	}
 
 }

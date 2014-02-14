@@ -45,115 +45,6 @@ public class UserSettingManager {
 	private UserSettingDao userSettingDao;
 
 	/**
-	 * Saves an {@link UserSetting}. Assigns a new ID ({@link UUID}) and sets
-	 * the creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param userSetting
-	 *            The userSetting to save.
-	 * @return The result of the save operation, which will include the new
-	 *         userSetting at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<UserSetting> save(UserSetting userSetting) throws DataOperationException {
-		boolean create = false;
-		if (userSetting.getId() == null) {
-			userSetting.setId(new UserSettingId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (userSetting.getCreated() == null) {
-			userSetting.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			return this.userSettingDao.insert(userSetting);
-		}
-		DataOperationResult<UserSetting> result = this.userSettingDao.update(userSetting);
-		return result;
-	}
-
-	/**
-	 * Loads an {@link UserSetting} by it's ID.
-	 * 
-	 * @param userSettingId
-	 *            The ID to load, required.
-	 * @return The matching userSetting, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws UserSettingNotFoundException
-	 *             If the ID specified did not match any userSettings.
-	 */
-	public UserSetting load(UserSettingId userSettingId) throws DataOperationException, UserSettingNotFoundException {
-		UserSetting userSetting = this.userSettingDao.load(userSettingId);
-		if (userSetting == null) {
-			throw new UserSettingNotFoundException(userSettingId);
-		}
-		return userSetting;
-	}
-
-	/**
-	 * Returns a list of {@link UserSetting}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of userSetting, optional.
-	 * @param status
-	 *            The status of the userSetting, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link UserSetting}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<UserSetting> list(UserSettingType type, UserSettingStatus status, long page, long count) throws DataOperationException {
-		return this.userSettingDao.list(type, status, page, count);
-	}
-
-	/**
-	 * Creates a new {@link UserSetting} with the given properties.
-	 * 
-	 * @param name
-	 *            The name of the userSetting, required.
-	 * @param type
-	 *            The type of userSetting, required.
-	 * @param status
-	 *            The status of the userSetting, required.
-	 * @return The result of the creation, which will include the new
-	 *         userSetting at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<UserSetting> create(String name, UserSettingType type, UserSettingStatus status) throws DataOperationException {
-		UserSetting userSetting = new UserSetting();
-		userSetting.setName(name);
-		userSetting.setType(type);
-		userSetting.setStatus(status);
-		DataOperationResult<UserSetting> result = save(userSetting);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link UserSettingStatus#DELETED}.
-	 * 
-	 * @param userSettingId
-	 *            The ID of the userSetting to delete.
-	 * @return The result of the deletion, will not include the new userSetting
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws UserSettingNotFoundException
-	 *             If the ID specified did not match any userSettings.
-	 */
-	public DataOperationResult<UserSetting> delete(UserSettingId userSettingId) throws DataOperationException, UserSettingNotFoundException {
-		UserSetting userSetting = load(userSettingId);
-		userSetting.setStatus(UserSettingStatus.DELETED);
-		DataOperationResult<UserSetting> result = save(userSetting);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -177,6 +68,115 @@ public class UserSettingManager {
 	 */
 	public long count(final UserSettingType type, final UserSettingStatus status) throws DataOperationException {
 		return this.userSettingDao.count(type, status);
+	}
+
+	/**
+	 * Creates a new {@link UserSetting} with the given properties.
+	 * 
+	 * @param name
+	 *            The name of the userSetting, required.
+	 * @param type
+	 *            The type of userSetting, required.
+	 * @param status
+	 *            The status of the userSetting, required.
+	 * @return The result of the creation, which will include the new
+	 *         userSetting at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<UserSetting> create(final String name, final UserSettingType type, final UserSettingStatus status) throws DataOperationException {
+		final UserSetting userSetting = new UserSetting();
+		userSetting.setName(name);
+		userSetting.setType(type);
+		userSetting.setStatus(status);
+		final DataOperationResult<UserSetting> result = save(userSetting);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link UserSettingStatus#DELETED}.
+	 * 
+	 * @param userSettingId
+	 *            The ID of the userSetting to delete.
+	 * @return The result of the deletion, will not include the new userSetting
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws UserSettingNotFoundException
+	 *             If the ID specified did not match any userSettings.
+	 */
+	public DataOperationResult<UserSetting> delete(final UserSettingId userSettingId) throws DataOperationException, UserSettingNotFoundException {
+		final UserSetting userSetting = load(userSettingId);
+		userSetting.setStatus(UserSettingStatus.DELETED);
+		final DataOperationResult<UserSetting> result = save(userSetting);
+		return result;
+	}
+
+	/**
+	 * Returns a list of {@link UserSetting}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of userSetting, optional.
+	 * @param status
+	 *            The status of the userSetting, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link UserSetting}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<UserSetting> list(final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
+		return this.userSettingDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Loads an {@link UserSetting} by it's ID.
+	 * 
+	 * @param userSettingId
+	 *            The ID to load, required.
+	 * @return The matching userSetting, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws UserSettingNotFoundException
+	 *             If the ID specified did not match any userSettings.
+	 */
+	public UserSetting load(final UserSettingId userSettingId) throws DataOperationException, UserSettingNotFoundException {
+		final UserSetting userSetting = this.userSettingDao.load(userSettingId);
+		if (userSetting == null) {
+			throw new UserSettingNotFoundException(userSettingId);
+		}
+		return userSetting;
+	}
+
+	/**
+	 * Saves an {@link UserSetting}. Assigns a new ID ({@link UUID}) and sets
+	 * the creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param userSetting
+	 *            The userSetting to save.
+	 * @return The result of the save operation, which will include the new
+	 *         userSetting at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<UserSetting> save(final UserSetting userSetting) throws DataOperationException {
+		boolean create = false;
+		if (userSetting.getId() == null) {
+			userSetting.setId(new UserSettingId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (userSetting.getCreated() == null) {
+			userSetting.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			return this.userSettingDao.insert(userSetting);
+		}
+		final DataOperationResult<UserSetting> result = this.userSettingDao.update(userSetting);
+		return result;
 	}
 
 }

@@ -41,8 +41,14 @@ import com.ajah.util.StringUtils;
 public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUser, AccountUser> implements AccountUserDao {
 
 	@Override
-	public List<AccountUser> list(AccountId accountId, AccountUserType type, AccountUserStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException {
-		Criteria criteria = new Criteria().eq(accountId);
+	public String getTableName() {
+		return "account__user";
+	}
+
+	@Override
+	public List<AccountUser> list(final AccountId accountId, final AccountUserType type, final AccountUserStatus status, final long page, final long count, final String search,
+			final String[] searchFields) throws DataOperationException {
+		final Criteria criteria = new Criteria().eq(accountId);
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -55,24 +61,19 @@ public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUs
 		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}
 
-	@Override
-	public String getTableName() {
-		return "account__user";
-	}
-
 	/**
 	 * @see com.ajah.user.account.data.AccountUserDao#list(com.ajah.user.UserId)
 	 */
 	@Override
-	public List<AccountUser> list(UserId userId, int page, int count) throws DataOperationException {
-		return super.list(userId, page, count);
-	}
-
-	/**
-	 * @see com.ajah.user.account.data.AccountUserDao#list(com.ajah.user.UserId)
-	 */
-	@Override
-	public List<AccountUser> list(AccountId accountId, int page, int count) throws DataOperationException {
+	public List<AccountUser> list(final AccountId accountId, final int page, final int count) throws DataOperationException {
 		return super.list(accountId, page, count);
+	}
+
+	/**
+	 * @see com.ajah.user.account.data.AccountUserDao#list(com.ajah.user.UserId)
+	 */
+	@Override
+	public List<AccountUser> list(final UserId userId, final int page, final int count) throws DataOperationException {
+		return super.list(userId, page, count);
 	}
 }

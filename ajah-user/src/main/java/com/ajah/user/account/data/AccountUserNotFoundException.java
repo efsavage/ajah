@@ -27,7 +27,8 @@ import com.ajah.user.account.AccountUserId;
 public class AccountUserNotFoundException extends Exception {
 
 	/**
-	 * Thrown when an {@link AccountUser} could not be found by it's internal ID.
+	 * Thrown when an {@link AccountUser} could not be found by it's internal
+	 * ID.
 	 * 
 	 * @param id
 	 *            The internal ID that was sought.

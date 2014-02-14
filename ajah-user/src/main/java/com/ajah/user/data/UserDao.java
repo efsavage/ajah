@@ -91,6 +91,6 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(UserType type, UserStatus status) throws DataOperationException;
+	long count(final UserType type, final UserStatus status) throws DataOperationException;
 
 }

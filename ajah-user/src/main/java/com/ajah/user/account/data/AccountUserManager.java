@@ -45,51 +45,48 @@ public class AccountUserManager {
 	private AccountUserDao accountUserDao;
 
 	/**
-	 * Saves an {@link AccountUser}. Assigns a new ID ({@link UUID}) and sets
-	 * the creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
+	 * Creates a new {@link AccountUser} with the given properties.
 	 * 
-	 * @param accountUser
-	 *            The accountUser to save.
-	 * @return The result of the save operation, which will include the new
+	 * @param userId
+	 *            The user ID
+	 * @param accountId
+	 *            The account ID
+	 * @param type
+	 *            The type of accountUser, required.
+	 * @param status
+	 *            The status of the accountUser, required.
+	 * @return The result of the creation, which will include the new
 	 *         accountUser at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<AccountUser> save(AccountUser accountUser) throws DataOperationException {
-		boolean create = false;
-		if (accountUser.getId() == null) {
-			accountUser.setId(new AccountUserId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (accountUser.getCreated() == null) {
-			accountUser.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			return this.accountUserDao.insert(accountUser);
-		}
-		DataOperationResult<AccountUser> result = this.accountUserDao.update(accountUser);
+	public DataOperationResult<AccountUser> create(final AccountId accountId, final UserId userId, final AccountUserType type, final AccountUserStatus status) throws DataOperationException {
+		final AccountUser accountUser = new AccountUser();
+		accountUser.setAccountId(accountId);
+		accountUser.setUserId(userId);
+		accountUser.setType(type);
+		accountUser.setStatus(status);
+		final DataOperationResult<AccountUser> result = save(accountUser);
 		return result;
 	}
 
 	/**
-	 * Loads an {@link AccountUser} by it's ID.
+	 * Marks the entity as {@link AccountUserStatus#DELETED}.
 	 * 
 	 * @param accountUserId
-	 *            The ID to load, required.
-	 * @return The matching accountUser, if found. Will not return null.
+	 *            The ID of the accountUser to delete.
+	 * @return The result of the deletion, will not include the new accountUser
+	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws AccountUserNotFoundException
 	 *             If the ID specified did not match any accountUsers.
 	 */
-	public AccountUser load(AccountUserId accountUserId) throws DataOperationException, AccountUserNotFoundException {
-		AccountUser accountUser = this.accountUserDao.load(accountUserId);
-		if (accountUser == null) {
-			throw new AccountUserNotFoundException(accountUserId);
-		}
-		return accountUser;
+	public DataOperationResult<AccountUser> delete(final AccountUserId accountUserId) throws DataOperationException, AccountUserNotFoundException {
+		final AccountUser accountUser = load(accountUserId);
+		accountUser.setStatus(AccountUserStatus.DELETED);
+		final DataOperationResult<AccountUser> result = save(accountUser);
+		return result;
 	}
 
 	/**
@@ -107,7 +104,7 @@ public class AccountUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<AccountUser> list(AccountId accountId, AccountUserType type, AccountUserStatus status, long page, long count) throws DataOperationException {
+	public List<AccountUser> list(final AccountId accountId, final AccountUserType type, final AccountUserStatus status, final long page, final long count) throws DataOperationException {
 		return this.accountUserDao.list(accountId, type, status, page, count, null, null);
 	}
 
@@ -131,70 +128,9 @@ public class AccountUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<AccountUser> list(AccountId accountId, AccountUserType type, AccountUserStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException {
+	public List<AccountUser> list(final AccountId accountId, final AccountUserType type, final AccountUserStatus status, final long page, final long count, final String search,
+			final String[] searchFields) throws DataOperationException {
 		return this.accountUserDao.list(accountId, type, status, page, count, search, searchFields);
-	}
-
-	/**
-	 * Creates a new {@link AccountUser} with the given properties.
-	 * 
-	 * @param userId
-	 *            The user ID
-	 * @param accountId
-	 *            The account ID
-	 * @param type
-	 *            The type of accountUser, required.
-	 * @param status
-	 *            The status of the accountUser, required.
-	 * @return The result of the creation, which will include the new
-	 *         accountUser at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<AccountUser> create(AccountId accountId, UserId userId, AccountUserType type, AccountUserStatus status) throws DataOperationException {
-		AccountUser accountUser = new AccountUser();
-		accountUser.setAccountId(accountId);
-		accountUser.setUserId(userId);
-		accountUser.setType(type);
-		accountUser.setStatus(status);
-		DataOperationResult<AccountUser> result = save(accountUser);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link AccountUserStatus#DELETED}.
-	 * 
-	 * @param accountUserId
-	 *            The ID of the accountUser to delete.
-	 * @return The result of the deletion, will not include the new accountUser
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws AccountUserNotFoundException
-	 *             If the ID specified did not match any accountUsers.
-	 */
-	public DataOperationResult<AccountUser> delete(AccountUserId accountUserId) throws DataOperationException, AccountUserNotFoundException {
-		AccountUser accountUser = load(accountUserId);
-		accountUser.setStatus(AccountUserStatus.DELETED);
-		DataOperationResult<AccountUser> result = save(accountUser);
-		return result;
-	}
-
-	/**
-	 * Lists {@link AccountUser}s for a given {@link User}.
-	 * 
-	 * @param userId
-	 *            The user ID to search on.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link AccountUser}s, or an empty list.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<AccountUser> list(UserId userId, int page, int count) throws DataOperationException {
-		return this.accountUserDao.list(userId, page, count);
 	}
 
 	/**
@@ -210,8 +146,73 @@ public class AccountUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<AccountUser> list(AccountId accountId, int page, int count) throws DataOperationException {
+	public List<AccountUser> list(final AccountId accountId, final int page, final int count) throws DataOperationException {
 		return this.accountUserDao.list(accountId, page, count);
+	}
+
+	/**
+	 * Lists {@link AccountUser}s for a given {@link User}.
+	 * 
+	 * @param userId
+	 *            The user ID to search on.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link AccountUser}s, or an empty list.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<AccountUser> list(final UserId userId, final int page, final int count) throws DataOperationException {
+		return this.accountUserDao.list(userId, page, count);
+	}
+
+	/**
+	 * Loads an {@link AccountUser} by it's ID.
+	 * 
+	 * @param accountUserId
+	 *            The ID to load, required.
+	 * @return The matching accountUser, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws AccountUserNotFoundException
+	 *             If the ID specified did not match any accountUsers.
+	 */
+	public AccountUser load(final AccountUserId accountUserId) throws DataOperationException, AccountUserNotFoundException {
+		final AccountUser accountUser = this.accountUserDao.load(accountUserId);
+		if (accountUser == null) {
+			throw new AccountUserNotFoundException(accountUserId);
+		}
+		return accountUser;
+	}
+
+	/**
+	 * Saves an {@link AccountUser}. Assigns a new ID ({@link UUID}) and sets
+	 * the creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param accountUser
+	 *            The accountUser to save.
+	 * @return The result of the save operation, which will include the new
+	 *         accountUser at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<AccountUser> save(final AccountUser accountUser) throws DataOperationException {
+		boolean create = false;
+		if (accountUser.getId() == null) {
+			accountUser.setId(new AccountUserId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (accountUser.getCreated() == null) {
+			accountUser.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			return this.accountUserDao.insert(accountUser);
+		}
+		final DataOperationResult<AccountUser> result = this.accountUserDao.update(accountUser);
+		return result;
 	}
 
 }

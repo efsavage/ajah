@@ -115,11 +115,6 @@ public enum AccountUserStatus implements Identifiable<String> {
 		return this.name;
 	}
 
-	@Override
-	public void setId(final String id) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * Does this status mean that the entity is active?
 	 * 
@@ -127,6 +122,15 @@ public enum AccountUserStatus implements Identifiable<String> {
 	 */
 	public boolean isActive() {
 		return this.active;
+	}
+
+	/**
+	 * Does this status mean that the entity has been deleted?
+	 * 
+	 * @return true if deleted, otherwise false
+	 */
+	public boolean isDeleted() {
+		return this.deleted;
 	}
 
 	/**
@@ -138,12 +142,8 @@ public enum AccountUserStatus implements Identifiable<String> {
 		return this.error;
 	}
 
-	/**
-	 * Does this status mean that the entity has been deleted?
-	 * 
-	 * @return true if deleted, otherwise false
-	 */
-	public boolean isDeleted() {
-		return this.deleted;
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
 	}
 }

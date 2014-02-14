@@ -82,6 +82,7 @@ public enum AccountStatus implements IdentifiableEnum<String> {
 	 * 
 	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
+	@Override
 	public String getCode() {
 		return this.code;
 	}
@@ -111,13 +112,9 @@ public enum AccountStatus implements IdentifiableEnum<String> {
 	 * 
 	 * @return The display-friendly name of the type. Cannot be null.
 	 */
+	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	@Override
-	public void setId(final String id) {
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -130,6 +127,15 @@ public enum AccountStatus implements IdentifiableEnum<String> {
 	}
 
 	/**
+	 * Does this status mean that the entity has been deleted?
+	 * 
+	 * @return true if deleted, otherwise false
+	 */
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+	/**
 	 * Does this status mean that the entity is in an error state?
 	 * 
 	 * @return true if in error state, otherwise false
@@ -138,12 +144,8 @@ public enum AccountStatus implements IdentifiableEnum<String> {
 		return this.error;
 	}
 
-	/**
-	 * Does this status mean that the entity has been deleted?
-	 * 
-	 * @return true if deleted, otherwise false
-	 */
-	public boolean isDeleted() {
-		return this.deleted;
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
 	}
 }

@@ -28,9 +28,8 @@ import com.ajah.user.UserSettingId;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
 
-
 /**
- *  MySQL-based implementation of {@link UserSettingDao}. 
+ * MySQL-based implementation of {@link UserSettingDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -38,25 +37,13 @@ import com.ajah.user.UserSettingType;
 @Repository
 public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetting, UserSetting> implements UserSettingDao {
 
-	@Override
-	public List<UserSetting> list(UserSettingType type, UserSettingStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
-	}
-
 	/**
 	 * @see com.ajah.user.data.UserSettingDao#count(com.ajah.user.UserSettingType,
 	 *      com.ajah.user.UserSettingStatus)
 	 */
 	@Override
-	public long count(UserSettingType type, UserSettingStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final UserSettingType type, final UserSettingStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -64,6 +51,18 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 			criteria.eq("status", status);
 		}
 		return super.count(criteria);
+	}
+
+	@Override
+	public List<UserSetting> list(final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
 	}
 
 }

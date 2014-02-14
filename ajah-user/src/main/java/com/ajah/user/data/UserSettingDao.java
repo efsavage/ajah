@@ -47,7 +47,7 @@ public interface UserSettingDao extends AjahDao<UserSettingId, UserSetting> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<UserSetting> list(UserSettingType type, UserSettingStatus status, long page, long count) throws DataOperationException;
+	List<UserSetting> list(final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -60,6 +60,6 @@ public interface UserSettingDao extends AjahDao<UserSettingId, UserSetting> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(UserSettingType type, UserSettingStatus status) throws DataOperationException;
+	long count(final UserSettingType type, final UserSettingStatus status) throws DataOperationException;
 
 }

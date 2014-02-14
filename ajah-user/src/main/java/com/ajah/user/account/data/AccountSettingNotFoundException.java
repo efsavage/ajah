@@ -27,7 +27,8 @@ import com.ajah.user.account.AccountSettingId;
 public class AccountSettingNotFoundException extends Exception {
 
 	/**
-	 * Thrown when an {@link AccountSetting} could not be found by it's internal ID.
+	 * Thrown when an {@link AccountSetting} could not be found by it's internal
+	 * ID.
 	 * 
 	 * @param id
 	 *            The internal ID that was sought.

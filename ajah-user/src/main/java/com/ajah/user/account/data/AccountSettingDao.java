@@ -34,7 +34,8 @@ import com.ajah.user.account.AccountSettingType;
 public interface AccountSettingDao extends AjahDao<AccountSettingId, AccountSetting> {
 
 	/**
-	 * Returns a list of {@link AccountSetting}s that match the specified criteria.
+	 * Returns a list of {@link AccountSetting}s that match the specified
+	 * criteria.
 	 * 
 	 * @param type
 	 *            The type of accountSetting, optional.
@@ -48,7 +49,7 @@ public interface AccountSettingDao extends AjahDao<AccountSettingId, AccountSett
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<AccountSetting> list(AccountSettingType type, AccountSettingStatus status, long page, long count) throws DataOperationException;
+	List<AccountSetting> list(final AccountSettingType type, final AccountSettingStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,10 +62,10 @@ public interface AccountSettingDao extends AjahDao<AccountSettingId, AccountSett
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(AccountSettingType type, AccountSettingStatus status) throws DataOperationException;
+	long count(final AccountSettingType type, final AccountSettingStatus status) throws DataOperationException;
 
-	List<AccountSetting> list(AccountId accountId) throws DataOperationException;
+	List<AccountSetting> list(final AccountId accountId) throws DataOperationException;
 
-	AccountSetting find(AccountId accountId, String name) throws DataOperationException;
+	AccountSetting find(final AccountId accountId, final String name) throws DataOperationException;
 
 }

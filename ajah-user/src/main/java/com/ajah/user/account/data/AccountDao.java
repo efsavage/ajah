@@ -52,7 +52,7 @@ public interface AccountDao extends AjahDao<AccountId, Account> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<Account> list(AccountType type, AccountStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException;
+	List<Account> list(final AccountType type, final AccountStatus status, final long page, final long count, final String search, final String[] searchFields) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -65,6 +65,6 @@ public interface AccountDao extends AjahDao<AccountId, Account> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(AccountType type, AccountStatus status) throws DataOperationException;
+	long count(final AccountType type, final AccountStatus status) throws DataOperationException;
 
 }

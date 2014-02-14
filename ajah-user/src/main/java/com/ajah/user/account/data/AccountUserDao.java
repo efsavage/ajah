@@ -56,7 +56,8 @@ public interface AccountUserDao extends AjahDao<AccountUserId, AccountUser> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<AccountUser> list(AccountId accountId, AccountUserType type, AccountUserStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException;
+	List<AccountUser> list(final AccountId accountId, final AccountUserType type, final AccountUserStatus status, final long page, final long count, final String search, final String[] searchFields)
+			throws DataOperationException;
 
 	/**
 	 * Lists {@link AccountUser}s for a given {@link User}.
@@ -71,7 +72,7 @@ public interface AccountUserDao extends AjahDao<AccountUserId, AccountUser> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<AccountUser> list(UserId userId, int page, int count) throws DataOperationException;
+	List<AccountUser> list(final UserId userId, final int page, final int count) throws DataOperationException;
 
 	/**
 	 * Lists {@link AccountUser}s for a given {@link Account}.
@@ -86,6 +87,6 @@ public interface AccountUserDao extends AjahDao<AccountUserId, AccountUser> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<AccountUser> list(AccountId accountId, int page, int count) throws DataOperationException;
+	List<AccountUser> list(final AccountId accountId, final int page, final int count) throws DataOperationException;
 
 }

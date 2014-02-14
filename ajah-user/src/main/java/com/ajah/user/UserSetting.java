@@ -21,7 +21,6 @@ import lombok.Data;
 
 import com.ajah.util.Identifiable;
 
-
 @Data
 public class UserSetting implements Identifiable<UserSettingId> {
 

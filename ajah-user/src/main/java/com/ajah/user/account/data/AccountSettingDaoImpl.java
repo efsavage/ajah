@@ -38,25 +38,13 @@ import com.ajah.user.account.AccountSettingType;
 @Repository
 public class AccountSettingDaoImpl extends AbstractAjahDao<AccountSettingId, AccountSetting, AccountSetting> implements AccountSettingDao {
 
-	@Override
-	public List<AccountSetting> list(AccountSettingType type, AccountSettingStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
-	}
-
 	/**
 	 * @see com.ajah.user.account.data.AccountSettingDao#count(com.ajah.user.account.AccountSettingType,
 	 *      com.ajah.user.account.AccountSettingStatus)
 	 */
 	@Override
-	public long count(AccountSettingType type, AccountSettingStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final AccountSettingType type, final AccountSettingStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -68,21 +56,33 @@ public class AccountSettingDaoImpl extends AbstractAjahDao<AccountSettingId, Acc
 
 	/**
 	 * @throws DataOperationException
-	 * @see com.ajah.user.account.data.AccountSettingDao#list(com.ajah.user.account.AccountId)
-	 */
-	@Override
-	public List<AccountSetting> list(AccountId accountId) throws DataOperationException {
-		return super.list(accountId);
-	}
-
-	/**
-	 * @throws DataOperationException 
 	 * @see com.ajah.user.account.data.AccountSettingDao#find(com.ajah.user.account.AccountId,
 	 *      java.lang.String)
 	 */
 	@Override
-	public AccountSetting find(AccountId accountId, String name) throws DataOperationException {
+	public AccountSetting find(final AccountId accountId, final String name) throws DataOperationException {
 		return super.find(new Criteria().eq(accountId).eq("name", name));
+	}
+
+	/**
+	 * @throws DataOperationException
+	 * @see com.ajah.user.account.data.AccountSettingDao#list(com.ajah.user.account.AccountId)
+	 */
+	@Override
+	public List<AccountSetting> list(final AccountId accountId) throws DataOperationException {
+		return super.list(accountId);
+	}
+
+	@Override
+	public List<AccountSetting> list(final AccountSettingType type, final AccountSettingStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
 	}
 
 }

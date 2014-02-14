@@ -27,7 +27,8 @@ import com.ajah.user.UserSettingId;
 public class UserSettingNotFoundException extends Exception {
 
 	/**
-	 * Thrown when an {@link UserSetting} could not be found by it's internal ID.
+	 * Thrown when an {@link UserSetting} could not be found by it's internal
+	 * ID.
 	 * 
 	 * @param id
 	 *            The internal ID that was sought.

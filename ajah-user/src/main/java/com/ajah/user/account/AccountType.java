@@ -68,6 +68,7 @@ public enum AccountType implements IdentifiableEnum<String> {
 	 * 
 	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
+	@Override
 	public String getCode() {
 		return this.code;
 	}
@@ -97,6 +98,7 @@ public enum AccountType implements IdentifiableEnum<String> {
 	 * 
 	 * @return The display-friendly name of the type. Cannot be null.
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}

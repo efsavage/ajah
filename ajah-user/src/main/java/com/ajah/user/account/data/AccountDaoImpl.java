@@ -40,9 +40,25 @@ import com.ajah.util.StringUtils;
 @Repository
 public class AccountDaoImpl extends AbstractAjahDao<AccountId, Account, Account> implements AccountDao {
 
+	/**
+	 * @see com.ajah.user.account.data.AccountDao#count(com.ajah.user.account.AccountType,
+	 *      com.ajah.user.account.AccountStatus)
+	 */
 	@Override
-	public List<Account> list(AccountType type, AccountStatus status, long page, long count, String search, String[] searchFields) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final AccountType type, final AccountStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	@Override
+	public List<Account> list(final AccountType type, final AccountStatus status, final long page, final long count, final String search, final String[] searchFields) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -55,8 +71,8 @@ public class AccountDaoImpl extends AbstractAjahDao<AccountId, Account, Account>
 			} else if (searchFields.length == 1) {
 				criteria.like("name", search);
 			} else {
-				SubCriteria subCriteria = new SubCriteria();
-				for (String searchField : searchFields) {
+				final SubCriteria subCriteria = new SubCriteria();
+				for (final String searchField : searchFields) {
 					subCriteria.orLike(searchField, search);
 				}
 				criteria.and(subCriteria);
@@ -64,22 +80,6 @@ public class AccountDaoImpl extends AbstractAjahDao<AccountId, Account, Account>
 
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
-	}
-
-	/**
-	 * @see com.ajah.user.account.data.AccountDao#count(com.ajah.user.account.AccountType,
-	 *      com.ajah.user.account.AccountStatus)
-	 */
-	@Override
-	public long count(AccountType type, AccountStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
 	}
 
 }
