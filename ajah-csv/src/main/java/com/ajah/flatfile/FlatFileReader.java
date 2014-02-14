@@ -203,6 +203,9 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		case TAB: {
 			String[] values = line.split("\t");
 			for (int i = 0; i < values.length; i++) {
+				if (i + 1 > this.columns.size()) {
+					continue;
+				}
 				this.row.set(this.columns.get(i).getName(), values[i]);
 			}
 			break;
