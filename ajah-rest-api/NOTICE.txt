@@ -1,0 +1,2 @@
+Ajah REST Api Library
+Copyright 2014 by Eric F. Savage
