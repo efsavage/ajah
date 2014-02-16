@@ -15,6 +15,7 @@
  */
 package com.ajah.flatfile;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -220,4 +221,24 @@ public class FlatFileRow {
 	public FlatFileWriter getWriter() {
 		return this.writer;
 	}
+
+	/**
+	 * Fetches the value of a column as a BigDecimal.
+	 * 
+	 * @see BigDecimal#BigDecimal(String)
+	 * @see #get(String)
+	 * @param column
+	 *            The name of the column
+	 * @return The value, parsed as a BigDecimal. Value is 0 if blank.
+	 * @throws NumberFormatException
+	 *             If the number could not be parsed.
+	 */
+	public BigDecimal getBigDecimal(String column) {
+		String value = get(column);
+		if (StringUtils.isBlank(value)) {
+			return new BigDecimal(0);
+		}
+		return new BigDecimal(value);
+	}
+
 }
