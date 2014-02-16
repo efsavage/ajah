@@ -15,8 +15,10 @@
  */
 package com.ajah.http.cache;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -144,6 +146,29 @@ public class DiskCache implements HttpCache {
 	@Override
 	public byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
 		return getBytes(uri, Long.MAX_VALUE);
+	}
+
+	/**
+	 * Returns an input stream of the contents of the URL. Note that this does
+	 * not stream live off of the server.
+	 * 
+	 * @param uri
+	 *            The URI to fetch.
+	 * @param maxAge
+	 *            The maximum age of the cached copy to use.
+	 * @return The fetched content.
+	 * @throws NotFoundException
+	 *             If the URI is 404
+	 * @throws NotFoundException
+	 *             If the resource was not found.
+	 * @throws UnexpectedResponseCode
+	 *             If the URI returns a response code that {@link Http} cannot
+	 *             not handle.
+	 * @throws IOException
+	 *             If the URI could not be fetched.
+	 */
+	public static InputStream getStream(URI uri, int maxAge) throws NotFoundException, UnexpectedResponseCode, IOException {
+		return new ByteArrayInputStream(getBytes(uri, maxAge));
 	}
 
 }
