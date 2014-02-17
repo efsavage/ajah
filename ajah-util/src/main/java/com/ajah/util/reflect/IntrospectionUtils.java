@@ -16,6 +16,7 @@
 package com.ajah.util.reflect;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.ajah.util.AjahUtils;
@@ -54,6 +55,18 @@ public class IntrospectionUtils {
 	public static boolean isDate(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return Date.class.isAssignableFrom(field.getType());
+	}
+
+	/**
+	 * Checks to see if the field's type is a {@link BigDecimal}.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a BigDecimal
+	 */
+	public static boolean isBigDecimal(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return BigDecimal.class.isAssignableFrom(field.getType());
 	}
 
 	/**
