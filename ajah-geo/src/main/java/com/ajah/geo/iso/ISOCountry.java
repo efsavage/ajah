@@ -540,6 +540,22 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	/** Zimbabwe */
 	ZW("zw", "ZWE", "Zimbabwe");
 
+	/**
+	 * Finds a PlayerType that matches the id on id, name, or name().
+	 * 
+	 * @param string
+	 *            Value to match against id, name, or name()
+	 * @return Matching PlayerType, or null.
+	 */
+	public static ISOCountry get(final String string) {
+		for (final ISOCountry type : values()) {
+			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
 	private final String id;
 
 	private final String abbr2;
@@ -558,7 +574,7 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 		this.parent = null;
 	}
 
-	private ISOCountry(final String id, final String abbr3, final String name, ISOCountry parent) {
+	private ISOCountry(final String id, final String abbr3, final String name, final ISOCountry parent) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;
@@ -607,6 +623,14 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	}
 
 	/**
+	 * @see com.ajah.util.IdentifiableEnum#getCode()
+	 */
+	@Override
+	public String getCode() {
+		return getAbbr3();
+	}
+
+	/**
 	 * The lowercase version of the ISO 2-letter code for this country.
 	 * 
 	 * Example: The ID of the United States would be "us".
@@ -630,35 +654,6 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 		return this.name;
 	}
 
-	@Override
-	public void setId(final String id) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * @see com.ajah.util.IdentifiableEnum#getCode()
-	 */
-	@Override
-	public String getCode() {
-		return getAbbr3();
-	}
-
-	/**
-	 * Finds a PlayerType that matches the id on id, name, or name().
-	 * 
-	 * @param string
-	 *            Value to match against id, name, or name()
-	 * @return Matching PlayerType, or null.
-	 */
-	public static ISOCountry get(final String string) {
-		for (final ISOCountry type : values()) {
-			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
-				return type;
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Returns the parent of this country (making it a subdivision).
 	 * 
@@ -666,6 +661,11 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	 */
 	public ISOCountry getParent() {
 		return this.parent;
+	}
+
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
 	}
 
 }

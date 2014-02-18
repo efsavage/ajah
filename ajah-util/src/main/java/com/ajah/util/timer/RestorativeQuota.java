@@ -56,12 +56,22 @@ public class RestorativeQuota {
 	 * @param restorationDelay
 	 *            The milliseconds between which an item is restored.
 	 */
-	public RestorativeQuota(int quota, long restorationDelay) {
+	public RestorativeQuota(final int quota, final long restorationDelay) {
 		this.quota = quota;
 		this.restorationDelay = restorationDelay;
 		if (this.sleepDelay < restorationDelay) {
 			this.sleepDelay = restorationDelay / quota;
 		}
+	}
+
+	/**
+	 * Used to set the available requests on a quota to zero and mark is as
+	 * purged. Used when a remote service returns an error that a request has
+	 * been throttled, perhaps because a previous process has exhausted it.
+	 */
+	public void exhaust() {
+		this.lastPurge = System.currentTimeMillis();
+		this.requests.set(this.quota);
 	}
 
 	/**
@@ -80,9 +90,9 @@ public class RestorativeQuota {
 	 * @throws InterruptedException
 	 *             If the sleep is interrupted.
 	 */
-	public synchronized <T> T request(T target) throws InterruptedException {
+	public synchronized <T> T request(final T target) throws InterruptedException {
 		while (true) {
-			long now = System.currentTimeMillis();
+			final long now = System.currentTimeMillis();
 			if (this.requests.get() < this.quota) {
 				this.requests.incrementAndGet();
 				return target;
@@ -105,16 +115,6 @@ public class RestorativeQuota {
 				Thread.sleep(this.sleepDelay);
 			}
 		}
-	}
-
-	/**
-	 * Used to set the available requests on a quota to zero and mark is as
-	 * purged. Used when a remote service returns an error that a request has
-	 * been throttled, perhaps because a previous process has exhausted it.
-	 */
-	public void exhaust() {
-		this.lastPurge = System.currentTimeMillis();
-		this.requests.set(this.quota);
 	}
 
 }

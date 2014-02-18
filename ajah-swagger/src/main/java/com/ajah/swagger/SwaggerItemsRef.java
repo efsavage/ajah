@@ -22,7 +22,7 @@ public class SwaggerItemsRef {
 	@JsonProperty(value = "$ref")
 	public String type;
 
-	public SwaggerItemsRef(String type) {
+	public SwaggerItemsRef(final String type) {
 		this.type = type;
 	}
 

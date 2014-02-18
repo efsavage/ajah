@@ -39,6 +39,16 @@ import com.ajah.util.StringUtils;
 @Data
 public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 
+	protected static void write(final Writer out, final String name, final String value) throws IOException {
+		if (!StringUtils.isBlank(value)) {
+			out.write(" ");
+			out.write(name);
+			out.write("=\"");
+			out.write(value);
+			out.write("\"");
+		}
+	}
+
 	protected String id;
 
 	protected String cssClass;
@@ -73,35 +83,12 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 
 	private Map<String, String> dataElements;
 
-	protected void writeCore(final Writer out) throws IOException {
-		write(out, "id", getId());
-		write(out, "class", getCssClass());
-		if (this.dataElements != null) {
-			for (final String key : this.dataElements.keySet()) {
-				write(out, "data-" + key, this.dataElements.get(key));
-			}
+	private synchronized void addDataElement(final String key, final String value) {
+		if (this.dataElements == null) {
+			this.dataElements = new HashMap<>();
 		}
+		this.dataElements.put(key, value);
 	}
-
-	protected static void write(final Writer out, final String name, final String value) throws IOException {
-		if (!StringUtils.isBlank(value)) {
-			out.write(" ");
-			out.write(name);
-			out.write("=\"");
-			out.write(value);
-			out.write("\"");
-		}
-	}
-
-	/**
-	 * Returns the name of the element as it should appear in the output.
-	 * 
-	 * Example: The name of Div is "div".
-	 * 
-	 * @return The name of the element as it should appear in the output. Should
-	 *         never be null.
-	 */
-	public abstract String getName();
 
 	/**
 	 * {@inheritDoc}
@@ -125,12 +112,15 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 		return getThis();
 	}
 
-	private synchronized void addDataElement(final String key, final String value) {
-		if (this.dataElements == null) {
-			this.dataElements = new HashMap<>();
-		}
-		this.dataElements.put(key, value);
-	}
+	/**
+	 * Returns the name of the element as it should appear in the output.
+	 * 
+	 * Example: The name of Div is "div".
+	 * 
+	 * @return The name of the element as it should appear in the output. Should
+	 *         never be null.
+	 */
+	public abstract String getName();
 
 	/**
 	 * Returns a reference to this object, mostly used for fluid methods.
@@ -139,5 +129,15 @@ public abstract class AbstractHtmlCoreElement<T> implements HtmlCoreElement<T> {
 	 *         never be null.
 	 */
 	public abstract T getThis();
+
+	protected void writeCore(final Writer out) throws IOException {
+		write(out, "id", getId());
+		write(out, "class", getCssClass());
+		if (this.dataElements != null) {
+			for (final String key : this.dataElements.keySet()) {
+				write(out, "data-" + key, this.dataElements.get(key));
+			}
+		}
+	}
 
 }

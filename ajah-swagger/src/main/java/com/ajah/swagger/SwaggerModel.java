@@ -24,7 +24,6 @@ import lombok.Data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonInclude(Include.NON_NULL)
 @Data
@@ -33,13 +32,13 @@ public class SwaggerModel {
 	private String id;
 	private Map<String, SwaggerModelProperty> properties = new HashMap<>();
 
-	public SwaggerModel(String id) {
+	public SwaggerModel(final String id) {
 		this.id = id;
 	}
 
 	public List<String> getRequired() {
-		List<String> requiredProps = new ArrayList<>();
-		for (String key : this.properties.keySet()) {
+		final List<String> requiredProps = new ArrayList<>();
+		for (final String key : this.properties.keySet()) {
 			if (this.properties.get(key).required) {
 				requiredProps.add(key);
 			}

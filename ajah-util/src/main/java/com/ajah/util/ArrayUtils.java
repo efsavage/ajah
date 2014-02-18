@@ -31,6 +31,30 @@ import lombok.extern.java.Log;
 public class ArrayUtils {
 
 	/**
+	 * Appends an element to an array, filling the first null spot. If no spots
+	 * are available, expands the array and puts the new element as the last
+	 * entry.
+	 * 
+	 * @param array
+	 *            The array to add to or copy.
+	 * @param object
+	 *            The object to add.
+	 * @return The original array if a spot was found, otherwise a new array
+	 *         that is one size larger.
+	 */
+	public static <T> T[] append(final T[] array, final T object) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == null) {
+				array[i] = object;
+				return array;
+			}
+		}
+		final T[] newArray = Arrays.copyOf(array, array.length + 1);
+		newArray[newArray.length - 1] = object;
+		return newArray;
+	}
+
+	/**
 	 * Checks to see if an array contains a given object.
 	 * 
 	 * @see Object#equals(Object)
@@ -169,6 +193,27 @@ public class ArrayUtils {
 	}
 
 	/**
+	 * Parses each element of a String array into an int array.
+	 * 
+	 * @param array
+	 *            The array to parse.
+	 * @return Returns An int array of the same size with each string parsed as
+	 *         an integer.
+	 * @throws NumberFormatException
+	 *             If a string could not be parsed.
+	 */
+	public static int[] parseInt(final String[] array) {
+		if (array == null || array.length < 1) {
+			return new int[0];
+		}
+		final int[] retVal = new int[array.length];
+		for (int i = 0; i < array.length; i++) {
+			retVal[i] = Integer.parseInt(array[i]);
+		}
+		return retVal;
+	}
+
+	/**
 	 * Returns the length of an array, or zero if he array is null.
 	 * 
 	 * @param array
@@ -202,25 +247,6 @@ public class ArrayUtils {
 	}
 
 	/**
-	 * Sums an array of integers.
-	 * 
-	 * @param array
-	 *            Integer array.
-	 * @return The sum of the values of the array. Returns 0 if the array is 0
-	 *         or empty.
-	 */
-	public static long sum(final int[] array) {
-		if (array == null || array.length == 0) {
-			return 0;
-		}
-		int retVal = array[0];
-		for (int i = 1; i < array.length; i++) {
-			retVal += array[i];
-		}
-		return retVal;
-	}
-
-	/**
 	 * Sums an array of doubles.
 	 * 
 	 * @param array
@@ -233,6 +259,25 @@ public class ArrayUtils {
 			return 0;
 		}
 		double retVal = array[0];
+		for (int i = 1; i < array.length; i++) {
+			retVal += array[i];
+		}
+		return retVal;
+	}
+
+	/**
+	 * Sums an array of integers.
+	 * 
+	 * @param array
+	 *            Integer array.
+	 * @return The sum of the values of the array. Returns 0 if the array is 0
+	 *         or empty.
+	 */
+	public static long sum(final int[] array) {
+		if (array == null || array.length == 0) {
+			return 0;
+		}
+		int retVal = array[0];
 		for (int i = 1; i < array.length; i++) {
 			retVal += array[i];
 		}
@@ -260,51 +305,6 @@ public class ArrayUtils {
 			}
 		}
 		return trimmed.toArray(new String[trimmed.size()]);
-	}
-
-	/**
-	 * Parses each element of a String array into an int array.
-	 * 
-	 * @param array
-	 *            The array to parse.
-	 * @return Returns An int array of the same size with each string parsed as
-	 *         an integer.
-	 * @throws NumberFormatException
-	 *             If a string could not be parsed.
-	 */
-	public static int[] parseInt(final String[] array) {
-		if (array == null || array.length < 1) {
-			return new int[0];
-		}
-		int[] retVal = new int[array.length];
-		for (int i = 0; i < array.length; i++) {
-			retVal[i] = Integer.parseInt(array[i]);
-		}
-		return retVal;
-	}
-
-	/**
-	 * Appends an element to an array, filling the first null spot. If no spots
-	 * are available, expands the array and puts the new element as the last
-	 * entry.
-	 * 
-	 * @param array
-	 *            The array to add to or copy.
-	 * @param object
-	 *            The object to add.
-	 * @return The original array if a spot was found, otherwise a new array
-	 *         that is one size larger.
-	 */
-	public static <T> T[] append(T[] array, T object) {
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == null) {
-				array[i] = object;
-				return array;
-			}
-		}
-		T[] newArray = Arrays.copyOf(array, array.length + 1);
-		newArray[newArray.length - 1] = object;
-		return newArray;
 	}
 
 }

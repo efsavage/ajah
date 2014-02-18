@@ -74,23 +74,22 @@ public class HashUtils {
 	}
 
 	/**
-	 * Creates an MD5 digest of string and returns it as a hexadecimal number.
+	 * Creates an MD5 digest of byte array and returns it as a Base 64 encoded
+	 * number.
 	 * 
 	 * @param string
 	 *            The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
-	public static String md5Hex(final String string) {
-		AjahUtils.requireParam(string, "string");
+	public static String md5Base64(final byte[] bytes) {
+		AjahUtils.requireParam(bytes, "bytes");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] bytes = new byte[32];
-			md.update(string.getBytes("iso-8859-1"), 0, string.length());
-			bytes = md.digest();
-			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
+			byte[] digest = new byte[32];
+			md.update(bytes, 0, bytes.length);
+			digest = md.digest();
+			return DatatypeConverter.printBase64Binary(digest);
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
@@ -119,22 +118,23 @@ public class HashUtils {
 	}
 
 	/**
-	 * Creates an MD5 digest of byte array and returns it as a Base 64 encoded
-	 * number.
+	 * Creates an MD5 digest of string and returns it as a hexadecimal number.
 	 * 
 	 * @param string
 	 *            The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
-	public static String md5Base64(final byte[] bytes) {
-		AjahUtils.requireParam(bytes, "bytes");
+	public static String md5Hex(final String string) {
+		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digest = new byte[32];
-			md.update(bytes, 0, bytes.length);
-			digest = md.digest();
-			return DatatypeConverter.printBase64Binary(digest);
+			byte[] bytes = new byte[32];
+			md.update(string.getBytes("iso-8859-1"), 0, string.length());
+			bytes = md.digest();
+			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
+			throw new UnsupportedOperationException(e);
+		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}

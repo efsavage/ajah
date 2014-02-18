@@ -13,8 +13,4 @@
 		<appender-ref ref="STDOUT" />
 	</root>
 
-	<logger name="netty.channel" level="INFO" />
-	<logger name="org.elasticsearch" level="INFO" />
-	<logger name="javax.management" level="INFO" />
-
 </configuration>

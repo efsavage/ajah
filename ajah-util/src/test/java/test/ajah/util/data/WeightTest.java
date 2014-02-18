@@ -33,6 +33,14 @@ public class WeightTest {
 	 * Tests {@link Weight#to(WeightUnit)}
 	 */
 	@Test
+	public void kilogramToOunce() {
+		Assert.assertEquals(35.27396194958048, new Weight(1.0, WeightUnit.KILOGRAM).to(WeightUnit.OUNCE).getQuanity().doubleValue(), .00000000001);
+	}
+
+	/**
+	 * Tests {@link Weight#to(WeightUnit)}
+	 */
+	@Test
 	public void ounceToGram() {
 		Assert.assertEquals(34.98331153624993, new Weight(1.234, WeightUnit.OUNCE).to(WeightUnit.GRAM).getQuanity().doubleValue(), .00000000001);
 	}
@@ -43,14 +51,6 @@ public class WeightTest {
 	@Test
 	public void ounceToKilogram() {
 		Assert.assertEquals(0.000045075741768749917, new Weight(.00159, WeightUnit.OUNCE).to(WeightUnit.KILOGRAM).getQuanity().doubleValue(), .00000000001);
-	}
-
-	/**
-	 * Tests {@link Weight#to(WeightUnit)}
-	 */
-	@Test
-	public void kilogramToOunce() {
-		Assert.assertEquals(35.27396194958048, new Weight(1.0, WeightUnit.KILOGRAM).to(WeightUnit.OUNCE).getQuanity().doubleValue(), .00000000001);
 	}
 
 }

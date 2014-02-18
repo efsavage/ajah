@@ -131,35 +131,6 @@ public class StringUtils {
 	 *            The list of strings to join.
 	 * @return A joined list of strings, may be empty or null;
 	 */
-	public static String join(final String delimiter, final String... strings) {
-		if (strings == null || strings.length < 1) {
-			return null;
-		}
-		StringBuilder retVal = null;
-		for (final String string : strings) {
-			if (StringUtils.isBlank(string)) {
-				continue;
-			}
-			if (retVal == null) {
-				retVal = new StringBuilder();
-			} else {
-				retVal.append(delimiter);
-			}
-			retVal.append(string);
-		}
-		return retVal == null ? null : retVal.toString();
-	}
-
-	/**
-	 * Joins a list of strings, separating them by delimeter if they are not
-	 * blank.
-	 * 
-	 * @param delimiter
-	 *            The delimiter to use between strings.
-	 * @param strings
-	 *            The list of strings to join.
-	 * @return A joined list of strings, may be empty or null;
-	 */
 	public static String join(final String delimiter, final Collection<String> strings) {
 		if (strings == null || strings.size() < 1) {
 			return null;
@@ -200,6 +171,35 @@ public class StringUtils {
 				retVal.append(delimiter);
 			}
 			retVal.append(number);
+		}
+		return retVal == null ? null : retVal.toString();
+	}
+
+	/**
+	 * Joins a list of strings, separating them by delimeter if they are not
+	 * blank.
+	 * 
+	 * @param delimiter
+	 *            The delimiter to use between strings.
+	 * @param strings
+	 *            The list of strings to join.
+	 * @return A joined list of strings, may be empty or null;
+	 */
+	public static String join(final String delimiter, final String... strings) {
+		if (strings == null || strings.length < 1) {
+			return null;
+		}
+		StringBuilder retVal = null;
+		for (final String string : strings) {
+			if (StringUtils.isBlank(string)) {
+				continue;
+			}
+			if (retVal == null) {
+				retVal = new StringBuilder();
+			} else {
+				retVal.append(delimiter);
+			}
+			retVal.append(string);
 		}
 		return retVal == null ? null : retVal.toString();
 	}
@@ -381,12 +381,12 @@ public class StringUtils {
 	 *            The default value if there is no match.
 	 * @return The string if it is valid, otherwise the default value.
 	 */
-	public static String whitelist(String string, String[] validStrings, String defaultValue) {
+	public static String whitelist(final String string, final String[] validStrings, final String defaultValue) {
 		AjahUtils.requireParam(validStrings, "validStrings");
 		if (string == null) {
 			return defaultValue;
 		}
-		for (String validString : validStrings) {
+		for (final String validString : validStrings) {
 			if (string.equals(validString)) {
 				return string;
 			}

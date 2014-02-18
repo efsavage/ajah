@@ -33,8 +33,8 @@ public class FlatFileRow {
 
 	private static DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
 
-	private Map<String, FlatFileColumn> columns;
-	private Map<FlatFileColumn, String> values = new HashMap<>();
+	private final Map<String, FlatFileColumn> columns;
+	private final Map<FlatFileColumn, String> values = new HashMap<>();
 
 	private FlatFileReader reader;
 	private FlatFileWriter writer;
@@ -47,7 +47,7 @@ public class FlatFileRow {
 	 * @param reader
 	 *            The reader that created this row.
 	 */
-	public FlatFileRow(Map<String, FlatFileColumn> columns, FlatFileReader reader) {
+	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileReader reader) {
 		this.columns = columns;
 		this.reader = reader;
 	}
@@ -60,7 +60,7 @@ public class FlatFileRow {
 	 * @param writer
 	 *            The writer that created this row.
 	 */
-	public FlatFileRow(Map<String, FlatFileColumn> columns, FlatFileWriter writer) {
+	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileWriter writer) {
 		this.columns = columns;
 		this.writer = writer;
 	}
@@ -73,10 +73,10 @@ public class FlatFileRow {
 	 * @return The value of the column, or the default value if one is
 	 *         configured.
 	 */
-	public String get(String name) {
-		FlatFileColumn column = this.columns.get(name);
+	public String get(final String name) {
+		final FlatFileColumn column = this.columns.get(name);
 		if (column != null) {
-			String value = this.values.get(column);
+			final String value = this.values.get(column);
 			if (!StringUtils.isBlank(value)) {
 				return value;
 			}
@@ -88,46 +88,22 @@ public class FlatFileRow {
 	}
 
 	/**
-	 * Sets a column to a long value.
+	 * Fetches the value of a column as a BigDecimal.
 	 * 
+	 * @see BigDecimal#BigDecimal(String)
+	 * @see #get(String)
 	 * @param column
-	 *            The name of the column.
-	 * @param value
-	 *            The value to set.
+	 *            The name of the column
+	 * @return The value, parsed as a BigDecimal. Value is 0 if blank.
+	 * @throws NumberFormatException
+	 *             If the number could not be parsed.
 	 */
-	public void set(String column, long value) {
-		// TODO Store as a number for formatting
-		set(column, String.valueOf(value));
-	}
-
-	/**
-	 * Sets a column to a string value.
-	 * 
-	 * @param column
-	 *            The name of the column.
-	 * @param value
-	 *            The value to set.
-	 */
-	public void set(String column, String value) {
-		FlatFileColumn flatFileColumn = this.columns.get(column);
-		if (column != null) {
-			this.values.put(flatFileColumn, value);
-		} else {
-			throw new IllegalArgumentException("Invalid column name: " + column);
+	public BigDecimal getBigDecimal(final String column) {
+		final String value = get(column);
+		if (StringUtils.isBlank(value)) {
+			return new BigDecimal(0);
 		}
-	}
-
-	/**
-	 * Sets a column to a int value.
-	 * 
-	 * @param column
-	 *            The name of the column.
-	 * @param value
-	 *            The value to set.
-	 */
-	public void set(String column, int value) {
-		// TODO Store as a number for formatting
-		set(column, String.valueOf(value));
+		return new BigDecimal(value);
 	}
 
 	/**
@@ -141,24 +117,12 @@ public class FlatFileRow {
 	 * @throws NumberFormatException
 	 *             If the number could not be parsed.
 	 */
-	public double getDouble(String column) {
-		String value = get(column);
+	public double getDouble(final String column) {
+		final String value = get(column);
 		if (StringUtils.isBlank(value)) {
 			return 0;
 		}
 		return Double.parseDouble(value);
-	}
-
-	/**
-	 * Sets a column to a Date value.
-	 * 
-	 * @param name
-	 *            The name of the column.
-	 * @param date
-	 *            The value to set.
-	 */
-	public void set(String name, Date date) {
-		set(name, dateTimeFormat.format(date));
 	}
 
 	/**
@@ -172,8 +136,8 @@ public class FlatFileRow {
 	 * @throws NumberFormatException
 	 *             If the number could not be parsed.
 	 */
-	public int getInt(String column) {
-		String value = get(column);
+	public int getInt(final String column) {
+		final String value = get(column);
 		if (StringUtils.isBlank(value)) {
 			return 0;
 		}
@@ -192,14 +156,14 @@ public class FlatFileRow {
 	 * @return The value, parsed as an int. Returns the default value if blank
 	 *         or if it cannot be parsed as a number.
 	 */
-	public int getInt(String column, int defaultValue) {
-		String value = get(column);
+	public int getInt(final String column, final int defaultValue) {
+		final String value = get(column);
 		if (StringUtils.isBlank(value)) {
 			return defaultValue;
 		}
 		try {
 			return Integer.parseInt(value);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return defaultValue;
 		}
 	}
@@ -223,22 +187,58 @@ public class FlatFileRow {
 	}
 
 	/**
-	 * Fetches the value of a column as a BigDecimal.
+	 * Sets a column to a Date value.
 	 * 
-	 * @see BigDecimal#BigDecimal(String)
-	 * @see #get(String)
-	 * @param column
-	 *            The name of the column
-	 * @return The value, parsed as a BigDecimal. Value is 0 if blank.
-	 * @throws NumberFormatException
-	 *             If the number could not be parsed.
+	 * @param name
+	 *            The name of the column.
+	 * @param date
+	 *            The value to set.
 	 */
-	public BigDecimal getBigDecimal(String column) {
-		String value = get(column);
-		if (StringUtils.isBlank(value)) {
-			return new BigDecimal(0);
+	public void set(final String name, final Date date) {
+		set(name, dateTimeFormat.format(date));
+	}
+
+	/**
+	 * Sets a column to a int value.
+	 * 
+	 * @param column
+	 *            The name of the column.
+	 * @param value
+	 *            The value to set.
+	 */
+	public void set(final String column, final int value) {
+		// TODO Store as a number for formatting
+		set(column, String.valueOf(value));
+	}
+
+	/**
+	 * Sets a column to a long value.
+	 * 
+	 * @param column
+	 *            The name of the column.
+	 * @param value
+	 *            The value to set.
+	 */
+	public void set(final String column, final long value) {
+		// TODO Store as a number for formatting
+		set(column, String.valueOf(value));
+	}
+
+	/**
+	 * Sets a column to a string value.
+	 * 
+	 * @param column
+	 *            The name of the column.
+	 * @param value
+	 *            The value to set.
+	 */
+	public void set(final String column, final String value) {
+		final FlatFileColumn flatFileColumn = this.columns.get(column);
+		if (column != null) {
+			this.values.put(flatFileColumn, value);
+		} else {
+			throw new IllegalArgumentException("Invalid column name: " + column);
 		}
-		return new BigDecimal(value);
 	}
 
 }

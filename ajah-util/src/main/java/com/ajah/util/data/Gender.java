@@ -50,7 +50,7 @@ public enum Gender implements IdentifiableEnum<String> {
 		}
 		// Try alternates
 		for (final Gender gender : values()) {
-			for (String alternate : gender.alternates) {
+			for (final String alternate : gender.alternates) {
 				if (alternate.equalsIgnoreCase(string)) {
 					return gender;
 				}

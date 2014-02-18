@@ -32,7 +32,7 @@ public class FlatFileException extends IOException {
 	 *            The error message.
 	 * @see IOException#IOException(String)
 	 */
-	public FlatFileException(String message) {
+	public FlatFileException(final String message) {
 		super(message);
 	}
 

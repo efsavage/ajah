@@ -20,17 +20,13 @@ import java.util.List;
 
 import lombok.extern.java.Log;
 
-import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
 import com.ajah.syndicate.SyndicationException;
-import com.ajah.syndicate.opml.Opml;
 import com.ajah.syndicate.opml.Outline;
-import com.ajah.syndicate.rome.OpmlUtils;
 import com.ajah.util.CollectionUtils;
 import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SAXBuilder;
 
 /**
  * Test parsing and importing an OPML file.
@@ -74,9 +70,10 @@ public class ImportTest {
 	 */
 	@Test
 	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException, SyndicationException {
-	//	final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/subscriptions.xml"));
-	//	final Opml opml = OpmlUtils.parse(doc);
-	//	printOutlines(opml.getOutlines());
+		// final Document doc = new
+		// SAXBuilder(false).build(getClass().getResourceAsStream("/opml/subscriptions.xml"));
+		// final Opml opml = OpmlUtils.parse(doc);
+		// printOutlines(opml.getOutlines());
 	}
 
 }

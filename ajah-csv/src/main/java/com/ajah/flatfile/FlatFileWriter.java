@@ -50,26 +50,30 @@ public class FlatFileWriter implements Closeable {
 	@Setter
 	private boolean flushEveryLine;
 
-	public FlatFileWriter(FlatFileFormat format, File file) throws IOException {
+	public FlatFileWriter(final FlatFileFormat format, final File file) throws IOException {
 		this.format = format;
 		this.file = file;
 		this.writer = new FileWriter(file);
 	}
 
-	public void addColumn(String name, boolean required) {
+	public void addColumn(final String name) {
+		addColumn(name, false);
+	}
+
+	public void addColumn(final String name, final boolean required) {
 		if (this.map.get(name) != null) {
 			throw new IllegalArgumentException("Duplicate column name " + name);
 		}
-		FlatFileColumn column = new FlatFileColumn(name, null, required);
+		final FlatFileColumn column = new FlatFileColumn(name, null, required);
 		this.columns.add(column);
 		this.map.put(column.getName(), column);
 	}
 
-	public void addColumn(String name, String defaultValue) {
+	public void addColumn(final String name, final String defaultValue) {
 		if (this.map.get(name) != null) {
 			throw new IllegalArgumentException("Duplicate column name " + name);
 		}
-		FlatFileColumn column = new FlatFileColumn(name, defaultValue, false);
+		final FlatFileColumn column = new FlatFileColumn(name, defaultValue, false);
 		this.columns.add(column);
 		this.map.put(column.getName(), column);
 	}
@@ -94,40 +98,7 @@ public class FlatFileWriter implements Closeable {
 		return this.row;
 	}
 
-	private void writeRow() throws IOException {
-		boolean first = true;
-		for (FlatFileColumn column : this.columns) {
-			String value = this.row.get(column.getName());
-			if (column.isRequired() && StringUtils.isBlank(value)) {
-				throw new IllegalArgumentException("Column is required: " + column.getName());
-			}
-			write(value, first);
-			if (first) {
-				first = false;
-			}
-		}
-		this.writer.write("\r\n");
-		if (this.flushEveryLine) {
-			this.writer.flush();
-		}
-		this.row = null;
-	}
-
-	public void writeHeader() throws IOException {
-		boolean first = true;
-		for (FlatFileColumn column : this.columns) {
-			write(column.getName(), first);
-			if (first) {
-				first = false;
-			}
-		}
-		this.writer.write("\r\n");
-		if (this.flushEveryLine) {
-			this.writer.flush();
-		}
-	}
-
-	private void write(String value, boolean first) throws IOException {
+	private void write(final String value, final boolean first) throws IOException {
 		switch (this.format) {
 		case CSV:
 			if (!first) {
@@ -152,8 +123,37 @@ public class FlatFileWriter implements Closeable {
 		}
 	}
 
-	public void addColumn(String name) {
-		addColumn(name, false);
+	public void writeHeader() throws IOException {
+		boolean first = true;
+		for (final FlatFileColumn column : this.columns) {
+			write(column.getName(), first);
+			if (first) {
+				first = false;
+			}
+		}
+		this.writer.write("\r\n");
+		if (this.flushEveryLine) {
+			this.writer.flush();
+		}
+	}
+
+	private void writeRow() throws IOException {
+		boolean first = true;
+		for (final FlatFileColumn column : this.columns) {
+			final String value = this.row.get(column.getName());
+			if (column.isRequired() && StringUtils.isBlank(value)) {
+				throw new IllegalArgumentException("Column is required: " + column.getName());
+			}
+			write(value, first);
+			if (first) {
+				first = false;
+			}
+		}
+		this.writer.write("\r\n");
+		if (this.flushEveryLine) {
+			this.writer.flush();
+		}
+		this.row = null;
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class FlatFileWriter implements Closeable {
 	 * @throws IOException
 	 *             If the string could not be written.
 	 */
-	public void writeString(String string) throws IOException {
+	public void writeString(final String string) throws IOException {
 		this.writer.write(string);
 	}
 

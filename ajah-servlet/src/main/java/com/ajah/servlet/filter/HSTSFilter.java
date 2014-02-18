@@ -44,8 +44,8 @@ public class HSTSFilter extends BaseFilter {
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		long maxAge = Config.i.getLong("ajah.header.hsts-max-age", 31536000);
-		boolean includeSubDomains = Config.i.getBoolean("ajah.header.include-subdomains", false);
+		final long maxAge = Config.i.getLong("ajah.header.hsts-max-age", 31536000);
+		final boolean includeSubDomains = Config.i.getBoolean("ajah.header.include-subdomains", false);
 		((HttpServletResponse) response).addHeader(ResponseHeader.STRICT_TRANSPORT_SECURITY.getHeader(), "max-age=" + maxAge + (includeSubDomains ? "; includeSubDomains" : ""));
 		super.doFilter(request, response, chain);
 	}

@@ -22,5 +22,5 @@ public class SwaggerApiShort {
 
 	public String path;
 	public String description;
-	
+
 }

@@ -26,12 +26,12 @@ public class SwaggerModelProperty {
 	public boolean required;
 	public String description;
 
-	public SwaggerModelProperty(String type, boolean required) {
+	public SwaggerModelProperty(final String type, final boolean required) {
 		this.type = type;
 		this.required = required;
 	}
 
-	public SwaggerModelProperty(String type, boolean required, String description) {
+	public SwaggerModelProperty(final String type, final boolean required, final String description) {
 		this.type = type;
 		this.required = required;
 		this.description = description;

@@ -30,8 +30,8 @@ import com.ajah.util.StringUtils;
 @Log
 public class CsvRow {
 
-	private List<String> fieldNames;
-	private String[] fieldValues;
+	private final List<String> fieldNames;
+	private final String[] fieldValues;
 
 	/**
 	 * Creates a row with a set of names and values.
@@ -41,7 +41,7 @@ public class CsvRow {
 	 * @param fieldValues
 	 *            The values of the fields (from the row).
 	 */
-	public CsvRow(List<String> fieldNames, String[] fieldValues) {
+	public CsvRow(final List<String> fieldNames, final String[] fieldValues) {
 		this.fieldNames = fieldNames;
 		this.fieldValues = fieldValues;
 	}
@@ -55,38 +55,12 @@ public class CsvRow {
 	 * @throws IllegalArgumentException
 	 *             if the name requested is not a valid header.
 	 */
-	public String get(String fieldName) {
-		int index = this.fieldNames.indexOf(fieldName);
+	public String get(final String fieldName) {
+		final int index = this.fieldNames.indexOf(fieldName);
 		if (index < 0) {
 			throw new IllegalArgumentException(fieldName + " is not in " + this.fieldNames.toString());
 		}
 		return this.fieldValues[index];
-	}
-
-	/**
-	 * Returns the field value for a given name as an int. If the field is empty
-	 * or not a number, returns a default value.
-	 * 
-	 * @param fieldName
-	 *            The name of the field to return.
-	 * @param defaultValue
-	 *            The default value to return if the value is not a number.
-	 * @return The value of the field as an int.
-	 */
-	public int getInt(String fieldName, int defaultValue) {
-		int index = this.fieldNames.indexOf(fieldName);
-		if (index < 0) {
-			throw new IllegalArgumentException(fieldName + " is not in " + this.fieldNames.toString());
-		}
-		if (StringUtils.isBlank(this.fieldValues[index])) {
-			return defaultValue;
-		}
-		try {
-			return Integer.parseInt(this.fieldValues[index]);
-		} catch (NumberFormatException e) {
-			log.finest("Invalid value " + this.fieldValues[index] + " returning " + defaultValue);
-			return defaultValue;
-		}
 	}
 
 	/**
@@ -99,8 +73,8 @@ public class CsvRow {
 	 *            The default value to return if the value is not a number.
 	 * @return The value of the field as an double.
 	 */
-	public double getDouble(String fieldName, double defaultValue) {
-		int index = this.fieldNames.indexOf(fieldName);
+	public double getDouble(final String fieldName, final double defaultValue) {
+		final int index = this.fieldNames.indexOf(fieldName);
 		if (index < 0) {
 			throw new IllegalArgumentException(fieldName + " is not in " + this.fieldNames.toString());
 		}
@@ -109,7 +83,33 @@ public class CsvRow {
 		}
 		try {
 			return Double.parseDouble(this.fieldValues[index]);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
+			log.finest("Invalid value " + this.fieldValues[index] + " returning " + defaultValue);
+			return defaultValue;
+		}
+	}
+
+	/**
+	 * Returns the field value for a given name as an int. If the field is empty
+	 * or not a number, returns a default value.
+	 * 
+	 * @param fieldName
+	 *            The name of the field to return.
+	 * @param defaultValue
+	 *            The default value to return if the value is not a number.
+	 * @return The value of the field as an int.
+	 */
+	public int getInt(final String fieldName, final int defaultValue) {
+		final int index = this.fieldNames.indexOf(fieldName);
+		if (index < 0) {
+			throw new IllegalArgumentException(fieldName + " is not in " + this.fieldNames.toString());
+		}
+		if (StringUtils.isBlank(this.fieldValues[index])) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(this.fieldValues[index]);
+		} catch (final NumberFormatException e) {
 			log.finest("Invalid value " + this.fieldValues[index] + " returning " + defaultValue);
 			return defaultValue;
 		}
@@ -123,8 +123,8 @@ public class CsvRow {
 	 * @return true if the field is defined(it may still be empty), otherwise
 	 *         false.
 	 */
-	public boolean has(String fieldName) {
+	public boolean has(final String fieldName) {
 		return this.fieldNames.indexOf(fieldName) >= 0;
 	}
-	
+
 }

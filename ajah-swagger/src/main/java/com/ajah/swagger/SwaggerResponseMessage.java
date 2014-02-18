@@ -20,7 +20,7 @@ public class SwaggerResponseMessage {
 	public int code;
 	public String message;
 
-	public SwaggerResponseMessage(int code, int apiCode, String message) {
+	public SwaggerResponseMessage(final int code, final int apiCode, final String message) {
 		this.code = code;
 		this.message = message + " [" + apiCode + "]";
 	}

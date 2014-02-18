@@ -122,6 +122,29 @@ public class DiskCache implements HttpCache {
 	}
 
 	/**
+	 * Returns an input stream of the contents of the URL. Note that this does
+	 * not stream live off of the server.
+	 * 
+	 * @param uri
+	 *            The URI to fetch.
+	 * @param maxAge
+	 *            The maximum age of the cached copy to use.
+	 * @return The fetched content.
+	 * @throws NotFoundException
+	 *             If the URI is 404
+	 * @throws NotFoundException
+	 *             If the resource was not found.
+	 * @throws UnexpectedResponseCode
+	 *             If the URI returns a response code that {@link Http} cannot
+	 *             not handle.
+	 * @throws IOException
+	 *             If the URI could not be fetched.
+	 */
+	public static InputStream getStream(final URI uri, final int maxAge) throws NotFoundException, UnexpectedResponseCode, IOException {
+		return new ByteArrayInputStream(getBytes(uri, maxAge));
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -146,29 +169,6 @@ public class DiskCache implements HttpCache {
 	@Override
 	public byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
 		return getBytes(uri, Long.MAX_VALUE);
-	}
-
-	/**
-	 * Returns an input stream of the contents of the URL. Note that this does
-	 * not stream live off of the server.
-	 * 
-	 * @param uri
-	 *            The URI to fetch.
-	 * @param maxAge
-	 *            The maximum age of the cached copy to use.
-	 * @return The fetched content.
-	 * @throws NotFoundException
-	 *             If the URI is 404
-	 * @throws NotFoundException
-	 *             If the resource was not found.
-	 * @throws UnexpectedResponseCode
-	 *             If the URI returns a response code that {@link Http} cannot
-	 *             not handle.
-	 * @throws IOException
-	 *             If the URI could not be fetched.
-	 */
-	public static InputStream getStream(URI uri, int maxAge) throws NotFoundException, UnexpectedResponseCode, IOException {
-		return new ByteArrayInputStream(getBytes(uri, maxAge));
 	}
 
 }

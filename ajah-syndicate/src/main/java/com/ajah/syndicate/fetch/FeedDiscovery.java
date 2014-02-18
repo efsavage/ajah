@@ -63,19 +63,19 @@ public class FeedDiscovery {
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
-	public FeedSource discover(String url) throws ClientProtocolException, IOException, DataOperationException {
+	public FeedSource discover(final String url) throws ClientProtocolException, IOException, DataOperationException {
 		log.fine("Discovering feed for " + url);
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(url);
-		HttpResponse response = client.execute(get);
-		String html = EntityUtils.toString(response.getEntity());
-		Document doc = Jsoup.parse(html);
-		Elements alternateLinks = doc.select("link");
-		for (Element alternateLink : alternateLinks) {
+		final HttpClient client = new DefaultHttpClient();
+		final HttpGet get = new HttpGet(url);
+		final HttpResponse response = client.execute(get);
+		final String html = EntityUtils.toString(response.getEntity());
+		final Document doc = Jsoup.parse(html);
+		final Elements alternateLinks = doc.select("link");
+		for (final Element alternateLink : alternateLinks) {
 			if ("alternate".equals(alternateLink.attr("rel"))) {
 				if ("application/rss+xml".equals(alternateLink.attr("type"))) {
 					log.fine("Found rss link " + alternateLink.attr("href"));
-					String rss = alternateLink.attr("href");
+					final String rss = alternateLink.attr("href");
 					return this.feedSourceManager.findOrCreateByFeedUrl(rss);
 				}
 				log.fine("Found alternate link " + alternateLink.html());

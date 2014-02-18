@@ -103,6 +103,14 @@ public enum Month implements IdentifiableEnum<Integer> {
 	}
 
 	/**
+	 * @see com.ajah.util.IdentifiableEnum#getCode()
+	 */
+	@Override
+	public String getCode() {
+		return this.shortName;
+	}
+
+	/**
 	 * Returns the ID, which is also the ordinal number of the month (e.g.
 	 * January = 1, July = 7)
 	 * 
@@ -135,14 +143,6 @@ public enum Month implements IdentifiableEnum<Integer> {
 	@Override
 	public void setId(final Integer id) {
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * @see com.ajah.util.IdentifiableEnum#getCode()
-	 */
-	@Override
-	public String getCode() {
-		return this.shortName;
 	}
 
 }

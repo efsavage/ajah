@@ -42,7 +42,7 @@ public class FrameOptionsFilter extends BaseFilter {
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		String value = Config.i.get("ajah.header.frame-options", "SAMEORIGIN");
+		final String value = Config.i.get("ajah.header.frame-options", "SAMEORIGIN");
 		((HttpServletResponse) response).addHeader(ResponseHeader.X_FRAME_OPTIONS.getHeader(), value);
 		super.doFilter(request, response, chain);
 	}

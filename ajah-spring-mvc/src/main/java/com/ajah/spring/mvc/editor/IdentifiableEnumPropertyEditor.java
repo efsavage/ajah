@@ -65,7 +65,7 @@ public class IdentifiableEnumPropertyEditor<E extends IdentifiableEnum<?>> exten
 	 * @param caseSensitive
 	 *            Should matching be case sensitive?
 	 */
-	public IdentifiableEnumPropertyEditor(final E[] values, boolean caseSensitive) {
+	public IdentifiableEnumPropertyEditor(final E[] values, final boolean caseSensitive) {
 		this(values, true, true, true, true, caseSensitive);
 	}
 
@@ -86,13 +86,30 @@ public class IdentifiableEnumPropertyEditor<E extends IdentifiableEnum<?>> exten
 	 * @param caseSensitive
 	 *            Should matching be case sensitive?
 	 */
-	public IdentifiableEnumPropertyEditor(final E[] values, boolean matchId, boolean matchEnumName, boolean matchName, boolean matchCode, boolean caseSensitive) {
+	public IdentifiableEnumPropertyEditor(final E[] values, final boolean matchId, final boolean matchEnumName, final boolean matchName, final boolean matchCode, final boolean caseSensitive) {
 		this.values = values;
 		this.matchId = matchId;
 		this.matchEnumName = matchEnumName;
 		this.matchName = matchName;
 		this.matchCode = matchCode;
 		this.caseSensitive = caseSensitive;
+	}
+
+	/**
+	 * Matches strings, is aware of the caseSensitive property.
+	 * 
+	 * @param first
+	 *            The first string to match.
+	 * @param second
+	 *            The second string to match.
+	 * @return The results of {@link String#equals(Object)} or
+	 *         {@link String#equalsIgnoreCase(String)} as appropriate.
+	 */
+	private boolean equals(final String first, final String second) {
+		if (this.caseSensitive) {
+			return first.equals(second);
+		}
+		return first.equalsIgnoreCase(second);
 	}
 
 	/**
@@ -142,23 +159,6 @@ public class IdentifiableEnumPropertyEditor<E extends IdentifiableEnum<?>> exten
 			}
 		}
 		throw new java.lang.IllegalArgumentException(text);
-	}
-
-	/**
-	 * Matches strings, is aware of the caseSensitive property.
-	 * 
-	 * @param first
-	 *            The first string to match.
-	 * @param second
-	 *            The second string to match.
-	 * @return The results of {@link String#equals(Object)} or
-	 *         {@link String#equalsIgnoreCase(String)} as appropriate.
-	 */
-	private boolean equals(String first, String second) {
-		if (this.caseSensitive) {
-			return first.equals(second);
-		}
-		return first.equalsIgnoreCase(second);
 	}
 
 }

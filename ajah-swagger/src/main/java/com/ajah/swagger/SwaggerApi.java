@@ -24,7 +24,7 @@ public class SwaggerApi {
 	public String description;
 	public List<SwaggerOperation> operations = new ArrayList<>();
 
-	public SwaggerApi(String path, String description) {
+	public SwaggerApi(final String path, final String description) {
 		this.path = path;
 		this.description = description;
 	}

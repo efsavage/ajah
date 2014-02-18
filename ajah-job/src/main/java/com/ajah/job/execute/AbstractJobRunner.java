@@ -62,7 +62,7 @@ public abstract class AbstractJobRunner implements JobRunner {
 	/**
 	 * Sets up and validates the {@link Task}s for this job.
 	 */
-	public void init(ApplicationContext applicationContext) {
+	public void init(final ApplicationContext applicationContext) {
 
 		this.jobManager = applicationContext.getBean(JobManager.class);
 		this.jobTaskManager = applicationContext.getBean(JobTaskManager.class);

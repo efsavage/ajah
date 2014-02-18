@@ -59,7 +59,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 
 	private Node node;
 	private Client client;
-	private ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = new ObjectMapper();
 	private String index;
 	private String type;
 	private String clusterName;
@@ -79,7 +79,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 * @param data
 	 *            Should this client use a data node?
 	 */
-	public ElasticSearchNodeClient(boolean data) {
+	public ElasticSearchNodeClient(final boolean data) {
 		this(data, null, null, null);
 	}
 
@@ -97,7 +97,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	public ElasticSearchNodeClient(final boolean data, final String typeName, final String indexName, final String clusterName) {
 		// Derive the cluster, index, type name if needed
 		if (StringUtils.isBlank(typeName)) {
-			String simpleName = getTargetClass().getSimpleName();
+			final String simpleName = getTargetClass().getSimpleName();
 			this.type = StringUtils.splitCamelCase(simpleName).replaceAll("\\W+", "_").toLowerCase();
 		} else {
 			this.type = typeName;
@@ -123,6 +123,17 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 		log.fine("Green status achieved");
 	}
 
+	/**
+	 * Closes the node.
+	 * 
+	 * @see java.lang.AutoCloseable#close()
+	 */
+	@Override
+	public void close() throws Exception {
+		this.node.stop();
+		this.node.close();
+	}
+
 	@SuppressWarnings("unchecked")
 	private Class<C> getTargetClass() {
 		return (Class<C>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
@@ -139,11 +150,11 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 */
 	public IndexResponse index(final T entity) throws JsonProcessingException {
 
-		IndexRequestBuilder irb = this.client.prepareIndex(this.index, this.type, entity.getId().toString());
-		String json = this.mapper.writeValueAsString(entity);
+		final IndexRequestBuilder irb = this.client.prepareIndex(this.index, this.type, entity.getId().toString());
+		final String json = this.mapper.writeValueAsString(entity);
 		log.finest(json);
 		irb.setSource(json);
-		ListenableActionFuture<IndexResponse> result = irb.execute();
+		final ListenableActionFuture<IndexResponse> result = irb.execute();
 		log.finest("Executed");
 		return result.actionGet();
 	}
@@ -162,29 +173,18 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 *             If the query failed to execute.
 	 */
 	public List<C> search(final String query) throws IOException {
-		List<C> results = new ArrayList<>();
+		final List<C> results = new ArrayList<>();
 		try {
-			SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.fieldQuery("_all", query))
+			final SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.fieldQuery("_all", query))
 					.execute().actionGet();
-			for (SearchHit hit : response.getHits()) {
-				C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
+			for (final SearchHit hit : response.getHits()) {
+				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (IndexMissingException e) {
+		} catch (final IndexMissingException e) {
 			log.warning(e.getMessage());
 		}
 		return results;
-	}
-
-	/**
-	 * Closes the node.
-	 * 
-	 * @see java.lang.AutoCloseable#close()
-	 */
-	@Override
-	public void close() throws Exception {
-		this.node.stop();
-		this.node.close();
 	}
 
 }

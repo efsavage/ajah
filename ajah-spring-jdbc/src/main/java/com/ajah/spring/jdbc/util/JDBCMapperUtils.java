@@ -42,6 +42,18 @@ public class JDBCMapperUtils {
 	 * Converts a field name to a table column name, per standard database
 	 * naming convention.
 	 * 
+	 * @param fieldName
+	 *            The name of the field to derive the name from.
+	 * @return Column name
+	 */
+	public static String getColumnName(final String fieldName) {
+		return StringUtils.splitCamelCase(fieldName).replaceAll("\\W+", "_").toLowerCase();
+	}
+
+	/**
+	 * Converts a field name to a table column name, per standard database
+	 * naming convention.
+	 * 
 	 * @param tableName
 	 *            The table the column will be in.
 	 * @param field
@@ -74,18 +86,6 @@ public class JDBCMapperUtils {
 	}
 
 	/**
-	 * Converts a field name to a table column name, per standard database
-	 * naming convention.
-	 * 
-	 * @param fieldName
-	 *            The name of the field to derive the name from.
-	 * @return Column name
-	 */
-	public static String getColumnName(String fieldName) {
-		return StringUtils.splitCamelCase(fieldName).replaceAll("\\W+", "_").toLowerCase();
-	}
-
-	/**
 	 * Converts a class name to a table name, per standard database naming
 	 * convention.
 	 * 
@@ -100,7 +100,7 @@ public class JDBCMapperUtils {
 			return tableNameCache.get(clazz);
 		}
 		if (AnnotationUtils.isAnnotationDeclaredLocally(Table.class, clazz)) {
-			Table table = AnnotationUtils.findAnnotation(clazz, Table.class);
+			final Table table = AnnotationUtils.findAnnotation(clazz, Table.class);
 			if (!StringUtils.isBlank(table.name())) {
 				return table.name();
 			}

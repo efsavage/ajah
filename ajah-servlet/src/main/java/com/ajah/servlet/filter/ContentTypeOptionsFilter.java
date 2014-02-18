@@ -42,7 +42,7 @@ public class ContentTypeOptionsFilter extends BaseFilter {
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		String value = Config.i.get("ajah.header.content-type-options", "nosniff");
+		final String value = Config.i.get("ajah.header.content-type-options", "nosniff");
 		((HttpServletResponse) response).addHeader(ResponseHeader.X_CONTENT_TYPE_OPTIONS.getHeader(), value);
 		super.doFilter(request, response, chain);
 	}

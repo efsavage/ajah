@@ -52,6 +52,22 @@ public class Criteria {
 	private long rowCount = 0;
 
 	/**
+	 * A subclause, included as an AND, but may contain ORs.
+	 * 
+	 * @param subCriteria
+	 *            The subCriteria to include
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria and(final SubCriteria subCriteria) {
+		AjahUtils.requireParam(subCriteria, "field");
+		if (this.ands == null) {
+			this.ands = new ArrayList<>();
+		}
+		this.ands.add(subCriteria);
+		return this;
+	}
+
+	/**
 	 * Add an "ORDER BY" clause for the field with an ascending order.
 	 * 
 	 * @param field
@@ -73,6 +89,21 @@ public class Criteria {
 	public Criteria desc(final String field) {
 		AjahUtils.requireParam(field, "field");
 		return orderBy(field, Order.DESC);
+	}
+
+	/**
+	 * A field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria eq(final String field, final boolean value) {
+		// TODO This should probably be 0 or !0.
+		AjahUtils.requireParam(field, "field");
+		return eq(field, value ? 1 : 0);
 	}
 
 	/**
@@ -110,49 +141,6 @@ public class Criteria {
 	}
 
 	/**
-	 * A greater-than or equal to match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be greater than or equal to.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria gte(final String field, final long value) {
-		AjahUtils.requireParam(field, "field");
-		return gte(field, String.valueOf(value));
-	}
-
-	/**
-	 * A greater-than or equal to match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be greater than or equal to.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria lte(final String field, final long value) {
-		AjahUtils.requireParam(field, "field");
-		return lte(field, String.valueOf(value));
-	}
-
-	/**
-	 * A field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final boolean value) {
-		// TODO This should probably be 0 or !0.
-		AjahUtils.requireParam(field, "field");
-		return eq(field, value ? 1 : 0);
-	}
-
-	/**
 	 * A field match. Supports nulls (as "IS NULL").
 	 * 
 	 * @param field
@@ -167,74 +155,6 @@ public class Criteria {
 			this.eqs = new ArrayList<>();
 		}
 		this.eqs.add(new NameValuePair<>(field, value));
-		return this;
-	}
-
-	/**
-	 * A greater-than or equal-to field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be greater than or equal to.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria gte(final String field, final String value) {
-		AjahUtils.requireParam(field, "field");
-		if (this.gtes == null) {
-			this.gtes = new ArrayList<>();
-		}
-		this.gtes.add(new NameValuePair<>(field, value));
-		return this;
-	}
-
-	/**
-	 * A less-than or equal-to field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be less than or equal to.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria lte(final String field, final String value) {
-		AjahUtils.requireParam(field, "field");
-		if (this.ltes == null) {
-			this.ltes = new ArrayList<>();
-		}
-		this.ltes.add(new NameValuePair<>(field, value));
-		return this;
-	}
-
-	/**
-	 * A subclause, included as an AND, but may contain ORs.
-	 * 
-	 * @param subCriteria
-	 *            The subCriteria to include
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria and(SubCriteria subCriteria) {
-		AjahUtils.requireParam(subCriteria, "field");
-		if (this.ands == null) {
-			this.ands = new ArrayList<>();
-		}
-		this.ands.add(subCriteria);
-		return this;
-	}
-
-	/**
-	 * A subclause, included as an AND, but may contain ORs.
-	 * 
-	 * @param subCriteria
-	 *            The subCriteria to include
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria or(SubCriteria subCriteria) {
-		AjahUtils.requireParam(subCriteria, "field");
-		if (this.ors == null) {
-			this.ors = new ArrayList<>();
-		}
-		this.ors.add(subCriteria);
 		return this;
 	}
 
@@ -428,6 +348,50 @@ public class Criteria {
 	}
 
 	/**
+	 * A greater-than or equal to match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gte(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
+		return gte(field, String.valueOf(value));
+	}
+
+	/**
+	 * A greater-than or equal-to field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gte(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.gtes == null) {
+			this.gtes = new ArrayList<>();
+		}
+		this.gtes.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A field that must be NULL.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria isNull(final String field) {
+		AjahUtils.requireParam(field, "field");
+		return eq(field, (String) null);
+	}
+
+	/**
 	 * A join match.
 	 * 
 	 * @param table1
@@ -483,6 +447,38 @@ public class Criteria {
 	}
 
 	/**
+	 * A greater-than or equal to match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria lte(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
+		return lte(field, String.valueOf(value));
+	}
+
+	/**
+	 * A less-than or equal-to field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be less than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria lte(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.ltes == null) {
+			this.ltes = new ArrayList<>();
+		}
+		this.ltes.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
 	 * Sets the offset, i.e. the position of the first result.
 	 * 
 	 * @param offsetIndex
@@ -491,6 +487,22 @@ public class Criteria {
 	 */
 	public Criteria offset(final long offsetIndex) {
 		this.offset = offsetIndex;
+		return this;
+	}
+
+	/**
+	 * A subclause, included as an AND, but may contain ORs.
+	 * 
+	 * @param subCriteria
+	 *            The subCriteria to include
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria or(final SubCriteria subCriteria) {
+		AjahUtils.requireParam(subCriteria, "field");
+		if (this.ors == null) {
+			this.ors = new ArrayList<>();
+		}
+		this.ors.add(subCriteria);
 		return this;
 	}
 
@@ -534,18 +546,6 @@ public class Criteria {
 	public Criteria unique() {
 		this.rowCount = 1;
 		return this;
-	}
-
-	/**
-	 * A field that must be NULL.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria isNull(String field) {
-		AjahUtils.requireParam(field, "field");
-		return eq(field, (String) null);
 	}
 
 }

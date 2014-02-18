@@ -35,7 +35,7 @@ public class SerialJobRunner extends AbstractJobRunner {
 
 	private final boolean initialized = false;
 
-	public SerialJobRunner(final Job job, ApplicationContext applicationContext, final boolean abortOnError) {
+	public SerialJobRunner(final Job job, final ApplicationContext applicationContext, final boolean abortOnError) {
 		this.job = job;
 		this.applicationContext = applicationContext;
 		this.abortOnError = abortOnError;
@@ -53,7 +53,7 @@ public class SerialJobRunner extends AbstractJobRunner {
 		if (!this.initialized) {
 			init();
 		}
-		for (Task task : tasks) {
+		for (final Task task : this.tasks) {
 			task.execute(this.applicationContext);
 		}
 	}

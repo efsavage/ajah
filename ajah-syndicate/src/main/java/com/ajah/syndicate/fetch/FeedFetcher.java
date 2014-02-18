@@ -47,6 +47,24 @@ import com.ajah.util.date.DateUtils;
 @Log
 public class FeedFetcher {
 
+	private static void tempError(final FeedSource feedSource) {
+		if (feedSource.getPollStatus() == PollStatus.ERROR_TMP) {
+			if (feedSource.getPollStatusSince() == null) {
+				feedSource.setPollStatusSince(new Date());
+			} else if (Days.daysBetween(new DateTime(feedSource.getPollStatus()), new DateTime()).getDays() > 7) {
+				// We've failed for over a week, kill it.
+				feedSource.setNextPoll(null);
+				feedSource.setPollStatus(PollStatus.ERROR_PERM);
+			}
+		} else if (feedSource.getPollStatus() == PollStatus.ACTIVE) {
+			feedSource.setPollStatusSince(new Date());
+			feedSource.setPollStatus(PollStatus.ERROR_TMP);
+		} else {
+			log.severe("We shouldn't have gotten here!");
+			feedSource.setNextPoll(DateUtils.addHours(6));
+		}
+	}
+
 	@Autowired
 	FeedSourceManager feedSourceManager;
 
@@ -59,58 +77,13 @@ public class FeedFetcher {
 	private final List<EntryListener> entryListeners = new ArrayList<>();
 
 	/**
-	 * Finds a stale feed and fetches it, saving it to the database and invoking
-	 * any listeners needed. This will run until interrupted by a serious
-	 * exception.
+	 * Adds a listener to the list of listeners to fire when an entry is found.
 	 * 
-	 * @throws InterruptedException
-	 *             If the thread was interrupted while sleeping (while waiting
-	 *             for a feed to fetch).
-	 * @throws DataOperationException
-	 *             If a database query could not be executed.
+	 * @param entryListener
+	 *            The listener to add.
 	 */
-	public void run() throws InterruptedException, DataOperationException {
-		while (true) {
-			FeedSource feedSource = this.feedSourceManager.getStaleFeedSource();
-			if (feedSource == null) {
-				log.finest("No feed source to poll");
-				Thread.sleep(60000);
-				continue;
-			}
-			log.fine("Polling " + feedSource.getTitle() + " [" + feedSource.getId() + "]");
-			HttpClient http = new DefaultHttpClient();
-			try {
-				HttpGet get = new HttpGet(feedSource.getFeedUrl());
-				HttpResponse response = http.execute(get);
-				String rawFeed = EntityUtils.toString(response.getEntity());
-				// log.finest(rawFeed);
-				EntityUtils.consume(response.getEntity());
-				if (!handle(feedSource, response)) {
-					continue;
-				}
-				Feed feed = RomeUtils.createFeed(new XmlString(rawFeed), feedSource);
-				log.fine("Found " + feed.getEntries().size() + " entries");
-				this.feedManager.save(feed, true);
-				for (EntryListener entryListener : this.entryListeners) {
-					for (Entry entry : feed.getEntries()) {
-						entryListener.handle(entry);
-					}
-				}
-				if (!StringUtils.isBlank(feed.getTitle())) {
-					feedSource.setTitle(feed.getTitle());
-				}
-				if (!StringUtils.isBlank(feed.getLink())) {
-					feedSource.setHtmlUrl(feed.getLink());
-				}
-				feedSource.setNextPoll(DateUtils.addHours(6));
-				this.feedSourceManager.save(feedSource);
-			} catch (SyndicationException | IOException | RuntimeException e) {
-				log.log(Level.WARNING, e.getMessage(), e);
-				tempError(feedSource);
-				this.feedSourceManager.save(feedSource);
-			}
-		}
-
+	public void addListener(final EntryListener entryListener) {
+		this.entryListeners.add(entryListener);
 	}
 
 	/**
@@ -125,8 +98,8 @@ public class FeedFetcher {
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
-	private boolean handle(FeedSource feedSource, HttpResponse response) throws DataOperationException {
-		int statusCode = response.getStatusLine().getStatusCode();
+	private boolean handle(final FeedSource feedSource, final HttpResponse response) throws DataOperationException {
+		final int statusCode = response.getStatusLine().getStatusCode();
 		if (statusCode == 200) {
 			if (feedSource.getPollStatus() != PollStatus.ACTIVE) {
 				feedSource.setPollStatus(PollStatus.ACTIVE);
@@ -149,32 +122,59 @@ public class FeedFetcher {
 		return false;
 	}
 
-	private static void tempError(FeedSource feedSource) {
-		if (feedSource.getPollStatus() == PollStatus.ERROR_TMP) {
-			if (feedSource.getPollStatusSince() == null) {
-				feedSource.setPollStatusSince(new Date());
-			} else if (Days.daysBetween(new DateTime(feedSource.getPollStatus()), new DateTime()).getDays() > 7) {
-				// We've failed for over a week, kill it.
-				feedSource.setNextPoll(null);
-				feedSource.setPollStatus(PollStatus.ERROR_PERM);
-			}
-		} else if (feedSource.getPollStatus() == PollStatus.ACTIVE) {
-			feedSource.setPollStatusSince(new Date());
-			feedSource.setPollStatus(PollStatus.ERROR_TMP);
-		} else {
-			log.severe("We shouldn't have gotten here!");
-			feedSource.setNextPoll(DateUtils.addHours(6));
-		}
-	}
-
 	/**
-	 * Adds a listener to the list of listeners to fire when an entry is found.
+	 * Finds a stale feed and fetches it, saving it to the database and invoking
+	 * any listeners needed. This will run until interrupted by a serious
+	 * exception.
 	 * 
-	 * @param entryListener
-	 *            The listener to add.
+	 * @throws InterruptedException
+	 *             If the thread was interrupted while sleeping (while waiting
+	 *             for a feed to fetch).
+	 * @throws DataOperationException
+	 *             If a database query could not be executed.
 	 */
-	public void addListener(EntryListener entryListener) {
-		this.entryListeners.add(entryListener);
+	public void run() throws InterruptedException, DataOperationException {
+		while (true) {
+			final FeedSource feedSource = this.feedSourceManager.getStaleFeedSource();
+			if (feedSource == null) {
+				log.finest("No feed source to poll");
+				Thread.sleep(60000);
+				continue;
+			}
+			log.fine("Polling " + feedSource.getTitle() + " [" + feedSource.getId() + "]");
+			final HttpClient http = new DefaultHttpClient();
+			try {
+				final HttpGet get = new HttpGet(feedSource.getFeedUrl());
+				final HttpResponse response = http.execute(get);
+				final String rawFeed = EntityUtils.toString(response.getEntity());
+				// log.finest(rawFeed);
+				EntityUtils.consume(response.getEntity());
+				if (!handle(feedSource, response)) {
+					continue;
+				}
+				final Feed feed = RomeUtils.createFeed(new XmlString(rawFeed), feedSource);
+				log.fine("Found " + feed.getEntries().size() + " entries");
+				this.feedManager.save(feed, true);
+				for (final EntryListener entryListener : this.entryListeners) {
+					for (final Entry entry : feed.getEntries()) {
+						entryListener.handle(entry);
+					}
+				}
+				if (!StringUtils.isBlank(feed.getTitle())) {
+					feedSource.setTitle(feed.getTitle());
+				}
+				if (!StringUtils.isBlank(feed.getLink())) {
+					feedSource.setHtmlUrl(feed.getLink());
+				}
+				feedSource.setNextPoll(DateUtils.addHours(6));
+				this.feedSourceManager.save(feedSource);
+			} catch (SyndicationException | IOException | RuntimeException e) {
+				log.log(Level.WARNING, e.getMessage(), e);
+				tempError(feedSource);
+				this.feedSourceManager.save(feedSource);
+			}
+		}
+
 	}
 
 }

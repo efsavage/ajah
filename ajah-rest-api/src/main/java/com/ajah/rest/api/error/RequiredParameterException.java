@@ -36,7 +36,7 @@ public class RequiredParameterException extends Exception {
 	 * @param name
 	 *            the Name of the missing paramter.
 	 */
-	public RequiredParameterException(String name) {
+	public RequiredParameterException(final String name) {
 		super("Paramter '" + name + "' is required.");
 		this.name = name;
 	}

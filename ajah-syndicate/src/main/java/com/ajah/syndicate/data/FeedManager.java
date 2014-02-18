@@ -80,8 +80,8 @@ public class FeedManager {
 	 * @throws DataOperationException
 	 *             If the feed could not be saved.
 	 */
-	public void save(final Feed feed, boolean saveEntries) throws DataOperationException {
-		List<Entry> entries = new ArrayList<>();
+	public void save(final Feed feed, final boolean saveEntries) throws DataOperationException {
+		final List<Entry> entries = new ArrayList<>();
 		if (feed.getId() == null) {
 			feed.setId(new FeedId(UUID.randomUUID().toString()));
 			this.feedDao.insert(feed);
@@ -89,12 +89,12 @@ public class FeedManager {
 			this.feedDao.update(feed);
 		}
 		if (saveEntries && feed.getEntries() != null) {
-			for (Entry entry : feed.getEntries()) {
+			for (final Entry entry : feed.getEntries()) {
 				if (entry.getId() != null) {
 					entries.add(entry);
 					this.entryManager.save(entry);
 				} else {
-					Entry match = this.entryManager.matchAndSave(entry);
+					final Entry match = this.entryManager.matchAndSave(entry);
 					entries.add(match);
 				}
 			}

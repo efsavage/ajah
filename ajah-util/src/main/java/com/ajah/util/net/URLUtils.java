@@ -39,10 +39,10 @@ public class URLUtils {
 	 * @throws URISyntaxException
 	 *             If the URI is malformed.
 	 */
-	public static String getHost(String url) throws URISyntaxException {
+	public static String getHost(final String url) throws URISyntaxException {
 		AjahUtils.requireParam(url, "url");
-		URI uri = new URI(url);
-		String domain = uri.getHost();
+		final URI uri = new URI(url);
+		final String domain = uri.getHost();
 		return domain;
 	}
 
@@ -60,7 +60,7 @@ public class URLUtils {
 	public static URI getURI(final String uri) {
 		try {
 			return new URI(uri);
-		} catch (URISyntaxException e) {
+		} catch (final URISyntaxException e) {
 			throw new IllegalArgumentException("Invalid Syntax: " + uri);
 		}
 	}
@@ -76,10 +76,10 @@ public class URLUtils {
 	 * @throws IllegalArgumentException
 	 *             If a {@link MalformedURLException} occured.
 	 */
-	public static URL getURL(String url) {
+	public static URL getURL(final String url) {
 		try {
 			return new URL(url);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			throw new IllegalArgumentException("Malformed URL: " + url);
 		}
 	}

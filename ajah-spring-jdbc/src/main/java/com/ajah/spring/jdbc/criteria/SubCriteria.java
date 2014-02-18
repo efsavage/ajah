@@ -42,32 +42,12 @@ public class SubCriteria {
 	 *            The subCriteria to include
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
-	public SubCriteria and(SubCriteria subCriteria) {
+	public SubCriteria and(final SubCriteria subCriteria) {
 		AjahUtils.requireParam(subCriteria, "field");
 		if (this.ands == null) {
 			this.ands = new ArrayList<>();
 		}
 		this.ands.add(subCriteria);
-		return this;
-	}
-
-	/**
-	 * A LIKE field match included as an OR. Uses the query as-is (i.e. add your
-	 * own wildcards).
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param pattern
-	 *            The pattern the field must match.
-	 * @return SubCriteria instance the method was invoked on (for chaining).
-	 */
-	public SubCriteria orLike(final String field, final String pattern) {
-		AjahUtils.requireParam(field, "field");
-		AjahUtils.requireParam(pattern, "pattern");
-		if (this.orLikes == null) {
-			this.orLikes = new ArrayList<>();
-		}
-		this.orLikes.add(new NameValuePair<>(field, pattern));
 		return this;
 	}
 
@@ -136,13 +116,33 @@ public class SubCriteria {
 	 *            The value to be greater than.
 	 * @return SubCriteria instance the method was invoked on (for chaining).
 	 */
-	public SubCriteria gt(String field, Number value) {
+	public SubCriteria gt(final String field, final Number value) {
 		AjahUtils.requireParam(field, "field");
 		AjahUtils.requireParam(value, "value");
 		if (this.gts == null) {
 			this.gts = new ArrayList<>();
 		}
 		this.gts.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A LIKE field match included as an OR. Uses the query as-is (i.e. add your
+	 * own wildcards).
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param pattern
+	 *            The pattern the field must match.
+	 * @return SubCriteria instance the method was invoked on (for chaining).
+	 */
+	public SubCriteria orLike(final String field, final String pattern) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(pattern, "pattern");
+		if (this.orLikes == null) {
+			this.orLikes = new ArrayList<>();
+		}
+		this.orLikes.add(new NameValuePair<>(field, pattern));
 		return this;
 	}
 

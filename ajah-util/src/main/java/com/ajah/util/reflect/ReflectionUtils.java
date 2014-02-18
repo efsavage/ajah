@@ -157,6 +157,9 @@ public class ReflectionUtils {
 		} else if (IntrospectionUtils.isBoolean(field)) {
 			// It's a boolean
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else if (IntrospectionUtils.isBigDecimal(field)) {
+			// It's a BigDecimal
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else {
 			log.warning("Can't handle property getting of type " + field.getType() + " for field " + field.getName());
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);

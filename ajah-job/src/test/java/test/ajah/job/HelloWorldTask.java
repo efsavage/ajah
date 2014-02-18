@@ -23,6 +23,7 @@ import com.ajah.job.task.SimpleAjahTask;
  */
 public class HelloWorldTask extends SimpleAjahTask {
 
+	@Override
 	public void run() {
 		System.out.println("Hello World");
 	}

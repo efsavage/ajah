@@ -21,11 +21,11 @@ package com.ajah.syndicate;
  */
 public class SyndicationException extends Exception {
 
-	public SyndicationException(String message) {
+	public SyndicationException(final String message) {
 		super(message);
 	}
 
-	public SyndicationException(Throwable t) {
+	public SyndicationException(final Throwable t) {
 		super(t);
 	}
 

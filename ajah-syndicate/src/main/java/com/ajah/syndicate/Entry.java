@@ -52,18 +52,6 @@ public class Entry implements Identifiable<EntryId> {
 	private FeedSourceId feedSourceId;
 
 	/**
-	 * Returns the SHA-1 of the htmlUrl field, if it is available.
-	 * 
-	 * @return The SHA-1 of the htmlUrl field, or null if htmlUrl is null.
-	 */
-	public String getHtmlUrlSha1() {
-		if (this.htmlUrlSha1 == null && this.htmlUrl != null) {
-			this.htmlUrlSha1 = HashUtils.sha1Hex(this.htmlUrl);
-		}
-		return this.htmlUrlSha1;
-	}
-
-	/**
 	 * Returns the SHA-1 of the contentUrl field, if it is available.
 	 * 
 	 * @return The SHA-1 of the contentUrl field, or null if contentUrl is null.
@@ -73,6 +61,18 @@ public class Entry implements Identifiable<EntryId> {
 			this.contentSha1 = HashUtils.sha1Hex(this.content);
 		}
 		return this.contentSha1;
+	}
+
+	/**
+	 * Returns the SHA-1 of the htmlUrl field, if it is available.
+	 * 
+	 * @return The SHA-1 of the htmlUrl field, or null if htmlUrl is null.
+	 */
+	public String getHtmlUrlSha1() {
+		if (this.htmlUrlSha1 == null && this.htmlUrl != null) {
+			this.htmlUrlSha1 = HashUtils.sha1Hex(this.htmlUrl);
+		}
+		return this.htmlUrlSha1;
 	}
 
 }

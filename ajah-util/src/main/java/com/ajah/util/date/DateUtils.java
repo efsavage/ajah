@@ -93,17 +93,6 @@ public class DateUtils {
 	}
 
 	/**
-	 * Adds a number of minutes to the current time.
-	 * 
-	 * @param minutes
-	 *            The number of minutes to add, may be negative.
-	 * @return The current time plus the the number of minutes specified.
-	 */
-	public static Date addMinutes(final int minutes) {
-		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
-	}
-
-	/**
 	 * Adds a number of hours to the current time.
 	 * 
 	 * @param hours
@@ -112,6 +101,17 @@ public class DateUtils {
 	 */
 	public static Date addHours(final int hours) {
 		return new Date(System.currentTimeMillis() + (hours * HOUR_IN_MILLIS));
+	}
+
+	/**
+	 * Adds a number of minutes to the current time.
+	 * 
+	 * @param minutes
+	 *            The number of minutes to add, may be negative.
+	 * @return The current time plus the the number of minutes specified.
+	 */
+	public static Date addMinutes(final int minutes) {
+		return new Date(System.currentTimeMillis() + (minutes * MINUTE_IN_MILLIS));
 	}
 
 	/**

@@ -36,16 +36,16 @@ public class Task implements Identifiable<TaskId> {
 	/**
 	 * @see java.lang.Runnable#run()
 	 */
-	public void execute(ApplicationContext applicationContext) {
+	public void execute(final ApplicationContext applicationContext) {
 		try {
-			AjahTask ajahTask = (AjahTask) Class.forName(getClazz()).newInstance();
+			final AjahTask ajahTask = (AjahTask) Class.forName(getClazz()).newInstance();
 			ajahTask.setApplicationContext(applicationContext);
 			ajahTask.run();
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			throw new TaskConfigurationException(e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new TaskConfigurationException(e);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new TaskConfigurationException(e);
 		}
 	}

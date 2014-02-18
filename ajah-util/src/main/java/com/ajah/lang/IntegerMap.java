@@ -36,23 +36,11 @@ public class IntegerMap<K> extends HashMap<K, Integer> {
 	 * @return The value, may be null if not previously set.
 	 */
 	public int getInt(final K key) {
-		Integer value = get(key);
+		final Integer value = get(key);
 		if (value == null) {
 			return 0;
 		}
 		return value.intValue();
-	}
-
-	/**
-	 * Sets the value of a key to a int value.
-	 * 
-	 * @param key
-	 *            The key to set.
-	 * @param value
-	 *            The value to set.
-	 */
-	public void setInt(K key, int value) {
-		put(key, new Integer(value));
 	}
 
 	/**
@@ -64,8 +52,20 @@ public class IntegerMap<K> extends HashMap<K, Integer> {
 	 * @param increment
 	 *            The amount to increment by.
 	 */
-	public void increment(K key, int increment) {
+	public void increment(final K key, final int increment) {
 		setInt(key, getInt(key) + increment);
+	}
+
+	/**
+	 * Sets the value of a key to a int value.
+	 * 
+	 * @param key
+	 *            The key to set.
+	 * @param value
+	 *            The value to set.
+	 */
+	public void setInt(final K key, final int value) {
+		put(key, new Integer(value));
 	}
 
 }

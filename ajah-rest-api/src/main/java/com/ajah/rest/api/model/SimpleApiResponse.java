@@ -49,7 +49,7 @@ public class SimpleApiResponse implements ApiResponse {
 	 * @param message
 	 *            The message explaining the error.
 	 */
-	public void addError(int code, String message) {
+	public void addError(final int code, final String message) {
 		if (this.errors == null) {
 			this.errors = new ArrayList<>();
 		}

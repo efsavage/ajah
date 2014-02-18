@@ -17,8 +17,6 @@ package com.ajah.job.task.data;
 
 import java.util.List;
 
-import javax.persistence.Table;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.job.JobId;

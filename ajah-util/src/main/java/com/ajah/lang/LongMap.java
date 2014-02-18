@@ -36,23 +36,11 @@ public class LongMap<K> extends HashMap<K, Long> {
 	 * @return The value, may be null if not previously set.
 	 */
 	public long getLong(final K key) {
-		Long value = get(key);
+		final Long value = get(key);
 		if (value == null) {
 			return 0;
 		}
 		return value.longValue();
-	}
-
-	/**
-	 * Sets the value of a key to a long value.
-	 * 
-	 * @param key
-	 *            The key to set.
-	 * @param value
-	 *            The value to set.
-	 */
-	public void setLong(K key, long value) {
-		put(key, new Long(value));
 	}
 
 	/**
@@ -64,8 +52,20 @@ public class LongMap<K> extends HashMap<K, Long> {
 	 * @param increment
 	 *            The amount to increment by.
 	 */
-	public void increment(K key, long increment) {
+	public void increment(final K key, final long increment) {
 		setLong(key, getLong(key) + increment);
+	}
+
+	/**
+	 * Sets the value of a key to a long value.
+	 * 
+	 * @param key
+	 *            The key to set.
+	 * @param value
+	 *            The value to set.
+	 */
+	public void setLong(final K key, final long value) {
+		put(key, new Long(value));
 	}
 
 }

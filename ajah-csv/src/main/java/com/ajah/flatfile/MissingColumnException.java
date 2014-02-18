@@ -40,7 +40,7 @@ public class MissingColumnException extends FlatFileException {
 	 * @param missingColumns
 	 *            The missing columns.
 	 */
-	public MissingColumnException(String message, Collection<String> missingColumns) {
+	public MissingColumnException(final String message, final Collection<String> missingColumns) {
 		super(message);
 		this.missingColumns = missingColumns;
 	}

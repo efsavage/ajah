@@ -40,7 +40,7 @@ public class UnsupportedColumnException extends FlatFileException {
 	 * @param columns
 	 *            The columns that were not supported.
 	 */
-	public UnsupportedColumnException(String message, Collection<String> columns) {
+	public UnsupportedColumnException(final String message, final Collection<String> columns) {
 		super(message);
 		this.columns = columns;
 	}

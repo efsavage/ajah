@@ -94,6 +94,28 @@ public class FeedSourceManager {
 	}
 
 	/**
+	 * Attempts to find a matching feed source, and creates a new one if
+	 * necessary.
+	 * 
+	 * @param candidate
+	 *            The candidate source to me matched or saved.
+	 * @return The matched or saved feed source.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public FeedSource findOrCreate(final FeedSource candidate) throws DataOperationException {
+		FeedSource feedSource = findByFeedUrlSha1(HashUtils.sha1Hex(candidate.getFeedUrl()));
+		if (feedSource == null) {
+			feedSource = candidate;
+			save(feedSource);
+		} else {
+			log.fine("Duplicate feed found");
+			// TODO Update other information?
+		}
+		return feedSource;
+	}
+
+	/**
 	 * Finds a feed by it's full URL. If none is found, creates a new one.
 	 * 
 	 * @param url
@@ -122,6 +144,25 @@ public class FeedSourceManager {
 	}
 
 	/**
+	 * Loads an feed source by its ID.
+	 * 
+	 * @param feedSourceId
+	 *            The ID to load.
+	 * @return The feed source, will not be null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws FeedSourceNotFoundException
+	 *             If no feed source could be found with the specified ID.
+	 */
+	public FeedSource load(final FeedSourceId feedSourceId) throws DataOperationException, FeedSourceNotFoundException {
+		final FeedSource feedSource = this.feedSourceDao.load(feedSourceId);
+		if (feedSource == null) {
+			throw new FeedSourceNotFoundException(feedSourceId);
+		}
+		return feedSource;
+	}
+
+	/**
 	 * Saves a feed source, inserting if the ID is empty, otherwise updating.
 	 * 
 	 * @param feedSource
@@ -143,46 +184,5 @@ public class FeedSourceManager {
 			this.feedSourceDao.update(feedSource);
 		}
 
-	}
-
-	/**
-	 * Attempts to find a matching feed source, and creates a new one if
-	 * necessary.
-	 * 
-	 * @param candidate
-	 *            The candidate source to me matched or saved.
-	 * @return The matched or saved feed source.
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 */
-	public FeedSource findOrCreate(FeedSource candidate) throws DataOperationException {
-		FeedSource feedSource = findByFeedUrlSha1(HashUtils.sha1Hex(candidate.getFeedUrl()));
-		if (feedSource == null) {
-			feedSource = candidate;
-			save(feedSource);
-		} else {
-			log.fine("Duplicate feed found");
-			// TODO Update other information?
-		}
-		return feedSource;
-	}
-
-	/**
-	 * Loads an feed source by its ID.
-	 * 
-	 * @param feedSourceId
-	 *            The ID to load.
-	 * @return The feed source, will not be null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws FeedSourceNotFoundException
-	 *             If no feed source could be found with the specified ID.
-	 */
-	public FeedSource load(FeedSourceId feedSourceId) throws DataOperationException, FeedSourceNotFoundException {
-		FeedSource feedSource = this.feedSourceDao.load(feedSourceId);
-		if (feedSource == null) {
-			throw new FeedSourceNotFoundException(feedSourceId);
-		}
-		return feedSource;
 	}
 }

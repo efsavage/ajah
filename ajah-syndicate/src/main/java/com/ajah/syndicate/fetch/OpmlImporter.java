@@ -65,11 +65,11 @@ public class OpmlImporter {
 	 * @throws JDOMException
 	 * @throws FeedException
 	 */
-	public void importFile(File file) throws InterruptedException, DataOperationException, IOException, SyndicationException, JDOMException, FeedException {
+	public void importFile(final File file) throws InterruptedException, DataOperationException, IOException, SyndicationException, JDOMException, FeedException {
 		final Document doc = new SAXBuilder(false).build(file);
 		final Opml opml = OpmlUtils.parse(doc);
-		List<FeedSource> feedSources = OpmlUtils.extractFeedSources(opml);
-		for (FeedSource candidate : feedSources) {
+		final List<FeedSource> feedSources = OpmlUtils.extractFeedSources(opml);
+		for (final FeedSource candidate : feedSources) {
 			this.feedSourceManager.findOrCreate(candidate);
 			log.fine("Imported " + candidate.getTitle());
 		}

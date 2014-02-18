@@ -112,11 +112,6 @@ public enum PollStatus implements Identifiable<String> {
 		return this.name;
 	}
 
-	@Override
-	public void setId(final String id) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * Is this status active? Should it be polled?
 	 * 
@@ -124,6 +119,11 @@ public enum PollStatus implements Identifiable<String> {
 	 */
 	public boolean isActive() {
 		return this.active;
+	}
+
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
 	}
 
 }

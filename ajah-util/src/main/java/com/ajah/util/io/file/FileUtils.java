@@ -393,7 +393,7 @@ public class FileUtils {
 	 * @throws IOException
 	 *             If the file could not be written to.
 	 */
-	public static int write(final File file, final String string, boolean overwrite) throws IOException {
+	public static int write(final File file, final String string, final boolean overwrite) throws IOException {
 		// TODO Write to temp file then rename
 		if (file.exists() && !overwrite) {
 			log.fine(file.getAbsolutePath() + " exists and overwrite is false, aborting");

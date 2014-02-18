@@ -86,26 +86,6 @@ public class Tally<T> {
 	}
 
 	/**
-	 * Write a report with totals to the configured output.
-	 */
-	public void report() {
-		report(0);
-	}
-
-	/**
-	 * Write a report with totals to the configured output.
-	 */
-	public void report(long threshold) {
-		this.out.println(ReportWriter.HYPEN35);
-		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
-		for (final T t : this.map.keySet()) {
-			if (this.map.get(t).longValue() >= threshold) {
-				this.out.println(t.toString() + ": " + this.map.get(t));
-			}
-		}
-	}
-
-	/**
 	 * Generates a report only if the {@link #getTotal()} evenly divides by the
 	 * interval, and is greater than zero.
 	 * 
@@ -116,6 +96,37 @@ public class Tally<T> {
 	public void intervalReport(final int interval) {
 		if (getTotal() > 0 && (getTotal() % interval) == 0) {
 			report();
+		}
+	}
+
+	/**
+	 * Write a report with totals to the configured output.
+	 */
+	public void report() {
+		report(0);
+	}
+
+	/**
+	 * Write a report with totals to the configured output.
+	 */
+	public void report(final long threshold) {
+		this.out.println(ReportWriter.HYPEN35);
+		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
+		for (final T t : this.map.keySet()) {
+			if (this.map.get(t).longValue() >= threshold) {
+				this.out.println(t.toString() + ": " + this.map.get(t));
+			}
+		}
+	}
+
+	public void reportTop(final int number) {
+		this.out.println(ReportWriter.HYPEN35);
+		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
+		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
+		Collections.sort(top, new EntryValueComparator<T, Long>());
+		top = top.subList(0, number);
+		for (final Entry<T, Long> entry : top) {
+			this.out.println(entry.getKey().toString() + ": " + entry.getValue());
 		}
 	}
 
@@ -151,17 +162,6 @@ public class Tally<T> {
 		} else {
 			final Long newValue = Long.valueOf(oldValue.intValue() + increment);
 			this.map.replace(tallyObject, oldValue, newValue);
-		}
-	}
-
-	public void reportTop(int number) {
-		this.out.println(ReportWriter.HYPEN35);
-		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
-		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
-		Collections.sort(top, new EntryValueComparator<T, Long>());
-		top = top.subList(0, number);
-		for (final Entry<T, Long> entry : top) {
-			this.out.println(entry.getKey().toString() + ": " + entry.getValue());
 		}
 	}
 

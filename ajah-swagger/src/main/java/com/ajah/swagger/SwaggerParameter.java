@@ -37,7 +37,7 @@ public class SwaggerParameter {
 	@JsonProperty("enum")
 	private List<String> enumValues;
 
-	public SwaggerParameter(String name, String type, String description) {
+	public SwaggerParameter(final String name, final String type, final String description) {
 		this.name = name;
 		this.type = type;
 		this.description = description;

@@ -21,11 +21,11 @@ package com.ajah.util;
  */
 public class BooleanUtils {
 
-	public static boolean coerce(String rawValue, boolean defaultValue) {
+	public static boolean coerce(final String rawValue, final boolean defaultValue) {
 		if (StringUtils.isBlank(rawValue)) {
 			return defaultValue;
 		}
-		String value = rawValue.toLowerCase();
+		final String value = rawValue.toLowerCase();
 		if ("false".equals(value) || "f".equals(value) || "no".equals(value) || "n".equals(value)) {
 			return false;
 		}
@@ -33,12 +33,12 @@ public class BooleanUtils {
 			return false;
 		}
 		try {
-			int intVal = Integer.parseInt(value);
+			final int intVal = Integer.parseInt(value);
 			if (intVal == 0) {
 				return false;
 			}
 			return true;
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return defaultValue;
 		}
 	}

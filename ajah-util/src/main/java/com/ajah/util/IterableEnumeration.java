@@ -52,7 +52,7 @@ public class IterableEnumeration<T> implements Iterable<T>, Iterator<T> {
 	 *            If true, a null enumeration will be replaced with an empty one
 	 *            to avoid errors.
 	 */
-	public IterableEnumeration(final Enumeration<T> enumeration, boolean nullSafe) {
+	public IterableEnumeration(final Enumeration<T> enumeration, final boolean nullSafe) {
 		if (enumeration == null) {
 			if (nullSafe) {
 				this.enumeration = new EmptyEnumeration<>();
@@ -65,19 +65,19 @@ public class IterableEnumeration<T> implements Iterable<T>, Iterator<T> {
 	}
 
 	/**
-	 * @see java.lang.Iterable#iterator()
-	 */
-	@Override
-	public Iterator<T> iterator() {
-		return this;
-	}
-
-	/**
 	 * @see java.util.Iterator#hasNext()
 	 */
 	@Override
 	public boolean hasNext() {
 		return this.enumeration.hasMoreElements();
+	}
+
+	/**
+	 * @see java.lang.Iterable#iterator()
+	 */
+	@Override
+	public Iterator<T> iterator() {
+		return this;
 	}
 
 	/**

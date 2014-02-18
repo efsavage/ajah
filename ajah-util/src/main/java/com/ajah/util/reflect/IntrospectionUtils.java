@@ -34,6 +34,18 @@ import com.ajah.util.ToStringable;
 public class IntrospectionUtils {
 
 	/**
+	 * Checks to see if the field's type is a {@link BigDecimal}.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a BigDecimal
+	 */
+	public static boolean isBigDecimal(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return BigDecimal.class.isAssignableFrom(field.getType());
+	}
+
+	/**
 	 * Checks to see if the field's type is a boolean.
 	 * 
 	 * @param field
@@ -58,15 +70,15 @@ public class IntrospectionUtils {
 	}
 
 	/**
-	 * Checks to see if the field's type is a {@link BigDecimal}.
+	 * Checks to see if the field's type is a double.
 	 * 
 	 * @param field
 	 *            The field to check the type of, required.
-	 * @return true if the field's type is a BigDecimal
+	 * @return true if the field's type is a double
 	 */
-	public static boolean isBigDecimal(final Field field) {
+	public static boolean isDouble(final Field field) {
 		AjahUtils.requireParam(field, "field");
-		return BigDecimal.class.isAssignableFrom(field.getType());
+		return double.class.isAssignableFrom(field.getType()) || Double.class.isAssignableFrom(field.getType());
 	}
 
 	/**
@@ -191,18 +203,6 @@ public class IntrospectionUtils {
 	public static boolean isToStringable(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return ToStringable.class.isAssignableFrom(field.getType());
-	}
-
-	/**
-	 * Checks to see if the field's type is a double.
-	 * 
-	 * @param field
-	 *            The field to check the type of, required.
-	 * @return true if the field's type is a double
-	 */
-	public static boolean isDouble(final Field field) {
-		AjahUtils.requireParam(field, "field");
-		return double.class.isAssignableFrom(field.getType()) || Double.class.isAssignableFrom(field.getType());
 	}
 
 }

@@ -66,7 +66,7 @@ public class ListMap<K, V> extends HashMap<K, List<V>> {
 	 * @return The value list, may be empty, will not be null.
 	 */
 	@SuppressWarnings("unchecked")
-	public List<V> getList(final K key, Class<? extends List> listClass) {
+	public List<V> getList(final K key, final Class<? extends List> listClass) {
 		List<V> list = get(key);
 		if (list == null) {
 			try {

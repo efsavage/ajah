@@ -195,7 +195,7 @@ public class RomeUtils {
 			return createFeed(syndFeed, xmlString.getSha1(), feedSource);
 		} catch (final IllegalArgumentException e) {
 			throw new SyndicationException(e.getMessage());
-		} catch (FeedException e) {
+		} catch (final FeedException e) {
 			throw new SyndicationException(e);
 		}
 	}

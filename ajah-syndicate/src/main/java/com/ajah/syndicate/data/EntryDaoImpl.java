@@ -44,10 +44,11 @@ public class EntryDaoImpl extends AbstractAjahDao<EntryId, Entry, Entry> impleme
 
 	/**
 	 * {@inheritDoc}
-	 * @throws DataOperationException 
+	 * 
+	 * @throws DataOperationException
 	 */
 	@Override
-	public Entry findMatch(FeedSourceId feedSourceId, String htmlUrlSha1, String contentSha1) throws DataOperationException {
+	public Entry findMatch(final FeedSourceId feedSourceId, final String htmlUrlSha1, final String contentSha1) throws DataOperationException {
 		return find(new Criteria().eq(feedSourceId).eq("html_url_sha_1", htmlUrlSha1).eq("content_sha_1", contentSha1));
 	}
 

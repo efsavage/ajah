@@ -26,7 +26,7 @@ public class DataObjectCreationException extends DataOperationException {
 	/**
 	 * @see DataOperationException#DataOperationException(Throwable)
 	 */
-	public DataObjectCreationException(Throwable t) {
+	public DataObjectCreationException(final Throwable t) {
 		super(t);
 	}
 

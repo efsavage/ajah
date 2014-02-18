@@ -61,12 +61,31 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 * 
 	 * @param format
 	 *            The format of the file.
+	 * @param bufferedReader
+	 *            The buffered reader for the file.
+	 * @throws IOException
+	 *             If the file could not be read.
+	 */
+	public FlatFileReader(final FlatFileFormat format, final BufferedReader bufferedReader) throws IOException {
+		this.format = format;
+		this.reader = bufferedReader;
+		final String header = this.reader.readLine();
+		if (header != null) {
+			createColumns(header);
+		}
+	}
+
+	/**
+	 * Constructs a reader from a file.
+	 * 
+	 * @param format
+	 *            The format of the file.
 	 * @param file
 	 *            The file.
 	 * @throws IOException
 	 *             If the file could not be read.
 	 */
-	public FlatFileReader(FlatFileFormat format, File file) throws IOException {
+	public FlatFileReader(final FlatFileFormat format, final File file) throws IOException {
 		this(format, new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8")));
 	}
 
@@ -80,45 +99,41 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 * @throws IOException
 	 *             If the file could not be read.
 	 */
-	public FlatFileReader(FlatFileFormat format, InputStream inputStream) throws IOException {
+	public FlatFileReader(final FlatFileFormat format, final InputStream inputStream) throws IOException {
 		this(format, new BufferedReader(new InputStreamReader(inputStream)));
 	}
 
-	/**
-	 * Constructs a reader from a file.
-	 * 
-	 * @param format
-	 *            The format of the file.
-	 * @param bufferedReader
-	 *            The buffered reader for the file.
-	 * @throws IOException
-	 *             If the file could not be read.
-	 */
-	public FlatFileReader(FlatFileFormat format, BufferedReader bufferedReader) throws IOException {
-		this.format = format;
-		this.reader = bufferedReader;
-		String header = this.reader.readLine();
-		if (header != null) {
-			createColumns(header);
+	private void addColumn(final String name) {
+		if (this.map.get(name) != null) {
+			throw new IllegalArgumentException("Duplicate column name " + name);
 		}
+		final FlatFileColumn column = new FlatFileColumn(name, null, false);
+		this.columns.add(column);
+		this.map.put(column.getName(), column);
+		log.fine("Created column \"" + name + "\"");
 	}
 
-	private void createColumns(String header) {
+	@Override
+	public void close() throws IOException {
+		this.reader.close();
+	}
+
+	private void createColumns(final String header) {
 		log.fine("Adding columns");
 		switch (this.format) {
 		case CSV: {
 			if (header.contains("\"")) {
 				throw new UnsupportedOperationException("Header contains double quote: " + header);
 			}
-			String[] names = header.split(",");
-			for (String name : names) {
+			final String[] names = header.split(",");
+			for (final String name : names) {
 				addColumn(name);
 			}
 			break;
 		}
 		case TAB: {
-			String[] names = header.split("\t");
-			for (String name : names) {
+			final String[] names = header.split("\t");
+			for (final String name : names) {
 				addColumn(name);
 			}
 			break;
@@ -128,33 +143,29 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		}
 	}
 
-	@Override
-	public void close() throws IOException {
-		this.reader.close();
-	}
-
-	@Override
-	public Iterator<FlatFileRow> iterator() {
-		return this;
-	}
-
-	private void addColumn(String name) {
-		if (this.map.get(name) != null) {
-			throw new IllegalArgumentException("Duplicate column name " + name);
-		}
-		FlatFileColumn column = new FlatFileColumn(name, null, false);
-		this.columns.add(column);
-		this.map.put(column.getName(), column);
-		log.fine("Created column \"" + name + "\"");
+	/**
+	 * Determines if this reader has a column available.
+	 * 
+	 * @param column
+	 *            The column name to check.
+	 * @return true if the column appears in the file, otherwise false.
+	 */
+	public boolean hasColumn(final String column) {
+		return this.map.get(column) != null;
 	}
 
 	@Override
 	public boolean hasNext() {
 		try {
 			return this.reader.ready();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return false;
 		}
+	}
+
+	@Override
+	public Iterator<FlatFileRow> iterator() {
+		return this;
 	}
 
 	@Override
@@ -163,7 +174,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		String line;
 		try {
 			line = this.reader.readLine();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return null;
 		}
 		switch (this.format) {
@@ -171,10 +182,10 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 			int currentPos = 0;
 			int fieldStartPos = 0;
 			boolean inField = false;
-			char[] chars = line.toCharArray();
-			int len = chars.length;
+			final char[] chars = line.toCharArray();
+			final int len = chars.length;
 			for (int i = 0; i < this.columns.size() && currentPos < len; i++) {
-				char c = chars[currentPos];
+				final char c = chars[currentPos];
 				if (c == ',' || c == '"') {
 				} else {
 					if (inField) {
@@ -188,7 +199,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 			if (line.contains("\"\"")) {
 				throw new UnsupportedOperationException("Line contains double quote: " + line);
 			}
-			String[] values = line.split(",");
+			final String[] values = line.split(",");
 			for (int i = 0; i < values.length; i++) {
 				if (StringUtils.isBlank(values[i])) {
 					this.row.set(this.columns.get(i).getName(), "");
@@ -201,7 +212,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 			break;
 		}
 		case TAB: {
-			String[] values = line.split("\t");
+			final String[] values = line.split("\t");
 			for (int i = 0; i < values.length; i++) {
 				if (i + 1 > this.columns.size()) {
 					continue;
@@ -222,17 +233,6 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	}
 
 	/**
-	 * Determines if this reader has a column available.
-	 * 
-	 * @param column
-	 *            The column name to check.
-	 * @return true if the column appears in the file, otherwise false.
-	 */
-	public boolean hasColumn(String column) {
-		return this.map.get(column) != null;
-	}
-
-	/**
 	 * Validates that required columns are present in the file.
 	 * 
 	 * @param requiredColumns
@@ -240,12 +240,12 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 * @throws MissingColumnException
 	 *             Thrown if columns are missing.
 	 */
-	public void require(String[] requiredColumns) throws MissingColumnException {
+	public void require(final String[] requiredColumns) throws MissingColumnException {
 		if (requiredColumns == null || requiredColumns.length < 1) {
 			return;
 		}
-		ArrayList<String> missingColumns = new ArrayList<>();
-		for (String requiredColumn : requiredColumns) {
+		final ArrayList<String> missingColumns = new ArrayList<>();
+		for (final String requiredColumn : requiredColumns) {
 			if (!hasColumn(requiredColumn)) {
 				missingColumns.add(requiredColumn);
 			}
@@ -263,13 +263,13 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 * @throws UnsupportedColumnException
 	 *             If the file contains unsupported columns.
 	 */
-	public void validate(String[] supportedColumns) throws UnsupportedColumnException {
+	public void validate(final String[] supportedColumns) throws UnsupportedColumnException {
 		if (supportedColumns == null || supportedColumns.length < 1) {
 			throw new UnsupportedColumnException(StringUtils.join(",", this.map.keySet()), this.map.keySet());
 		}
-		Set<String> unsupportedColumns = new HashSet<>();
-		columnLoop: for (String column : this.map.keySet()) {
-			for (String supportedColumn : supportedColumns) {
+		final Set<String> unsupportedColumns = new HashSet<>();
+		columnLoop: for (final String column : this.map.keySet()) {
+			for (final String supportedColumn : supportedColumns) {
 				if (column.equals(supportedColumn)) {
 					continue columnLoop;
 				}

@@ -88,6 +88,23 @@ public class CollectionUtils {
 	}
 
 	/**
+	 * Returns an element of a list, or null if the list is null or does not
+	 * have that index.
+	 * 
+	 * @param list
+	 *            The list to get from, may be null.
+	 * @param index
+	 *            The index to get, must be >=0.
+	 * @return The size of the collection, zero if the collection is null.
+	 */
+	public static <T> T safeGet(final List<T> list, final int index) {
+		if (list == null || list.size() <= index) {
+			return null;
+		}
+		return list.get(index);
+	}
+
+	/**
 	 * Returns the size of a collection, or zero if the collection is null.
 	 * 
 	 * @param collection
@@ -121,23 +138,6 @@ public class CollectionUtils {
 			}
 		}
 		return map;
-	}
-
-	/**
-	 * Returns an element of a list, or null if the list is null or does not
-	 * have that index.
-	 * 
-	 * @param list
-	 *            The list to get from, may be null.
-	 * @param index
-	 *            The index to get, must be >=0.
-	 * @return The size of the collection, zero if the collection is null.
-	 */
-	public static <T> T safeGet(final List<T> list, int index) {
-		if (list == null || list.size() <= index) {
-			return null;
-		}
-		return list.get(index);
 	}
 
 }

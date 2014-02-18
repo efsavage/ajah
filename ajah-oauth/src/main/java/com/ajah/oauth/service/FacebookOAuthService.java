@@ -54,7 +54,7 @@ public class FacebookOAuthService implements AjahOAuthService {
 		// OAuth 2.0 doesn't require tokens, but we're going to use it anyways
 		// since we store the success url there, and it will be helpful in
 		// tracking down failures.
-		String tempToken = UUID.randomUUID().toString();
+		final String tempToken = UUID.randomUUID().toString();
 		final ServiceBuilder serviceBuilder = new ServiceBuilder().provider(FacebookApi.class).apiKey(Config.i.get("oauth.facebook.key")).apiSecret(Config.i.get("oauth.facebook.secret"));
 		serviceBuilder.callback(Config.i.get("oauth.facebook.callback") + "?token=" + tempToken);
 		final OAuthService service = serviceBuilder.build();

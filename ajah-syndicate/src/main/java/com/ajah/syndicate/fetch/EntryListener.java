@@ -36,6 +36,6 @@ public interface EntryListener {
 	 * @param entry
 	 *            The new or update entry.
 	 */
-	void handle(Entry entry);
+	void handle(final Entry entry);
 
 }

@@ -41,7 +41,7 @@ public class CorsFilter extends BaseFilter {
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		String value = Config.i.get("ajah.header.cors", "null");
+		final String value = Config.i.get("ajah.header.cors", "null");
 		((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_ORIGIN.getHeader(), value);
 		super.doFilter(request, response, chain);
 	}

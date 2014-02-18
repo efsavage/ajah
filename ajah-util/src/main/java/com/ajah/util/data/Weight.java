@@ -37,18 +37,6 @@ public class Weight {
 	private WeightUnit unit;
 
 	/**
-	 * Converts this weight to a weight in a different unit.
-	 * 
-	 * @param newUnit
-	 *            The unit to convert to.
-	 * @return The converted weight.
-	 */
-	public Weight to(WeightUnit newUnit) {
-		BigDecimal nanograms = this.quanity.multiply(new BigDecimal(this.unit.getNanograms()));
-		return new Weight(nanograms.divide(new BigDecimal(newUnit.getNanograms()), 12, RoundingMode.HALF_UP), newUnit);
-	}
-
-	/**
 	 * Public constructor for doubles. The internal representation is still a
 	 * {@link BigDecimal}.
 	 * 
@@ -57,9 +45,21 @@ public class Weight {
 	 * @param unit
 	 *            The unit of the weight.
 	 */
-	public Weight(double quantity, WeightUnit unit) {
+	public Weight(final double quantity, final WeightUnit unit) {
 		this.quanity = new BigDecimal(quantity);
 		this.unit = unit;
+	}
+
+	/**
+	 * Converts this weight to a weight in a different unit.
+	 * 
+	 * @param newUnit
+	 *            The unit to convert to.
+	 * @return The converted weight.
+	 */
+	public Weight to(final WeightUnit newUnit) {
+		final BigDecimal nanograms = this.quanity.multiply(new BigDecimal(this.unit.getNanograms()));
+		return new Weight(nanograms.divide(new BigDecimal(newUnit.getNanograms()), 12, RoundingMode.HALF_UP), newUnit);
 	}
 
 }

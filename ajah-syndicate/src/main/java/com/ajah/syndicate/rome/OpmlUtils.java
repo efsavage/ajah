@@ -24,6 +24,7 @@ import lombok.extern.java.Log;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.FeedSourceStatus;
@@ -35,7 +36,6 @@ import com.ajah.syndicate.opml.Outline;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
 import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SAXBuilder;
 import com.sun.syndication.io.impl.OPML10Parser;
 
 /**
@@ -158,7 +158,7 @@ public class OpmlUtils {
 		Document doc;
 		try {
 			doc = new SAXBuilder(false).build(file);
-		} catch (JDOMException e) {
+		} catch (final JDOMException e) {
 			throw new SyndicationException(e);
 		}
 		return parse(doc);

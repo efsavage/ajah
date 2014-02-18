@@ -58,6 +58,6 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 */
 	Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException;
 
-	Entry findMatch(FeedSourceId feedId, String htmlUrlSha1, String contentSha1) throws DataOperationException;
+	Entry findMatch(final FeedSourceId feedId, final String htmlUrlSha1, final String contentSha1) throws DataOperationException;
 
 }

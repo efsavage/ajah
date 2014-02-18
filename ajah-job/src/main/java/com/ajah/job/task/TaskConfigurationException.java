@@ -21,7 +21,7 @@ package com.ajah.job.task;
  */
 public class TaskConfigurationException extends RuntimeException {
 
-	public TaskConfigurationException(Throwable t) {
+	public TaskConfigurationException(final Throwable t) {
 		super(t);
 	}
 

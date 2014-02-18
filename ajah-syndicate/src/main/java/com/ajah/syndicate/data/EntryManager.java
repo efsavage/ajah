@@ -62,6 +62,56 @@ public class EntryManager {
 	}
 
 	/**
+	 * Loads an entry by its ID.
+	 * 
+	 * @param entryId
+	 *            The ID to load.
+	 * @return The entry, will not be null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws EntryNotFoundException
+	 *             If no entry could be found with the specified ID.
+	 */
+	public Entry load(final EntryId entryId) throws DataOperationException, EntryNotFoundException {
+		final Entry entry = this.entryDao.load(entryId);
+		if (entry == null) {
+			throw new EntryNotFoundException(entryId);
+		}
+		return entry;
+	}
+
+	/**
+	 * This will attempt to match an Entry to avoid duplicates.
+	 * 
+	 * @param entry
+	 *            The entry to try and match.
+	 * @return The entry or the matched replacement.
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 */
+	public Entry matchAndSave(final Entry entry) throws DataOperationException {
+		Entry match = this.entryDao.findMatch(entry.getFeedSourceId(), entry.getHtmlUrlSha1(), entry.getContentSha1());
+		if (match != null) {
+			log.finest("Exact match found replacing");
+			return match;
+		}
+		// Lets see if this is an update
+		match = this.entryDao.findByHtmlUrlSha1(entry.getFeedSourceId(), entry.getHtmlUrlSha1());
+		if (match != null) {
+			match.setContent(entry.getContent());
+			match.setContentSha1(HashUtils.sha1Hex(entry.getContent()));
+			match.setFeedId(entry.getFeedId());
+			log.finest("Match found updating and replacing");
+			save(match);
+			return match;
+		}
+		// TODO match on title or other fields?
+		log.finest("Appears to be a new post");
+		save(entry);
+		return entry;
+	}
+
+	/**
 	 * Saves an entry, inserting if the ID is not set, otherwise updating. Will
 	 * set created date if that is null.
 	 * 
@@ -88,54 +138,4 @@ public class EntryManager {
 		}
 	}
 
-	/**
-	 * This will attempt to match an Entry to avoid duplicates.
-	 * 
-	 * @param entry
-	 *            The entry to try and match.
-	 * @return The entry or the matched replacement.
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 */
-	public Entry matchAndSave(Entry entry) throws DataOperationException {
-		Entry match = this.entryDao.findMatch(entry.getFeedSourceId(), entry.getHtmlUrlSha1(), entry.getContentSha1());
-		if (match != null) {
-			log.finest("Exact match found replacing");
-			return match;
-		}
-		// Lets see if this is an update
-		match = this.entryDao.findByHtmlUrlSha1(entry.getFeedSourceId(), entry.getHtmlUrlSha1());
-		if (match != null) {
-			match.setContent(entry.getContent());
-			match.setContentSha1(HashUtils.sha1Hex(entry.getContent()));
-			match.setFeedId(entry.getFeedId());
-			log.finest("Match found updating and replacing");
-			save(match);
-			return match;
-		}
-		// TODO match on title or other fields?
-		log.finest("Appears to be a new post");
-		save(entry);
-		return entry;
-	}
-
-	/**
-	 * Loads an entry by its ID.
-	 * 
-	 * @param entryId
-	 *            The ID to load.
-	 * @return The entry, will not be null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws EntryNotFoundException
-	 *             If no entry could be found with the specified ID.
-	 */
-	public Entry load(EntryId entryId) throws DataOperationException, EntryNotFoundException {
-		Entry entry = this.entryDao.load(entryId);
-		if (entry == null) {
-			throw new EntryNotFoundException(entryId);
-		}
-		return entry;
-	}
-	
 }

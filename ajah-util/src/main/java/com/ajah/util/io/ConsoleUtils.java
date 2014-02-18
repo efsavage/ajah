@@ -28,6 +28,28 @@ import com.ajah.util.StringUtils;
 public class ConsoleUtils {
 
 	/**
+	 * Asks a question with a text answer, appending the default value if
+	 * present.
+	 * 
+	 * @param message
+	 *            The question to ask, required.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
+	@SuppressWarnings("resource")
+	// Don't need to close System.in
+	public static String ask(final String message) {
+		final Scanner in = new Scanner(System.in);
+		String response = null;
+		while (StringUtils.isBlank(response)) {
+			System.out.println(message);
+			response = in.nextLine().trim();
+		}
+		return response;
+	}
+
+	/**
 	 * Asks a yes or no question, appending the default value.
 	 * 
 	 * @param message
@@ -38,12 +60,12 @@ public class ConsoleUtils {
 	 */
 	@SuppressWarnings("resource")
 	// Don't need to close System.in
-	public static boolean ask(String message, boolean defaultAnswer) {
+	public static boolean ask(final String message, final boolean defaultAnswer) {
 		while (true) {
 			boolean answer = defaultAnswer;
-			Scanner in = new Scanner(System.in);
+			final Scanner in = new Scanner(System.in);
 			System.out.println(message + " [" + (defaultAnswer ? 'y' : 'n') + "]");
-			String response = in.nextLine().trim();
+			final String response = in.nextLine().trim();
 			if (StringUtils.isBlank(response)) {
 				answer = defaultAnswer;
 			} else if ("y".equalsIgnoreCase(response) || "yes".equalsIgnoreCase(response)) {
@@ -59,50 +81,6 @@ public class ConsoleUtils {
 	}
 
 	/**
-	 * Asks a question with a text answer, appending the default value if
-	 * present.
-	 * 
-	 * @param message
-	 *            The question to ask, required.
-	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
-	 * @return The response to the question.
-	 */
-	@SuppressWarnings("resource")
-	// Don't need to close System.in
-	public static String ask(String message, String defaultAnswer) {
-		Scanner in = new Scanner(System.in);
-		System.out.println(message + (!StringUtils.isBlank(defaultAnswer) ? " [" + defaultAnswer + "]" : ""));
-		String response = in.nextLine().trim();
-		if (StringUtils.isBlank(response)) {
-			return defaultAnswer;
-		}
-		return response;
-	}
-
-	/**
-	 * Asks a question with a text answer, appending the default value if
-	 * present.
-	 * 
-	 * @param message
-	 *            The question to ask, required.
-	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
-	 * @return The response to the question.
-	 */
-	@SuppressWarnings("resource")
-	// Don't need to close System.in
-	public static String ask(String message) {
-		Scanner in = new Scanner(System.in);
-		String response = null;
-		while (StringUtils.isBlank(response)) {
-			System.out.println(message);
-			response = in.nextLine().trim();
-		}
-		return response;
-	}
-
-	/**
 	 * Asks a question, requiring a numerical answer, appending the default
 	 * value.
 	 * 
@@ -114,24 +92,46 @@ public class ConsoleUtils {
 	 */
 	@SuppressWarnings("resource")
 	// Don't need to close System.in
-	public static double ask(String message, double defaultAnswer) {
+	public static double ask(final String message, final double defaultAnswer) {
 		while (true) {
 			double answer = defaultAnswer;
-			Scanner in = new Scanner(System.in);
+			final Scanner in = new Scanner(System.in);
 			System.out.println(message + " [" + defaultAnswer + "]");
-			String response = in.nextLine().trim();
+			final String response = in.nextLine().trim();
 			if (StringUtils.isBlank(response)) {
 				answer = defaultAnswer;
 			} else {
 				try {
 					answer = Double.parseDouble(response);
-				} catch (NumberFormatException e) {
+				} catch (final NumberFormatException e) {
 					System.out.println("Unrecognized response, please answer 'y' or 'n'");
 					continue;
 				}
 			}
 			return answer;
 		}
+	}
+
+	/**
+	 * Asks a question with a text answer, appending the default value if
+	 * present.
+	 * 
+	 * @param message
+	 *            The question to ask, required.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
+	@SuppressWarnings("resource")
+	// Don't need to close System.in
+	public static String ask(final String message, final String defaultAnswer) {
+		final Scanner in = new Scanner(System.in);
+		System.out.println(message + (!StringUtils.isBlank(defaultAnswer) ? " [" + defaultAnswer + "]" : ""));
+		final String response = in.nextLine().trim();
+		if (StringUtils.isBlank(response)) {
+			return defaultAnswer;
+		}
+		return response;
 	}
 
 }
