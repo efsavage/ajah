@@ -28,6 +28,10 @@ public enum ResponseHeader {
 	 */
 	ACCESS_CONTROL_ALLOW_ORIGIN("Access-Control-Allow-Origin"),
 	/**
+	 * Access-Control-Allow-Headers
+	 */
+	ACCESS_CONTROL_ALLOW_HEADERS("Access-Control-Allow-Headers"),
+	/**
 	 * Expires
 	 */
 	EXPIRES("Expires"),
@@ -46,7 +50,7 @@ public enum ResponseHeader {
 
 	private final String header;
 
-	private ResponseHeader(String header) {
+	private ResponseHeader(final String header) {
 		this.header = header;
 
 	}

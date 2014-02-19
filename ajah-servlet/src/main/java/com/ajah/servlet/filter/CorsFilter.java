@@ -27,10 +27,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.ajah.servlet.util.ResponseHeader;
+import com.ajah.util.StringUtils;
 import com.ajah.util.config.Config;
 
 /**
  * Sets a Access-Control-Allow-Origin based on the "ajah.header.cors" property.
+ * If set, will also set a "Access-Control-Allow-Headers" as defined by property
+ * "ajah.header.cors-headers", defaults to
+ * "Origin, X-Requested-With, Content-Type, Accept".
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -43,6 +47,12 @@ public class CorsFilter extends BaseFilter {
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		final String value = Config.i.get("ajah.header.cors", "null");
 		((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_ORIGIN.getHeader(), value);
+
+		if (!StringUtils.isBlank(value)) {
+			final String headers = Config.i.get("ajah.header.cors-headers", "Origin, X-Requested-With, Content-Type, Accept");
+			((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_HEADERS.getHeader(), headers);
+		}
+
 		super.doFilter(request, response, chain);
 	}
 }
