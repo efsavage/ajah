@@ -29,7 +29,7 @@ import com.twilio.sdk.TwilioRestClient;
 @Log
 public class MockSmsClient implements SmsClient {
 
-	private String defaultSender;
+	private final String defaultSender;
 
 	/**
 	 * Constructs a client using configuration properties twilio.sid,
@@ -37,6 +37,20 @@ public class MockSmsClient implements SmsClient {
 	 */
 	public MockSmsClient() {
 		this.defaultSender = Config.i.get("twilio.sender.default");
+	}
+
+	/**
+	 * Fetches inbound messages.
+	 */
+	@Override
+	public void getInboundMessages() {
+	}
+
+	/**
+	 * Fetches outbound messages.
+	 */
+	@Override
+	public void getOutboundMessages() {
 	}
 
 	/**
@@ -49,20 +63,9 @@ public class MockSmsClient implements SmsClient {
 	 * @throws SmsException
 	 *             If the message could not be sent.
 	 */
-	public void send(String to, String message) throws SmsException {
+	@Override
+	public void send(final String to, final String message) throws SmsException {
 		log.info("SMS from " + to + ": " + message + " (using mock client, not sent)");
-	}
-
-	/**
-	 * Fetches inbound messages.
-	 */
-	public void getInboundMessages() {
-	}
-
-	/**
-	 * Fetches outbound messages.
-	 */
-	public void getOutboundMessages() {
 	}
 
 }

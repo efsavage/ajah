@@ -37,49 +37,23 @@ import com.twilio.sdk.resource.instance.Account;
 public class TwilioSmsClient implements SmsClient {
 
 	Account mainAccount;
-	private String defaultSender;
+	private final String defaultSender;
 
 	/**
 	 * Constructs a client using configuration properties twilio.sid,
 	 * twilio.token and twilio.sender.default.
 	 */
 	public TwilioSmsClient() {
-		TwilioRestClient client = new TwilioRestClient(Config.i.get("twilio.sid"), Config.i.get("twilio.token"));
+		final TwilioRestClient client = new TwilioRestClient(Config.i.get("twilio.sid"), Config.i.get("twilio.token"));
 		this.mainAccount = client.getAccount();
 		this.defaultSender = Config.i.get("twilio.sender.default");
 		log.fine("Using Twilio account " + this.mainAccount.getFriendlyName());
 	}
 
 	/**
-	 * Sends an Sms to a phone number.
-	 * 
-	 * @param to
-	 *            The number to send to.
-	 * @param message
-	 *            The message to send.
-	 * @throws SmsException
-	 *             If the message could not be sent.
-	 */
-	public void send(String to, String message) throws SmsException {
-		AjahUtils.requireParam(message, "message");
-		if (message.length() > 160) {
-			throw new IllegalArgumentException("Message must be 160 characters or less");
-		}
-		SmsFactory smsFactory = this.mainAccount.getSmsFactory();
-		Map<String, String> smsParams = new HashMap<>();
-		smsParams.put("To", to); // Replace with a valid phone number
-		smsParams.put("From", this.defaultSender); // Replace with a valid phone
-		smsParams.put("Body", message);
-		try {
-			smsFactory.create(smsParams);
-		} catch (TwilioRestException e) {
-			throw new SmsException(e);
-		}
-	}
-
-	/**
 	 * Fetches inbound messages.
 	 */
+	@Override
 	public void getInboundMessages() {
 		// SmsList messages = this.mainAccount.getSmsMessages();
 		// log.warning(messages.getTotal() + " messages");
@@ -92,7 +66,36 @@ public class TwilioSmsClient implements SmsClient {
 	/**
 	 * Fetches outbound messages.
 	 */
+	@Override
 	public void getOutboundMessages() {
+	}
+
+	/**
+	 * Sends an Sms to a phone number.
+	 * 
+	 * @param to
+	 *            The number to send to.
+	 * @param message
+	 *            The message to send.
+	 * @throws SmsException
+	 *             If the message could not be sent.
+	 */
+	@Override
+	public void send(final String to, final String message) throws SmsException {
+		AjahUtils.requireParam(message, "message");
+		if (message.length() > 160) {
+			throw new IllegalArgumentException("Message must be 160 characters or less");
+		}
+		final SmsFactory smsFactory = this.mainAccount.getSmsFactory();
+		final Map<String, String> smsParams = new HashMap<>();
+		smsParams.put("To", to); // Replace with a valid phone number
+		smsParams.put("From", this.defaultSender); // Replace with a valid phone
+		smsParams.put("Body", message);
+		try {
+			smsFactory.create(smsParams);
+		} catch (final TwilioRestException e) {
+			throw new SmsException(e);
+		}
 	}
 
 }

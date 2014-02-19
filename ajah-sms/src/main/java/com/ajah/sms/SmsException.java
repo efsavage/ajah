@@ -30,7 +30,7 @@ public class SmsException extends Exception {
 	 *            The cause of this exception.
 	 * @see Exception#Exception(Throwable)
 	 */
-	public SmsException(Throwable t) {
+	public SmsException(final Throwable t) {
 		super(t);
 	}
 
