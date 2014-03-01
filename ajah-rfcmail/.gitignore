@@ -6,3 +6,4 @@ data
 .project
 jetty
 elasticsearch
+.DS_Store

@@ -4,3 +4,4 @@ target
 .factorypath
 .project
 tmp
+.DS_Store
