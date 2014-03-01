@@ -1376,4 +1376,18 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	protected BigDecimal sumBigDecimal(final String field, final Criteria criteria) throws DataOperationException {
+		try {
+			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			sqlLog.finest(sql);
+			final BigDecimal sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), BigDecimal.class);
+			return sum == null ? BigDecimal.ZERO : sum;
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return BigDecimal.ZERO;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
 }
