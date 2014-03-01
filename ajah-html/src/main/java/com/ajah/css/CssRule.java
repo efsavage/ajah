@@ -22,9 +22,9 @@ import java.util.TreeSet;
 
 import lombok.Data;
 
+import com.ajah.report.ReportWriter;
 import com.ajah.util.io.AjahStringBuilder;
 import com.ajah.util.io.Compact;
-import com.ajah.util.log.Report;
 
 /**
  * Represents a CSS rule. Example
@@ -111,7 +111,7 @@ public class CssRule {
 
 	private String toString(final Compact compact, final int depth) {
 		final AjahStringBuilder string = new AjahStringBuilder(compact);
-		string.append(Report.tabs(depth), Compact.LOW);
+		string.append(ReportWriter.tabs(depth), Compact.LOW);
 		string.append(this.raw);
 		string.append(' ', Compact.MED);
 		string.append("{");
@@ -119,7 +119,7 @@ public class CssRule {
 		string.append('\n', Compact.LOW);
 		int i = 1;
 		for (final CssDeclaration declaration : this.declarations) {
-			string.append(Report.tabs(depth + 1), Compact.LOW);
+			string.append(ReportWriter.tabs(depth + 1), Compact.LOW);
 			if (i++ == this.declarations.size() && compact.ge(Compact.MAX)) {
 				string.append(declaration.toString(false));
 			} else {
@@ -131,7 +131,7 @@ public class CssRule {
 			string.append(child.toString(compact, depth + 1));
 			string.append('\n', Compact.MED);
 		}
-		string.append(Report.tabs(depth), Compact.LOW);
+		string.append(ReportWriter.tabs(depth), Compact.LOW);
 		string.append('\t', Compact.LOW);
 		string.append("}");
 		return string.toString();

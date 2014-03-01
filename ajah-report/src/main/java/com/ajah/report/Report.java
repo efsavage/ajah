@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util.log;
+package com.ajah.report;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
+import java.util.Set;
+import java.util.TreeSet;
+
+import com.ajah.lang.ListMap;
+import com.ajah.util.text.Strings;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
@@ -30,135 +27,51 @@ import java.util.logging.Logger;
  */
 public class Report {
 
-	/**
-	 * 40 equals signs
-	 */
-	public static final String EQUAL_40 = "========================================";
+	ListMap<String, String> sections = new ListMap<>();
 
-	/**
-	 * 35 equals signs
-	 */
-	public static final String HYPEN35 = "-----------------------------------";
-
-	/**
-	 * Adds a number of tabs to nest things properly.
-	 * 
-	 * @param depth
-	 *            The number of levels deep we are.
-	 * @return Array of tab characters.
-	 */
-	public static char[] tabs(final int depth) {
-		final char[] tabs = new char[depth];
-		Arrays.fill(tabs, '\t');
-		return tabs;
+	public void add(final String section, final String message) {
+		add(section, message, false);
 	}
 
-	private final List<PrintWriter> writers = new ArrayList<>();
-
-	private Logger log;
-
-	/**
-	 * Add a file, automatically wrapped by a {@link PrintWriter}.
-	 * 
-	 * @param file
-	 *            The file to add/wrap.
-	 * @throws FileNotFoundException
-	 *             If the file could not be found.
-	 */
-	public void add(final File file) throws FileNotFoundException {
-		this.writers.add(new PrintWriter(file));
-	}
-
-	/**
-	 * Adds an OutputStream to write the report to, wrapped by a
-	 * {@link PrintWriter}.
-	 * 
-	 * @param out
-	 *            A stream to write the report to.
-	 */
-	public void add(final OutputStream out) {
-		this.writers.add(new PrintWriter(out));
-	}
-
-	/**
-	 * Adds an PrintWriter to write the report to.
-	 * 
-	 * @param writer
-	 *            A stream to write the report to.
-	 */
-	public void add(final PrintWriter writer) {
-		this.writers.add(writer);
-	}
-
-	/**
-	 * Closes all of the writers.
-	 */
-	public void close() {
-		for (final PrintWriter out : this.writers) {
-			out.close();
+	public void add(final String section, final String message, final boolean unique) {
+		if (!unique || this.sections.getList(section) == null || !this.sections.getList(section).contains(message)) {
+			this.sections.putValue(section, message);
 		}
 	}
 
-	/**
-	 * Prints a string to the writers.
-	 * 
-	 * @param string
-	 *            The string to print to the writers.
-	 */
-	public void print(final String string) {
-		this.log.info(string);
-		for (final PrintWriter out : this.writers) {
-			out.print(string);
-		}
-	}
-
-	/**
-	 * Prints a line of text with the appropriate leading tab characters.
-	 * 
-	 * @param depth
-	 *            The depth of the line in the hierarchy.
-	 * @param line
-	 *            The line to print.
-	 */
-	public void println(final int depth, final String line) {
-		if (this.writers.size() < 1) {
-			throw new IllegalArgumentException();
-		}
-		this.log.info(line);
-		for (final PrintWriter out : this.writers) {
-			if (depth > 0) {
-				out.print(tabs(depth));
+	public String getHtml() {
+		final StringBuilder text = new StringBuilder();
+		final Set<String> sortedSections = new TreeSet<>(this.sections.keySet());
+		for (final String section : sortedSections) {
+			text.append("<h2>" + section + "</h2>");
+			text.append(System.lineSeparator());
+			text.append("<hr />");
+			text.append(System.lineSeparator());
+			text.append("<ul>");
+			for (final String message : this.sections.get(section)) {
+				text.append("<li>" + message + "</li>");
+				text.append(System.lineSeparator());
 			}
-			out.println(line);
+			text.append("</ul>");
+			text.append(System.lineSeparator());
 		}
+		return text.toString();
 	}
 
-	/**
-	 * Prints a line at zero depth.
-	 * 
-	 * @see #println(int, String)
-	 * @param line
-	 *            The line to print.
-	 */
-	public void println(final String line) {
-		println(0, line);
-	}
-
-	/**
-	 * Writes a {@link #EQUAL_40} line.
-	 */
-	public void rule() {
-		println(EQUAL_40);
-	}
-
-	/**
-	 * Sets a logger to receive the report.
-	 * 
-	 * @param _log
-	 *            The logger to log to.
-	 */
-	public void set(final Logger _log) {
-		this.log = _log;
+	public String getText() {
+		final StringBuilder text = new StringBuilder();
+		for (final String section : this.sections.keySet()) {
+			text.append(section);
+			text.append(System.lineSeparator());
+			text.append(Strings.HYPEN35);
+			text.append(System.lineSeparator());
+			for (final String message : this.sections.get(section)) {
+				text.append(message);
+				text.append(System.lineSeparator());
+			}
+			text.append(System.lineSeparator());
+		}
+		return text.toString();
 	}
 
 }

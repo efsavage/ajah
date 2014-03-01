@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.util.io.file;
+package com.ajah.report;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,6 @@ import lombok.extern.java.Log;
 
 import com.ajah.util.MathUtils;
 import com.ajah.util.data.DataSizeUnit;
-import com.ajah.util.log.Report;
 
 /**
  * A utility for scanning a directory and generating a report about it's
@@ -35,14 +34,14 @@ import com.ajah.util.log.Report;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
-public class FileScan {
+public class FileScanReport {
 
 	private long files;
 	private long bytes;
 	private long directories;
 	private long emptyDirectories;
 	private final File root;
-	private final Report report;
+	private final ReportWriter report;
 	private static long[] ranges = new long[] { 0, 1, DataSizeUnit.KIBIBYTE.getBytes() - 1, DataSizeUnit.KIBIBYTE.getAsBytes(10), DataSizeUnit.KIBIBYTE.getAsBytes(100),
 			DataSizeUnit.MEBIBYTE.getAsBytes(1), DataSizeUnit.MEBIBYTE.getAsBytes(10), DataSizeUnit.MEBIBYTE.getAsBytes(100), Long.MAX_VALUE };
 	private static long[][] rangeCountSizes = new long[ranges.length][2];
@@ -62,13 +61,13 @@ public class FileScan {
 			// Request that every detail gets logged.
 			log.setLevel(Level.ALL);
 			final File file = new File(arg);
-			final Report report = new Report();
+			final ReportWriter report = new ReportWriter();
 			report.add(System.out);
 			report.set(log);
 			report.add(new File("/tmp/report-" + System.currentTimeMillis() + ".txt"));
 			report.rule();
 			report.println("Report for: " + file.getAbsolutePath());
-			final FileScan scan = new FileScan(file, report);
+			final FileScanReport scan = new FileScanReport(file, report);
 			scan.scan();
 			report.rule();
 			report.println("Scan Complete");
@@ -86,7 +85,7 @@ public class FileScan {
 	 * @param report
 	 *            The report to write results to.
 	 */
-	public FileScan(final File root, final Report report) {
+	public FileScanReport(final File root, final ReportWriter report) {
 		this.root = root;
 		this.report = report;
 	}

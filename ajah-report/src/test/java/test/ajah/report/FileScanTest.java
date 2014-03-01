@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package test.ajah.util.io.file;
+package test.ajah.report;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +25,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ajah.util.io.file.FileScan;
-import com.ajah.util.log.Report;
+import com.ajah.report.FileScanReport;
+import com.ajah.report.ReportWriter;
 
 /**
  * Tests {@link FileScan}.
@@ -47,9 +47,9 @@ public class FileScanTest {
 	@Test
 	public void runScan() throws IOException {
 		// TODO What's the best way to unit test files?
-		final Report report = new Report();
+		final ReportWriter report = new ReportWriter();
 		report.set(log);
-		new FileScan(this.file, report).scan();
+		new FileScanReport(this.file, report).scan();
 	}
 
 	/**
