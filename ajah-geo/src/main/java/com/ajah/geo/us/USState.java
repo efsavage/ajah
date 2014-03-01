@@ -193,4 +193,13 @@ public enum USState implements State {
 		return this.name;
 	}
 
+	public static USState get(String string) {
+		for (USState value : values()) {
+			if (value.name().equalsIgnoreCase(string) || value.getAbbr().equalsIgnoreCase(string) || value.getName().equalsIgnoreCase(string)) {
+				return value;
+			}
+		}
+		return null;
+	}
+
 }
