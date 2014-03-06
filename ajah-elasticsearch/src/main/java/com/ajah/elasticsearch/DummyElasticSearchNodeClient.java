@@ -15,13 +15,19 @@
  */
 package com.ajah.elasticsearch;
 
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+
 import lombok.extern.java.Log;
 
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
+import org.elasticsearch.action.index.IndexResponse;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A base client that allows for easily indexing and searching documents. Does
@@ -37,15 +43,18 @@ import com.ajah.util.StringUtils;
  *            The concrete class of the object stored/returned.
  */
 @Log
-public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AbstractElasticSearchClient<K, T, C> {
+public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements ElasticSearchClient<K, T, C> {
 
-	private Node node;
+	private final ObjectMapper mapper = new ObjectMapper();
+	private String index;
+	private String type;
+	private String clusterName;
 
 	/**
 	 * Public constructor with data set to false and no additional
 	 * configurations.
 	 */
-	public ElasticSearchNodeClient() {
+	public DummyElasticSearchNodeClient() {
 		this(false);
 	}
 
@@ -56,7 +65,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 * @param data
 	 *            Should this client use a data node?
 	 */
-	public ElasticSearchNodeClient(final boolean data) {
+	public DummyElasticSearchNodeClient(final boolean data) {
 		this(data, null, null, null);
 	}
 
@@ -71,7 +80,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 * @param clusterName
 	 *            The name of the cluster to use. If null it will use the type.
 	 */
-	public ElasticSearchNodeClient(final boolean data, final String typeName, final String indexName, final String clusterName) {
+	public DummyElasticSearchNodeClient(final boolean data, final String typeName, final String indexName, final String clusterName) {
 		// Derive the cluster, index, type name if needed
 		if (StringUtils.isBlank(typeName)) {
 			final String simpleName = getTargetClass().getSimpleName();
@@ -93,23 +102,52 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 		}
 		log.fine("Cluster name is: " + this.clusterName);
 
-		this.node = NodeBuilder.nodeBuilder().clusterName(this.clusterName).data(data).node();
-		this.client = this.node.client();
 		log.fine("Waiting for green status");
-		this.client.admin().cluster().prepareHealth().setWaitForGreenStatus().execute().actionGet();
 		log.fine("Green status achieved");
 	}
 
+	@SuppressWarnings("unchecked")
+	private Class<C> getTargetClass() {
+		return (Class<C>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+	}
+
 	/**
-	 * Closes the node.
+	 * Indexes a document.
 	 * 
-	 * @see java.lang.AutoCloseable#close()
+	 * @param entity
+	 *            The document to index.
+	 * @return The response of the index operations, synchronously.
+	 * @throws JsonProcessingException
+	 *             If the entity could not be parsed into JSON.
 	 */
-	@Override
-	public void close() throws Exception {
-		this.node.stop();
-		this.node.close();
-		super.close();
+	public IndexResponse index(final T entity) throws JsonProcessingException {
+
+		// IndexRequestBuilder irb = this.client.prepareIndex(this.index,
+		// this.type, entity.getId().toString());
+		final String json = this.mapper.writeValueAsString(entity);
+		log.finest(json);
+		// irb.setSource(json);
+		// ListenableActionFuture<IndexResponse> result = irb.execute();
+		log.finest("Executed");
+		return null;
+
+	}
+
+	/**
+	 * Returns a result of a search.
+	 * 
+	 * @param query
+	 *            The search query.
+	 * @return The results of the search.
+	 * @throws JsonParseException
+	 *             If the entity could not be parsed from the JSON.
+	 * @throws JsonMappingException
+	 *             If the entity could not be parsed from the JSON.
+	 * @throws IOException
+	 *             If the query failed to execute.
+	 */
+	public SearchList<C> search(final String query) throws IOException {
+		return new SearchList<>();
 	}
 
 }

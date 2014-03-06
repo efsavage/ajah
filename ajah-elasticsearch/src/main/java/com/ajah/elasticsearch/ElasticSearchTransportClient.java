@@ -39,7 +39,7 @@ import com.ajah.util.StringUtils;
  *            The concrete class of the object stored/returned.
  */
 @Log
-public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends ElasticSearchClient<K, T, C> {
+public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AbstractElasticSearchClient<K, T, C> {
 
 	private String hostname = "127.0.0.1";
 
