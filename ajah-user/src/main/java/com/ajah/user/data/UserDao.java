@@ -81,6 +81,19 @@ public interface UserDao extends AjahDao<UserId, User> {
 	public User findByUsernameAndPassword(final String username, final String password) throws DataOperationException;
 
 	/**
+	 * Finds a user by user ID and password.
+	 * 
+	 * @param userId
+	 *            The user ID to query.
+	 * @param password
+	 *            The (hashed) password to query.
+	 * @return The user, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public User findByUserIdAndPassword(final UserId userId, final String password) throws DataOperationException;
+
+	/**
 	 * Counts the records available that match the criteria.
 	 * 
 	 * @param type

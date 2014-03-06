@@ -30,6 +30,7 @@ import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
+import com.ajah.user.UserId;
 import com.ajah.user.UserNotFoundException;
 import com.ajah.user.data.UserManager;
 
@@ -93,6 +94,50 @@ public class LogInManager {
 			final User user = this.userManager.getUser(username, password);
 			login.setUser(user);
 			login.setUsername(username);
+			login.setStatus(LogInStatus.SUCCESS);
+			log.fine("User " + user.getUsername() + " logged in");
+		} catch (final RuntimeException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
+			login.setStatus(LogInStatus.ABORT);
+		} catch (final AuthenicationFailureException e) {
+			log.log(Level.INFO, e.getMessage());
+			login.setUsername(e.getUsername());
+			login.setStatus(LogInStatus.FAIL);
+		} catch (final UserNotFoundException e) {
+			log.log(Level.INFO, e.getMessage());
+			login.setStatus(LogInStatus.FAIL);
+		}
+		log.fine("Returning!");
+		return login;
+	}
+
+	/**
+	 * Returns a login record for a user.
+	 * 
+	 * @param username
+	 *            Username or email of the user logging in.
+	 * @param password
+	 *            Password of the user logging in, unencrypted.
+	 * @param ip
+	 *            IP of requesting user
+	 * @param source
+	 *            Source of login attempt
+	 * @param type
+	 *            Type of login attempt
+	 * @return Login record, will never return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public LogIn login(final UserId userId, final Password password, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
+		log.fine("Login by user/pass attempt for: " + userId);
+		final LogIn login = new LogIn();
+		login.setIp(ip);
+		login.setCreated(new Date());
+		login.setSource(source);
+		try {
+			final User user = this.userManager.getUser(userId, password);
+			login.setUser(user);
+			login.setUsername(user.getUsername());
 			login.setStatus(LogInStatus.SUCCESS);
 			log.fine("User " + user.getUsername() + " logged in");
 		} catch (final RuntimeException e) {

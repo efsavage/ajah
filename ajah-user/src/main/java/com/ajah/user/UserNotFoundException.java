@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package com.ajah.user;
 
 import lombok.EqualsAndHashCode;
+
+import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Thrown when a user is requested that does not exist.
@@ -52,6 +54,18 @@ public class UserNotFoundException extends Exception {
 		super("id: " + userId + " not found");
 		this.userId = userId;
 		this.username = null;
+	}
+
+	/**
+	 * Thrown when a user is requested by an email that does not exist.
+	 * 
+	 * @param emailAddress
+	 *            Email address that was sought.
+	 */
+	public UserNotFoundException(EmailAddress emailAddress) {
+		super("EMAIL: " + (emailAddress == null ? null : emailAddress.toString()));
+		this.username = emailAddress == null ? null : emailAddress.toString();
+		this.userId = null;
 	}
 
 }

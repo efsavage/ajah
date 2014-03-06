@@ -35,10 +35,9 @@ import com.ajah.user.UserNotFoundException;
 import com.ajah.user.UserStatus;
 import com.ajah.user.UserType;
 import com.ajah.user.email.Email;
-import com.ajah.user.email.EmailId;
-import com.ajah.user.email.EmailImpl;
-import com.ajah.user.email.EmailStatusImpl;
-import com.ajah.user.email.data.EmailDao;
+import com.ajah.user.email.EmailStatus;
+import com.ajah.user.email.EmailType;
+import com.ajah.user.email.data.EmailManager;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
 import com.ajah.user.info.UserSourceId;
@@ -64,7 +63,7 @@ public class UserManager {
 	private UserInfoDao userInfoDao;
 
 	@Autowired
-	private EmailDao emailDao;
+	EmailManager emailManager;
 
 	/**
 	 * Changes a user's password.
@@ -135,12 +134,7 @@ public class UserManager {
 		user.setType(UserType.NORMAL);
 		this.userDao.insert(user, password);
 
-		final Email email = new EmailImpl();
-		email.setId(new EmailId(UUID.randomUUID().toString()));
-		email.setUserId(user.getId());
-		email.setAddress(emailAddress);
-		email.setStatus(EmailStatusImpl.ACTIVE);
-		this.emailDao.insert(email);
+		final Email email = this.emailManager.create(emailAddress.toString(), EmailType.STANDARD, EmailStatus.ACTIVE).getEntity();
 
 		final UserInfo userInfo = new UserInfoImpl(user.getId());
 		userInfo.setPrimaryEmailId(email.getId());
@@ -160,8 +154,8 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findUserByEmail(final String address) throws UserNotFoundException, DataOperationException {
-		final Email email = this.emailDao.findByAddress(address);
+	public User findUserByEmail(final EmailAddress emailAddress) throws UserNotFoundException, DataOperationException {
+		final Email email = this.emailManager.find(emailAddress);
 		if (email != null) {
 			log.fine("Found email " + email.getAddress());
 			final User user = this.userDao.load(email.getUserId());
@@ -170,7 +164,7 @@ public class UserManager {
 				return user;
 			}
 		}
-		throw new UserNotFoundException(address);
+		throw new UserNotFoundException(emailAddress);
 	}
 
 	/**
@@ -207,7 +201,7 @@ public class UserManager {
 	 */
 	public User findUserByUsernameOrEmail(final String usernameOrEmail) throws UserNotFoundException, DataOperationException {
 		if (Validate.isEmail(usernameOrEmail)) {
-			return findUserByEmail(usernameOrEmail);
+			return findUserByEmail(new EmailAddress(usernameOrEmail));
 		}
 		return findUserByUsername(usernameOrEmail);
 	}
@@ -238,6 +232,34 @@ public class UserManager {
 		log.fine("getUser failed");
 
 		throw new AuthenicationFailureException(username + " authentication failed");
+	}
+
+	/**
+	 * Attempt to find a user and authenticate.
+	 * 
+	 * @param username
+	 *            A valid username for a user.
+	 * @param password
+	 *            The user's password, unencrypted.
+	 * @return User if found and authenticated correctly, will never return
+	 *         null.
+	 * @throws AuthenicationFailureException
+	 *             If the password was not correct
+	 * @throws UserNotFoundException
+	 *             If no user could be found for the username supplied
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public User getUser(final UserId userId, final Password password) throws AuthenicationFailureException, UserNotFoundException, DataOperationException {
+		AjahUtils.requireParam(userId, "userId");
+		final User user = this.userDao.findByUserIdAndPassword(userId, password.toString());
+		if (user != null) {
+			log.fine("getUser successful");
+			return user;
+		}
+		log.fine("getUser failed");
+
+		throw new AuthenicationFailureException(userId + " authentication failed");
 	}
 
 	/**
@@ -295,4 +317,5 @@ public class UserManager {
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
 	}
+
 }

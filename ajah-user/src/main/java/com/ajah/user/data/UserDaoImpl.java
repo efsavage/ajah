@@ -65,6 +65,11 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		return super.findByFields(new String[] { "username", "password" }, new String[] { username, password });
 	}
 
+	@Override
+	public User findByUserIdAndPassword(final UserId userId, final String password) throws DataOperationException {
+		return super.find(new Criteria().eq(userId).eq("password", password));
+	}
+
 	/**
 	 * This method is for saving a new user. It includes the password field
 	 * since that field is the only field on the user table that is not mapped
