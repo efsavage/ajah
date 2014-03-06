@@ -210,7 +210,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			}
 			for (final String column : getColumns()) {
 				final Field field = this.colMap.get(column);
-				if (rs.getObject(column) == null) {
+				if (field == null) {
+					log.warning("No field mapped for column: " + column);
+				} else if (rs.getObject(column) == null) {
 					propSet(entity, getProp(field, props), null);
 				} else if (IntrospectionUtils.isString(field)) {
 					propSet(entity, getProp(field, props), rs.getString(column));
