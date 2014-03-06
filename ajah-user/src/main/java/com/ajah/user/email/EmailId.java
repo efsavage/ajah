@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,18 +17,19 @@ package com.ajah.user.email;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
 /**
- * A wrapper around a String for typesafe email IDs.
+ * A wrapper around a String for typesafe {@link Email} IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Data
 public class EmailId implements Serializable, ToStringable, FromStringable, Comparable<EmailId> {
-
-	private static final long serialVersionUID = 7751132583460887962L;
 
 	private final String id;
 
@@ -36,7 +37,7 @@ public class EmailId implements Serializable, ToStringable, FromStringable, Comp
 	 * Simple string constructor.
 	 * 
 	 * @param id
-	 *            UID of email, cannot be null.
+	 *            UID of item, cannot be null.
 	 */
 	public EmailId(final String id) {
 		this.id = id;
@@ -51,34 +52,12 @@ public class EmailId implements Serializable, ToStringable, FromStringable, Comp
 	}
 
 	/**
-	 * Compares the wrapped string values.
-	 * 
-	 * @param other
-	 *            The other UserId
-	 * @return The results of {@link String#compareTo(String)}
-	 */
-	public boolean equals(final EmailId other) {
-		return this.id.equals(other.id);
-	}
-
-	/**
 	 * Returns the String passed into the constructor.
 	 * 
 	 * @return The String passed into the constructor.
 	 */
 	public String getId() {
 		return this.id;
-	}
-
-	/**
-	 * Returns consistent hashcode based on (but different from) the wrapped
-	 * string.
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return 9525 + this.id.hashCode();
 	}
 
 	/**

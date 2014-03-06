@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,32 +15,63 @@
  */
 package com.ajah.user.email.data;
 
+import java.util.List;
+
 import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
+import com.ajah.user.email.EmailStatus;
+import com.ajah.user.email.EmailType;
+import com.ajah.util.data.format.EmailAddress;
 
 /**
- * Data operations on the "user" table.
+ * DAO interface for {@link Email}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 public interface EmailDao extends AjahDao<EmailId, Email> {
 
-	@Override
-	DataOperationResult<Email> insert(final Email email);
+	/**
+	 * Returns a list of {@link Email}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of email, optional.
+	 * @param status
+	 *            The status of the email, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link Email}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	List<Email> list(EmailType type, EmailStatus status, long page, long count) throws DataOperationException;
 
 	/**
-	 * Finds an email record by its email address.
+	 * Counts the records available that match the criteria.
 	 * 
-	 * @param address
-	 *            The address to query, required.
-	 * @return The matching email, if found.
+	 * @param type
+	 *            The email type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
 	 * @throws DataOperationException
-	 *             If the query could not be executed
+	 *             If the query could not be executed.
 	 */
-	Email findByAddress(final String address) throws DataOperationException;
+	long count(EmailType type, EmailStatus status) throws DataOperationException;
+
+	/**
+	 * Locates an email by the address field.
+	 * 
+	 * @param emailAddress
+	 *            The address to search for.
+	 * @return The email entity, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	Email find(EmailAddress emailAddress) throws DataOperationException;
 
 }

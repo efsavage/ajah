@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,33 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.email;
+package com.ajah.user.email.data;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import com.ajah.user.email.Email;
+import com.ajah.user.email.EmailId;
 
 /**
- * Thrown when no persisted {@link Email} could be found.
+ * Thrown when an {@link Email} was expected to be found, but was not.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class EmailNotFoundException extends Exception {
 
-	private static final long serialVersionUID = 6056888345467361434L;
+	EmailId id;
 
 	/**
-	 * @see Exception#Exception()
+	 * Thrown when an {@link Email} could not be found by it's internal ID.
+	 * 
+	 * @param id
+	 *            The internal ID that was sought.
 	 */
-	public EmailNotFoundException() {
-		super();
-	}
-
-	/**
-	 * @param emailId
-	 *            The ID of the email that was sought.
-	 * @see Exception#Exception(String)
-	 */
-	public EmailNotFoundException(final EmailId emailId) {
-		super(emailId.getId());
+	public EmailNotFoundException(final EmailId id) {
+		super("ID: " + id);
+		this.id = id;
 	}
 
 }

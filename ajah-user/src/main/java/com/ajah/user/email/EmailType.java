@@ -18,39 +18,31 @@ package com.ajah.user.email;
 import com.ajah.util.IdentifiableEnum;
 
 /**
- * Valid states of {@link Email} entities.
+ * Valid states of Email entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum EmailStatus implements IdentifiableEnum<String> {
+public enum EmailType implements IdentifiableEnum<String> {
 
 	/**
-	 * Inactive.
+	 * Standard.
 	 */
-	INACTIVE("0", "ina", "Inactive", "Inactive.", false, false, false),
+	STANDARD("0", "std", "Standard", "Standard."),
 	/**
-	 * Active.
+	 * Special.
 	 */
-	ACTIVE("1", "act", "Active", "Active.", true, false, false),
-	/**
-	 * Error.
-	 */
-	ERROR("-2", "err", "Error", "Error.", false, true, false),
-	/**
-	 * Deleted.
-	 */
-	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
+	SPECIAL("1", "spe", "Special", "Special.");
 
 	/**
-	 * Finds a EmailStatus that matches the id on id, name, or name().
+	 * Finds a EmailType that matches the id on id, name, or name().
 	 * 
 	 * @param string
 	 *            Value to match against id, name, or name()
-	 * @return Matching EmailStatus, or null.
+	 * @return Matching EmailType, or null.
 	 */
-	public static EmailStatus get(final String string) {
-		for (final EmailStatus type : values()) {
+	public static EmailType get(final String string) {
+		for (final EmailType type : values()) {
 			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
 				return type;
 			}
@@ -62,18 +54,12 @@ public enum EmailStatus implements IdentifiableEnum<String> {
 	private final String code;
 	private final String name;
 	private final String description;
-	private final boolean active;
-	private final boolean error;
-	private final boolean deleted;
 
-	private EmailStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
+	private EmailType(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
-		this.active = active;
-		this.error = error;
-		this.deleted = deleted;
 	}
 
 	/**
@@ -122,30 +108,4 @@ public enum EmailStatus implements IdentifiableEnum<String> {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Does this status mean that the entity is active?
-	 * 
-	 * @return true if active, otherwise false
-	 */
-	public boolean isActive() {
-		return this.active;
-	}
-
-	/**
-	 * Does this status mean that the entity is in an error state?
-	 * 
-	 * @return true if in error state, otherwise false
-	 */
-	public boolean isError() {
-		return this.error;
-	}
-
-	/**
-	 * Does this status mean that the entity has been deleted?
-	 * 
-	 * @return true if deleted, otherwise false
-	 */
-	public boolean isDeleted() {
-		return this.deleted;
-	}
 }

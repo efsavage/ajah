@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,70 +15,22 @@
  */
 package com.ajah.user.email;
 
+import java.util.Date;
+
+import lombok.Data;
+
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
-import com.ajah.util.data.format.EmailAddress;
 
-/**
- * An email address, as associated with a user.
- * 
- * @author Eric F. Savage <code@efsavage.com>
- * 
- */
-public interface Email extends Identifiable<EmailId> {
+@Data
+public class Email implements Identifiable<EmailId> {
 
-	/**
-	 * Sets the unique ID of this email record.
-	 * 
-	 * @param emailId
-	 *            The unique ID of this email record.
-	 */
-	@Override
-	void setId(final EmailId emailId);
-
-	/**
-	 * Sets the ID of the user to whom this email belongs.
-	 * 
-	 * @param userId
-	 *            The ID of the user to whom this email belongs.
-	 */
-	void setUserId(final UserId userId);
-
-	/**
-	 * Sets the email address.
-	 * 
-	 * @param address
-	 *            The email address.
-	 */
-	void setAddress(final EmailAddress address);
-
-	/**
-	 * Sets the status of this Email.
-	 * 
-	 * @param emailStatus
-	 *            The status of this Email.
-	 */
-	void setStatus(final EmailStatus emailStatus);
-
-	/**
-	 * Gets the ID of the user to whom this email belongs.
-	 * 
-	 * @return userId The ID of the user to whom this email belongs.
-	 */
-	UserId getUserId();
-
-	/**
-	 * Gets the email address.
-	 * 
-	 * @return The email address.
-	 */
-	EmailAddress getAddress();
-
-	/**
-	 * Returns the status of this Email.
-	 * 
-	 * @return The status of this Email.
-	 */
-	EmailStatus getStatus();
+	private EmailId id;
+	private UserId userId;
+	private String address;
+	private EmailStatus status;
+	private EmailType type;
+	private boolean verified;
+	private Date created;
 
 }

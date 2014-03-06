@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,44 +15,65 @@
  */
 package com.ajah.user.email.data;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
-import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.criteria.Criteria;
+import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
-import com.ajah.user.email.EmailImpl;
+import com.ajah.user.email.EmailStatus;
+import com.ajah.user.email.EmailType;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.data.format.EmailAddress;
 
 /**
- * Data operations on the "user" table.
+ * MySQL-based implementation of {@link EmailDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Repository
-public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, EmailImpl> implements EmailDao {
+public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> implements EmailDao {
 
 	@Override
-	public Email findByAddress(final String address) throws DataOperationException {
-		return super.findByField("address", address);
+	public List<Email> list(EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
+		Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
 	}
 
 	/**
-	 * INSERTs an {@link Email} entity.
-	 * 
-	 * @param email
-	 *            The {@link Email} to insert.
-	 * @return Number of rows affected.
+	 * @see com.ajah.user.email.data.EmailDao#count(com.ajah.user.email.EmailType,
+	 *      com.ajah.user.email.EmailStatus)
 	 */
 	@Override
-	public DataOperationResult<Email> insert(final Email email) {
-		// TODO Necessary?
-		AjahUtils.requireParam(email, "email");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
-		return new DataOperationResult<>(email, this.jdbcTemplate.update("INSERT INTO email (email_id, user_id, address, status) VALUES (?,?,?,?)", new Object[] { email.getId().getId(),
-				email.getUserId().getId(), email.getAddress().toString(), email.getStatus().getId() }));
+	public long count(EmailType type, EmailStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	/**
+	 * @see com.ajah.user.email.data.EmailDao#find(com.ajah.util.data.format.EmailAddress)
+	 */
+	@Override
+	public Email find(EmailAddress emailAddress) throws DataOperationException {
+		AjahUtils.requireParam(emailAddress, "emailAddress");
+		return super.find("address", emailAddress.toString());
 	}
 
 }
