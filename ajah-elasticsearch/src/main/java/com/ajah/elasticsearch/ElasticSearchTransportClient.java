@@ -17,8 +17,10 @@ package com.ajah.elasticsearch;
 
 import lombok.extern.java.Log;
 
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
@@ -37,27 +39,16 @@ import com.ajah.util.StringUtils;
  *            The concrete class of the object stored/returned.
  */
 @Log
-public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends ElasticSearchClient<K, T, C> {
+public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends ElasticSearchClient<K, T, C> {
 
-	private Node node;
+	private String hostname = "127.0.0.1";
 
 	/**
 	 * Public constructor with data set to false and no additional
 	 * configurations.
 	 */
-	public ElasticSearchNodeClient() {
-		this(false);
-	}
-
-	/**
-	 * Public constructor with configurable data parameter and all other values
-	 * set to defaults.
-	 * 
-	 * @param data
-	 *            Should this client use a data node?
-	 */
-	public ElasticSearchNodeClient(final boolean data) {
-		this(data, null, null, null);
+	public ElasticSearchTransportClient() {
+		this(null, null, null, null);
 	}
 
 	/**
@@ -71,7 +62,10 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 * @param clusterName
 	 *            The name of the cluster to use. If null it will use the type.
 	 */
-	public ElasticSearchNodeClient(final boolean data, final String typeName, final String indexName, final String clusterName) {
+	public ElasticSearchTransportClient(final String hostname, final String typeName, final String indexName, final String clusterName) {
+		if (!StringUtils.isBlank(hostname)) {
+			this.hostname = hostname;
+		}
 		// Derive the cluster, index, type name if needed
 		if (StringUtils.isBlank(typeName)) {
 			final String simpleName = getTargetClass().getSimpleName();
@@ -92,24 +86,10 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 			this.clusterName = clusterName;
 		}
 		log.fine("Cluster name is: " + this.clusterName);
-
-		this.node = NodeBuilder.nodeBuilder().clusterName(this.clusterName).data(data).node();
-		this.client = this.node.client();
+		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clusterName).build();
+		this.client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(this.hostname, 9300));
 		log.fine("Waiting for green status");
 		this.client.admin().cluster().prepareHealth().setWaitForGreenStatus().execute().actionGet();
 		log.fine("Green status achieved");
 	}
-
-	/**
-	 * Closes the node.
-	 * 
-	 * @see java.lang.AutoCloseable#close()
-	 */
-	@Override
-	public void close() throws Exception {
-		this.node.stop();
-		this.node.close();
-		super.close();
-	}
-
 }
