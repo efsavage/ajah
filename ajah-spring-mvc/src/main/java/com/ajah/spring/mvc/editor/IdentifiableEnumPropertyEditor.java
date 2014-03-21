@@ -20,6 +20,7 @@ import java.beans.PropertyEditorSupport;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.IdentifiableEnum;
+import com.ajah.util.StringUtils;
 
 /**
  * Generic class that will map an enum based on its {@link Identifiable#getId()}
@@ -140,6 +141,10 @@ public class IdentifiableEnumPropertyEditor<E extends IdentifiableEnum<?>> exten
 	 */
 	@Override
 	public void setAsText(final String text) throws java.lang.IllegalArgumentException {
+		if (StringUtils.isBlank(text)) {
+			setValue(null);
+			return;
+		}
 		for (final E candidate : this.values) {
 			if (this.matchId && equals(candidate.getId().toString(), text)) {
 				setValue(candidate);
