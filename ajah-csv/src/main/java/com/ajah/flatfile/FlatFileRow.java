@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.ajah.util.StringUtils;
 
 /**
@@ -38,6 +41,14 @@ public class FlatFileRow {
 
 	private FlatFileReader reader;
 	private FlatFileWriter writer;
+
+	/**
+	 * Excel will wrap any field that contains a space or other character with
+	 * double quotes even when saving in tab-delimited format.
+	 */
+	@Getter
+	@Setter
+	private boolean stripWrappedQuotes;
 
 	/**
 	 * Create an empty row based on a column set.
@@ -78,6 +89,9 @@ public class FlatFileRow {
 		if (column != null) {
 			final String value = this.values.get(column);
 			if (!StringUtils.isBlank(value)) {
+				if (stripWrappedQuotes && value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+					return value.substring(1, value.length() - 2);
+				}
 				return value;
 			}
 			if (!StringUtils.isBlank(column.getDefaultValue())) {

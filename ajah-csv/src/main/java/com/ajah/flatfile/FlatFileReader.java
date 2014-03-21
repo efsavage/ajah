@@ -55,6 +55,13 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	@Getter
 	@Setter
 	private boolean flushEveryLine;
+	/**
+	 * Excel will wrap any field that contains a space or other character with
+	 * double quotes even when saving in tab-delimited format.
+	 */
+	@Getter
+	@Setter
+	private boolean stripWrappedQuotes;
 
 	/**
 	 * Constructs a reader from a file.
@@ -171,6 +178,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	@Override
 	public FlatFileRow next() {
 		this.row = new FlatFileRow(this.map, this);
+		this.row.setStripWrappedQuotes(this.stripWrappedQuotes);
 		String line;
 		try {
 			line = this.reader.readLine();
