@@ -9,10 +9,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
-		<!-- Versions of things commonly used in child projects, but not listed as a dependency here. -->
+
+		<!-- Versions of things commonly used in child projects, but not listed 
+			as a dependency here. -->
 		<ch.qos.logback.version>1.1.0</ch.qos.logback.version>
-		<elasticsearch.version>0.90.11</elasticsearch.version>
+		<elasticsearch.version>1.0.1</elasticsearch.version>
 		<httpclient.version>4.3.2</httpclient.version>
 		<javamail.version>1.5.1</javamail.version>
 		<jets3t.version>0.9.0</jets3t.version>
@@ -177,7 +178,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -271,7 +273,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>0.11.6</version>
+			<version>1.12.6</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -313,6 +315,11 @@
 		<module>../ajah-thread</module>
 		<module>../ajah-user</module>
 		<module>../ajah-amazon-s3</module>
+		<module>../ajah-achievement</module>
+		<module>../ajah-rest-api</module>
+		<module>../ajah-report</module>
+		<module>../ajah-sitemap</module>
+		<module>../ajah-ftp</module>
 	</modules>
 
 	<licenses>
