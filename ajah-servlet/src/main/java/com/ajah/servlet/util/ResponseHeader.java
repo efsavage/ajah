@@ -32,6 +32,10 @@ public enum ResponseHeader {
 	 */
 	ACCESS_CONTROL_ALLOW_HEADERS("Access-Control-Allow-Headers"),
 	/**
+	 * Access-Control-Allow-Credentials
+	 */
+	ACCESS_CONTROL_ALLOW_CREDENTIALS("Access-Control-Allow-Credentials"),
+	/**
 	 * Expires
 	 */
 	EXPIRES("Expires"),
