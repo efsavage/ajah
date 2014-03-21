@@ -54,6 +54,8 @@ public class DateUtils {
 
 	private static DateFormat DAY_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
+	public static final DateFormat W3C_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+
 	/**
 	 * Adds a number of days to the given date.
 	 * 
