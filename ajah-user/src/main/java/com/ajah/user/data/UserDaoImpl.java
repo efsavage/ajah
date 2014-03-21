@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -117,4 +117,11 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		}
 	}
 
+	/**
+	 * @see com.ajah.user.data.UserDao#getRandomUser(UserStatus)
+	 */
+	@Override
+	public User getRandomUser(UserStatus status) throws DataOperationException {
+		return super.find(new Criteria().eq("status", status).randomOrder());
+	}
 }

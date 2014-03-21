@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ public class UserManager {
 		user.setType(UserType.NORMAL);
 		this.userDao.insert(user, password);
 
-		final Email email = this.emailManager.create(emailAddress.toString(), EmailType.STANDARD, EmailStatus.ACTIVE).getEntity();
+		final Email email = this.emailManager.create(user.getId(), emailAddress.toString(), EmailType.STANDARD, EmailStatus.ACTIVE).getEntity();
 
 		final UserInfo userInfo = new UserInfoImpl(user.getId());
 		userInfo.setPrimaryEmailId(email.getId());
@@ -316,6 +316,17 @@ public class UserManager {
 	 */
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
+	}
+
+	/**
+	 * Returns a random active.
+	 * 
+	 * @return A random user, may be null if no users satisfy the criteria.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public User getRandomUser() throws DataOperationException {
+		return this.userDao.getRandomUser(UserStatus.ACTIVE);
 	}
 
 }

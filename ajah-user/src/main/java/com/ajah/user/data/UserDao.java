@@ -1,4 +1,4 @@
-/*  Copyright 2011 Eric F. Savage, code@efsavage.com
+/*  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -105,5 +105,16 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 *             If the query could not be executed.
 	 */
 	long count(final UserType type, final UserStatus status) throws DataOperationException;
+
+	/**
+	 * Returns a random user in the status specified.
+	 * 
+	 * @param status
+	 *            The status constraint of the query.
+	 * @return A random user, may be null if no users satisfy the criteria.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	User getRandomUser(UserStatus active) throws DataOperationException;
 
 }

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailStatus;
@@ -118,6 +119,8 @@ public class EmailManager {
 	/**
 	 * Creates a new {@link Email} with the given properties.
 	 * 
+	 * @param userId
+	 * 
 	 * @param address
 	 *            The actual address of the email, required.
 	 * @param type
@@ -129,8 +132,9 @@ public class EmailManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<Email> create(String address, EmailType type, EmailStatus status) throws DataOperationException {
+	public DataOperationResult<Email> create(UserId userId, String address, EmailType type, EmailStatus status) throws DataOperationException {
 		Email email = new Email();
+		email.setUserId(userId);
 		email.setAddress(address);
 		email.setType(type);
 		email.setStatus(status);
