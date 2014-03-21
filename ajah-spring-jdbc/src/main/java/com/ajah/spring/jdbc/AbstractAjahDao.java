@@ -150,6 +150,12 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			ps.setNull(index, Types.NULL);
 		} else if (String.class.isAssignableFrom(value.getClass())) {
 			ps.setString(index, (String) value);
+		} else if (Boolean.class.isAssignableFrom(value.getClass())) {
+			if (((Boolean) value).booleanValue()) {
+				ps.setInt(index, 1);
+			} else {
+				ps.setInt(index, 0);
+			}
 		} else if (Integer.class.isAssignableFrom(value.getClass())) {
 			ps.setInt(index, ((Integer) value).intValue());
 		} else if (Long.class.isAssignableFrom(value.getClass())) {
@@ -797,7 +803,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 */
 	public DataOperationResult<T> insert(final T entity, final boolean delayed) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
-		AjahUtils.requireParam(entity.getId(), "entity.id");
+		if (!isAutoIdAssign()) {
+			AjahUtils.requireParam(entity.getId(), "entity.id");
+		}
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
 			if (isAutoIdAssign()) {
