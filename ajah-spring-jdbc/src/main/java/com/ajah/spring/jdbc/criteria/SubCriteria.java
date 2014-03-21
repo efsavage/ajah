@@ -29,7 +29,7 @@ import com.ajah.util.lang.NameValuePair;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public class SubCriteria {
+public class SubCriteria extends AbstractCriteria<SubCriteria> {
 
 	private List<NameValuePair<String>> orLikes = null;
 	private List<NameValuePair<Number>> gts = null;
@@ -62,6 +62,24 @@ public class SubCriteria {
 		final List<String> values = new ArrayList<>();
 		final StringBuilder where = new StringBuilder();
 		boolean first = true;
+		if (!CollectionUtils.isEmpty(this.eqs)) {
+			for (final NameValuePair<String> eq : this.eqs) {
+				if (first) {
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append("`");
+				where.append(eq.getName());
+				where.append("`");
+				if (eq.getValue() == null) {
+					where.append(" IS NULL");
+				} else {
+					where.append("=?");
+					values.add(eq.getValue());
+				}
+			}
+		}
 		if (!CollectionUtils.isEmpty(this.orLikes)) {
 			where.append("(");
 			for (final NameValuePair<String> orLike : this.orLikes) {
@@ -143,6 +161,14 @@ public class SubCriteria {
 			this.orLikes = new ArrayList<>();
 		}
 		this.orLikes.add(new NameValuePair<>(field, pattern));
+		return this;
+	}
+
+	/**
+	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
+	 */
+	@Override
+	protected SubCriteria getThis() {
 		return this;
 	}
 

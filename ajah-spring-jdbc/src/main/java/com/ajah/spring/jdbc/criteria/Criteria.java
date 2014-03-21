@@ -23,9 +23,6 @@ import lombok.extern.java.Log;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
-import com.ajah.util.Identifiable;
-import com.ajah.util.StringUtils;
-import com.ajah.util.ToStringable;
 import com.ajah.util.lang.NameValuePair;
 
 /**
@@ -38,9 +35,9 @@ import com.ajah.util.lang.NameValuePair;
 @Log
 // TODO add gt/lt/ge/le/ne
 // TODO handle Date params
-public class Criteria {
+public class Criteria extends AbstractCriteria<Criteria> {
 
-	private List<NameValuePair<String>> eqs = null;
+	private List<NameValuePair<String>> gts = null;
 	private List<NameValuePair<String>> gtes = null;
 	private List<NameValuePair<String>> ltes = null;
 	private List<NameValuePair<String>> likes = null;
@@ -92,104 +89,6 @@ public class Criteria {
 	}
 
 	/**
-	 * A field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final boolean value) {
-		// TODO This should probably be 0 or !0.
-		AjahUtils.requireParam(field, "field");
-		return eq(field, value ? 1 : 0);
-	}
-
-	/**
-	 * A field match. Supports nulls (as "IS NULL").
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be. {@ink Identifable#getId()} will
-	 *            be invoked on this object if it is not null.
-	 *            {@link Object#toString()} will then be invoked on the ID
-	 *            object, which must not be null.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final Identifiable<?> value) {
-		AjahUtils.requireParam(field, "field");
-		if (value == null) {
-			return eq(field, (String) null);
-		}
-		return eq(field, value.getId().toString());
-	}
-
-	/**
-	 * A field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final long value) {
-		AjahUtils.requireParam(field, "field");
-		return eq(field, String.valueOf(value));
-	}
-
-	/**
-	 * A field match. Supports nulls (as "IS NULL").
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final String value) {
-		AjahUtils.requireParam(field, "field");
-		if (this.eqs == null) {
-			this.eqs = new ArrayList<>();
-		}
-		this.eqs.add(new NameValuePair<>(field, value));
-		return this;
-	}
-
-	/**
-	 * A field match. Supports nulls (as "IS NULL").
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final String field, final ToStringable value) {
-		AjahUtils.requireParam(field, "field");
-		if (value == null) {
-			return eq(field, (String) null);
-		}
-		return eq(field, value.toString());
-	}
-
-	/**
-	 * A field match with an inferred name. Primarily used for Id classes so
-	 * passing a UserId of value '123' would call {@link #eq(String, String)}
-	 * with a field of 'user_id' and a value of '123'.
-	 * 
-	 * @param value
-	 *            The value the field must be.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria eq(final ToStringable value) {
-		AjahUtils.requireParam(value, "value");
-		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
-	}
-
-	/**
 	 * Returns the LIMIT number of this Criteria. The default value is 0, which
 	 * will yield a query without a LIMIT clause.
 	 * 
@@ -221,7 +120,9 @@ public class Criteria {
 				sql.append(",");
 			}
 			sql.append(orderBy.getName());
-			if (orderBy.getValue() != Order.ASC) {
+			if (orderBy.getValue() == null) {
+				// Do nothing
+			} else if (orderBy.getValue() != Order.ASC) {
 				sql.append(" ");
 				sql.append(orderBy.getValue().name());
 			}
@@ -271,6 +172,21 @@ public class Criteria {
 				where.append("`");
 				where.append(">=?");
 				values.add(gte.getValue());
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.gts)) {
+			for (final NameValuePair<String> gt : this.gts) {
+				if (first) {
+					where.append(" WHERE ");
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append("`");
+				where.append(gt.getName());
+				where.append("`");
+				where.append(">?");
+				values.add(gt.getValue());
 			}
 		}
 		if (!CollectionUtils.isEmpty(this.ltes)) {
@@ -362,6 +278,20 @@ public class Criteria {
 	}
 
 	/**
+	 * A greater-than match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gt(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
+		return gt(field, String.valueOf(value));
+	}
+
+	/**
 	 * A greater-than or equal-to field match.
 	 * 
 	 * @param field
@@ -376,6 +306,24 @@ public class Criteria {
 			this.gtes = new ArrayList<>();
 		}
 		this.gtes.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A greater-than field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than .
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gt(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.gts == null) {
+			this.gts = new ArrayList<>();
+		}
+		this.gts.add(new NameValuePair<>(field, value));
 		return this;
 	}
 
@@ -498,7 +446,7 @@ public class Criteria {
 	 * @return Criteria instance the method was invoked on (for chaining).
 	 */
 	public Criteria or(final SubCriteria subCriteria) {
-		AjahUtils.requireParam(subCriteria, "field");
+		AjahUtils.requireParam(subCriteria, "subCriteria");
 		if (this.ors == null) {
 			this.ors = new ArrayList<>();
 		}
@@ -545,6 +493,27 @@ public class Criteria {
 	 */
 	public Criteria unique() {
 		this.rowCount = 1;
+		return this;
+	}
+
+	/**
+	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
+	 */
+	@Override
+	protected Criteria getThis() {
+		return this;
+	}
+
+	/**
+	 * Adds an ORDER BY RAND() sort.
+	 * 
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria randomOrder() {
+		if (this.orderBys == null) {
+			this.orderBys = new ArrayList<>();
+		}
+		this.orderBys.add(new NameValuePair<>("RAND()", (Order) null));
 		return this;
 	}
 
