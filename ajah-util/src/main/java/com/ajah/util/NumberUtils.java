@@ -45,4 +45,25 @@ public class NumberUtils {
 		}
 	}
 
+	/**
+	 * Parses an array of Strings into an array of ints.
+	 * 
+	 * @param strings
+	 *            An array of strings, may be null or empty, but should not
+	 *            contain null values.
+	 * @return The array of ints, will be null if null is passed in.
+	 * @throws NumberFormatException
+	 *             If any of the strings cannot be parsed.
+	 */
+	public static int[] parseInts(String[] strings) {
+		if (strings == null) {
+			return null;
+		}
+		int[] ints = new int[strings.length];
+		for (int i = 0; i < strings.length; i++) {
+			ints[i] = Integer.parseInt(strings[i]);
+		}
+		return ints;
+	}
+
 }
