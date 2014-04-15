@@ -259,7 +259,7 @@ public class StringUtils {
 	 * Returns leftmost characters of a string.
 	 * 
 	 * @param string
-	 *            String to be tested, may be null.
+	 *            String to be chopped, may be null.
 	 * @param length
 	 *            The maximum length of the string to return.
 	 * @return The leftmost characters of a string. If the string was null, or
@@ -271,6 +271,25 @@ public class StringUtils {
 			return string;
 		}
 		return string.substring(0, length);
+	}
+
+	/**
+	 * Returns rightmost characters of a string.
+	 * 
+	 * @param string
+	 *            String to be chopped, may be null.
+	 * @param length
+	 *            The maximum length of the string to return.
+	 * @return The leftmost characters of a string. If the string was null, or
+	 *         shorter than the specified lenght, the original string will be
+	 *         returned.
+	 */
+	public static String right(final String string, final int length) {
+		if (string == null || string.length() < length) {
+			return string;
+		}
+		int fullLength = string.length();
+		return string.substring(fullLength - length, fullLength);
 	}
 
 	/**
