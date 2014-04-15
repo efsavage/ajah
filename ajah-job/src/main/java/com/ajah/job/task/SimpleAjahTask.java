@@ -15,27 +15,26 @@
  */
 package com.ajah.job.task;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
+import com.ajah.job.run.Run;
+
 /**
+ * Simplest concrete implementation of {@link AjahTask}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-@Log
-public class SimpleAjahTask implements AjahTask {
+public abstract class SimpleAjahTask implements AjahTask {
 
 	protected ApplicationContext applicationContext;
 
 	/**
-	 * @see java.lang.Runnable#run()
+	 * @see com.ajah.job.task.AjahTask#execute(Run)
 	 */
 	@Override
-	public void run() {
-		log.fine("Running!");
-	}
+	public abstract void execute(Run run) throws TaskExecutionException;
 
 	/**
 	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)

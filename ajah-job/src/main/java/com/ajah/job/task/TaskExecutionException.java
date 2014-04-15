@@ -13,20 +13,21 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 package com.ajah.job.task;
 
-import org.springframework.context.ApplicationContextAware;
-
-import com.ajah.job.run.Run;
-
 /**
- * Interface to implement for a {@link Task}.
- * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
  */
-public interface AjahTask extends ApplicationContextAware {
+public class TaskExecutionException extends Exception {
 
-	void execute(Run run) throws TaskExecutionException;
+	/**
+	 * @see Throwable#Throwable(Throwable)
+	 */
+	public TaskExecutionException(Throwable t) {
+		super(t);
+	}
 
 }

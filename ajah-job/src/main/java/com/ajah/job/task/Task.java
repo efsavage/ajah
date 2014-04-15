@@ -21,6 +21,7 @@ import lombok.Data;
 
 import org.springframework.context.ApplicationContext;
 
+import com.ajah.job.run.Run;
 import com.ajah.util.Identifiable;
 
 @Data
@@ -33,14 +34,11 @@ public class Task implements Identifiable<TaskId> {
 	private TaskType type;
 	private Date created;
 
-	/**
-	 * @see java.lang.Runnable#run()
-	 */
-	public void execute(final ApplicationContext applicationContext) {
+	public void execute(Run run, final ApplicationContext applicationContext) throws TaskExecutionException {
 		try {
 			final AjahTask ajahTask = (AjahTask) Class.forName(getClazz()).newInstance();
 			ajahTask.setApplicationContext(applicationContext);
-			ajahTask.run();
+			ajahTask.execute(run);
 		} catch (final InstantiationException e) {
 			throw new TaskConfigurationException(e);
 		} catch (final IllegalAccessException e) {
