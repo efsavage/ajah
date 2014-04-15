@@ -23,6 +23,7 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailStatus;
@@ -40,8 +41,8 @@ import com.ajah.util.data.format.EmailAddress;
 public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> implements EmailDao {
 
 	@Override
-	public List<Email> list(EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public List<Email> list(UserId userId, EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
+		Criteria criteria = new Criteria().eq(userId);
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -56,8 +57,8 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 	 *      com.ajah.user.email.EmailStatus)
 	 */
 	@Override
-	public long count(EmailType type, EmailStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(UserId userId, EmailType type, EmailStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria().eq(userId);
 		if (type != null) {
 			criteria.eq("type", type);
 		}

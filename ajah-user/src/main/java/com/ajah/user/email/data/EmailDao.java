@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailStatus;
@@ -36,6 +37,8 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	/**
 	 * Returns a list of {@link Email}s that match the specified criteria.
 	 * 
+	 * @param userId
+	 *            The ID of the user to list email addresses for.
 	 * @param type
 	 *            The type of email, optional.
 	 * @param status
@@ -48,7 +51,7 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<Email> list(EmailType type, EmailStatus status, long page, long count) throws DataOperationException;
+	List<Email> list(UserId userId, EmailType type, EmailStatus status, long page, long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,7 +64,7 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(EmailType type, EmailStatus status) throws DataOperationException;
+	long count(UserId userId, EmailType type, EmailStatus status) throws DataOperationException;
 
 	/**
 	 * Locates an email by the address field.

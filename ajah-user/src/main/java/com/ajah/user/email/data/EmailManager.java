@@ -100,6 +100,8 @@ public class EmailManager {
 	/**
 	 * Returns a list of {@link Email}s that match the specified criteria.
 	 * 
+	 * @param userId
+	 * 
 	 * @param type
 	 *            The type of email, optional.
 	 * @param status
@@ -112,8 +114,8 @@ public class EmailManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<Email> list(EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
-		return this.emailDao.list(type, status, page, count);
+	public List<Email> list(UserId userId, EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
+		return this.emailDao.list(userId, type, status, page, count);
 	}
 
 	/**
@@ -168,8 +170,8 @@ public class EmailManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public long count() throws DataOperationException {
-		return count(null, null);
+	public long count(UserId userId) throws DataOperationException {
+		return count(userId, null, null);
 	}
 
 	/**
@@ -183,8 +185,8 @@ public class EmailManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public long count(final EmailType type, final EmailStatus status) throws DataOperationException {
-		return this.emailDao.count(type, status);
+	public long count(UserId userId, final EmailType type, final EmailStatus status) throws DataOperationException {
+		return this.emailDao.count(userId, type, status);
 	}
 
 	/**
