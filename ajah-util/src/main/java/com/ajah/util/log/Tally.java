@@ -125,7 +125,9 @@ public class Tally<T> {
 		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
 		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
 		Collections.sort(top, new EntryValueComparator<T, Long>());
-		top = top.subList(0, number);
+		if (top.size() > number) {
+			top = top.subList(0, number);
+		}
 		for (final Entry<T, Long> entry : top) {
 			this.out.println(entry.getKey().toString() + ": " + entry.getValue());
 		}
