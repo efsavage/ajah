@@ -23,6 +23,7 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.UserSetting;
 import com.ajah.user.UserSettingId;
 import com.ajah.user.UserSettingStatus;
@@ -63,6 +64,14 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 			criteria.eq("status", status);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+	}
+
+	/**
+	 * @see com.ajah.user.data.UserSettingDao#find(UserId, String)
+	 */
+	@Override
+	public UserSetting find(UserId userId, String name) throws DataOperationException {
+		return super.find(new Criteria().eq(userId).eq("name", name));
 	}
 
 }

@@ -26,10 +26,12 @@ import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.UserSetting;
 import com.ajah.user.UserSettingId;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
+import com.ajah.util.compare.CompareUtils;
 
 /**
  * Manages data operations for {@link UserSetting}.
@@ -179,4 +181,24 @@ public class UserSettingManager {
 		return result;
 	}
 
+	public UserSetting find(UserId userId, String name) throws DataOperationException {
+		return this.userSettingDao.find(userId, name);
+	}
+
+	public UserSetting set(UserId userId, String name, String value) throws DataOperationException {
+		UserSetting userSetting = find(userId, name);
+		if (userSetting == null) {
+			userSetting = new UserSetting();
+			userSetting.setName(name);
+			userSetting.setUserId(userId);
+			userSetting.setType(UserSettingType.STANDARD);
+			userSetting.setStatus(UserSettingStatus.ACTIVE);
+		}
+		if (CompareUtils.compare(value, userSetting.getValue()) == 0) {
+			return userSetting;
+		}
+		userSetting.setValue(value);
+		save(userSetting);
+		return userSetting;
+	}
 }

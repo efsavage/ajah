@@ -25,7 +25,9 @@ import com.ajah.util.Identifiable;
 public class UserSetting implements Identifiable<UserSettingId> {
 
 	private UserSettingId id;
+	private UserId userId;
 	private String name;
+	private String value;
 	private UserSettingStatus status;
 	private UserSettingType type;
 	private Date created;
