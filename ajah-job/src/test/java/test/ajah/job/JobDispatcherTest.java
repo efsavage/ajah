@@ -25,7 +25,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ajah.job.execute.JobDispatcher;
 import com.ajah.logback.LogbackUtils;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Tests {@link JobDispatcher}.
@@ -35,6 +34,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@SuppressWarnings("static-method")
 public class JobDispatcherTest {
 
 	@Autowired
@@ -46,7 +46,7 @@ public class JobDispatcherTest {
 	}
 
 	@Test
-	public void testJobDispatcher() throws DataOperationException {
+	public void testJobDispatcher() {
 		this.jobDispatcher.poll();
 	}
 

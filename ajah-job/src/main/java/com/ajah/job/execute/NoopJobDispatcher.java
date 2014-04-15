@@ -13,21 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package test.ajah.job;
 
-import com.ajah.job.run.Run;
-import com.ajah.job.task.SimpleAjahTask;
+package com.ajah.job.execute;
+
+import lombok.extern.java.Log;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 
 /**
+ * An implementation of {@link JobDispatcher} that does nothing.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
  */
-public class HelloWorldTask extends SimpleAjahTask {
+@Log
+public class NoopJobDispatcher implements JobDispatcher {
 
 	@Override
-	public void execute(Run run) {
-		System.out.println("Hello World");
-		run.debug("Hello World");
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		// Empty
+	}
+
+	/**
+	 * @see com.ajah.job.execute.JobDispatcher#poll()
+	 */
+	@Override
+	public void poll() {
+		log.fine("poll() invoked, no jobs being dispatched");
 	}
 
 }

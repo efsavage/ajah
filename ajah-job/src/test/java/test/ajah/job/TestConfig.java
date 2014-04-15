@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.ajah.job.execute.JobDispatcher;
+import com.ajah.job.execute.SimpleJobDispatcher;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
@@ -22,6 +24,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
  */
 @Configuration
 @ComponentScan(basePackages = { "com.ajah.job" })
+@SuppressWarnings("static-method")
 public class TestConfig {
 
 	@Bean
@@ -42,6 +45,11 @@ public class TestConfig {
 		dataSource.setReleaseHelperThreads(3);
 
 		return dataSource;
+	}
+
+	@Bean
+	JobDispatcher jobDispatcher() {
+		return new SimpleJobDispatcher();
 	}
 
 }
