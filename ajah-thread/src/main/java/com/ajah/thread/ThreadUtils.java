@@ -18,6 +18,7 @@ package com.ajah.thread;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.ajah.util.RandomUtils;
 import com.ajah.util.date.CalendarUnit;
 
 /**
@@ -72,6 +73,18 @@ public class ThreadUtils {
 		if (System.currentTimeMillis() < timestamp) {
 			sleep(timestamp - System.currentTimeMillis());
 		}
+	}
+
+	/**
+	 * Sleeps for a random amount of time between the values specified.
+	 * 
+	 * @param min
+	 *            The minimum amount of time to sleep for.
+	 * @param max
+	 *            The maximum amount of time to sleep for.
+	 */
+	public static void sleepRandom(long min, long max) {
+		sleep(RandomUtils.getRandomNumber(min, max));
 	}
 
 }
