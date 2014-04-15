@@ -63,6 +63,10 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	@Setter
 	private boolean stripWrappedQuotes;
 
+	@Getter
+	@Setter
+	private boolean trimContents = true;
+
 	/**
 	 * Constructs a reader from a file.
 	 * 
@@ -116,7 +120,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		}
 		final FlatFileColumn column = new FlatFileColumn(name, null, false);
 		this.columns.add(column);
-		this.map.put(column.getName(), column);
+		this.map.put(column.getName().trim(), column);
 		log.fine("Created column \"" + name + "\"");
 	}
 

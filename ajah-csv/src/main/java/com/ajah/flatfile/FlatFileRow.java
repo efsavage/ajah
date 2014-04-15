@@ -92,7 +92,7 @@ public class FlatFileRow {
 				if (stripWrappedQuotes && value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
 					return value.substring(1, value.length() - 2);
 				}
-				return value;
+				return this.reader.isTrimContents() ? value.trim() : value;
 			}
 			if (!StringUtils.isBlank(column.getDefaultValue())) {
 				return column.getDefaultValue();
