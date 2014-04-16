@@ -34,11 +34,11 @@ public class Task implements Identifiable<TaskId> {
 	private TaskType type;
 	private Date created;
 
-	public void execute(Run run, final ApplicationContext applicationContext) throws TaskExecutionException {
+	public void execute(Run run, JobTask jobTask, final ApplicationContext applicationContext) throws TaskExecutionException {
 		try {
 			final AjahTask ajahTask = (AjahTask) Class.forName(getClazz()).newInstance();
 			ajahTask.setApplicationContext(applicationContext);
-			ajahTask.execute(run);
+			ajahTask.execute(run, jobTask);
 		} catch (final InstantiationException e) {
 			throw new TaskConfigurationException(e);
 		} catch (final IllegalAccessException e) {

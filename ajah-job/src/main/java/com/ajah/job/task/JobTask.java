@@ -18,6 +18,7 @@ package com.ajah.job.task;
 import java.util.Date;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -36,5 +37,9 @@ public class JobTask implements Identifiable<JobTaskId> {
 	private JobTaskType type;
 	private Date created;
 	private Date modified;
+	private long maxDuration;
+
+	@Transient
+	private Task task;
 
 }

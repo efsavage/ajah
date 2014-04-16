@@ -15,7 +15,6 @@
  */
 package com.ajah.job.execute;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -57,16 +56,14 @@ public abstract class AbstractJobRunner implements JobRunner {
 
 	protected List<JobTask> jobTasks;
 
-	protected List<Task> tasks;
-
 	/**
 	 * Sets up and validates the {@link Task}s for this job.
 	 */
-	public void init(final ApplicationContext applicationContext) {
+	public void init(final ApplicationContext _applicationContext) {
 
-		this.jobManager = applicationContext.getBean(JobManager.class);
-		this.jobTaskManager = applicationContext.getBean(JobTaskManager.class);
-		this.taskManager = applicationContext.getBean(TaskManager.class);
+		this.jobManager = _applicationContext.getBean(JobManager.class);
+		this.jobTaskManager = _applicationContext.getBean(JobTaskManager.class);
+		this.taskManager = _applicationContext.getBean(TaskManager.class);
 
 		try {
 			this.jobTasks = this.jobTaskManager.list(this.job.getId(), null, JobTaskStatus.ACTIVE, 0, 1000);
@@ -76,10 +73,9 @@ public abstract class AbstractJobRunner implements JobRunner {
 				this.jobManager.save(this.job);
 				return;
 			}
-			this.tasks = new ArrayList<>(this.jobTasks.size());
 			for (final JobTask jobTask : this.jobTasks) {
 				final Task task = this.taskManager.load(jobTask.getTaskId());
-				this.tasks.add(task);
+				jobTask.setTask(task);
 			}
 		} catch (DataOperationException | RuntimeException | TaskNotFoundException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);

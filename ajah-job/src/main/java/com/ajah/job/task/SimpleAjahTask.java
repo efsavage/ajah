@@ -29,12 +29,23 @@ import com.ajah.job.run.Run;
 public abstract class SimpleAjahTask implements AjahTask {
 
 	protected ApplicationContext applicationContext;
+	protected long start;
+	protected long lastActivity;
+	protected long end;
+	protected long maxDuration;
 
 	/**
 	 * @see com.ajah.job.task.AjahTask#execute(Run)
 	 */
 	@Override
-	public abstract void execute(Run run) throws TaskExecutionException;
+	public void execute(Run run, JobTask jobTask) throws TaskExecutionException {
+		this.start = System.currentTimeMillis();
+		this.maxDuration = jobTask.getMaxDuration();
+		innerExecute(run);
+		this.end = System.currentTimeMillis();
+	}
+
+	public abstract void innerExecute(Run run) throws TaskExecutionException;
 
 	/**
 	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
@@ -42,6 +53,13 @@ public abstract class SimpleAjahTask implements AjahTask {
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+	}
+
+	protected void checkIn() throws TaskDurationExceededException {
+		this.lastActivity = System.currentTimeMillis();
+		if (this.lastActivity - this.start > this.maxDuration) {
+			throw new TaskDurationExceededException(this.start, this.lastActivity, this.maxDuration);
+		}
 	}
 
 }

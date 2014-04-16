@@ -25,7 +25,7 @@ import com.ajah.job.task.SimpleAjahTask;
 public class ResilientWorldTask extends SimpleAjahTask {
 
 	@Override
-	public void execute(Run run) {
+	public void innerExecute(Run run) {
 		System.out.println("Resilient World");
 		run.debug("Resilient World");
 	}

@@ -16,18 +16,22 @@
 package com.ajah.job.execute;
 
 import lombok.EqualsAndHashCode;
-import lombok.extern.java.Log;
 
 import org.springframework.context.ApplicationContext;
 
 import com.ajah.job.Job;
-import com.ajah.job.task.Task;
+import com.ajah.job.run.Run;
+import com.ajah.job.run.data.RunManager;
+import com.ajah.job.task.JobTask;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
+ * Runs a job one task after the other. If {@link #abortOnError} is false, will
+ * continue to the next task if a task fails, otherwise will abort the sequence.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-@Log
 @EqualsAndHashCode(callSuper = true)
 public class SerialJobRunner extends AbstractJobRunner {
 
@@ -46,16 +50,29 @@ public class SerialJobRunner extends AbstractJobRunner {
 	}
 
 	/**
-	 * @see java.lang.Runnable#run()
+	 * Runs a job.
+	 * 
+	 * @throws DataOperationException
+	 *             This is only thrown if there is a data error in configuring
+	 *             or starting the run, not within the actual tasks themselves.
 	 */
 	@Override
-	public void run() {
+	public void execute(Run run) throws DataOperationException {
 		if (!this.initialized) {
 			init();
 		}
-		for (final Task task : this.tasks) {
-			task.execute(this.applicationContext);
+		RunManager runManager = this.applicationContext.getBean(RunManager.class);
+		runManager.start(run);
+		for (final JobTask jobTask : this.jobTasks) {
+			try {
+				jobTask.getTask().execute(run, jobTask, this.applicationContext);
+			} catch (Throwable t) {
+				run.error(t);
+				if (this.abortOnError) {
+					break;
+				}
+			}
 		}
+		runManager.end(run);
 	}
-
 }

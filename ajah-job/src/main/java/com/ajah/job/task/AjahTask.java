@@ -27,6 +27,15 @@ import com.ajah.job.run.Run;
  */
 public interface AjahTask extends ApplicationContextAware {
 
-	void execute(Run run) throws TaskExecutionException;
+	/**
+	 * The main execution path for a task.
+	 * 
+	 * @param run
+	 *            The run that is being performed.
+	 * @param jobTask
+	 *            The task configuration that is being executed.
+	 * @throws TaskExecutionException
+	 */
+	void execute(Run run, JobTask jobTask) throws TaskExecutionException;
 
 }
