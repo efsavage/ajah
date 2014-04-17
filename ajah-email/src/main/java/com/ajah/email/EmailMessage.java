@@ -15,6 +15,9 @@
  */
 package com.ajah.email;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -44,11 +47,18 @@ public interface EmailMessage {
 	EmailAddress getFrom();
 
 	/**
-	 * Returns the To: Address(es) of the message.
+	 * Returns the From: Name of the message.
 	 * 
-	 * @return The To: Address(es) of the message.
+	 * @return The From: Name of the message.
 	 */
-	EmailAddress[] getTo();
+	String getFromName();
+
+	/**
+	 * Returns the recipients of the message.
+	 * 
+	 * @return The recipients of the message.
+	 */
+	Collection<EmailRecipient> getRecipients();
 
 	/**
 	 * Returns the plaintext version of the message.
@@ -70,5 +80,13 @@ public interface EmailMessage {
 	 * @return The HTML version of the message.
 	 */
 	String getHtml();
+
+	/**
+	 * Returns the tags for this message. This may be used by some transports
+	 * like Mandrill.
+	 * 
+	 * @return The tags for this message.
+	 */
+	List<String> getTags();
 
 }

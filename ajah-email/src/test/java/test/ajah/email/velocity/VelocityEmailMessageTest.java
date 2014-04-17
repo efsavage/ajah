@@ -15,9 +15,14 @@
  */
 package test.ajah.email.velocity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.ajah.email.EmailRecipient;
+import com.ajah.email.EmailRecipientType;
 import com.ajah.email.velocity.VelocityEmailMessage;
 import com.ajah.util.data.format.EmailAddress;
 
@@ -26,6 +31,7 @@ import com.ajah.util.data.format.EmailAddress;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@SuppressWarnings("static-method")
 public class VelocityEmailMessageTest {
 
 	/**
@@ -33,9 +39,10 @@ public class VelocityEmailMessageTest {
 	 */
 	@Test
 	public void basicEmail() {
-		final VelocityEmailMessage vem = new VelocityEmailMessage(new EmailAddress("nobody@nobody.com"), new EmailAddress[] { new EmailAddress("someone@somewhere.com") });
+		Collection<EmailRecipient> recipients = new ArrayList<>();
+		recipients.add(new EmailRecipient(new EmailAddress("someone@somewhere.com"), null, EmailRecipientType.TO));
+		final VelocityEmailMessage vem = new VelocityEmailMessage(new EmailAddress("nobody@nobody.com"), recipients);
 		vem.setTextTemplate("/templates/email/simple.txt.vm");
 		Assert.assertEquals(vem.getText(), "HELLO");
 	}
-
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 package com.ajah.email.velocity;
 
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
@@ -27,6 +29,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import com.ajah.email.EmailMessage;
+import com.ajah.email.EmailRecipient;
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.format.EmailAddress;
 
@@ -42,12 +45,14 @@ import com.ajah.util.data.format.EmailAddress;
 public class VelocityEmailMessage implements EmailMessage {
 
 	private EmailAddress from;
-	private EmailAddress[] to;
+	private String fromName;
+	private Collection<EmailRecipient> recipients;
 	private Map<String, Object> model = new HashMap<>();
 	private String subject;
 	private String textTemplate;
 	private String htmlTemplate;
 	private VelocityEngine velocityEngine = new VelocityEngine();
+	private List<String> tags;
 
 	/**
 	 * Constructs the message and initializes the {@link VelocityEngine}.
@@ -57,9 +62,9 @@ public class VelocityEmailMessage implements EmailMessage {
 	 * @param to
 	 *            The To addresses
 	 */
-	public VelocityEmailMessage(final EmailAddress from, final EmailAddress[] to) {
+	public VelocityEmailMessage(final EmailAddress from, final Collection<EmailRecipient> to) {
 		this.from = from;
-		this.to = to;
+		this.recipients = to;
 		this.velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		this.velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		this.velocityEngine.init();
