@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,17 +17,53 @@ package com.ajah.job.run;
 
 import java.util.Date;
 
-import lombok.Data;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+import com.ajah.job.Job;
+import com.ajah.job.JobId;
+import com.ajah.job.run.data.RunMessageManager;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.Identifiable;
 
 @Data
+@Slf4j
 public class Run implements Identifiable<RunId> {
 
+	@GeneratedValue
 	private RunId id;
-	private String name;
+	private JobId jobId;
 	private RunStatus status;
 	private RunType type;
 	private Date created;
+	private Date start;
+	private Date end;
+	private Date lastActivity;
+	private long maxDuration;
+
+	@Transient
+	RunMessageManager runMessageManager;
+
+	@Transient
+	Job job;
+
+	public void debug(String message) {
+		try {
+			this.runMessageManager.create(this.getJobId(), this.getId(), message, null, RunMessageType.DEBUG);
+		} catch (DataOperationException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	public void error(Throwable t) {
+		try {
+			this.runMessageManager.create(this.getJobId(), this.getId(), t.getMessage(), t, RunMessageType.ERROR);
+		} catch (DataOperationException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
 
 }
