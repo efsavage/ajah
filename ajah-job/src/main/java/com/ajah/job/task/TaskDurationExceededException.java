@@ -15,6 +15,8 @@
  */
 package com.ajah.job.task;
 
+import java.util.Date;
+
 /**
  * Thrown when a task has exceeded it's allowed execution time.
  * 
@@ -24,8 +26,8 @@ package com.ajah.job.task;
  */
 public class TaskDurationExceededException extends Exception {
 
-	private final long start;
-	private final long lastActivity;
+	private final Date start;
+	private final Date lastActivity;
 	private final long maxDuration;
 
 	/**
@@ -38,7 +40,7 @@ public class TaskDurationExceededException extends Exception {
 	 * @param maxDuration
 	 *            The maximum duration permitted.
 	 */
-	public TaskDurationExceededException(long start, long lastActivity, long maxDuration) {
+	public TaskDurationExceededException(Date start, Date lastActivity, long maxDuration) {
 		this.start = start;
 		this.lastActivity = lastActivity;
 		this.maxDuration = maxDuration;
@@ -49,7 +51,7 @@ public class TaskDurationExceededException extends Exception {
 	 * 
 	 * @return the start
 	 */
-	public long getStart() {
+	public Date getStart() {
 		return this.start;
 	}
 
@@ -58,7 +60,7 @@ public class TaskDurationExceededException extends Exception {
 	 * 
 	 * @return The time the exception occurred.
 	 */
-	public long getLastActivity() {
+	public Date getLastActivity() {
 		return this.lastActivity;
 	}
 
