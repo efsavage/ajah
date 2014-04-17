@@ -57,8 +57,8 @@ public class MandrillTransport implements EmailTransport {
 	 * @see com.ajah.email.data.EmailTransport#send(com.ajah.email.EmailMessage)
 	 */
 	@Override
-	public synchronized void send(EmailMessage emailMessage) throws AddressException, MessagingException {
-		MandrillMessage message = new MandrillMessage();
+	public synchronized void send(final EmailMessage emailMessage) throws AddressException, MessagingException {
+		final MandrillMessage message = new MandrillMessage();
 		message.setSubject(emailMessage.getSubject());
 		message.setHtml(StringUtils.isBlank(emailMessage.getHtml()) ? "" : emailMessage.getHtml());
 		if (StringUtils.isBlank(emailMessage.getText())) {
@@ -71,14 +71,14 @@ public class MandrillTransport implements EmailTransport {
 			message.setFromName(emailMessage.getFromName());
 		}
 
-		for (EmailRecipient emailRecipient : emailMessage.getRecipients()) {
+		for (final EmailRecipient emailRecipient : emailMessage.getRecipients()) {
 			// Mandrill doesn't support CC, instead you send it to multiple
 			// recipients and set the "Preserve Recipients" flag to disclosed
 			// them or not.
 			if (message.getTo() == null) {
 				message.setTo(new ArrayList<Recipient>());
 			}
-			Recipient recipient = new Recipient();
+			final Recipient recipient = new Recipient();
 			recipient.setEmail(emailRecipient.getAddress().toString());
 			recipient.setName(emailRecipient.getName());
 
@@ -106,8 +106,8 @@ public class MandrillTransport implements EmailTransport {
 		}
 
 		try {
-			MandrillMessageStatus[] messageStatusReports = new MandrillApi(this.apiKey).messages().send(message, Boolean.FALSE);
-			for (MandrillMessageStatus status : messageStatusReports) {
+			final MandrillMessageStatus[] messageStatusReports = new MandrillApi(this.apiKey).messages().send(message, Boolean.FALSE);
+			for (final MandrillMessageStatus status : messageStatusReports) {
 				log.fine(status.getStatus());
 			}
 		} catch (MandrillApiError | IOException e) {
@@ -116,7 +116,7 @@ public class MandrillTransport implements EmailTransport {
 
 	}
 
-	public void setApiKey(String apiKey) {
+	public void setApiKey(final String apiKey) {
 		this.apiKey = apiKey;
 		this.mandrillApi = new MandrillApi(apiKey);
 	}

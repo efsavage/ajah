@@ -78,6 +78,7 @@ public class AmazonSESTransport implements EmailTransport {
 	 * @throws MessagingException
 	 *             If there is a problem with the transport of the message.
 	 */
+	@Override
 	public void send(final EmailMessage message) throws AddressException, MessagingException {
 		AjahUtils.requireParam(message, "message");
 		AjahUtils.requireParam(message.getSubject(), "message.subject");

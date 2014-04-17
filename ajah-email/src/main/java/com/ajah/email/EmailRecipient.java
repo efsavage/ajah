@@ -16,10 +16,10 @@
 
 package com.ajah.email;
 
-import com.ajah.util.data.format.EmailAddress;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import com.ajah.util.data.format.EmailAddress;
 
 /**
  * An email recipient.
@@ -35,5 +35,5 @@ public class EmailRecipient {
 	private EmailAddress address;
 	private String name;
 	private EmailRecipientType type;
-	
+
 }

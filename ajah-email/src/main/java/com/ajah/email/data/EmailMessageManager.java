@@ -48,7 +48,7 @@ public class EmailMessageManager {
 	 * @throws AddressException
 	 *             If any of the addresses are invalid.
 	 */
-	public void send(EmailMessage message) throws AddressException, MessagingException {
+	public void send(final EmailMessage message) throws AddressException, MessagingException {
 		this.transport.send(message);
 	}
 

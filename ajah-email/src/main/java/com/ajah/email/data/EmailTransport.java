@@ -38,6 +38,6 @@ public interface EmailTransport {
 	 * @throws AddressException
 	 *             If any of the addresses are invalid.
 	 */
-	void send(EmailMessage message) throws AddressException, MessagingException;
+	void send(final EmailMessage message) throws AddressException, MessagingException;
 
 }

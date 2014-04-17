@@ -39,7 +39,7 @@ public class VelocityEmailMessageTest {
 	 */
 	@Test
 	public void basicEmail() {
-		Collection<EmailRecipient> recipients = new ArrayList<>();
+		final Collection<EmailRecipient> recipients = new ArrayList<>();
 		recipients.add(new EmailRecipient(new EmailAddress("someone@somewhere.com"), null, EmailRecipientType.TO));
 		final VelocityEmailMessage vem = new VelocityEmailMessage(new EmailAddress("nobody@nobody.com"), recipients);
 		vem.setTextTemplate("/templates/email/simple.txt.vm");
