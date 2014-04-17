@@ -16,7 +16,9 @@
 package com.ajah.job.execute;
 
 import com.ajah.job.Job;
+import com.ajah.job.run.Run;
 import com.ajah.job.task.Task;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * A JobRunner takes a {@link Job} and manages the execution of it's
@@ -25,6 +27,8 @@ import com.ajah.job.task.Task;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public interface JobRunner extends Runnable {
+public interface JobRunner {
+
+	void execute(Run run) throws DataOperationException;
 
 }

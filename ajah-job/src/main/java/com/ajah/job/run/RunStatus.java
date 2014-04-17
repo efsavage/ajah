@@ -26,13 +26,17 @@ import com.ajah.util.Identifiable;
 public enum RunStatus implements Identifiable<String> {
 
 	/**
-	 * Inactive.
+	 * New/Not Started.
 	 */
-	INACTIVE("0", "ina", "Inactive", "Inactive.", false, false, false),
+	NEW("0", "new", "New", "New, run has not started yet.", false, false, false),
 	/**
-	 * Active.
+	 * Running.
 	 */
-	ACTIVE("1", "act", "Active", "Active.", true, false, false),
+	ACTIVE("1", "run", "Running", "Running.", true, false, false),
+	/**
+	 * Completed without error.
+	 */
+	COMPLETED("2", "comp", "Completed", "Completed without error.", false, false, false),
 	/**
 	 * Error.
 	 */

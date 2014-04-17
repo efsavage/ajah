@@ -66,6 +66,7 @@ public class SerialJobRunner extends AbstractJobRunner {
 		for (final JobTask jobTask : this.jobTasks) {
 			try {
 				jobTask.getTask().execute(run, jobTask, this.applicationContext);
+				checkIn(run, runManager);
 			} catch (Throwable t) {
 				run.error(t);
 				if (this.abortOnError) {
@@ -73,6 +74,7 @@ public class SerialJobRunner extends AbstractJobRunner {
 				}
 			}
 		}
-		runManager.end(run);
+		runManager.complete(run);
 	}
+
 }

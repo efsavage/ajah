@@ -26,13 +26,13 @@ import com.ajah.util.Identifiable;
 public enum RunType implements Identifiable<String> {
 
 	/**
-	 * Standard.
+	 * Automatic/Scheduled run.
 	 */
-	STANDARD("0", "std", "Standard", "Standard."),
+	SCHEDULED("0", "sch", "Scheduled", "Scheduled."),
 	/**
-	 * Special.
+	 * Manually-started run.
 	 */
-	SPECIAL("1", "spe", "Special", "Special.");
+	MANUAL("1", "man", "Manual", "Manual.");
 
 	/**
 	 * Finds a AddressBookType that matches the id on id, name, or name().

@@ -22,6 +22,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ajah.job.Job;
 import com.ajah.job.run.Run;
 import com.ajah.job.run.RunId;
 import com.ajah.job.run.RunStatus;
@@ -40,6 +41,9 @@ public class RunManager {
 
 	@Autowired
 	private RunDao runDao;
+
+	@Autowired
+	private RunMessageManager runMessageManager;
 
 	/**
 	 * Returns a count of all records.
@@ -81,14 +85,6 @@ public class RunManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<Run> create(final String name, final RunType type, final RunStatus status) throws DataOperationException {
-		final Run run = new Run();
-		run.setName(name);
-		run.setType(type);
-		run.setStatus(status);
-		final DataOperationResult<Run> result = save(run);
-		return result;
-	}
 
 	/**
 	 * Marks the entity as {@link RunStatus#DELETED}.
@@ -174,6 +170,27 @@ public class RunManager {
 		}
 		final DataOperationResult<Run> result = this.runDao.update(run);
 		return result;
+	}
+
+	public Run create(Job job, RunType type) throws DataOperationException {
+		Run run = new Run();
+		run.setJobId(job.getId());
+		run.setStatus(RunStatus.NEW);
+		run.setType(type);
+		run.setRunMessageManager(this.runMessageManager);
+		return save(run).getEntity();
+	}
+
+	public DataOperationResult<Run> start(Run run) throws DataOperationException {
+		run.setStatus(RunStatus.ACTIVE);
+		run.setStart(new Date());
+		return save(run);
+	}
+
+	public DataOperationResult<Run> complete(Run run) throws DataOperationException {
+		run.setStatus(RunStatus.COMPLETED);
+		run.setEnd(new Date());
+		return save(run);
 	}
 
 }

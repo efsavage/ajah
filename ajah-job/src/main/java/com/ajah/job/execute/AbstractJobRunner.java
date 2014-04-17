@@ -15,6 +15,7 @@
  */
 package com.ajah.job.execute;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -26,6 +27,9 @@ import org.springframework.context.ApplicationContext;
 import com.ajah.job.Job;
 import com.ajah.job.JobStatus;
 import com.ajah.job.data.JobManager;
+import com.ajah.job.run.Run;
+import com.ajah.job.run.RunDurationExceededException;
+import com.ajah.job.run.data.RunManager;
 import com.ajah.job.task.JobTask;
 import com.ajah.job.task.JobTaskStatus;
 import com.ajah.job.task.Task;
@@ -79,6 +83,14 @@ public abstract class AbstractJobRunner implements JobRunner {
 			}
 		} catch (DataOperationException | RuntimeException | TaskNotFoundException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+
+	protected static void checkIn(Run run, RunManager runManager) throws RunDurationExceededException, DataOperationException {
+		run.setLastActivity(new Date());
+		runManager.save(run);
+		if (run.getLastActivity().getTime() - run.getStart().getTime() > run.getMaxDuration()) {
+			throw new RunDurationExceededException(run.getStart(), run.getLastActivity(), run.getMaxDuration());
 		}
 	}
 
