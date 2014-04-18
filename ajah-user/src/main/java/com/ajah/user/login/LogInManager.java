@@ -178,7 +178,9 @@ public class LogInManager {
 			log.fine("token contents: " + decrypted);
 			final String username = decrypted.split("\\|")[0];
 			final Password password = new HmacSha1Password(decrypted.split("\\|")[1], true);
-			return login(username, password, ip, source, type);
+			LogIn logIn = login(username, password, ip, source, type);
+			logIn.setToken(token);
+			return logIn;
 		} catch (final CryptoException e) {
 			final LogIn login = new LogIn();
 			login.setIp(ip);
