@@ -45,5 +45,6 @@ public class LogIn {
 	protected LogInType type;
 	protected String username;
 	protected User user;
+	protected String token;
 
 }
