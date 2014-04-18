@@ -15,6 +15,7 @@
  */
 package com.ajah.util;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
@@ -60,17 +61,40 @@ public class AjahUtils {
 	 *            Object to check.
 	 * @param name
 	 *            Name of the parameter (for the error message)
-	 * @throws IllegalArgumentException
+	 * @throws RequiredParamterException
 	 *             If parameter is null
-	 * @throws IllegalArgumentException
+	 * @throws RequiredParamterException
 	 *             If parameter is a String and is empty
 	 */
 	public static void requireParam(final Object parameter, final String name) throws IllegalArgumentException {
 		if (parameter == null) {
-			throw new IllegalArgumentException(name + " cannot be null");
+			throw new RequiredParamterException(name + " cannot be null");
 		}
 		if (parameter instanceof String && ((String) parameter).length() < 1) {
-			throw new IllegalArgumentException(name + " cannot be empty");
+			throw new RequiredParamterException(name + " cannot be empty");
+		}
+	}
+
+	/**
+	 * Check a collection parameter and throw an exception if its null or
+	 * possibly empty. Commonly used at the very beginning of a method for
+	 * things that should never be null.
+	 * 
+	 * @param parameter
+	 *            Object to check.
+	 * @param name
+	 *            Name of the parameter (for the error message)
+	 * @param emptyAllowed
+	 *            If true,an empty collection is permitted.
+	 * @throws RequiredParamterException
+	 *             If parameter is null, or possibly if it is empty.
+	 */
+	public static void requireParam(final Collection<?> parameter, final String name, final boolean emptyAllowed) throws IllegalArgumentException {
+		if (parameter == null) {
+			throw new RequiredParamterException(name + " cannot be null");
+		}
+		if (!emptyAllowed && parameter.size() < 1) {
+			throw new RequiredParamterException(name + " cannot be empty");
 		}
 	}
 
