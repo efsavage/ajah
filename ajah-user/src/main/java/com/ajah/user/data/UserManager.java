@@ -21,6 +21,7 @@ import java.util.UUID;
 import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -290,6 +291,7 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
+	@Cacheable("User")
 	public User load(final UserId userId) throws UserNotFoundException, DataOperationException {
 		final User user = this.userDao.load(userId);
 		if (user == null) {
@@ -298,6 +300,7 @@ public class UserManager {
 		return user;
 	}
 
+	
 	public DataOperationResult<UserInfo> save(final UserInfo userInfo) throws DataOperationException {
 		if (userInfo.getCreated() == null) {
 			userInfo.setCreated(new Date());

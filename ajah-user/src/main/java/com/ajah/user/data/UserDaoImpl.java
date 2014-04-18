@@ -15,6 +15,7 @@
  */
 package com.ajah.user.data;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -106,6 +107,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *             If the query could not be executed.
 	 */
 	@Override
+	@CacheEvict(value = "User", allEntries = true)
 	public int update(final UserId userId, final Password password) throws DataOperationException {
 		AjahUtils.requireParam(userId, "userId");
 		AjahUtils.requireParam(password, "password");
