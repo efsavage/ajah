@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ajah.job.JobId;
+import com.ajah.job.Job;
 import com.ajah.job.run.RunId;
 import com.ajah.job.run.RunMessage;
 import com.ajah.job.run.RunMessageId;
@@ -35,6 +35,7 @@ import com.ajah.job.run.RunMessageType;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.StringUtils;
+import com.vigilanced.client.VigilancedClient;
 
 /**
  * Manages data operations for {@link RunMessage}.
@@ -48,6 +49,9 @@ public class RunMessageManager {
 
 	@Autowired
 	private RunMessageDao runMessageDao;
+
+	@Autowired(required = false)
+	private VigilancedClient vigilancedClient;
 
 	/**
 	 * Saves an {@link RunMessage}. Assigns a new ID ({@link UUID}) and sets the
@@ -126,7 +130,8 @@ public class RunMessageManager {
 	 *            The name of the runMessage, required.
 	 * @param message
 	 *            The type of runMessage, required.
-	 * @param t
+	 * @param external
+	 *            Notify external services of this message?
 	 * @param debug
 	 *            The status of the runMessage, required.
 	 * @return The result of the creation, which will include the new runMessage
@@ -134,10 +139,10 @@ public class RunMessageManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<RunMessage> create(JobId jobId, RunId runId, String message, Throwable throwable, RunMessageType type) throws DataOperationException {
+	public DataOperationResult<RunMessage> create(Job job, RunId runId, String message, Throwable throwable, RunMessageType type, boolean external) throws DataOperationException {
 		RunMessage runMessage = new RunMessage();
 		runMessage.setRunId(runId);
-		runMessage.setJobId(jobId);
+		runMessage.setJobId(job.getId());
 		runMessage.setMessage(message);
 
 		if (throwable != null) {
@@ -153,6 +158,13 @@ public class RunMessageManager {
 		runMessage.setType(type);
 		runMessage.setStatus(RunMessageStatus.ACTIVE);
 		DataOperationResult<RunMessage> result = save(runMessage);
+		if (external) {
+			if (this.vigilancedClient != null) {
+				this.vigilancedClient.addMessage(job.getMonitorKey(), message, null, null);
+			} else {
+				log.debug("No Vigilanced client is configured");
+			}
+		}
 		return result;
 	}
 

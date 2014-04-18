@@ -52,7 +52,7 @@ public class Run implements Identifiable<RunId> {
 
 	public void debug(String message) {
 		try {
-			this.runMessageManager.create(this.getJobId(), this.getId(), message, null, RunMessageType.DEBUG);
+			this.runMessageManager.create(this.job, this.getId(), message, null, RunMessageType.DEBUG, false);
 		} catch (DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}
@@ -60,7 +60,7 @@ public class Run implements Identifiable<RunId> {
 
 	public void error(Throwable t) {
 		try {
-			this.runMessageManager.create(this.getJobId(), this.getId(), t.getMessage(), t, RunMessageType.ERROR);
+			this.runMessageManager.create(this.job, this.getId(), t.getMessage(), t, RunMessageType.ERROR, true);
 		} catch (DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}

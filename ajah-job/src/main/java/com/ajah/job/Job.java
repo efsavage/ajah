@@ -38,5 +38,10 @@ public class Job implements Identifiable<JobId> {
 	private JobType type;
 	private ExecutionStrategy executionStrategy;
 	private Date created;
+	/**
+	 * The key/name/ID that references this job in external monitors such as
+	 * Vigilanced.
+	 */
+	private String monitorKey;
 
 }

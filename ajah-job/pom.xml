@@ -10,7 +10,7 @@
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
 		<version>1.0.8-SNAPSHOT</version>
-<!-- 		<relativePath>../ajah-base/pom.xml</relativePath> -->
+		<!-- <relativePath>../ajah-base/pom.xml</relativePath> -->
 	</parent>
 
 	<dependencies>
@@ -31,6 +31,12 @@
 			<artifactId>ajah-logback</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vigilanced</groupId>
+			<artifactId>java-client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
