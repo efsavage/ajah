@@ -22,6 +22,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -61,6 +62,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Limit;
+import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.criteria.Where;
 import com.ajah.spring.jdbc.err.DataObjectCreationException;
 import com.ajah.spring.jdbc.err.DataOperationException;
@@ -250,9 +252,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					final BigDecimal bigDecimal = rs.getBigDecimal(column);
 					propSet(entity, getProp(field, props), bigDecimal);
 				} else if (LocalDate.class.isAssignableFrom(field.getType())) {
-					final int[] parts = ArrayUtils.parseInt(rs.getString(column).split("-"));
-					final LocalDate localDate = new LocalDate(parts[0], parts[1], parts[2]);
-					propSet(entity, getProp(field, props), localDate);
+					if (!StringUtils.isBlank(rs.getString(column))) {
+						final int[] parts = ArrayUtils.parseInt(rs.getString(column).split("-"));
+						final LocalDate localDate = new LocalDate(parts[0], parts[1], parts[2]);
+						propSet(entity, getProp(field, props), localDate);
+					}
 				} else {
 					log.warning("Can't handle auto-populating of column " + column + " of type " + field.getType());
 				}
@@ -339,7 +343,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public DataOperationResult<T> deleteById(final K id) throws DataOperationException {
 		AjahUtils.requireParam(id, "id");
 		try {
-			return new DataOperationResult<>(null, this.jdbcTemplate.update("DELETE FROM `" + getTableName() + "` WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }));
+			return new DataOperationResult<>(null, getJdbcTemplate().update("DELETE FROM `" + getTableName() + "` WHERE " + getTableName() + "_id = ?", new Object[] { id.toString() }));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
@@ -612,6 +616,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < values.length; i++) {
 				final Field field = this.colMap.get(this.insertColumns.get(i));
+				if (Modifier.isStatic(field.getModifiers())) {
+					continue;
+				}
 				if (LocalDate.class.isAssignableFrom(field.getType())) {
 					final LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
 					if (localDate != null) {
@@ -718,7 +725,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				if (LocalDate.class.isAssignableFrom(field.getType())) {
 					final LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
 					if (localDate != null) {
-						values[i] = StringUtils.join("-", localDate.getYear(), localDate.getMonthOfYear(), localDate.getDayOfMonth());
+						values[i] = localDate.toString(LOCAL_DATE_FORMAT);
 					} else {
 						values[i] = null;
 					}
@@ -764,13 +771,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public DataOperationResult<T> increment(final T entity, final String field, final int amount) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		AjahUtils.requireParam(getJdbcTemplate(), "this.jdbcTemplate");
 		try {
 			final String sql = "UPDATE `" + getTableName() + "` SET " + field + "=" + field + " + " + amount + " WHERE " + getTableName() + "_id = ?";
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, entity.getId().toString()));
+			return new DataOperationResult<>(entity, getJdbcTemplate().update(sql, entity.getId().toString()));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
@@ -806,7 +813,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		if (!isAutoIdAssign()) {
 			AjahUtils.requireParam(entity.getId(), "entity.id");
 		}
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		AjahUtils.requireParam(getJdbcTemplate(), "this.jdbcTemplate");
 		try {
 			if (isAutoIdAssign()) {
 				// Generated (auto_increment) ID
@@ -841,7 +848,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, getInsertValues(entity)));
+			return new DataOperationResult<>(entity, getJdbcTemplate().update(sql, getInsertValues(entity)));
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException e) {
 			throw new DataObjectCreationException(e);
 		} catch (final DataAccessException e) {
@@ -955,6 +962,44 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		AjahUtils.requireParam(where, "where");
 		try {
 			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + where;
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
+			return getJdbcTemplate().query(sql, getRowMapper());
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return Collections.emptyList();
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
+	/**
+	 * Find a list of entities by an arbitrary WHERE clause, allowing
+	 * multi-table queries as well as limit and order clauses.
+	 * 
+	 * @param where
+	 *            The WHERE clause, required. Do not include the actual "WHERE"
+	 *            phrase as it is inserted automatically.
+	 * @param order
+	 * @param orderBy
+	 * @param count
+	 * @param page
+	 * @return The list of entities satisfying the WHERE, may be null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
+	 */
+	public List<T> list(final String[] tables, final String where, String orderBy, Order order, Limit limit) throws DataOperationException {
+		AjahUtils.requireParam(where, "where");
+		try {
+			String orderBySql = "";
+			if (!StringUtils.isBlank(orderBy)) {
+				orderBySql += " ORDER BY " + orderBy;
+				if (order != null) {
+					orderBySql += " " + order.name();
+				}
+			}
+			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(tables) + " WHERE " + where + orderBySql + limit.getSql();
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
@@ -1169,6 +1214,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		final StringBuffer selectWithTablePrefix = new StringBuffer();
 		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (final Field field : getTargetClass().getDeclaredFields()) {
+			if (Modifier.isStatic(field.getModifiers())) {
+				continue;
+			}
 			if (field.isAnnotationPresent(Transient.class)) {
 				log.finest("Ignoring Transient field " + field.getName());
 				continue;
@@ -1374,13 +1422,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public DataOperationResult<T> update(final T entity) throws DataOperationException {
 		AjahUtils.requireParam(entity, "entity");
 		AjahUtils.requireParam(entity.getId(), "entity.id");
-		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
+		AjahUtils.requireParam(getJdbcTemplate(), "this.jdbcTemplate");
 		try {
 			final String sql = "UPDATE `" + getTableName() + "` SET " + getUpdateFields() + " WHERE " + getTableName() + "_id = ?";
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return new DataOperationResult<>(entity, this.jdbcTemplate.update(sql, getUpdateValues(entity)));
+			return new DataOperationResult<>(entity, getJdbcTemplate().update(sql, getUpdateValues(entity)));
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
