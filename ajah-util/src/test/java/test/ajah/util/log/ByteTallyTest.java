@@ -61,7 +61,7 @@ public class ByteTallyTest {
 	 */
 	@Test
 	public void testByteTally() {
-		final ByteTally<PrintStream> byteTally = new ByteTally<PrintStream>(this.out);
+		final ByteTally<PrintStream> byteTally = new ByteTally<>(this.out);
 		Assert.assertEquals(0, byteTally.getTotal());
 	}
 

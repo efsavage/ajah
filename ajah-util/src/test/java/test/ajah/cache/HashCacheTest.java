@@ -29,7 +29,7 @@ import com.ajah.cache.HashCache;
  */
 
 public class HashCacheTest {
-	HashCache<String, String> hashCache = new HashCache<String, String>();
+	HashCache<String, String> hashCache = new HashCache<>();
 
 	/**
 	 * Store operation to initialize

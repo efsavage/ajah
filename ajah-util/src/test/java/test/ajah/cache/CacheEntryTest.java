@@ -33,7 +33,7 @@ public class CacheEntryTest {
 
 	final long timestamp = new Date().getTime();
 	String str = "aString";
-	final CacheEntry<String> cacheEntry = new CacheEntry<String>(this.str, this.timestamp);
+	final CacheEntry<String> cacheEntry = new CacheEntry<>(this.str, this.timestamp);
 
 	/**
 	 * Test getObject method in CacheEntry

@@ -17,6 +17,7 @@ package test.ajah.util.date;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.date.DateUtils;
@@ -36,7 +37,7 @@ public class DateUtilsTest {
 	public void testAddDays() {
 		final Date date = new Date(1357016500000L);
 		final Date newDate = DateUtils.addDays(date, 1);
-		// Assert.assertEquals(86300000L, newDate.getTime() - date.getTime());
+		Assert.assertEquals(86300000L, newDate.getTime() - date.getTime());
 	}
 
 	/**
@@ -46,7 +47,7 @@ public class DateUtilsTest {
 	public void testAddFullDay() {
 		final Date date = new Date(1357016400000L);
 		final Date newDate = DateUtils.addDays(date, 1);
-		// Assert.assertEquals(86400000L, newDate.getTime() - date.getTime());
+		Assert.assertEquals(86400000L, newDate.getTime() - date.getTime());
 	}
 
 }

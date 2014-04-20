@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ajah.util.AjahUtils;
-import com.ajah.util.IOUtils;
 
 /**
  * Utilities for basic file operations.
@@ -193,9 +192,7 @@ public class FileUtils {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 		final List<String> data = new ArrayList<>();
-		BufferedReader in = null;
-		try {
-			in = new BufferedReader(new FileReader(file));
+		try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 			while (in.ready()) {
 				final String line = in.readLine();
 				if (line != null && !line.startsWith("#") && line.length() > 0) {
@@ -204,14 +201,6 @@ public class FileUtils {
 			}
 		} catch (final IOException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (final IOException e) {
-					log.log(Level.SEVERE, e.getMessage(), e);
-				}
-			}
 		}
 		log.log(Level.FINER, data.size() + " elements loaded.");
 		return data;
@@ -277,12 +266,10 @@ public class FileUtils {
 			log.fine(file.getAbsolutePath() + " exists and overwrite is false, aborting");
 			return 0;
 		}
-		BufferedOutputStream out = null;
-		try {
-			if (file.getParentFile() != null) {
-				file.getParentFile().mkdirs();
-			}
-			out = new BufferedOutputStream(new FileOutputStream(file));
+		if (file.getParentFile() != null) {
+			file.getParentFile().mkdirs();
+		}
+		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			long total = 0;
 			for (int i = 0; i < data.length; i++) {
 				// TODO Is this faster or should we chunk it?
@@ -291,8 +278,6 @@ public class FileUtils {
 			}
 			log.finest("Wrote " + total + " bytes to " + file.getAbsolutePath());
 			return total;
-		} finally {
-			IOUtils.safeClose(out);
 		}
 	}
 
@@ -311,18 +296,14 @@ public class FileUtils {
 	 */
 	public static int write(final File file, final Collection<String> lines) throws IOException {
 		// TODO Write to temp file then rename
-		BufferedOutputStream out = null;
-		try {
-			file.getParentFile().mkdirs();
-			out = new BufferedOutputStream(new FileOutputStream(file));
+		file.getParentFile().mkdirs();
+		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			for (final String line : lines) {
 				out.write(line.getBytes());
 				out.write('\n');
 			}
 			log.finest("Wrote " + lines.size() + " lines");
 			return lines.size();
-		} finally {
-			IOUtils.safeClose(out);
 		}
 	}
 
@@ -340,12 +321,10 @@ public class FileUtils {
 	public static long write(final File file, final InputStream in) throws IOException {
 		// TODO Write to temp file then rename
 		AjahUtils.requireParam(file, "file");
-		BufferedOutputStream out = null;
-		try {
-			if (file.getParentFile() != null) {
-				file.getParentFile().mkdirs();
-			}
-			out = new BufferedOutputStream(new FileOutputStream(file));
+		if (file.getParentFile() != null) {
+			file.getParentFile().mkdirs();
+		}
+		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			final byte buf[] = new byte[1024];
 			int read;
 			long total = 0;
@@ -355,8 +334,6 @@ public class FileUtils {
 			}
 			log.finest("Wrote " + total + " bytes to " + file.getAbsolutePath());
 			return total;
-		} finally {
-			IOUtils.safeClose(out);
 		}
 	}
 
@@ -394,15 +371,11 @@ public class FileUtils {
 			log.fine(file.getAbsolutePath() + " exists and overwrite is false, aborting");
 			return 0;
 		}
-		BufferedOutputStream out = null;
-		try {
-			file.getParentFile().mkdirs();
-			out = new BufferedOutputStream(new FileOutputStream(file));
+		file.getParentFile().mkdirs();
+		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			out.write(string.getBytes(UTF8));
 			log.fine("Wrote " + string.length() + " bytes");
 			return string.length();
-		} finally {
-			IOUtils.safeClose(out);
 		}
 	}
 

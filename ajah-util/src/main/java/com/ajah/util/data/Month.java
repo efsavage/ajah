@@ -82,8 +82,12 @@ public enum Month implements IdentifiableEnum<Integer> {
 	 * @return Month if found, otherwise null.
 	 */
 	public static Month get(final int id) {
+		if (id < 1 || id > 12) {
+			return null;
+		}
+		Integer intId = Integer.valueOf(id);
 		for (final Month month : values()) {
-			if (month.id == id) {
+			if (month.id == intId) {
 				return month;
 			}
 		}
