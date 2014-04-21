@@ -25,27 +25,6 @@ package com.ajah.util;
 public class NumberUtils {
 
 	/**
-	 * Parses an int out of a String, falling back to a default value if the
-	 * string is null, empty, or not a number.
-	 * 
-	 * @param value
-	 *            The value to parse.
-	 * @param defaultValue
-	 *            The value to use if no valid int could be parsd.
-	 * @return The parsed value, or the specified default.
-	 */
-	public static int safeInt(String value, int defaultValue) {
-		if (StringUtils.isBlank(value)) {
-			return defaultValue;
-		}
-		try {
-			return Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			return defaultValue;
-		}
-	}
-
-	/**
 	 * Parses an array of Strings into an array of ints.
 	 * 
 	 * @param strings
@@ -55,15 +34,36 @@ public class NumberUtils {
 	 * @throws NumberFormatException
 	 *             If any of the strings cannot be parsed.
 	 */
-	public static int[] parseInts(String[] strings) {
+	public static int[] parseInts(final String[] strings) {
 		if (strings == null) {
 			return null;
 		}
-		int[] ints = new int[strings.length];
+		final int[] ints = new int[strings.length];
 		for (int i = 0; i < strings.length; i++) {
 			ints[i] = Integer.parseInt(strings[i]);
 		}
 		return ints;
+	}
+
+	/**
+	 * Parses an int out of a String, falling back to a default value if the
+	 * string is null, empty, or not a number.
+	 * 
+	 * @param value
+	 *            The value to parse.
+	 * @param defaultValue
+	 *            The value to use if no valid int could be parsd.
+	 * @return The parsed value, or the specified default.
+	 */
+	public static int safeInt(final String value, final int defaultValue) {
+		if (StringUtils.isBlank(value)) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(value);
+		} catch (final NumberFormatException e) {
+			return defaultValue;
+		}
 	}
 
 }

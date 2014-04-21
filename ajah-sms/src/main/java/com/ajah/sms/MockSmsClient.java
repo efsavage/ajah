@@ -17,7 +17,6 @@ package com.ajah.sms;
 
 import lombok.extern.java.Log;
 
-import com.ajah.util.config.Config;
 import com.twilio.sdk.TwilioRestClient;
 
 /**
@@ -29,14 +28,12 @@ import com.twilio.sdk.TwilioRestClient;
 @Log
 public class MockSmsClient implements SmsClient {
 
-	private final String defaultSender;
-
 	/**
 	 * Constructs a client using configuration properties twilio.sid,
 	 * twilio.token and twilio.sender.default.
 	 */
 	public MockSmsClient() {
-		this.defaultSender = Config.i.get("twilio.sender.default");
+		// Intentionally empty
 	}
 
 	/**
@@ -44,6 +41,7 @@ public class MockSmsClient implements SmsClient {
 	 */
 	@Override
 	public void getInboundMessages() {
+		// Intentionally empty
 	}
 
 	/**
@@ -51,6 +49,7 @@ public class MockSmsClient implements SmsClient {
 	 */
 	@Override
 	public void getOutboundMessages() {
+		// Intentionally empty
 	}
 
 	/**

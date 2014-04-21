@@ -17,22 +17,20 @@ package com.ajah.job.run.data;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.ajah.job.run.RunMessage;
 import com.ajah.job.run.RunMessageId;
 import com.ajah.job.run.RunMessageStatus;
 import com.ajah.job.run.RunMessageType;
-
-import org.springframework.stereotype.Repository;
-
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.StringUtils;
 
-
 /**
- *  MySQL-based implementation of {@link RunMessageDao}. 
+ * MySQL-based implementation of {@link RunMessageDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -40,9 +38,25 @@ import com.ajah.util.StringUtils;
 @Repository
 public class RunMessageDaoImpl extends AbstractAjahDao<RunMessageId, RunMessage, RunMessage> implements RunMessageDao {
 
+	/**
+	 * @see com.ajah.job.run.data.RunMessageDao#count(com.ajah.job.run.RunMessageType,
+	 *      com.ajah.job.run.RunMessageStatus)
+	 */
 	@Override
-	public List<RunMessage> list(RunMessageType type, RunMessageStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final RunMessageType type, final RunMessageStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	@Override
+	public List<RunMessage> list(final RunMessageType type, final RunMessageStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -53,27 +67,11 @@ public class RunMessageDaoImpl extends AbstractAjahDao<RunMessageId, RunMessage,
 	}
 
 	/**
-	 * @see com.ajah.job.run.data.RunMessageDao#count(com.ajah.job.run.RunMessageType,
-	 *      com.ajah.job.run.RunMessageStatus)
-	 */
-	@Override
-	public long count(RunMessageType type, RunMessageStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
-	}
-
-	/**
 	 * @see com.ajah.job.run.data.RunMessageDao#searchCount(String search)
 	 */
 	@Override
-	public int searchCount(String search) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(final String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
 		}

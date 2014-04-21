@@ -36,6 +36,6 @@ public interface AjahTask extends ApplicationContextAware {
 	 *            The task configuration that is being executed.
 	 * @throws TaskExecutionException
 	 */
-	void execute(Run run, JobTask jobTask) throws TaskExecutionException;
+	void execute(final Run run, final JobTask jobTask) throws TaskExecutionException;
 
 }

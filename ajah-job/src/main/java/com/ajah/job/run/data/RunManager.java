@@ -45,6 +45,12 @@ public class RunManager {
 	@Autowired
 	private RunMessageManager runMessageManager;
 
+	public DataOperationResult<Run> complete(final Run run) throws DataOperationException {
+		run.setStatus(RunStatus.COMPLETED);
+		run.setEnd(new Date());
+		return save(run);
+	}
+
 	/**
 	 * Returns a count of all records.
 	 * 
@@ -54,21 +60,6 @@ public class RunManager {
 	 */
 	public long count() throws DataOperationException {
 		return count(null, null);
-	}
-
-	/**
-	 * Counts the records available that match the criteria.
-	 * 
-	 * @param type
-	 *            The run type to limit to, optional.
-	 * @param status
-	 *            The status to limit to, optional.
-	 * @return The number of matching records.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public long count(final RunType type, final RunStatus status) throws DataOperationException {
-		return this.runDao.count(type, status);
 	}
 
 	/**
@@ -85,6 +76,30 @@ public class RunManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The run type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count(final RunType type, final RunStatus status) throws DataOperationException {
+		return this.runDao.count(type, status);
+	}
+
+	public Run create(final Job job, final RunType type) throws DataOperationException {
+		final Run run = new Run();
+		run.setJobId(job.getId());
+		run.setStatus(RunStatus.NEW);
+		run.setType(type);
+		run.setRunMessageManager(this.runMessageManager);
+		return save(run).getEntity();
+	}
 
 	/**
 	 * Marks the entity as {@link RunStatus#DELETED}.
@@ -172,24 +187,9 @@ public class RunManager {
 		return result;
 	}
 
-	public Run create(Job job, RunType type) throws DataOperationException {
-		Run run = new Run();
-		run.setJobId(job.getId());
-		run.setStatus(RunStatus.NEW);
-		run.setType(type);
-		run.setRunMessageManager(this.runMessageManager);
-		return save(run).getEntity();
-	}
-
-	public DataOperationResult<Run> start(Run run) throws DataOperationException {
+	public DataOperationResult<Run> start(final Run run) throws DataOperationException {
 		run.setStatus(RunStatus.ACTIVE);
 		run.setStart(new Date());
-		return save(run);
-	}
-
-	public DataOperationResult<Run> complete(Run run) throws DataOperationException {
-		run.setStatus(RunStatus.COMPLETED);
-		run.setEnd(new Date());
 		return save(run);
 	}
 

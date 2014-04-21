@@ -133,6 +133,15 @@ public enum USState implements State {
 	/** Wyoming */
 	WY("WY", "Wyoming");
 
+	public static USState get(final String string) {
+		for (final USState value : values()) {
+			if (value.name().equalsIgnoreCase(string) || value.getAbbr().equalsIgnoreCase(string) || value.getName().equalsIgnoreCase(string)) {
+				return value;
+			}
+		}
+		return null;
+	}
+
 	private final String id;
 
 	private final String abbr;
@@ -191,15 +200,6 @@ public enum USState implements State {
 	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	public static USState get(String string) {
-		for (USState value : values()) {
-			if (value.name().equalsIgnoreCase(string) || value.getAbbr().equalsIgnoreCase(string) || value.getName().equalsIgnoreCase(string)) {
-				return value;
-			}
-		}
-		return null;
 	}
 
 }

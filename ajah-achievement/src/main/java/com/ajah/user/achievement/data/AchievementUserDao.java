@@ -64,6 +64,6 @@ public interface AchievementUserDao extends AjahDao<AchievementUserId, Achieveme
 	 */
 	long count(final AchievementUserType type, final AchievementUserStatus status) throws DataOperationException;
 
-	List<AchievementUser> findCompleted(UserId userId, int count) throws DataOperationException;
+	List<AchievementUser> findCompleted(final UserId userId, final int count) throws DataOperationException;
 
 }

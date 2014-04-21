@@ -25,11 +25,11 @@ import com.ajah.util.IdentifiableEnum;
  */
 public class AjahApiConvert {
 
-	public static <K extends Comparable<K>> IdentifiableEnumRelay<K> convert(IdentifiableEnum<K> identifiableEnum) {
+	public static <K extends Comparable<K>> IdentifiableEnumRelay<K> convert(final IdentifiableEnum<K> identifiableEnum) {
 		if (identifiableEnum == null) {
 			return null;
 		}
-		IdentifiableEnumRelay<K> relay = new IdentifiableEnumRelay<K>();
+		final IdentifiableEnumRelay<K> relay = new IdentifiableEnumRelay<K>();
 		relay.id = identifiableEnum.getId();
 		relay.code = identifiableEnum.getCode();
 		relay.name = identifiableEnum.getName();

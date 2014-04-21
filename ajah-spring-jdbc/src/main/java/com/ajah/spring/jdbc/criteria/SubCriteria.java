@@ -52,6 +52,14 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 	}
 
 	/**
+	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
+	 */
+	@Override
+	protected SubCriteria getThis() {
+		return this;
+	}
+
+	/**
 	 * Constructs a {@link Where} object from this instance, suitable for
 	 * creating a prepared SQL statement. Note that this does not include the
 	 * WHERE token.
@@ -161,14 +169,6 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 			this.orLikes = new ArrayList<>();
 		}
 		this.orLikes.add(new NameValuePair<>(field, pattern));
-		return this;
-	}
-
-	/**
-	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
-	 */
-	@Override
-	protected SubCriteria getThis() {
 		return this;
 	}
 

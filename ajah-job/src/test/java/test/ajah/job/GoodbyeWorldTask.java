@@ -25,7 +25,7 @@ import com.ajah.job.task.SimpleAjahTask;
 public class GoodbyeWorldTask extends SimpleAjahTask {
 
 	@Override
-	public void innerExecute(Run run) {
+	public void innerExecute(final Run run) {
 		System.out.println("Goodbye World");
 		run.debug("Goodbye World");
 	}

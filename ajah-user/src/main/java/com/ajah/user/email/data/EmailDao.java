@@ -51,7 +51,7 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<Email> list(UserId userId, EmailType type, EmailStatus status, long page, long count) throws DataOperationException;
+	List<Email> list(final UserId userId, final EmailType type, final EmailStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -64,7 +64,7 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(UserId userId, EmailType type, EmailStatus status) throws DataOperationException;
+	long count(final UserId userId, final EmailType type, final EmailStatus status) throws DataOperationException;
 
 	/**
 	 * Locates an email by the address field.
@@ -75,6 +75,6 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	Email find(EmailAddress emailAddress) throws DataOperationException;
+	Email find(final EmailAddress emailAddress) throws DataOperationException;
 
 }

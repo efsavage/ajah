@@ -33,6 +33,18 @@ public class UserNotFoundException extends Exception {
 	private final UserId userId;
 
 	/**
+	 * Thrown when a user is requested by an email that does not exist.
+	 * 
+	 * @param emailAddress
+	 *            Email address that was sought.
+	 */
+	public UserNotFoundException(final EmailAddress emailAddress) {
+		super("EMAIL: " + (emailAddress == null ? null : emailAddress.toString()));
+		this.username = emailAddress == null ? null : emailAddress.toString();
+		this.userId = null;
+	}
+
+	/**
 	 * Thrown when a user is requested by a username that does not exist.
 	 * 
 	 * @param username
@@ -54,18 +66,6 @@ public class UserNotFoundException extends Exception {
 		super("id: " + userId + " not found");
 		this.userId = userId;
 		this.username = null;
-	}
-
-	/**
-	 * Thrown when a user is requested by an email that does not exist.
-	 * 
-	 * @param emailAddress
-	 *            Email address that was sought.
-	 */
-	public UserNotFoundException(EmailAddress emailAddress) {
-		super("EMAIL: " + (emailAddress == null ? null : emailAddress.toString()));
-		this.username = emailAddress == null ? null : emailAddress.toString();
-		this.userId = null;
 	}
 
 }

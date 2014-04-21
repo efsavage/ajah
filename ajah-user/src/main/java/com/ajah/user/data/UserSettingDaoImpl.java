@@ -54,6 +54,14 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 		return super.count(criteria);
 	}
 
+	/**
+	 * @see com.ajah.user.data.UserSettingDao#find(UserId, String)
+	 */
+	@Override
+	public UserSetting find(final UserId userId, final String name) throws DataOperationException {
+		return super.find(new Criteria().eq(userId).eq("name", name));
+	}
+
 	@Override
 	public List<UserSetting> list(final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
 		final Criteria criteria = new Criteria();
@@ -64,14 +72,6 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 			criteria.eq("status", status);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
-	}
-
-	/**
-	 * @see com.ajah.user.data.UserSettingDao#find(UserId, String)
-	 */
-	@Override
-	public UserSetting find(UserId userId, String name) throws DataOperationException {
-		return super.find(new Criteria().eq(userId).eq("name", name));
 	}
 
 }

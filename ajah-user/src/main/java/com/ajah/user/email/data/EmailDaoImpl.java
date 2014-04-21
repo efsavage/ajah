@@ -40,25 +40,13 @@ import com.ajah.util.data.format.EmailAddress;
 @Repository
 public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> implements EmailDao {
 
-	@Override
-	public List<Email> list(UserId userId, EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria().eq(userId);
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
-	}
-
 	/**
 	 * @see com.ajah.user.email.data.EmailDao#count(com.ajah.user.email.EmailType,
 	 *      com.ajah.user.email.EmailStatus)
 	 */
 	@Override
-	public long count(UserId userId, EmailType type, EmailStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria().eq(userId);
+	public long count(final UserId userId, final EmailType type, final EmailStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria().eq(userId);
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -72,9 +60,21 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 	 * @see com.ajah.user.email.data.EmailDao#find(com.ajah.util.data.format.EmailAddress)
 	 */
 	@Override
-	public Email find(EmailAddress emailAddress) throws DataOperationException {
+	public Email find(final EmailAddress emailAddress) throws DataOperationException {
 		AjahUtils.requireParam(emailAddress, "emailAddress");
 		return super.find("address", emailAddress.toString());
+	}
+
+	@Override
+	public List<Email> list(final UserId userId, final EmailType type, final EmailStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria().eq(userId);
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
 	}
 
 }

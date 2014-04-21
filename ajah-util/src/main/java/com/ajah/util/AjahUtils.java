@@ -33,6 +33,29 @@ public class AjahUtils {
 	public static final char[] LOWER_CHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 	/**
+	 * Check a collection parameter and throw an exception if its null or
+	 * possibly empty. Commonly used at the very beginning of a method for
+	 * things that should never be null.
+	 * 
+	 * @param parameter
+	 *            Object to check.
+	 * @param name
+	 *            Name of the parameter (for the error message)
+	 * @param emptyAllowed
+	 *            If true,an empty collection is permitted.
+	 * @throws RequiredParamterException
+	 *             If parameter is null, or possibly if it is empty.
+	 */
+	public static void requireParam(final Collection<?> parameter, final String name, final boolean emptyAllowed) throws IllegalArgumentException {
+		if (parameter == null) {
+			throw new RequiredParamterException(name + " cannot be null");
+		}
+		if (!emptyAllowed && parameter.size() < 1) {
+			throw new RequiredParamterException(name + " cannot be empty");
+		}
+	}
+
+	/**
 	 * Check a parameter and throw an exception if its value is not greater than
 	 * or equal to the required value.Commonly used at the very beginning of a
 	 * method for things that should never be zero or negative.
@@ -71,29 +94,6 @@ public class AjahUtils {
 			throw new RequiredParamterException(name + " cannot be null");
 		}
 		if (parameter instanceof String && ((String) parameter).length() < 1) {
-			throw new RequiredParamterException(name + " cannot be empty");
-		}
-	}
-
-	/**
-	 * Check a collection parameter and throw an exception if its null or
-	 * possibly empty. Commonly used at the very beginning of a method for
-	 * things that should never be null.
-	 * 
-	 * @param parameter
-	 *            Object to check.
-	 * @param name
-	 *            Name of the parameter (for the error message)
-	 * @param emptyAllowed
-	 *            If true,an empty collection is permitted.
-	 * @throws RequiredParamterException
-	 *             If parameter is null, or possibly if it is empty.
-	 */
-	public static void requireParam(final Collection<?> parameter, final String name, final boolean emptyAllowed) throws IllegalArgumentException {
-		if (parameter == null) {
-			throw new RequiredParamterException(name + " cannot be null");
-		}
-		if (!emptyAllowed && parameter.size() < 1) {
 			throw new RequiredParamterException(name + " cannot be empty");
 		}
 	}

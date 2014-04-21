@@ -55,26 +55,26 @@ public class Run implements Identifiable<RunId> {
 	@Transient
 	Job job;
 
-	public void debug(String message) {
+	public void debug(final String message) {
 		try {
-			this.runMessageManager.create(this.job, this.getId(), message, null, RunMessageType.DEBUG, false);
-		} catch (DataOperationException e) {
+			this.runMessageManager.create(this.job, getId(), message, null, RunMessageType.DEBUG, false);
+		} catch (final DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}
 	}
 
-	public void error(Throwable t) {
+	public void error(final Throwable t) {
 		try {
-			this.runMessageManager.create(this.job, this.getId(), t.getMessage(), t, RunMessageType.ERROR, true);
-		} catch (DataOperationException e) {
+			this.runMessageManager.create(this.job, getId(), t.getMessage(), t, RunMessageType.ERROR, true);
+		} catch (final DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}
 	}
 
-	public void metric(String name, BigDecimal value, boolean external) {
+	public void metric(final String name, final BigDecimal value, final boolean external) {
 		try {
-			this.runMetricManager.create(name, value, this.getId(), this.job, external);
-		} catch (DataOperationException e) {
+			this.runMetricManager.create(name, value, getId(), this.job, external);
+		} catch (final DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}
 	}

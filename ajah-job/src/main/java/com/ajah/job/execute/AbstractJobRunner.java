@@ -48,6 +48,14 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 @Log
 public abstract class AbstractJobRunner implements JobRunner {
 
+	protected static void checkIn(final Run run, final RunManager runManager) throws RunDurationExceededException, DataOperationException {
+		run.setLastActivity(new Date());
+		runManager.save(run);
+		if (run.getLastActivity().getTime() - run.getStart().getTime() > run.getMaxDuration()) {
+			throw new RunDurationExceededException(run.getStart(), run.getLastActivity(), run.getMaxDuration());
+		}
+	}
+
 	protected Job job;
 
 	protected ApplicationContext applicationContext;
@@ -83,14 +91,6 @@ public abstract class AbstractJobRunner implements JobRunner {
 			}
 		} catch (DataOperationException | RuntimeException | TaskNotFoundException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
-		}
-	}
-
-	protected static void checkIn(Run run, RunManager runManager) throws RunDurationExceededException, DataOperationException {
-		run.setLastActivity(new Date());
-		runManager.save(run);
-		if (run.getLastActivity().getTime() - run.getStart().getTime() > run.getMaxDuration()) {
-			throw new RunDurationExceededException(run.getStart(), run.getLastActivity(), run.getMaxDuration());
 		}
 	}
 

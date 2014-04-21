@@ -74,6 +74,17 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		this.client.close();
 	}
 
+	public boolean createIndex() {
+		final CreateIndexRequest createIndexRequest = new CreateIndexRequest(this.index);
+		final CreateIndexResponse createResponse = this.client.admin().indices().create(createIndexRequest).actionGet();
+		return createResponse.isAcknowledged();
+	}
+
+	@SuppressWarnings("static-method")
+	protected SortBuilder getDefaultSort() {
+		return null;
+	}
+
 	@SuppressWarnings("unchecked")
 	protected Class<C> getTargetClass() {
 		return (Class<C>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
@@ -88,6 +99,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	 * @throws JsonProcessingException
 	 *             If the entity could not be parsed into JSON.
 	 */
+	@Override
 	public IndexResponse index(final T entity) throws JsonProcessingException {
 
 		final IndexRequestBuilder irb = this.client.prepareIndex(this.index, this.type, entity.getId().toString());
@@ -97,35 +109,6 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		final ListenableActionFuture<IndexResponse> result = irb.execute();
 		log.finest("Executed");
 		return result.actionGet();
-	}
-
-	/**
-	 * Returns a result of a search.
-	 * 
-	 * @param query
-	 *            The search query.
-	 * @return The results of the search.
-	 * @throws JsonParseException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws JsonMappingException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws IOException
-	 *             If the query failed to execute.
-	 */
-	public SearchList<C> search(final String query) throws IOException {
-		final SearchList<C> results = new SearchList<>();
-		try {
-			final SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.matchQuery("_all", query))
-					.execute().actionGet();
-			results.setTotalHits(response.getHits().getTotalHits());
-			for (final SearchHit hit : response.getHits()) {
-				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
-				results.add(result);
-			}
-		} catch (final IndexMissingException e) {
-			log.warning(e.getMessage());
-		}
-		return results;
 	}
 
 	/**
@@ -144,13 +127,14 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	 * @throws IOException
 	 *             If the query failed to execute.
 	 */
-	public SearchList<C> search(final QueryBuilder queryBuilder, FilterBuilder filterBuilder, SortBuilder[] sortBuilders, int page, int count) throws IOException {
+	@Override
+	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException {
 		final SearchList<C> results = new SearchList<>();
 		try {
 			final SearchRequestBuilder requestBuilder = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setFrom(page * count).setSize(count)
 					.setQuery(queryBuilder);
 			if (sortBuilders != null) {
-				for (SortBuilder sortBuilder : sortBuilders) {
+				for (final SortBuilder sortBuilder : sortBuilders) {
 					requestBuilder.addSort(sortBuilder);
 				}
 			}
@@ -174,15 +158,34 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		return results;
 	}
 
-	@SuppressWarnings("static-method")
-	protected SortBuilder getDefaultSort() {
-		return null;
-	}
-
-	public boolean createIndex() {
-		CreateIndexRequest createIndexRequest = new CreateIndexRequest(this.index);
-		CreateIndexResponse createResponse = this.client.admin().indices().create(createIndexRequest).actionGet();
-		return createResponse.isAcknowledged();
+	/**
+	 * Returns a result of a search.
+	 * 
+	 * @param query
+	 *            The search query.
+	 * @return The results of the search.
+	 * @throws JsonParseException
+	 *             If the entity could not be parsed from the JSON.
+	 * @throws JsonMappingException
+	 *             If the entity could not be parsed from the JSON.
+	 * @throws IOException
+	 *             If the query failed to execute.
+	 */
+	@Override
+	public SearchList<C> search(final String query) throws IOException {
+		final SearchList<C> results = new SearchList<>();
+		try {
+			final SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.matchQuery("_all", query))
+					.execute().actionGet();
+			results.setTotalHits(response.getHits().getTotalHits());
+			for (final SearchHit hit : response.getHits()) {
+				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
+				results.add(result);
+			}
+		} catch (final IndexMissingException e) {
+			log.warning(e.getMessage());
+		}
+		return results;
 	}
 
 }

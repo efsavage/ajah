@@ -115,6 +115,6 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	User getRandomUser(UserStatus active) throws DataOperationException;
+	User getRandomUser(final UserStatus active) throws DataOperationException;
 
 }

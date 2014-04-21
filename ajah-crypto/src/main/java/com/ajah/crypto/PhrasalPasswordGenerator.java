@@ -86,6 +86,11 @@ public class PhrasalPasswordGenerator {
 			"Usually", "Vertically", "Visibly", "Visually", "Warmly", "Weekly", "Well", "Where", "Wholly", "Wildly", "Willfully", "Willingly", "Wisely", "Yearly", "Yesterday", "Youthfully",
 			"Zestfully" };
 
+	public static long getPermutations() {
+		return (long) ADJECTIVES.length * NOUNS.length * VERBS.length * ADVERBS.length;
+
+	}
+
 	/**
 	 * Returns a random phrase in the form of {Adjective}{Noun}{Verb}{Adverb}.
 	 * Example:
@@ -96,10 +101,5 @@ public class PhrasalPasswordGenerator {
 	 */
 	public static String getRandomPassword() {
 		return RandomUtils.getRandomElement(ADJECTIVES) + RandomUtils.getRandomElement(NOUNS) + RandomUtils.getRandomElement(VERBS) + RandomUtils.getRandomElement(ADVERBS);
-	}
-
-	public static long getPermutations() {
-		return (long) ADJECTIVES.length * NOUNS.length * VERBS.length * ADVERBS.length;
-
 	}
 }

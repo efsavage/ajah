@@ -21,7 +21,6 @@ import com.ajah.job.run.RunMetric;
 import com.ajah.job.run.RunMetricId;
 import com.ajah.job.run.RunMetricStatus;
 import com.ajah.job.run.RunMetricType;
-
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
 
@@ -48,7 +47,7 @@ public interface RunMetricDao extends AjahDao<RunMetricId, RunMetric> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<RunMetric> list(RunMetricType type, RunMetricStatus status, long page, long count) throws DataOperationException;
+	List<RunMetric> list(final RunMetricType type, final RunMetricStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,7 +60,7 @@ public interface RunMetricDao extends AjahDao<RunMetricId, RunMetric> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(RunMetricType type, RunMetricStatus status) throws DataOperationException;
+	long count(final RunMetricType type, final RunMetricStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -72,6 +71,6 @@ public interface RunMetricDao extends AjahDao<RunMetricId, RunMetric> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
 }

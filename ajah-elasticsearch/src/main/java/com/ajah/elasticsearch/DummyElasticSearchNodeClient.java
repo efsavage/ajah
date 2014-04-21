@@ -120,6 +120,7 @@ public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T ex
 	 * @throws JsonProcessingException
 	 *             If the entity could not be parsed into JSON.
 	 */
+	@Override
 	public IndexResponse index(final T entity) throws JsonProcessingException {
 
 		// IndexRequestBuilder irb = this.client.prepareIndex(this.index,
@@ -146,6 +147,7 @@ public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T ex
 	 * @throws IOException
 	 *             If the query failed to execute.
 	 */
+	@Override
 	public SearchList<C> search(final String query) throws IOException {
 		return new SearchList<>();
 	}

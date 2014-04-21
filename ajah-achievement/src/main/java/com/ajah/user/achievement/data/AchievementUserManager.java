@@ -110,6 +110,16 @@ public class AchievementUserManager {
 		return result;
 	}
 
+	public List<AchievementUser> findCompleted(final UserId userId, final int count, final boolean loadAchievements) throws DataOperationException, AchievementNotFoundException {
+		final List<AchievementUser> achievementUsers = this.achievementUserDao.findCompleted(userId, count);
+		if (loadAchievements) {
+			for (final AchievementUser achievementUser : achievementUsers) {
+				achievementUser.setAchievement(this.achievementManager.load(achievementUser.getAchievementId()));
+			}
+		}
+		return achievementUsers;
+	}
+
 	/**
 	 * Returns a list of {@link AchievementUser}s that match the specified
 	 * criteria.
@@ -179,16 +189,6 @@ public class AchievementUserManager {
 		final DataOperationResult<AchievementUser> result = this.achievementUserDao.update(achievementUser);
 		log.fine("Updated AchievementUser " + achievementUser.getId());
 		return result;
-	}
-
-	public List<AchievementUser> findCompleted(UserId userId, int count, boolean loadAchievements) throws DataOperationException, AchievementNotFoundException {
-		List<AchievementUser> achievementUsers = this.achievementUserDao.findCompleted(userId, count);
-		if (loadAchievements) {
-			for (AchievementUser achievementUser : achievementUsers) {
-				achievementUser.setAchievement(this.achievementManager.load(achievementUser.getAchievementId()));
-			}
-		}
-		return achievementUsers;
 	}
 
 }

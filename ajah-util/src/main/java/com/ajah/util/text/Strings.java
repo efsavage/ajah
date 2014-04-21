@@ -8,10 +8,6 @@ package com.ajah.util.text;
  */
 public class Strings {
 
-	private Strings() {
-		// Private constructor
-	}
-
 	/**
 	 * 40 equals signs
 	 */
@@ -21,5 +17,9 @@ public class Strings {
 	 * 35 equals signs
 	 */
 	public static final String HYPEN35 = "-----------------------------------";
+
+	private Strings() {
+		// Private constructor
+	}
 
 }

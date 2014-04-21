@@ -27,7 +27,7 @@ public class RequiredParamterException extends IllegalArgumentException {
 	/**
 	 * @see Exception#Exception(String)
 	 */
-	public RequiredParamterException(String message) {
+	public RequiredParamterException(final String message) {
 		super(message);
 	}
 

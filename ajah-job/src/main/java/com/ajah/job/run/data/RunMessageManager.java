@@ -54,140 +54,6 @@ public class RunMessageManager {
 	private VigilancedClient vigilancedClient;
 
 	/**
-	 * Saves an {@link RunMessage}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param runMessage
-	 *            The runMessage to save.
-	 * @return The result of the save operation, which will include the new
-	 *         runMessage at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<RunMessage> save(RunMessage runMessage) throws DataOperationException {
-		boolean create = false;
-		if (runMessage.getId() == null) {
-			runMessage.setId(new RunMessageId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (runMessage.getCreated() == null) {
-			runMessage.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<RunMessage> result = this.runMessageDao.insert(runMessage);
-			log.debug("Created RunMessage " + runMessage.getId());
-			return result;
-		}
-		DataOperationResult<RunMessage> result = this.runMessageDao.update(runMessage);
-		log.debug("Updated RunMessage " + runMessage.getId());
-		return result;
-	}
-
-	/**
-	 * Loads an {@link RunMessage} by it's ID.
-	 * 
-	 * @param runMessageId
-	 *            The ID to load, required.
-	 * @return The matching runMessage, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws RunMessageNotFoundException
-	 *             If the ID specified did not match any runMessages.
-	 */
-	public RunMessage load(RunMessageId runMessageId) throws DataOperationException, RunMessageNotFoundException {
-		RunMessage runMessage = this.runMessageDao.load(runMessageId);
-		if (runMessage == null) {
-			throw new RunMessageNotFoundException(runMessageId);
-		}
-		return runMessage;
-	}
-
-	/**
-	 * Returns a list of {@link RunMessage}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of runMessage, optional.
-	 * @param status
-	 *            The status of the runMessage, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link RunMessage}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<RunMessage> list(RunMessageType type, RunMessageStatus status, long page, long count) throws DataOperationException {
-		return this.runMessageDao.list(type, status, page, count);
-	}
-
-	/**
-	 * Creates a new {@link RunMessage} with the given properties.
-	 * 
-	 * @param runId
-	 *            The name of the runMessage, required.
-	 * @param message
-	 *            The type of runMessage, required.
-	 * @param external
-	 *            Notify external services of this message?
-	 * @param debug
-	 *            The status of the runMessage, required.
-	 * @return The result of the creation, which will include the new runMessage
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<RunMessage> create(Job job, RunId runId, String message, Throwable throwable, RunMessageType type, boolean external) throws DataOperationException {
-		RunMessage runMessage = new RunMessage();
-		runMessage.setRunId(runId);
-		runMessage.setJobId(job.getId());
-		runMessage.setMessage(message);
-
-		if (throwable != null) {
-			throwable.printStackTrace();
-			StringWriter errors = new StringWriter();
-			throwable.printStackTrace(new PrintWriter(errors));
-			runMessage.setStackTrace(errors.toString());
-			if (StringUtils.isBlank(message)) {
-				runMessage.setMessage(throwable.getClass().getSimpleName());
-			}
-		}
-
-		runMessage.setType(type);
-		runMessage.setStatus(RunMessageStatus.ACTIVE);
-		DataOperationResult<RunMessage> result = save(runMessage);
-		if (external) {
-			if (this.vigilancedClient != null) {
-				this.vigilancedClient.addMessage(job.getMonitorKey(), message, null, null);
-			} else {
-				log.debug("No Vigilanced client is configured");
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link RunMessageStatus#DELETED}.
-	 * 
-	 * @param runMessageId
-	 *            The ID of the runMessage to delete.
-	 * @return The result of the deletion, will not include the new runMessage
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws RunMessageNotFoundException
-	 *             If the ID specified did not match any runMessages.
-	 */
-	public DataOperationResult<RunMessage> delete(RunMessageId runMessageId) throws DataOperationException, RunMessageNotFoundException {
-		RunMessage runMessage = load(runMessageId);
-		runMessage.setStatus(RunMessageStatus.DELETED);
-		DataOperationResult<RunMessage> result = save(runMessage);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -214,6 +80,141 @@ public class RunMessageManager {
 	}
 
 	/**
+	 * Creates a new {@link RunMessage} with the given properties.
+	 * 
+	 * @param runId
+	 *            The name of the runMessage, required.
+	 * @param message
+	 *            The type of runMessage, required.
+	 * @param external
+	 *            Notify external services of this message?
+	 * @param debug
+	 *            The status of the runMessage, required.
+	 * @return The result of the creation, which will include the new runMessage
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<RunMessage> create(final Job job, final RunId runId, final String message, final Throwable throwable, final RunMessageType type, final boolean external)
+			throws DataOperationException {
+		final RunMessage runMessage = new RunMessage();
+		runMessage.setRunId(runId);
+		runMessage.setJobId(job.getId());
+		runMessage.setMessage(message);
+
+		if (throwable != null) {
+			throwable.printStackTrace();
+			final StringWriter errors = new StringWriter();
+			throwable.printStackTrace(new PrintWriter(errors));
+			runMessage.setStackTrace(errors.toString());
+			if (StringUtils.isBlank(message)) {
+				runMessage.setMessage(throwable.getClass().getSimpleName());
+			}
+		}
+
+		runMessage.setType(type);
+		runMessage.setStatus(RunMessageStatus.ACTIVE);
+		final DataOperationResult<RunMessage> result = save(runMessage);
+		if (external) {
+			if (this.vigilancedClient != null) {
+				this.vigilancedClient.addMessage(job.getMonitorKey(), message, null, null);
+			} else {
+				log.debug("No Vigilanced client is configured");
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link RunMessageStatus#DELETED}.
+	 * 
+	 * @param runMessageId
+	 *            The ID of the runMessage to delete.
+	 * @return The result of the deletion, will not include the new runMessage
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws RunMessageNotFoundException
+	 *             If the ID specified did not match any runMessages.
+	 */
+	public DataOperationResult<RunMessage> delete(final RunMessageId runMessageId) throws DataOperationException, RunMessageNotFoundException {
+		final RunMessage runMessage = load(runMessageId);
+		runMessage.setStatus(RunMessageStatus.DELETED);
+		final DataOperationResult<RunMessage> result = save(runMessage);
+		return result;
+	}
+
+	/**
+	 * Returns a list of {@link RunMessage}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of runMessage, optional.
+	 * @param status
+	 *            The status of the runMessage, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link RunMessage}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<RunMessage> list(final RunMessageType type, final RunMessageStatus status, final long page, final long count) throws DataOperationException {
+		return this.runMessageDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Loads an {@link RunMessage} by it's ID.
+	 * 
+	 * @param runMessageId
+	 *            The ID to load, required.
+	 * @return The matching runMessage, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws RunMessageNotFoundException
+	 *             If the ID specified did not match any runMessages.
+	 */
+	public RunMessage load(final RunMessageId runMessageId) throws DataOperationException, RunMessageNotFoundException {
+		final RunMessage runMessage = this.runMessageDao.load(runMessageId);
+		if (runMessage == null) {
+			throw new RunMessageNotFoundException(runMessageId);
+		}
+		return runMessage;
+	}
+
+	/**
+	 * Saves an {@link RunMessage}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param runMessage
+	 *            The runMessage to save.
+	 * @return The result of the save operation, which will include the new
+	 *         runMessage at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<RunMessage> save(final RunMessage runMessage) throws DataOperationException {
+		boolean create = false;
+		if (runMessage.getId() == null) {
+			runMessage.setId(new RunMessageId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (runMessage.getCreated() == null) {
+			runMessage.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<RunMessage> result = this.runMessageDao.insert(runMessage);
+			log.debug("Created RunMessage " + runMessage.getId());
+			return result;
+		}
+		final DataOperationResult<RunMessage> result = this.runMessageDao.update(runMessage);
+		log.debug("Updated RunMessage " + runMessage.getId());
+		return result;
+	}
+
+	/**
 	 * Counts the records available that match the search criteria.
 	 * 
 	 * @param search
@@ -222,7 +223,7 @@ public class RunMessageManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search) throws DataOperationException {
+	public int searchCount(final String search) throws DataOperationException {
 		return this.runMessageDao.searchCount(search);
 	}
 

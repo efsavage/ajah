@@ -36,18 +36,25 @@ public abstract class SimpleAjahTask implements AjahTask {
 	protected Date end;
 	protected long maxDuration;
 
+	protected void checkIn() throws TaskDurationExceededException {
+		this.lastActivity = new Date();
+		if (this.lastActivity.getTime() - this.start.getTime() > this.maxDuration) {
+			throw new TaskDurationExceededException(this.start, this.lastActivity, this.maxDuration);
+		}
+	}
+
 	/**
 	 * @see com.ajah.job.task.AjahTask#execute(Run)
 	 */
 	@Override
-	public void execute(Run run, JobTask jobTask) throws TaskExecutionException {
+	public void execute(final Run run, final JobTask jobTask) throws TaskExecutionException {
 		this.start = new Date();
 		this.maxDuration = jobTask.getMaxDuration();
 		innerExecute(run);
 		this.end = new Date();
 	}
 
-	public abstract void innerExecute(Run run) throws TaskExecutionException;
+	public abstract void innerExecute(final Run run) throws TaskExecutionException;
 
 	/**
 	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
@@ -55,13 +62,6 @@ public abstract class SimpleAjahTask implements AjahTask {
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
-	}
-
-	protected void checkIn() throws TaskDurationExceededException {
-		this.lastActivity = new Date();
-		if (this.lastActivity.getTime() - this.start.getTime() > this.maxDuration) {
-			throw new TaskDurationExceededException(this.start, this.lastActivity, this.maxDuration);
-		}
 	}
 
 }

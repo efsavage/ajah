@@ -93,7 +93,7 @@ public enum BigDecimalFormat implements IdentifiableEnum<String> {
 	private NumberFormat numberFormat;
 	private int maxDecimalPlaces;
 
-	private BigDecimalFormat(final String id, final String code, final String name, final String description, NumberFormat numberFormat, int maxDecimalPlaces) {
+	private BigDecimalFormat(final String id, final String code, final String name, final String description, final NumberFormat numberFormat, final int maxDecimalPlaces) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

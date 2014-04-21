@@ -46,119 +46,6 @@ public class UserFollowManager {
 	private UserFollowDao userFollowDao;
 
 	/**
-	 * Saves an {@link UserFollow}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param userFollow
-	 *            The userFollow to save.
-	 * @return The result of the save operation, which will include the new
-	 *         userFollow at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<UserFollow> save(UserFollow userFollow) throws DataOperationException {
-		boolean create = false;
-		if (userFollow.getId() == null) {
-			userFollow.setId(new UserFollowId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (userFollow.getCreated() == null) {
-			userFollow.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<UserFollow> result = this.userFollowDao.insert(userFollow);
-			log.fine("Created UserFollow " + userFollow.getId());
-			return result;
-		}
-		DataOperationResult<UserFollow> result = this.userFollowDao.update(userFollow);
-		log.fine("Updated UserFollow " + userFollow.getId());
-		return result;
-	}
-
-	/**
-	 * Loads an {@link UserFollow} by it's ID.
-	 * 
-	 * @param userFollowId
-	 *            The ID to load, required.
-	 * @return The matching userFollow, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws UserFollowNotFoundException
-	 *             If the ID specified did not match any userFollows.
-	 */
-	public UserFollow load(UserFollowId userFollowId) throws DataOperationException, UserFollowNotFoundException {
-		UserFollow userFollow = this.userFollowDao.load(userFollowId);
-		if (userFollow == null) {
-			throw new UserFollowNotFoundException(userFollowId);
-		}
-		return userFollow;
-	}
-
-	/**
-	 * Returns a list of {@link UserFollow}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of userFollow, optional.
-	 * @param status
-	 *            The status of the userFollow, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link UserFollow}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<UserFollow> list(UserFollowType type, UserFollowStatus status, long page, long count) throws DataOperationException {
-		return this.userFollowDao.list(type, status, page, count);
-	}
-
-	/**
-	 * Creates a new {@link UserFollow} with the given properties.
-	 * 
-	 * @param name
-	 *            The name of the userFollow, required.
-	 * @param type
-	 *            The type of userFollow, required.
-	 * @param status
-	 *            The status of the userFollow, required.
-	 * @return The result of the creation, which will include the new userFollow
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<UserFollow> create(UserId userId, UserId followedUserId, UserFollowType type, UserFollowStatus status) throws DataOperationException {
-		UserFollow userFollow = new UserFollow();
-		userFollow.setUserId(userId);
-		userFollow.setFollowedUserId(followedUserId);
-		userFollow.setType(type);
-		userFollow.setStatus(status);
-		DataOperationResult<UserFollow> result = save(userFollow);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link UserFollowStatus#DELETED}.
-	 * 
-	 * @param userFollowId
-	 *            The ID of the userFollow to delete.
-	 * @return The result of the deletion, will not include the new userFollow
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws UserFollowNotFoundException
-	 *             If the ID specified did not match any userFollows.
-	 */
-	public DataOperationResult<UserFollow> delete(UserFollowId userFollowId) throws DataOperationException, UserFollowNotFoundException {
-		UserFollow userFollow = load(userFollowId);
-		userFollow.setStatus(UserFollowStatus.DELETED);
-		DataOperationResult<UserFollow> result = save(userFollow);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -182,6 +69,119 @@ public class UserFollowManager {
 	 */
 	public long count(final UserFollowType type, final UserFollowStatus status) throws DataOperationException {
 		return this.userFollowDao.count(type, status);
+	}
+
+	/**
+	 * Creates a new {@link UserFollow} with the given properties.
+	 * 
+	 * @param name
+	 *            The name of the userFollow, required.
+	 * @param type
+	 *            The type of userFollow, required.
+	 * @param status
+	 *            The status of the userFollow, required.
+	 * @return The result of the creation, which will include the new userFollow
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<UserFollow> create(final UserId userId, final UserId followedUserId, final UserFollowType type, final UserFollowStatus status) throws DataOperationException {
+		final UserFollow userFollow = new UserFollow();
+		userFollow.setUserId(userId);
+		userFollow.setFollowedUserId(followedUserId);
+		userFollow.setType(type);
+		userFollow.setStatus(status);
+		final DataOperationResult<UserFollow> result = save(userFollow);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link UserFollowStatus#DELETED}.
+	 * 
+	 * @param userFollowId
+	 *            The ID of the userFollow to delete.
+	 * @return The result of the deletion, will not include the new userFollow
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws UserFollowNotFoundException
+	 *             If the ID specified did not match any userFollows.
+	 */
+	public DataOperationResult<UserFollow> delete(final UserFollowId userFollowId) throws DataOperationException, UserFollowNotFoundException {
+		final UserFollow userFollow = load(userFollowId);
+		userFollow.setStatus(UserFollowStatus.DELETED);
+		final DataOperationResult<UserFollow> result = save(userFollow);
+		return result;
+	}
+
+	/**
+	 * Returns a list of {@link UserFollow}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of userFollow, optional.
+	 * @param status
+	 *            The status of the userFollow, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link UserFollow}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<UserFollow> list(final UserFollowType type, final UserFollowStatus status, final long page, final long count) throws DataOperationException {
+		return this.userFollowDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Loads an {@link UserFollow} by it's ID.
+	 * 
+	 * @param userFollowId
+	 *            The ID to load, required.
+	 * @return The matching userFollow, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws UserFollowNotFoundException
+	 *             If the ID specified did not match any userFollows.
+	 */
+	public UserFollow load(final UserFollowId userFollowId) throws DataOperationException, UserFollowNotFoundException {
+		final UserFollow userFollow = this.userFollowDao.load(userFollowId);
+		if (userFollow == null) {
+			throw new UserFollowNotFoundException(userFollowId);
+		}
+		return userFollow;
+	}
+
+	/**
+	 * Saves an {@link UserFollow}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param userFollow
+	 *            The userFollow to save.
+	 * @return The result of the save operation, which will include the new
+	 *         userFollow at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<UserFollow> save(final UserFollow userFollow) throws DataOperationException {
+		boolean create = false;
+		if (userFollow.getId() == null) {
+			userFollow.setId(new UserFollowId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (userFollow.getCreated() == null) {
+			userFollow.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<UserFollow> result = this.userFollowDao.insert(userFollow);
+			log.fine("Created UserFollow " + userFollow.getId());
+			return result;
+		}
+		final DataOperationResult<UserFollow> result = this.userFollowDao.update(userFollow);
+		log.fine("Updated UserFollow " + userFollow.getId());
+		return result;
 	}
 
 }

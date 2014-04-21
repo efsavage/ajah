@@ -36,9 +36,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AutoCloseable {
 
 	public IndexResponse index(final T entity) throws JsonProcessingException;
-	
+
 	public SearchList<C> search(final String query) throws IOException;
-	
-	public SearchList<C> search(final QueryBuilder queryBuilder, FilterBuilder filterBuilder, SortBuilder[] sortBuilders, int page, int count) throws IOException;
-	
+
+	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException;
+
 }

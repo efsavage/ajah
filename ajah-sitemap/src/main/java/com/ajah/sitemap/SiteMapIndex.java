@@ -40,7 +40,7 @@ public class SiteMapIndex {
 	 * @param sitemap
 	 *            The sitemap to add to this index.
 	 */
-	public void add(SiteMap sitemap) {
+	public void add(final SiteMap sitemap) {
 		this.siteMaps.add(sitemap);
 	}
 

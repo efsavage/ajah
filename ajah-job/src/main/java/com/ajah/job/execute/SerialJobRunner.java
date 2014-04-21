@@ -45,10 +45,6 @@ public class SerialJobRunner extends AbstractJobRunner {
 		this.abortOnError = abortOnError;
 	}
 
-	public void init() {
-		super.init(this.applicationContext);
-	}
-
 	/**
 	 * Runs a job.
 	 * 
@@ -57,17 +53,17 @@ public class SerialJobRunner extends AbstractJobRunner {
 	 *             or starting the run, not within the actual tasks themselves.
 	 */
 	@Override
-	public void execute(Run run) throws DataOperationException {
+	public void execute(final Run run) throws DataOperationException {
 		if (!this.initialized) {
 			init();
 		}
-		RunManager runManager = this.applicationContext.getBean(RunManager.class);
+		final RunManager runManager = this.applicationContext.getBean(RunManager.class);
 		runManager.start(run);
 		for (final JobTask jobTask : this.jobTasks) {
 			try {
 				jobTask.getTask().execute(run, jobTask, this.applicationContext);
 				checkIn(run, runManager);
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				run.error(t);
 				if (this.abortOnError) {
 					break;
@@ -75,6 +71,10 @@ public class SerialJobRunner extends AbstractJobRunner {
 			}
 		}
 		runManager.complete(run);
+	}
+
+	public void init() {
+		super.init(this.applicationContext);
 	}
 
 }

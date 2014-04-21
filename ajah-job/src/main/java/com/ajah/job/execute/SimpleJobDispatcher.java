@@ -60,13 +60,14 @@ public class SimpleJobDispatcher implements JobDispatcher {
 	@Setter
 	private ApplicationContext applicationContext;
 
+	@Override
 	@Scheduled(fixedDelay = 5000)
 	public void poll() {
 		log.fine("Polling jobs");
 		List<Job> jobs;
 		try {
 			jobs = this.jobManager.findRunnableJobs();
-		} catch (DataOperationException e) {
+		} catch (final DataOperationException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 			return;
 		}
@@ -74,7 +75,7 @@ public class SimpleJobDispatcher implements JobDispatcher {
 		for (final Job job : jobs) {
 			try {
 				run(job, RunType.SCHEDULED);
-			} catch (DataOperationException e) {
+			} catch (final DataOperationException e) {
 				log.log(Level.SEVERE, e.getMessage(), e);
 			}
 		}
@@ -89,7 +90,7 @@ public class SimpleJobDispatcher implements JobDispatcher {
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
-	private void run(final Job job, RunType type) throws DataOperationException {
+	private void run(final Job job, final RunType type) throws DataOperationException {
 		JobRunner jobRunner;
 		switch (job.getExecutionStrategy()) {
 		case SERIAL_ABORT:
@@ -104,7 +105,7 @@ public class SimpleJobDispatcher implements JobDispatcher {
 			return;
 		}
 		log.fine("Using " + jobRunner.getClass().getName());
-		Run run = this.runManager.create(job, type);
+		final Run run = this.runManager.create(job, type);
 		jobRunner.execute(run);
 	}
 

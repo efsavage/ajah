@@ -54,6 +54,16 @@ public class AchievementUserDaoImpl extends AbstractAjahDao<AchievementUserId, A
 		return super.count(criteria);
 	}
 
+	/**
+	 * @see com.ajah.user.achievement.data.AchievementUserDao#findCompleted(com.ajah.user.UserId,
+	 *      int)
+	 */
+	@Override
+	public List<AchievementUser> findCompleted(final UserId userId, final int count) throws DataOperationException {
+		final Criteria criteria = new Criteria().eq(userId).eq("status", AchievementUserStatus.COMPLETED).orderBy("completed_date", Order.DESC).rows(count);
+		return super.list(criteria);
+	}
+
 	@Override
 	public List<AchievementUser> list(final AchievementUserType type, final AchievementUserStatus status, final long page, final long count) throws DataOperationException {
 		final Criteria criteria = new Criteria();
@@ -64,16 +74,6 @@ public class AchievementUserDaoImpl extends AbstractAjahDao<AchievementUserId, A
 			criteria.eq("status", status);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
-	}
-
-	/**
-	 * @see com.ajah.user.achievement.data.AchievementUserDao#findCompleted(com.ajah.user.UserId,
-	 *      int)
-	 */
-	@Override
-	public List<AchievementUser> findCompleted(UserId userId, int count) throws DataOperationException {
-		Criteria criteria = new Criteria().eq(userId).eq("status", AchievementUserStatus.COMPLETED).orderBy("completed_date", Order.DESC).rows(count);
-		return super.list(criteria);
 	}
 
 }

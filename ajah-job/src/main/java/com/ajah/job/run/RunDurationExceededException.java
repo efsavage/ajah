@@ -40,19 +40,10 @@ public class RunDurationExceededException extends Exception {
 	 * @param maxDuration
 	 *            The maximum duration permitted.
 	 */
-	public RunDurationExceededException(Date start, Date lastActivity, long maxDuration) {
+	public RunDurationExceededException(final Date start, final Date lastActivity, final long maxDuration) {
 		this.start = start;
 		this.lastActivity = lastActivity;
 		this.maxDuration = maxDuration;
-	}
-
-	/**
-	 * The time the run started.
-	 * 
-	 * @return the start
-	 */
-	public Date getStart() {
-		return this.start;
 	}
 
 	/**
@@ -71,6 +62,15 @@ public class RunDurationExceededException extends Exception {
 	 */
 	public long getMaxDuration() {
 		return this.maxDuration;
+	}
+
+	/**
+	 * The time the run started.
+	 * 
+	 * @return the start
+	 */
+	public Date getStart() {
+		return this.start;
 	}
 
 }

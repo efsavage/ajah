@@ -47,54 +47,87 @@ public class EmailManager {
 	private EmailDao emailDao;
 
 	/**
-	 * Saves an {@link Email}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
+	 * Returns a count of all records.
 	 * 
-	 * @param email
-	 *            The email to save.
-	 * @return The result of the save operation, which will include the new
-	 *         email at {@link DataOperationResult#getEntity()}.
+	 * @return Count of all records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<Email> save(Email email) throws DataOperationException {
-		boolean create = false;
-		if (email.getId() == null) {
-			email.setId(new EmailId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (email.getCreated() == null) {
-			email.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<Email> result = this.emailDao.insert(email);
-			log.fine("Created Email " + email.getAddress() + " [" + email.getId() + "]");
-			return result;
-		}
-		DataOperationResult<Email> result = this.emailDao.update(email);
-		log.fine("Updated Email " + email.getAddress() + " [" + email.getId() + "]");
+	public long count(final UserId userId) throws DataOperationException {
+		return count(userId, null, null);
+	}
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The email type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count(final UserId userId, final EmailType type, final EmailStatus status) throws DataOperationException {
+		return this.emailDao.count(userId, type, status);
+	}
+
+	/**
+	 * Creates a new {@link Email} with the given properties.
+	 * 
+	 * @param userId
+	 * 
+	 * @param address
+	 *            The actual address of the email, required.
+	 * @param type
+	 *            The type of email, required.
+	 * @param status
+	 *            The status of the email, required.
+	 * @return The result of the creation, which will include the new email at
+	 *         {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<Email> create(final UserId userId, final String address, final EmailType type, final EmailStatus status) throws DataOperationException {
+		final Email email = new Email();
+		email.setUserId(userId);
+		email.setAddress(address);
+		email.setType(type);
+		email.setStatus(status);
+		final DataOperationResult<Email> result = save(email);
 		return result;
 	}
 
 	/**
-	 * Loads an {@link Email} by it's ID.
+	 * Marks the entity as {@link EmailStatus#DELETED}.
 	 * 
 	 * @param emailId
-	 *            The ID to load, required.
-	 * @return The matching email, if found. Will not return null.
+	 *            The ID of the email to delete.
+	 * @return The result of the deletion, will not include the new email at
+	 *         {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws EmailNotFoundException
 	 *             If the ID specified did not match any emails.
 	 */
-	public Email load(EmailId emailId) throws DataOperationException, EmailNotFoundException {
-		Email email = this.emailDao.load(emailId);
-		if (email == null) {
-			throw new EmailNotFoundException(emailId);
-		}
-		return email;
+	public DataOperationResult<Email> delete(final EmailId emailId) throws DataOperationException, EmailNotFoundException {
+		final Email email = load(emailId);
+		email.setStatus(EmailStatus.DELETED);
+		final DataOperationResult<Email> result = save(email);
+		return result;
+	}
+
+	/**
+	 * Locates an email by the address field.
+	 * 
+	 * @param emailAddress
+	 *            The address to search for.
+	 * @return The email entity, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public Email find(final EmailAddress emailAddress) throws DataOperationException {
+		return this.emailDao.find(emailAddress);
 	}
 
 	/**
@@ -114,92 +147,59 @@ public class EmailManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<Email> list(UserId userId, EmailType type, EmailStatus status, long page, long count) throws DataOperationException {
+	public List<Email> list(final UserId userId, final EmailType type, final EmailStatus status, final long page, final long count) throws DataOperationException {
 		return this.emailDao.list(userId, type, status, page, count);
 	}
 
 	/**
-	 * Creates a new {@link Email} with the given properties.
-	 * 
-	 * @param userId
-	 * 
-	 * @param address
-	 *            The actual address of the email, required.
-	 * @param type
-	 *            The type of email, required.
-	 * @param status
-	 *            The status of the email, required.
-	 * @return The result of the creation, which will include the new email at
-	 *         {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<Email> create(UserId userId, String address, EmailType type, EmailStatus status) throws DataOperationException {
-		Email email = new Email();
-		email.setUserId(userId);
-		email.setAddress(address);
-		email.setType(type);
-		email.setStatus(status);
-		DataOperationResult<Email> result = save(email);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link EmailStatus#DELETED}.
+	 * Loads an {@link Email} by it's ID.
 	 * 
 	 * @param emailId
-	 *            The ID of the email to delete.
-	 * @return The result of the deletion, will not include the new email at
-	 *         {@link DataOperationResult#getEntity()}.
+	 *            The ID to load, required.
+	 * @return The matching email, if found. Will not return null.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws EmailNotFoundException
 	 *             If the ID specified did not match any emails.
 	 */
-	public DataOperationResult<Email> delete(EmailId emailId) throws DataOperationException, EmailNotFoundException {
-		Email email = load(emailId);
-		email.setStatus(EmailStatus.DELETED);
-		DataOperationResult<Email> result = save(email);
+	public Email load(final EmailId emailId) throws DataOperationException, EmailNotFoundException {
+		final Email email = this.emailDao.load(emailId);
+		if (email == null) {
+			throw new EmailNotFoundException(emailId);
+		}
+		return email;
+	}
+
+	/**
+	 * Saves an {@link Email}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param email
+	 *            The email to save.
+	 * @return The result of the save operation, which will include the new
+	 *         email at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<Email> save(final Email email) throws DataOperationException {
+		boolean create = false;
+		if (email.getId() == null) {
+			email.setId(new EmailId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (email.getCreated() == null) {
+			email.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<Email> result = this.emailDao.insert(email);
+			log.fine("Created Email " + email.getAddress() + " [" + email.getId() + "]");
+			return result;
+		}
+		final DataOperationResult<Email> result = this.emailDao.update(email);
+		log.fine("Updated Email " + email.getAddress() + " [" + email.getId() + "]");
 		return result;
-	}
-
-	/**
-	 * Returns a count of all records.
-	 * 
-	 * @return Count of all records.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public long count(UserId userId) throws DataOperationException {
-		return count(userId, null, null);
-	}
-
-	/**
-	 * Counts the records available that match the criteria.
-	 * 
-	 * @param type
-	 *            The email type to limit to, optional.
-	 * @param status
-	 *            The status to limit to, optional.
-	 * @return The number of matching records.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public long count(UserId userId, final EmailType type, final EmailStatus status) throws DataOperationException {
-		return this.emailDao.count(userId, type, status);
-	}
-
-	/**
-	 * Locates an email by the address field.
-	 * 
-	 * @param emailAddress
-	 *            The address to search for.
-	 * @return The email entity, if found, otherwise null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public Email find(EmailAddress emailAddress) throws DataOperationException {
-		return this.emailDao.find(emailAddress);
 	}
 
 }

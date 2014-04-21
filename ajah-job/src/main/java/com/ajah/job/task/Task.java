@@ -34,7 +34,7 @@ public class Task implements Identifiable<TaskId> {
 	private TaskType type;
 	private Date created;
 
-	public void execute(Run run, JobTask jobTask, final ApplicationContext applicationContext) throws TaskExecutionException {
+	public void execute(final Run run, final JobTask jobTask, final ApplicationContext applicationContext) throws TaskExecutionException {
 		try {
 			final AjahTask ajahTask = (AjahTask) Class.forName(getClazz()).newInstance();
 			ajahTask.setApplicationContext(applicationContext);

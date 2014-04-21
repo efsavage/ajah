@@ -57,6 +57,11 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	}
 
 	@Override
+	public User findByUserIdAndPassword(final UserId userId, final String password) throws DataOperationException {
+		return super.find(new Criteria().eq(userId).eq("password", password));
+	}
+
+	@Override
 	public User findByUsername(final String username) throws DataOperationException {
 		return super.findByField("username", username);
 	}
@@ -66,9 +71,12 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		return super.findByFields(new String[] { "username", "password" }, new String[] { username, password });
 	}
 
+	/**
+	 * @see com.ajah.user.data.UserDao#getRandomUser(UserStatus)
+	 */
 	@Override
-	public User findByUserIdAndPassword(final UserId userId, final String password) throws DataOperationException {
-		return super.find(new Criteria().eq(userId).eq("password", password));
+	public User getRandomUser(final UserStatus status) throws DataOperationException {
+		return super.find(new Criteria().eq("status", status).randomOrder());
 	}
 
 	/**
@@ -117,13 +125,5 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
-	}
-
-	/**
-	 * @see com.ajah.user.data.UserDao#getRandomUser(UserStatus)
-	 */
-	@Override
-	public User getRandomUser(UserStatus status) throws DataOperationException {
-		return super.find(new Criteria().eq("status", status).randomOrder());
 	}
 }

@@ -40,19 +40,10 @@ public class TaskDurationExceededException extends Exception {
 	 * @param maxDuration
 	 *            The maximum duration permitted.
 	 */
-	public TaskDurationExceededException(Date start, Date lastActivity, long maxDuration) {
+	public TaskDurationExceededException(final Date start, final Date lastActivity, final long maxDuration) {
 		this.start = start;
 		this.lastActivity = lastActivity;
 		this.maxDuration = maxDuration;
-	}
-
-	/**
-	 * The time the task started.
-	 * 
-	 * @return the start
-	 */
-	public Date getStart() {
-		return this.start;
 	}
 
 	/**
@@ -71,6 +62,15 @@ public class TaskDurationExceededException extends Exception {
 	 */
 	public long getMaxDuration() {
 		return this.maxDuration;
+	}
+
+	/**
+	 * The time the task started.
+	 * 
+	 * @return the start
+	 */
+	public Date getStart() {
+		return this.start;
 	}
 
 }

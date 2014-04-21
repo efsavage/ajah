@@ -17,21 +17,19 @@ package com.ajah.user.social.data;
 
 import java.util.List;
 
-import com.ajah.user.social.UserFollow;
-import com.ajah.user.social.UserFollowId;
-import com.ajah.user.social.UserFollowStatus;
-import com.ajah.user.social.UserFollowType;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
-
+import com.ajah.user.social.UserFollow;
+import com.ajah.user.social.UserFollowId;
+import com.ajah.user.social.UserFollowStatus;
+import com.ajah.user.social.UserFollowType;
 
 /**
- *  MySQL-based implementation of {@link UserFollowDao}. 
+ * MySQL-based implementation of {@link UserFollowDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -39,25 +37,13 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 @Repository
 public class UserFollowDaoImpl extends AbstractAjahDao<UserFollowId, UserFollow, UserFollow> implements UserFollowDao {
 
-	@Override
-	public List<UserFollow> list(UserFollowType type, UserFollowStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
-	}
-
 	/**
 	 * @see com.ajah.user.social.data.UserFollowDao#count(com.ajah.user.social.UserFollowType,
 	 *      com.ajah.user.social.UserFollowStatus)
 	 */
 	@Override
-	public long count(UserFollowType type, UserFollowStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final UserFollowType type, final UserFollowStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -65,6 +51,18 @@ public class UserFollowDaoImpl extends AbstractAjahDao<UserFollowId, UserFollow,
 			criteria.eq("status", status);
 		}
 		return super.count(criteria);
+	}
+
+	@Override
+	public List<UserFollow> list(final UserFollowType type, final UserFollowStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}
 
 }

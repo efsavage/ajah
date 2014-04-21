@@ -31,17 +31,17 @@ import org.springframework.context.ApplicationContext;
 @Log
 public class NoopJobDispatcher implements JobDispatcher {
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		// Empty
-	}
-
 	/**
 	 * @see com.ajah.job.execute.JobDispatcher#poll()
 	 */
 	@Override
 	public void poll() {
 		log.fine("poll() invoked, no jobs being dispatched");
+	}
+
+	@Override
+	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+		// Empty
 	}
 
 }

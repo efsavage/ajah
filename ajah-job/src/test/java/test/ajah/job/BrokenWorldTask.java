@@ -25,7 +25,7 @@ import com.ajah.job.task.SimpleAjahTask;
 public class BrokenWorldTask extends SimpleAjahTask {
 
 	@Override
-	public void innerExecute(Run run) {
+	public void innerExecute(final Run run) {
 		System.out.println("Broken World");
 		run.debug("Broken World");
 		throw new IllegalArgumentException();

@@ -50,7 +50,7 @@ public class CorsFilter extends BaseFilter {
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		String value = Config.i.get("ajah.header.cors", "null");
 		if (value.contains(",")) {
-			HttpServletRequest servletRequest = (HttpServletRequest) request;
+			final HttpServletRequest servletRequest = (HttpServletRequest) request;
 			String origin = servletRequest.getHeader("Origin");
 			log.finest("Origin: " + origin);
 			if (StringUtils.isBlank(origin) && Config.i.getBoolean("ajah.header.cors.referer-as-origin", false)) {
@@ -65,8 +65,8 @@ public class CorsFilter extends BaseFilter {
 			// CORS headers don't support multi-match so we'll see if the
 			// inbound request is one of the specified domains
 			if (!StringUtils.isBlank(origin) && origin != null) {
-				String[] candidates = value.split(",");
-				for (String candidate : candidates) {
+				final String[] candidates = value.split(",");
+				for (final String candidate : candidates) {
 					log.finest("Candidate: " + candidate);
 					if (origin.equals(candidate)) {
 						newValue = candidate;

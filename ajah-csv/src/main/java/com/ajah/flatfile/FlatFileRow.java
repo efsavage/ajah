@@ -89,7 +89,7 @@ public class FlatFileRow {
 		if (column != null) {
 			final String value = this.values.get(column);
 			if (!StringUtils.isBlank(value)) {
-				if (stripWrappedQuotes && value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+				if (this.stripWrappedQuotes && value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
 					return value.substring(1, value.length() - 2);
 				}
 				return this.reader.isTrimContents() ? value.trim() : value;

@@ -208,6 +208,17 @@ public class UserManager {
 	}
 
 	/**
+	 * Returns a random active.
+	 * 
+	 * @return A random user, may be null if no users satisfy the criteria.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public User getRandomUser() throws DataOperationException {
+		return this.userDao.getRandomUser(UserStatus.ACTIVE);
+	}
+
+	/**
 	 * Attempt to find a user and authenticate.
 	 * 
 	 * @param username
@@ -300,7 +311,6 @@ public class UserManager {
 		return user;
 	}
 
-	
 	public DataOperationResult<UserInfo> save(final UserInfo userInfo) throws DataOperationException {
 		if (userInfo.getCreated() == null) {
 			userInfo.setCreated(new Date());
@@ -319,17 +329,6 @@ public class UserManager {
 	 */
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
-	}
-
-	/**
-	 * Returns a random active.
-	 * 
-	 * @return A random user, may be null if no users satisfy the criteria.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public User getRandomUser() throws DataOperationException {
-		return this.userDao.getRandomUser(UserStatus.ACTIVE);
 	}
 
 }

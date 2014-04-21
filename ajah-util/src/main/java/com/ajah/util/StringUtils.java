@@ -288,7 +288,7 @@ public class StringUtils {
 		if (string == null || string.length() < length) {
 			return string;
 		}
-		int fullLength = string.length();
+		final int fullLength = string.length();
 		return string.substring(fullLength - length, fullLength);
 	}
 

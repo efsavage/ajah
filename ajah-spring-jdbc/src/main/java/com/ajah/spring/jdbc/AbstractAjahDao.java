@@ -378,13 +378,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public T find(final String field, final String value) throws DataOperationException {
-		final Criteria criteria = new Criteria().eq(field, value);
-		if (criteria.getLimit().getCount() > 1) {
-			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
-		}
-		criteria.rows(1);
-		return find(criteria.getWhere(), criteria.getLimit(), criteria.getOrderBySql());
+	public T find(final String field, final int value) throws DataOperationException {
+		return find(field, String.valueOf(value));
 	}
 
 	/**
@@ -398,8 +393,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public T find(final String field, final int value) throws DataOperationException {
-		return find(field, String.valueOf(value));
+	public T find(final String field, final String value) throws DataOperationException {
+		final Criteria criteria = new Criteria().eq(field, value);
+		if (criteria.getLimit().getCount() > 1) {
+			throw new IllegalArgumentException("Cannot use singular find method when criteria has a limit greater than 1 (" + criteria.getLimit().getCount() + ")");
+		}
+		criteria.rows(1);
+		return find(criteria.getWhere(), criteria.getLimit(), criteria.getOrderBySql());
 	}
 
 	/**
@@ -1004,7 +1004,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public List<T> list(final String[] tables, final String where, String orderBy, Order order, Limit limit) throws DataOperationException {
+	public List<T> list(final String[] tables, final String where, final String orderBy, final Order order, final Limit limit) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		try {
 			String orderBySql = "";
@@ -1423,6 +1423,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	protected BigDecimal sumBigDecimal(final String field, final Criteria criteria) throws DataOperationException {
+		try {
+			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			sqlLog.finest(sql);
+			final BigDecimal sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), BigDecimal.class);
+			return sum == null ? BigDecimal.ZERO : sum;
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return BigDecimal.ZERO;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
 	/**
 	 * Updates the record. Will not do anything if there are no matching
 	 * records.
@@ -1444,20 +1458,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				sqlLog.finest(sql);
 			}
 			return new DataOperationResult<>(entity, getJdbcTemplate().update(sql, getUpdateValues(entity)));
-		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e, getTableName());
-		}
-	}
-
-	protected BigDecimal sumBigDecimal(final String field, final Criteria criteria) throws DataOperationException {
-		try {
-			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
-			sqlLog.finest(sql);
-			final BigDecimal sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), BigDecimal.class);
-			return sum == null ? BigDecimal.ZERO : sum;
-		} catch (final EmptyResultDataAccessException e) {
-			log.fine(e.getMessage());
-			return BigDecimal.ZERO;
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}

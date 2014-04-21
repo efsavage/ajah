@@ -131,6 +131,14 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	}
 
 	/**
+	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
+	 */
+	@Override
+	protected Criteria getThis() {
+		return this;
+	}
+
+	/**
 	 * Constructs a {@link Where} object from this instance, suitable for
 	 * creating a prepared SQL statement.
 	 * 
@@ -264,20 +272,6 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	}
 
 	/**
-	 * A greater-than or equal to match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be greater than or equal to.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria gte(final String field, final long value) {
-		AjahUtils.requireParam(field, "field");
-		return gte(field, String.valueOf(value));
-	}
-
-	/**
 	 * A greater-than match.
 	 * 
 	 * @param field
@@ -289,24 +283,6 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	public Criteria gt(final String field, final long value) {
 		AjahUtils.requireParam(field, "field");
 		return gt(field, String.valueOf(value));
-	}
-
-	/**
-	 * A greater-than or equal-to field match.
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param value
-	 *            The value the field must be greater than or equal to.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria gte(final String field, final String value) {
-		AjahUtils.requireParam(field, "field");
-		if (this.gtes == null) {
-			this.gtes = new ArrayList<>();
-		}
-		this.gtes.add(new NameValuePair<>(field, value));
-		return this;
 	}
 
 	/**
@@ -324,6 +300,38 @@ public class Criteria extends AbstractCriteria<Criteria> {
 			this.gts = new ArrayList<>();
 		}
 		this.gts.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A greater-than or equal to match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gte(final String field, final long value) {
+		AjahUtils.requireParam(field, "field");
+		return gte(field, String.valueOf(value));
+	}
+
+	/**
+	 * A greater-than or equal-to field match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria gte(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.gtes == null) {
+			this.gtes = new ArrayList<>();
+		}
+		this.gtes.add(new NameValuePair<>(field, value));
 		return this;
 	}
 
@@ -474,6 +482,19 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	}
 
 	/**
+	 * Adds an ORDER BY RAND() sort.
+	 * 
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria randomOrder() {
+		if (this.orderBys == null) {
+			this.orderBys = new ArrayList<>();
+		}
+		this.orderBys.add(new NameValuePair<>("RAND()", (Order) null));
+		return this;
+	}
+
+	/**
 	 * Sets the maximum number of rows to fetch.
 	 * 
 	 * @param maximumRowsFetched
@@ -493,27 +514,6 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	 */
 	public Criteria unique() {
 		this.rowCount = 1;
-		return this;
-	}
-
-	/**
-	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
-	 */
-	@Override
-	protected Criteria getThis() {
-		return this;
-	}
-
-	/**
-	 * Adds an ORDER BY RAND() sort.
-	 * 
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria randomOrder() {
-		if (this.orderBys == null) {
-			this.orderBys = new ArrayList<>();
-		}
-		this.orderBys.add(new NameValuePair<>("RAND()", (Order) null));
 		return this;
 	}
 

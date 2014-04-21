@@ -29,6 +29,6 @@ import com.ajah.spring.jdbc.err.DataOperationException;
  */
 public interface JobRunner {
 
-	void execute(Run run) throws DataOperationException;
+	void execute(final Run run) throws DataOperationException;
 
 }

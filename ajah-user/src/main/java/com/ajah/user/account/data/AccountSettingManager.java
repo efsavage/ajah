@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,6 @@ import com.ajah.util.BooleanUtils;
  * 
  */
 @Service
-@Log
 public class AccountSettingManager {
 
 	@Autowired

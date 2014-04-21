@@ -86,7 +86,7 @@ public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T ex
 			this.clusterName = clusterName;
 		}
 		log.fine("Cluster name is: " + this.clusterName);
-		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clusterName).build();
+		final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clusterName).build();
 		this.client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(this.hostname, 9300));
 		log.fine("Waiting for green status");
 		this.client.admin().cluster().prepareHealth().setWaitForGreenStatus().execute().actionGet();

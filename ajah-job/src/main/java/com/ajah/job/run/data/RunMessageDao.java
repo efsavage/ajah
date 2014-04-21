@@ -21,7 +21,6 @@ import com.ajah.job.run.RunMessage;
 import com.ajah.job.run.RunMessageId;
 import com.ajah.job.run.RunMessageStatus;
 import com.ajah.job.run.RunMessageType;
-
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
 
@@ -48,7 +47,7 @@ public interface RunMessageDao extends AjahDao<RunMessageId, RunMessage> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<RunMessage> list(RunMessageType type, RunMessageStatus status, long page, long count) throws DataOperationException;
+	List<RunMessage> list(final RunMessageType type, final RunMessageStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,7 +60,7 @@ public interface RunMessageDao extends AjahDao<RunMessageId, RunMessage> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(RunMessageType type, RunMessageStatus status) throws DataOperationException;
+	long count(final RunMessageType type, final RunMessageStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -72,6 +71,6 @@ public interface RunMessageDao extends AjahDao<RunMessageId, RunMessage> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
 }

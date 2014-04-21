@@ -64,6 +64,18 @@ public class ThreadUtils {
 	}
 
 	/**
+	 * Sleeps for a random amount of time between the values specified.
+	 * 
+	 * @param min
+	 *            The minimum amount of time to sleep for.
+	 * @param max
+	 *            The maximum amount of time to sleep for.
+	 */
+	public static void sleepRandom(final long min, final long max) {
+		sleep(RandomUtils.getRandomNumber(min, max));
+	}
+
+	/**
 	 * Sleeps until a set time. If the time is in the pass, no sleep occurs.
 	 * 
 	 * @param timestamp
@@ -73,18 +85,6 @@ public class ThreadUtils {
 		if (System.currentTimeMillis() < timestamp) {
 			sleep(timestamp - System.currentTimeMillis());
 		}
-	}
-
-	/**
-	 * Sleeps for a random amount of time between the values specified.
-	 * 
-	 * @param min
-	 *            The minimum amount of time to sleep for.
-	 * @param max
-	 *            The maximum amount of time to sleep for.
-	 */
-	public static void sleepRandom(long min, long max) {
-		sleep(RandomUtils.getRandomNumber(min, max));
 	}
 
 }

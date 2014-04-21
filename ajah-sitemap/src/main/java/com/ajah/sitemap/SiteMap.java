@@ -41,7 +41,7 @@ public class SiteMap {
 	 * 
 	 * @param siteMapUrl
 	 */
-	public void add(SiteMapUrl siteMapUrl) {
+	public void add(final SiteMapUrl siteMapUrl) {
 		this.siteMapUrls.add(siteMapUrl);
 	}
 

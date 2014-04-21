@@ -101,8 +101,6 @@ public abstract class AbstractCriteria<C> {
 		return getThis();
 	}
 
-	protected abstract C getThis();
-
 	/**
 	 * A field match. Supports nulls (as "IS NULL").
 	 * 
@@ -133,5 +131,7 @@ public abstract class AbstractCriteria<C> {
 		AjahUtils.requireParam(value, "value");
 		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
 	}
+
+	protected abstract C getThis();
 
 }

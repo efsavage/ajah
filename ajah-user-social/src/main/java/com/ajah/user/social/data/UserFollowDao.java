@@ -17,13 +17,12 @@ package com.ajah.user.social.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.social.UserFollow;
 import com.ajah.user.social.UserFollowId;
 import com.ajah.user.social.UserFollowStatus;
 import com.ajah.user.social.UserFollowType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link UserFollow}.
@@ -48,7 +47,7 @@ public interface UserFollowDao extends AjahDao<UserFollowId, UserFollow> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<UserFollow> list(UserFollowType type, UserFollowStatus status, long page, long count) throws DataOperationException;
+	List<UserFollow> list(final UserFollowType type, final UserFollowStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,6 +60,6 @@ public interface UserFollowDao extends AjahDao<UserFollowId, UserFollow> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(UserFollowType type, UserFollowStatus status) throws DataOperationException;
+	long count(final UserFollowType type, final UserFollowStatus status) throws DataOperationException;
 
 }

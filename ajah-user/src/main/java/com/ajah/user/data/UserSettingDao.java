@@ -63,6 +63,6 @@ public interface UserSettingDao extends AjahDao<UserSettingId, UserSetting> {
 	 */
 	long count(final UserSettingType type, final UserSettingStatus status) throws DataOperationException;
 
-	UserSetting find(UserId userId, String name) throws DataOperationException;
+	UserSetting find(final UserId userId, final String name) throws DataOperationException;
 
 }

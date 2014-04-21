@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,6 @@ import com.ajah.util.compare.CompareUtils;
  * 
  */
 @Service
-@Log
 public class UserSettingManager {
 
 	@Autowired
@@ -114,6 +111,10 @@ public class UserSettingManager {
 		return result;
 	}
 
+	public UserSetting find(final UserId userId, final String name) throws DataOperationException {
+		return this.userSettingDao.find(userId, name);
+	}
+
 	/**
 	 * Returns a list of {@link UserSetting}s that match the specified criteria.
 	 * 
@@ -181,11 +182,7 @@ public class UserSettingManager {
 		return result;
 	}
 
-	public UserSetting find(UserId userId, String name) throws DataOperationException {
-		return this.userSettingDao.find(userId, name);
-	}
-
-	public UserSetting set(UserId userId, String name, String value) throws DataOperationException {
+	public UserSetting set(final UserId userId, final String name, final String value) throws DataOperationException {
 		UserSetting userSetting = find(userId, name);
 		if (userSetting == null) {
 			userSetting = new UserSetting();

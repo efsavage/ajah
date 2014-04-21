@@ -26,7 +26,7 @@ public class TaskExecutionException extends Exception {
 	/**
 	 * @see Throwable#Throwable(Throwable)
 	 */
-	public TaskExecutionException(Throwable t) {
+	public TaskExecutionException(final Throwable t) {
 		super(t);
 	}
 
