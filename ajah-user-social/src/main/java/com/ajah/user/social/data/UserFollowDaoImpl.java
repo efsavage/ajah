@@ -48,7 +48,7 @@ public class UserFollowDaoImpl extends AbstractAjahDao<UserFollowId, UserFollow,
 		if (status != null) {
 			criteria.eq("status", status);
 		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}
 
 	/**
