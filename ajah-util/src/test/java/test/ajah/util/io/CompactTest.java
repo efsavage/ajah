@@ -15,8 +15,7 @@
  */
 package test.ajah.util.io;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.io.Compact;

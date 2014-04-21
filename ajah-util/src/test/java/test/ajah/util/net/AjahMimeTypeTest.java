@@ -15,8 +15,7 @@
  */
 package test.ajah.util.net;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.net.AjahMimeType;

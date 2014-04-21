@@ -17,8 +17,7 @@ package test.ajah.cache;
 
 import java.util.Date;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.cache.CacheEntry;

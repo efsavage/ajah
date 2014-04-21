@@ -18,8 +18,7 @@ package test.ajah.util.reflect;
 import java.lang.reflect.Field;
 import java.sql.Date;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.net.AjahMimeType;

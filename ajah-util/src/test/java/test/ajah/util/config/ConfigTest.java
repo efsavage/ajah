@@ -15,9 +15,9 @@
  */
 package test.ajah.util.config;
 
-import junit.framework.Assert;
 import lombok.experimental.Accessors;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.config.Config;

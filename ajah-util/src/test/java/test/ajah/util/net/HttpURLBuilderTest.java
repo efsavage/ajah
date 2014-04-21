@@ -18,8 +18,7 @@ package test.ajah.util.net;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,7 +47,7 @@ public class HttpURLBuilderTest {
 		this.httpURLBuilder.setPath("/xampp");
 		this.httpURLBuilder.setPort(80);
 		this.httpURLBuilder.setSecure(false);
-		this.map = new HashMap<String, String>();
+		this.map = new HashMap<>();
 		this.map.put("key", "value");
 	}
 
@@ -64,7 +63,7 @@ public class HttpURLBuilderTest {
 		Assert.assertNotNull(this.httpURLBuilder.toURL());
 		Assert.assertTrue(this.httpURLBuilder.canEqual(this.httpURLBuilder));
 		Assert.assertTrue(this.httpURLBuilder.equals(this.httpURLBuilder));
-		Assert.assertNotNull(this.httpURLBuilder.hashCode());
+		Assert.assertNotNull(Integer.valueOf(this.httpURLBuilder.hashCode()));
 	}
 
 	/**

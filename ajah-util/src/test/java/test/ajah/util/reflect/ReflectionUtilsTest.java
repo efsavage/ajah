@@ -21,8 +21,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.sql.Date;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.ajah.util.io.Compact;
