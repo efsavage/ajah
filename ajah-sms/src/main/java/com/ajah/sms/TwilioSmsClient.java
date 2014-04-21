@@ -20,6 +20,8 @@ import java.util.Map;
 
 import lombok.extern.java.Log;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.ajah.util.AjahUtils;
 import com.ajah.util.config.Config;
 import com.twilio.sdk.TwilioRestClient;
@@ -68,6 +70,7 @@ public class TwilioSmsClient implements SmsClient {
 	 */
 	@Override
 	public void getOutboundMessages() {
+		throw new NotImplementedException("Not implemented yet");
 	}
 
 	/**

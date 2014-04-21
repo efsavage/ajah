@@ -43,7 +43,8 @@ import com.ajah.util.config.Config;
 @EqualsAndHashCode(callSuper = true)
 public class HttpAuthenticationFilter extends BaseFilter {
 
-	protected boolean allowUser(final String auth, final String username, final String password) throws IOException {
+	@SuppressWarnings("restriction")
+	protected static boolean allowUser(final String auth, final String username, final String password) throws IOException {
 
 		if (auth == null) {
 			return false; // no auth

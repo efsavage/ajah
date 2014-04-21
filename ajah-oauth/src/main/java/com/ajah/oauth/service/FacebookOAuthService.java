@@ -50,7 +50,7 @@ public class FacebookOAuthService implements AjahOAuthService {
 	 * 
 	 * @return A token for the Facebook service.
 	 */
-	public OAuthToken getToken() {
+	public static OAuthToken getToken() {
 		// OAuth 2.0 doesn't require tokens, but we're going to use it anyways
 		// since we store the success url there, and it will be helpful in
 		// tracking down failures.

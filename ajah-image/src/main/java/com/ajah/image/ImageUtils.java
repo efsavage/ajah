@@ -78,12 +78,13 @@ public class ImageUtils {
 		final ImageInfo info = new ImageInfo();
 		info.setHeight(image.getHeight());
 		info.setWidth(image.getWidth());
-		final ImageInputStream iis = ImageIO.createImageInputStream(new ByteArrayInputStream(data));
-		final Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
-		if (readers.hasNext()) {
-			info.setFormat(ImageFormat.from(readers.next().getFormatName()));
-		} else {
-			log.warning("No readers found for image");
+		try (final ImageInputStream iis = ImageIO.createImageInputStream(new ByteArrayInputStream(data))) {
+			final Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+			if (readers.hasNext()) {
+				info.setFormat(ImageFormat.from(readers.next().getFormatName()));
+			} else {
+				log.warning("No readers found for image");
+			}
 		}
 		return info;
 	}

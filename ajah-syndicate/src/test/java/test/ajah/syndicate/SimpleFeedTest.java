@@ -38,6 +38,7 @@ import com.sun.syndication.io.FeedException;
  * 
  */
 @Log
+@SuppressWarnings("static-method")
 public class SimpleFeedTest {
 
 	private static String TEST_FEED = "http://efsavage.com/blog/feed/";

@@ -26,6 +26,7 @@ import com.ajah.geo.us.ZipCode;
  * 
  * @author Eric F. Savage <code@efsavage.com>
  */
+@SuppressWarnings("static-method")
 public class ZipCodeTest {
 
 	/**

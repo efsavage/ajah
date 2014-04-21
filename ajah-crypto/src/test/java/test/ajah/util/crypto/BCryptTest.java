@@ -26,6 +26,7 @@ import com.ajah.crypto.BCrypt;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@SuppressWarnings("static-method")
 public class BCryptTest {
 
 	/**

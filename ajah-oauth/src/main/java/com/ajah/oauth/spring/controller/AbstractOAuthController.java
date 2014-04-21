@@ -28,7 +28,7 @@ import com.ajah.user.login.LogIn;
  */
 public abstract class AbstractOAuthController {
 
-	protected User getUser(final HttpServletRequest request) {
+	protected static User getUser(final HttpServletRequest request) {
 		final LogIn logIn = (LogIn) request.getSession().getAttribute("jjLogIn");
 		if (logIn == null) {
 			return null;

@@ -35,6 +35,7 @@ import lombok.extern.java.Log;
  * 
  */
 @Log
+@SuppressWarnings("static-method")
 public abstract class AjahFilter implements Filter {
 
 	/**

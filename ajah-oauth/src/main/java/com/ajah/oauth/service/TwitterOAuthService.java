@@ -47,7 +47,7 @@ public class TwitterOAuthService implements AjahOAuthService {
 	 * 
 	 * @return A token for the Twitter service.
 	 */
-	public OAuthToken getToken() {
+	public static OAuthToken getToken() {
 		return getToken(Config.i.get("oauth.twitter.callback"));
 	}
 
@@ -59,7 +59,7 @@ public class TwitterOAuthService implements AjahOAuthService {
 	 * 
 	 * @return A token for the Twitter service.
 	 */
-	public OAuthToken getToken(final String callback) {
+	public static OAuthToken getToken(final String callback) {
 		final ServiceBuilder serviceBuilder = new ServiceBuilder().provider(TwitterApi.class).apiKey(Config.i.get("oauth.twitter.key")).apiSecret(Config.i.get("oauth.twitter.secret"));
 		if (!StringUtils.isBlank(callback)) {
 			serviceBuilder.callback(callback);
