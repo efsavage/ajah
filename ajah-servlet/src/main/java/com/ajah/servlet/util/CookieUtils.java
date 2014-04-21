@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.java.Log;
+
 import com.ajah.util.AjahUtils;
 
 /**
@@ -28,6 +30,7 @@ import com.ajah.util.AjahUtils;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Log
 public class CookieUtils {
 
 	/**
@@ -42,11 +45,15 @@ public class CookieUtils {
 		AjahUtils.requireParam(request, "request");
 		AjahUtils.requireParam(response, "response");
 		if (request.getCookies() == null) {
+			log.finest("No cookies to clear");
 			return;
 		}
 		for (final Cookie cookie : request.getCookies()) {
 			cookie.setMaxAge(0);
+			cookie.setDomain(request.getServerName());
+			cookie.setPath("/");
 			response.addCookie(cookie);
+			log.finest("Cleared cookie: " + cookie.getName());
 		}
 	}
 
