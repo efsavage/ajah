@@ -17,8 +17,11 @@ package com.ajah.user.social;
 
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import lombok.Data;
 
+import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
 
@@ -31,5 +34,12 @@ public class UserFollow implements Identifiable<UserFollowId> {
 	private UserFollowStatus status;
 	private UserFollowType type;
 	private Date created;
+	private String comment;
+
+	@Transient
+	User user;
+
+	@Transient
+	User followedUser;
 
 }
