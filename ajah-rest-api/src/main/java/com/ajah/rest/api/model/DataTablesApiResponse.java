@@ -16,9 +16,16 @@
 package com.ajah.rest.api.model;
 
 /**
+ * Contains properties that are expected by <a
+ * href="http://datatables.net/">Data Tables</a>.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class DataTablesApiResponse extends SimpleApiResponse {
+
+	public String sEcho;
+	public Integer iTotalRecords;
+	public Integer iTotalDisplayRecords;
 
 }
