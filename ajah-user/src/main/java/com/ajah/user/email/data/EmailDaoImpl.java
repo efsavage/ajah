@@ -41,8 +41,8 @@ import com.ajah.util.data.format.EmailAddress;
 public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> implements EmailDao {
 
 	/**
-	 * @see com.ajah.user.email.data.EmailDao#count(com.ajah.user.email.EmailType,
-	 *      com.ajah.user.email.EmailStatus)
+	 * @see com.ajah.user.email.data.EmailDao#count(UserId, EmailType,
+	 *      EmailStatus)
 	 */
 	@Override
 	public long count(final UserId userId, final EmailType type, final EmailStatus status) throws DataOperationException {

@@ -23,7 +23,7 @@ import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
 /**
- * A wrapper around a String for typesafe {@link UserSource} IDs.
+ * A wrapper around a String for typesafe source IDs.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 

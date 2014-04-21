@@ -74,8 +74,6 @@ public class UserFollowManager {
 	/**
 	 * Creates a new {@link UserFollow} with the given properties.
 	 * 
-	 * @param name
-	 *            The name of the userFollow, required.
 	 * @param type
 	 *            The type of userFollow, required.
 	 * @param status

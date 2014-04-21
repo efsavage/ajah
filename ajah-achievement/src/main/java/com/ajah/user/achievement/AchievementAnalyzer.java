@@ -21,9 +21,8 @@ import com.ajah.user.achievement.data.AchievementUserManager;
 import com.ajah.user.data.UserManager;
 
 /**
- * Interface that all classes specified by
- * {@link Achievement#getAnalyzerClass()} should implement. These classes will
- * be executed when
+ * Interface that all classes specified by {@link Achievement#getAnalyzer()}
+ * should implement. These classes will be executed when
  * {@link AchievementUserManager#checkAcheivements(User, String)} is fired.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a

@@ -33,8 +33,6 @@ public class ConsoleUtils {
 	 * 
 	 * @param message
 	 *            The question to ask, required.
-	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
 	 * @return The response to the question.
 	 */
 	@SuppressWarnings("resource")

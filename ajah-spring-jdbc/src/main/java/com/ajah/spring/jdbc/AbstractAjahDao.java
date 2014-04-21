@@ -998,8 +998,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *            phrase as it is inserted automatically.
 	 * @param order
 	 * @param orderBy
-	 * @param count
-	 * @param page
 	 * @return The list of entities satisfying the WHERE, may be null.
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.

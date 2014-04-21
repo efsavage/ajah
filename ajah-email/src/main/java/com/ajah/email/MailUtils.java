@@ -72,8 +72,8 @@ public class MailUtils {
 	 * Closes an {@link Transport}, logging but ignoring any errors that occur
 	 * while doing so.
 	 * 
-	 * @param store
-	 *            The store to close.
+	 * @param transport
+	 *            The transport to close.
 	 */
 	public static void safeClose(final Transport transport) {
 		if (transport != null && transport.isConnected()) {

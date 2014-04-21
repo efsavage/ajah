@@ -62,7 +62,7 @@ public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUs
 	}
 
 	/**
-	 * @see com.ajah.user.account.data.AccountUserDao#list(com.ajah.user.UserId)
+	 * @see com.ajah.user.account.data.AccountUserDao#list(AccountId, int, int)
 	 */
 	@Override
 	public List<AccountUser> list(final AccountId accountId, final int page, final int count) throws DataOperationException {
@@ -70,7 +70,7 @@ public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUs
 	}
 
 	/**
-	 * @see com.ajah.user.account.data.AccountUserDao#list(com.ajah.user.UserId)
+	 * @see com.ajah.user.account.data.AccountUserDao#list(UserId, int, int)
 	 */
 	@Override
 	public List<AccountUser> list(final UserId userId, final int page, final int count) throws DataOperationException {

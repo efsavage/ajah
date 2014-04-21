@@ -117,8 +117,6 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	 * @param count
 	 * @param page
 	 * 
-	 * @param query
-	 *            The search query.
 	 * @return The results of the search.
 	 * @throws JsonParseException
 	 *             If the entity could not be parsed from the JSON.

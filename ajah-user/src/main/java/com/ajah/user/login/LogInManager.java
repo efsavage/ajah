@@ -114,8 +114,6 @@ public class LogInManager {
 	/**
 	 * Returns a login record for a user.
 	 * 
-	 * @param username
-	 *            Username or email of the user logging in.
 	 * @param password
 	 *            Password of the user logging in, unencrypted.
 	 * @param ip

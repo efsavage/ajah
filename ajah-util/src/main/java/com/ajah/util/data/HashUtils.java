@@ -77,8 +77,8 @@ public class HashUtils {
 	 * Creates an MD5 digest of byte array and returns it as a Base 64 encoded
 	 * number.
 	 * 
-	 * @param string
-	 *            The string to digest.
+	 * @param bytes
+	 *            The bytes to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String md5Base64(final byte[] bytes) {

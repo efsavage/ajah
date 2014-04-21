@@ -44,7 +44,7 @@ public abstract class SimpleAjahTask implements AjahTask {
 	}
 
 	/**
-	 * @see com.ajah.job.task.AjahTask#execute(Run)
+	 * @see com.ajah.job.task.AjahTask#execute(Run, JobTask)
 	 */
 	@Override
 	public void execute(final Run run, final JobTask jobTask) throws TaskExecutionException {

@@ -147,8 +147,8 @@ public class UserManager {
 	/**
 	 * Finds a user by email.
 	 * 
-	 * @param address
-	 *            Email, as entered by user.
+	 * @param emailAddress
+	 *            The email address, as entered by user.
 	 * @return User, if found.
 	 * @throws UserNotFoundException
 	 *             If user is not found.
@@ -249,8 +249,6 @@ public class UserManager {
 	/**
 	 * Attempt to find a user and authenticate.
 	 * 
-	 * @param username
-	 *            A valid username for a user.
 	 * @param password
 	 *            The user's password, unencrypted.
 	 * @return User if found and authenticated correctly, will never return

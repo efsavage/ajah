@@ -140,7 +140,7 @@ public class ReportWriter implements AutoCloseable {
 	}
 
 	/**
-	 * Writes a {@link #EQUAL_40} line.
+	 * Writes a {@link Strings#EQUAL_40} line.
 	 */
 	public void rule() {
 		println(Strings.EQUAL_40);

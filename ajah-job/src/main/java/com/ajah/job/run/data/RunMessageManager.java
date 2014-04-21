@@ -88,8 +88,6 @@ public class RunMessageManager {
 	 *            The type of runMessage, required.
 	 * @param external
 	 *            Notify external services of this message?
-	 * @param debug
-	 *            The status of the runMessage, required.
 	 * @return The result of the creation, which will include the new runMessage
 	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException

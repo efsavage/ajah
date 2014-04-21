@@ -29,7 +29,7 @@ import com.ajah.report.FileScanReport;
 import com.ajah.report.ReportWriter;
 
 /**
- * Tests {@link FileScan}.
+ * Tests {@link FileScanReport}.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.

@@ -45,9 +45,6 @@ public class FacebookOAuthService implements AjahOAuthService {
 	/**
 	 * Generates a new {@link OAuthToken}. Note that this token is not saved.
 	 * 
-	 * @param callback
-	 *            The callback for the service.
-	 * 
 	 * @return A token for the Facebook service.
 	 */
 	public static OAuthToken getToken() {

@@ -52,8 +52,6 @@ public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T ex
 	}
 
 	/**
-	 * @param data
-	 *            Should this client use a data node?
 	 * @param typeName
 	 *            The name of the type. If null it will attempt to infer the
 	 *            type from the class parameters.

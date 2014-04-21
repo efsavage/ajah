@@ -82,10 +82,6 @@ public class RunMetricManager {
 	 * 
 	 * @param name
 	 *            The name of the runMetric, required.
-	 * @param type
-	 *            The type of runMetric, required.
-	 * @param status
-	 *            The status of the runMetric, required.
 	 * @return The result of the creation, which will include the new runMetric
 	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
