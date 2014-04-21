@@ -31,6 +31,7 @@ import com.ajah.css.CssParser;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@SuppressWarnings("static-method")
 public class CssParserTest {
 
 	/**
@@ -40,10 +41,11 @@ public class CssParserTest {
 	 */
 	@Test
 	public void testPage() throws IOException {
-		final InputStream css = CssParserTest.class.getResourceAsStream("/bootstrap.css");
-		CssParser.getInstance();
-		final CssDocument doc = CssParser.parse(css);
-		Assert.assertEquals(703, doc.getRules().size());
+		try (final InputStream css = CssParserTest.class.getResourceAsStream("/bootstrap.css")) {
+			CssParser.getInstance();
+			final CssDocument doc = CssParser.parse(css);
+			Assert.assertEquals(703, doc.getRules().size());
+		}
 	}
 
 }

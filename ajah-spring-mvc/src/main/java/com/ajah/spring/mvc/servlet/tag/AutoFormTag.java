@@ -99,8 +99,7 @@ public class AutoFormTag extends SpringTag {
 			setAutoForm(this.pageContext.getRequest().getAttribute("ajahAutoForm"));
 		}
 		AjahUtils.requireParam(this.autoForm, "autoForm");
-		try {
-			final JspWriter out = this.pageContext.getOut();
+		try (JspWriter out = this.pageContext.getOut()) {
 			final Div div = new Div().css("asm-auto");
 
 			final Enumeration<String> attributes = this.pageContext.getRequest().getAttributeNames();

@@ -61,19 +61,19 @@ public class FileScanReport {
 			// Request that every detail gets logged.
 			log.setLevel(Level.ALL);
 			final File file = new File(arg);
-			final ReportWriter report = new ReportWriter();
-			report.add(System.out);
-			report.set(log);
-			report.add(new File("/tmp/report-" + System.currentTimeMillis() + ".txt"));
-			report.rule();
-			report.println("Report for: " + file.getAbsolutePath());
-			final FileScanReport scan = new FileScanReport(file, report);
-			scan.scan();
-			report.rule();
-			report.println("Scan Complete");
-			report.rule();
-			scan.report(0);
-			report.close();
+			try (final ReportWriter report = new ReportWriter()) {
+				report.add(System.out);
+				report.set(log);
+				report.add(new File("/tmp/report-" + System.currentTimeMillis() + ".txt"));
+				report.rule();
+				report.println("Report for: " + file.getAbsolutePath());
+				final FileScanReport scan = new FileScanReport(file, report);
+				scan.scan();
+				report.rule();
+				report.println("Scan Complete");
+				report.rule();
+				scan.report(0);
+			}
 		}
 	}
 

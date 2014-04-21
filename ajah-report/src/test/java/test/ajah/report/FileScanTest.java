@@ -47,9 +47,10 @@ public class FileScanTest {
 	@Test
 	public void runScan() throws IOException {
 		// TODO What's the best way to unit test files?
-		final ReportWriter report = new ReportWriter();
-		report.set(log);
-		new FileScanReport(this.file, report).scan();
+		try (final ReportWriter report = new ReportWriter()) {
+			report.set(log);
+			new FileScanReport(this.file, report).scan();
+		}
 	}
 
 	/**

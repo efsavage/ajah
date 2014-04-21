@@ -129,9 +129,11 @@ public class CssParser {
 	 */
 	public static CssDocument parse(final InputStream css) {
 		AjahUtils.requireParam(css, "css");
-		final Scanner scanner = new Scanner(css).useDelimiter("\\A");
-		if (scanner.hasNext()) {
-			return parse(scanner.next());
+		try (final Scanner scanner = new Scanner(css)) {
+			scanner.useDelimiter("\\A");
+			if (scanner.hasNext()) {
+				return parse(scanner.next());
+			}
 		}
 		return null;
 	}

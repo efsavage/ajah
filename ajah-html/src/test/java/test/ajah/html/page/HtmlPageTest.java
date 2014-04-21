@@ -29,6 +29,7 @@ import com.ajah.html.page.HtmlPage;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@SuppressWarnings("static-method")
 public class HtmlPageTest {
 
 	/**

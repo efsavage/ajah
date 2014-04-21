@@ -62,24 +62,22 @@ public class FileUtils {
 	 */
 	public static long copyFile(final File file, final File newFile) {
 		// TODO Write to temp file then rename
-		InputStream in = null;
-		OutputStream out = null;
-		long bytes = 0;
-		try {
-			in = new FileInputStream(file);
-			out = new FileOutputStream(newFile);
-			int read;
-			do {
-				final byte[] block = new byte[1024];
-				read = in.read(block);
-				if (read < 0) {
-					break;
-				}
-				bytes += read;
-				out.write(block, 0, read);
-			} while (read >= 0);
-			log.fine("Copied " + bytes + " bytes");
-			return bytes;
+		try (InputStream in = new FileInputStream(file)) {
+			try (OutputStream out = new FileOutputStream(newFile)) {
+				long bytes = 0;
+				int read;
+				do {
+					final byte[] block = new byte[1024];
+					read = in.read(block);
+					if (read < 0) {
+						break;
+					}
+					bytes += read;
+					out.write(block, 0, read);
+				} while (read >= 0);
+				log.fine("Copied " + bytes + " bytes");
+				return bytes;
+			}
 		} catch (final IOException e) {
 			if (e.getMessage().endsWith("(Access is denied)")) {
 				// log.info(e.getMessage());
@@ -90,9 +88,6 @@ public class FileUtils {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 			return -1;
-		} finally {
-			IOUtils.safeClose(in);
-			IOUtils.safeClose(out);
 		}
 	}
 

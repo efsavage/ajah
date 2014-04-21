@@ -27,12 +27,12 @@ import java.util.logging.Logger;
 import com.ajah.util.text.Strings;
 
 /**
- * A r
+ * Writes reports to the configured channels/writers.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public class ReportWriter {
+public class ReportWriter implements AutoCloseable {
 
 	/**
 	 * Adds a number of tabs to nest things properly.
@@ -59,6 +59,7 @@ public class ReportWriter {
 	 * @throws FileNotFoundException
 	 *             If the file could not be found.
 	 */
+	@SuppressWarnings("resource")
 	public void add(final File file) throws FileNotFoundException {
 		this.writers.add(new PrintWriter(file));
 	}
