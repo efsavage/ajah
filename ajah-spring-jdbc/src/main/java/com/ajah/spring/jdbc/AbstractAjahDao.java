@@ -390,6 +390,21 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	/**
 	 * Finds a single object by the Criteria specified.
 	 * 
+	 * @param field
+	 *            The field to query.
+	 * @param value
+	 *            The value to match.
+	 * @return The object, if found.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public T find(final String field, final int value) throws DataOperationException {
+		return find(field, String.valueOf(value));
+	}
+
+	/**
+	 * Finds a single object by the Criteria specified.
+	 * 
 	 * @param value
 	 *            The value to use to find the object. The column name must
 	 *            match the class name (e.g. a UserId would query the user_id
