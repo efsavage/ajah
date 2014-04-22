@@ -15,6 +15,7 @@
  */
 package com.ajah.job.run;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.ajah.job.Job;
 import com.ajah.job.JobId;
 import com.ajah.job.run.data.RunMessageManager;
+import com.ajah.job.run.data.RunMetricManager;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.Identifiable;
 
@@ -48,6 +50,9 @@ public class Run implements Identifiable<RunId> {
 	RunMessageManager runMessageManager;
 
 	@Transient
+	RunMetricManager runMetricManager;
+
+	@Transient
 	Job job;
 
 	public void debug(String message) {
@@ -61,6 +66,14 @@ public class Run implements Identifiable<RunId> {
 	public void error(Throwable t) {
 		try {
 			this.runMessageManager.create(this.job, this.getId(), t.getMessage(), t, RunMessageType.ERROR, true);
+		} catch (DataOperationException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	public void metric(String name, BigDecimal value, boolean external) {
+		try {
+			this.runMetricManager.create(name, value, this.getId(), this.job, external);
 		} catch (DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}
