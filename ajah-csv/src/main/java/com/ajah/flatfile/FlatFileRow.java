@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 import com.ajah.util.StringUtils;
 
@@ -32,6 +33,7 @@ import com.ajah.util.StringUtils;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Log
 public class FlatFileRow {
 
 	private static DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
@@ -50,6 +52,8 @@ public class FlatFileRow {
 	@Setter
 	private boolean stripWrappedQuotes;
 
+	private final int lineNumber;
+
 	/**
 	 * Create an empty row based on a column set.
 	 * 
@@ -58,9 +62,10 @@ public class FlatFileRow {
 	 * @param reader
 	 *            The reader that created this row.
 	 */
-	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileReader reader) {
+	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileReader reader, final int lineNumber) {
 		this.columns = columns;
 		this.reader = reader;
+		this.lineNumber = lineNumber;
 	}
 
 	/**
@@ -71,9 +76,10 @@ public class FlatFileRow {
 	 * @param writer
 	 *            The writer that created this row.
 	 */
-	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileWriter writer) {
+	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileWriter writer, final int lineNumber) {
 		this.columns = columns;
 		this.writer = writer;
+		this.lineNumber = lineNumber;
 	}
 
 	/**
@@ -155,7 +161,7 @@ public class FlatFileRow {
 		if (StringUtils.isBlank(value)) {
 			return 0;
 		}
-		return Integer.parseInt(value);
+		return Integer.parseInt(value.replaceAll(",", "").trim());
 	}
 
 	/**
@@ -176,8 +182,9 @@ public class FlatFileRow {
 			return defaultValue;
 		}
 		try {
-			return Integer.parseInt(value);
+			return Integer.parseInt(value.replaceAll(",", "").trim());
 		} catch (final NumberFormatException e) {
+			log.warning("Line " + this.lineNumber + ": " + e.getMessage());
 			return defaultValue;
 		}
 	}

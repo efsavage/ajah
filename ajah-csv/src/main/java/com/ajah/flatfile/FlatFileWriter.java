@@ -49,6 +49,7 @@ public class FlatFileWriter implements Closeable {
 	@Getter
 	@Setter
 	private boolean flushEveryLine;
+	private int lineNumber;
 
 	public FlatFileWriter(final FlatFileFormat format, final File file) throws IOException {
 		this.format = format;
@@ -94,7 +95,7 @@ public class FlatFileWriter implements Closeable {
 		} else {
 			writeRow();
 		}
-		this.row = new FlatFileRow(this.map, this);
+		this.row = new FlatFileRow(this.map, this, lineNumber++);
 		return this.row;
 	}
 

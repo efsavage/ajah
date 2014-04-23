@@ -66,6 +66,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	@Getter
 	@Setter
 	private boolean trimContents = true;
+	private int lineNumber;
 
 	/**
 	 * Constructs a reader from a file.
@@ -81,6 +82,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		this.format = format;
 		this.reader = bufferedReader;
 		final String header = this.reader.readLine();
+		lineNumber++;
 		if (header != null) {
 			createColumns(header);
 		}
@@ -181,7 +183,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 
 	@Override
 	public FlatFileRow next() {
-		this.row = new FlatFileRow(this.map, this);
+		this.row = new FlatFileRow(this.map, this, lineNumber++);
 		this.row.setStripWrappedQuotes(this.stripWrappedQuotes);
 		String line;
 		try {
