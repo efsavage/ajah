@@ -38,11 +38,19 @@ public enum AjahMimeType implements Identifiable<String> {
 	/**
 	 * application/javascript
 	 */
-	APPLICATION_JAVASCRIPT("application", "javascript"),
+	APPLICATION_JAVASCRIPT("application", "javascript", true),
+	/**
+	 * application/json
+	 */
+	APPLICATION_JSON("application", "json", true),
 	/**
 	 * application/xhtml+xml (XHTML)
 	 */
 	APPLICATION_XHTML("application", "xhtml+xml", true),
+	/**
+	 * application/xml
+	 */
+	APPLICATION_XML("application", "xml", true),
 	/**
 	 * multipart/signed
 	 */
@@ -79,6 +87,10 @@ public enum AjahMimeType implements Identifiable<String> {
 	 * text/css
 	 */
 	TEXT_CSS("text", "css", true),
+	/**
+	 * text/xml
+	 */
+	TEXT_XML("text", "xml", true),
 	/**
 	 * Unknown
 	 */
