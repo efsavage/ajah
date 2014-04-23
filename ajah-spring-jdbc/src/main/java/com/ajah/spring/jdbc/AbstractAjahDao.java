@@ -631,6 +631,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (int i = 0; i < values.length; i++) {
 				final Field field = this.colMap.get(this.insertColumns.get(i));
+				if (field == null) {
+					throw new IllegalArgumentException("Field " + this.insertColumns.get(i) + " not found");
+				}
 				if (Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
@@ -1269,7 +1272,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			this.selectFields = select.toString();
 			this.selectFieldsWithTablePrefix = selectWithTablePrefix.toString();
 			if (isAutoIdAssign()) {
-				this.insertFields = StringUtils.join(",", newUpdateFields);
+				this.insertFields = StringUtils.join(",", StringUtils.wrap(newUpdateFields, "`"));
 			} else {
 				this.insertFields = this.selectFields;
 			}
