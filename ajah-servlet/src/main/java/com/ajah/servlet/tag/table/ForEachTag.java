@@ -44,10 +44,6 @@ import com.ajah.util.StringUtils;
 @Log
 public class ForEachTag extends TagSupport {
 
-	/**
-	 * @param items2
-	 * @return
-	 */
 	private static boolean isEmpty(final Object object) {
 		if (object == null) {
 			return true;
