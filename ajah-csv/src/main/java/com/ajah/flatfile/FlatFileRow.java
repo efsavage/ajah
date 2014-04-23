@@ -98,6 +98,9 @@ public class FlatFileRow {
 				if (this.stripWrappedQuotes && value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
 					return value.substring(1, value.length() - 2);
 				}
+				if (this.reader == null) {
+					return this.writer.isTrimContents() ? value.trim() : value;
+				}
 				return this.reader.isTrimContents() ? value.trim() : value;
 			}
 			if (!StringUtils.isBlank(column.getDefaultValue())) {

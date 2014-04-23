@@ -51,6 +51,10 @@ public class FlatFileWriter implements Closeable {
 	private boolean flushEveryLine;
 	private int lineNumber;
 
+	@Getter
+	@Setter
+	private boolean trimContents = true;
+
 	public FlatFileWriter(final FlatFileFormat format, final File file) throws IOException {
 		this.format = format;
 		this.file = file;
