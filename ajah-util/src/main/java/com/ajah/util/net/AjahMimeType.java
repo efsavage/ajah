@@ -125,10 +125,15 @@ public enum AjahMimeType implements Identifiable<String> {
 			return TEXT_HTML;
 		case "xhtml":
 			return APPLICATION_XHTML;
+		case "xml":
+			return APPLICATION_XML;
 		case "text":
 			return TEXT_PLAIN;
+		case "json":
+			return APPLICATION_JSON;
+		default:
+			return UNKNOWN;
 		}
-		return UNKNOWN;
 	}
 
 	private final String primaryType;

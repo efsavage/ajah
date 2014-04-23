@@ -58,7 +58,8 @@ public class RomeUtils {
 	 * Creates Ajah entries from a Rome feed.
 	 * 
 	 * @param syndFeed
-	 * @return
+	 *            The feed to create entries for.
+	 * @return The list of Entries, may be empty, will not be null.
 	 */
 	private static List<Entry> createEntries(final SyndFeed syndFeed, final Feed feed) {
 		@SuppressWarnings("unchecked")
@@ -78,7 +79,8 @@ public class RomeUtils {
 	 * Convert a Rome entry to an Ajah entry.
 	 * 
 	 * @param syndEntry
-	 * @return
+	 *            The entry to convert.
+	 * @return The converted entry. Will not be null.
 	 */
 	private static Entry createEntry(final SyndEntry syndEntry, final Feed feed) {
 		final Entry entry = new Entry();

@@ -11,11 +11,11 @@ import java.io.IOException;
 
 import lombok.extern.java.Log;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -65,25 +65,26 @@ public class FeedDiscovery {
 	 */
 	public FeedSource discover(final String url) throws ClientProtocolException, IOException, DataOperationException {
 		log.fine("Discovering feed for " + url);
-		final HttpClient client = new DefaultHttpClient();
-		final HttpGet get = new HttpGet(url);
-		final HttpResponse response = client.execute(get);
-		final String html = EntityUtils.toString(response.getEntity());
-		final Document doc = Jsoup.parse(html);
-		final Elements alternateLinks = doc.select("link");
-		for (final Element alternateLink : alternateLinks) {
-			if ("alternate".equals(alternateLink.attr("rel"))) {
-				if ("application/rss+xml".equals(alternateLink.attr("type"))) {
-					log.fine("Found rss link " + alternateLink.attr("href"));
-					final String rss = alternateLink.attr("href");
-					return this.feedSourceManager.findOrCreateByFeedUrl(rss);
+		try (final CloseableHttpClient client = HttpClientBuilder.create().build()) {
+			final HttpGet get = new HttpGet(url);
+			try (final CloseableHttpResponse response = client.execute(get)) {
+				final String html = EntityUtils.toString(response.getEntity());
+				final Document doc = Jsoup.parse(html);
+				final Elements alternateLinks = doc.select("link");
+				for (final Element alternateLink : alternateLinks) {
+					if ("alternate".equals(alternateLink.attr("rel"))) {
+						if ("application/rss+xml".equals(alternateLink.attr("type"))) {
+							log.fine("Found rss link " + alternateLink.attr("href"));
+							final String rss = alternateLink.attr("href");
+							return this.feedSourceManager.findOrCreateByFeedUrl(rss);
+						}
+						log.fine("Found alternate link " + alternateLink.html());
+					} else {
+						log.fine("Found link " + alternateLink.html());
+					}
 				}
-				log.fine("Found alternate link " + alternateLink.html());
-			} else {
-				log.fine("Found link " + alternateLink.html());
 			}
 		}
 		return null;
 	}
-
 }

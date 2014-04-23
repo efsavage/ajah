@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import java.util.logging.Level;
 
 import lombok.extern.java.Log;
 
-import com.ajah.util.IOUtils;
 import com.ajah.util.lang.NameValuePair;
 
 /**
@@ -90,30 +89,28 @@ public class FileHashUtils {
 		if (!file.canRead()) {
 			return null;
 		}
-		InputStream is = null;
-		try {
-			is = new FileInputStream(file);
+
+		try (InputStream fis = new FileInputStream(file)) {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
-			is = new DigestInputStream(is, md);
-			int read;
-			do {
-				final byte[] block = new byte[blockSize];
-				read = is.read(block);
-			} while (read >= 0);
-			// read stream to EOF as normal...
-			final byte[] digest = md.digest();
-			final String hash = String.format("%0" + (digest.length << 1) + "x", new BigInteger(1, digest));
-			// log.info(hash);
-			final long duration = System.currentTimeMillis() - start;
-			// if (duration > 50) {
-			log.fine(file.length() + " took " + duration + "ms");
-			// }
-			return hash;
+			try (InputStream is = new DigestInputStream(fis, md)) {
+				int read;
+				do {
+					final byte[] block = new byte[blockSize];
+					read = is.read(block);
+				} while (read >= 0);
+				// read stream to EOF as normal...
+				final byte[] digest = md.digest();
+				final String hash = String.format("%0" + (digest.length << 1) + "x", new BigInteger(1, digest));
+				// log.info(hash);
+				final long duration = System.currentTimeMillis() - start;
+				// if (duration > 50) {
+				log.fine(file.length() + " took " + duration + "ms");
+				// }
+				return hash;
+			}
 		} catch (final NoSuchAlgorithmException e) {
 			log.log(Level.WARNING, e.getMessage(), e);
 			return null;
-		} finally {
-			IOUtils.safeClose(is);
 		}
 	}
 
@@ -133,31 +130,30 @@ public class FileHashUtils {
 		if (!file.canRead()) {
 			return null;
 		}
-		InputStream is = null;
-		try {
-			is = new FileInputStream(file);
+		try (InputStream fis = new FileInputStream(file)) {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
-			is = new DigestInputStream(is, md);
-			int read;
-			do {
-				final long fragmentStart = System.currentTimeMillis();
-				final byte[] block = new byte[blockSize];
-				read = is.read(block);
-				if (read < 0) {
-					break;
-				}
-				final byte[] digest = md.digest();
-				final String hash = String.format("%0" + (digest.length << 1) + "x", new BigInteger(1, digest));
-				final NameValuePair<Integer> nvp = new NameValuePair<>(hash, Integer.valueOf(read));
-				log.fine(FileHashUtils.getHashedFileName(hash, 3, 2));
+			try (InputStream is = new DigestInputStream(fis, md)) {
+				int read;
+				do {
+					final long fragmentStart = System.currentTimeMillis();
+					final byte[] block = new byte[blockSize];
+					read = is.read(block);
+					if (read < 0) {
+						break;
+					}
+					final byte[] digest = md.digest();
+					final String hash = String.format("%0" + (digest.length << 1) + "x", new BigInteger(1, digest));
+					final NameValuePair<Integer> nvp = new NameValuePair<>(hash, Integer.valueOf(read));
+					log.fine(FileHashUtils.getHashedFileName(hash, 3, 2));
 
-				final long fragmentDuration = System.currentTimeMillis() - fragmentStart;
-				log.fine(nvp.getValue() + " bytes hashing to " + nvp.getName() + " took " + fragmentDuration + "ms");
-				nvps.add(nvp);
-			} while (true);
-			final long duration = System.currentTimeMillis() - start;
-			log.fine(nvps.size() + " fragments  took " + duration + "ms");
-			return nvps;
+					final long fragmentDuration = System.currentTimeMillis() - fragmentStart;
+					log.fine(nvp.getValue() + " bytes hashing to " + nvp.getName() + " took " + fragmentDuration + "ms");
+					nvps.add(nvp);
+				} while (true);
+				final long duration = System.currentTimeMillis() - start;
+				log.fine(nvps.size() + " fragments  took " + duration + "ms");
+				return nvps;
+			}
 		} catch (final NoSuchAlgorithmException e) {
 			log.log(Level.WARNING, e.getMessage(), e);
 			return null;
@@ -171,8 +167,6 @@ public class FileHashUtils {
 				log.log(Level.WARNING, e.getMessage(), e);
 			}
 			return null;
-		} finally {
-			IOUtils.safeClose(is);
 		}
 	}
 

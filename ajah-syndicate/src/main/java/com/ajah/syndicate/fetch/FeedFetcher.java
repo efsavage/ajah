@@ -16,9 +16,10 @@ import java.util.logging.Level;
 import lombok.extern.java.Log;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -142,29 +143,30 @@ public class FeedFetcher {
 				continue;
 			}
 			log.fine("Polling " + feedSource.getTitle() + " [" + feedSource.getId() + "]");
-			final HttpClient http = new DefaultHttpClient();
-			try {
+
+			try (final CloseableHttpClient http = HttpClientBuilder.create().build()) {
 				final HttpGet get = new HttpGet(feedSource.getFeedUrl());
-				final HttpResponse response = http.execute(get);
-				final String rawFeed = EntityUtils.toString(response.getEntity());
-				// log.finest(rawFeed);
-				EntityUtils.consume(response.getEntity());
-				if (!handle(feedSource, response)) {
-					continue;
-				}
-				final Feed feed = RomeUtils.createFeed(new XmlString(rawFeed), feedSource);
-				log.fine("Found " + feed.getEntries().size() + " entries");
-				this.feedManager.save(feed, true);
-				for (final EntryListener entryListener : this.entryListeners) {
-					for (final Entry entry : feed.getEntries()) {
-						entryListener.handle(entry);
+				try (final CloseableHttpResponse response = http.execute(get)) {
+					final String rawFeed = EntityUtils.toString(response.getEntity());
+					// log.finest(rawFeed);
+					EntityUtils.consume(response.getEntity());
+					if (!handle(feedSource, response)) {
+						continue;
 					}
-				}
-				if (!StringUtils.isBlank(feed.getTitle())) {
-					feedSource.setTitle(feed.getTitle());
-				}
-				if (!StringUtils.isBlank(feed.getLink())) {
-					feedSource.setHtmlUrl(feed.getLink());
+					final Feed feed = RomeUtils.createFeed(new XmlString(rawFeed), feedSource);
+					log.fine("Found " + feed.getEntries().size() + " entries");
+					this.feedManager.save(feed, true);
+					for (final EntryListener entryListener : this.entryListeners) {
+						for (final Entry entry : feed.getEntries()) {
+							entryListener.handle(entry);
+						}
+					}
+					if (!StringUtils.isBlank(feed.getTitle())) {
+						feedSource.setTitle(feed.getTitle());
+					}
+					if (!StringUtils.isBlank(feed.getLink())) {
+						feedSource.setHtmlUrl(feed.getLink());
+					}
 				}
 				feedSource.setNextPoll(DateUtils.addHours(6));
 				this.feedSourceManager.save(feedSource);
