@@ -49,6 +49,8 @@ public class EmailManager {
 	/**
 	 * Returns a count of all records.
 	 * 
+	 * @param userId
+	 *            The ID of the user to count email addresses for.
 	 * @return Count of all records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
@@ -60,6 +62,8 @@ public class EmailManager {
 	/**
 	 * Counts the records available that match the criteria.
 	 * 
+	 * @param userId
+	 *            The ID of the user to count email addresses for.
 	 * @param type
 	 *            The email type to limit to, optional.
 	 * @param status

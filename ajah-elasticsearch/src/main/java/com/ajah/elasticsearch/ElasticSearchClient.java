@@ -27,10 +27,16 @@ import com.ajah.util.Identifiable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
- * Inteface for Elastic Search Clients.
+ * Interface for Elastic Search Clients.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @param <K>
+ *            The type of key/ID.
+ * @param <T>
+ *            The type (may be an interface).
+ * @param <C>
+ *            The implemented type (must be concrete class).
  * 
  */
 public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AutoCloseable {

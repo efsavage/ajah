@@ -298,6 +298,8 @@ public class UserManager {
 	/**
 	 * Attempt to find a user and authenticate.
 	 * 
+	 * @param userId
+	 *            The ID of the user to attempt to fetch.
 	 * @param password
 	 *            The user's password, unencrypted.
 	 * @return User if found and authenticated correctly, will never return

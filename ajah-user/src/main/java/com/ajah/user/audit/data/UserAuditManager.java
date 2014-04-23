@@ -74,6 +74,8 @@ public class UserAuditManager {
 	/**
 	 * Creates a new {@link UserAudit} with the given properties.
 	 * 
+	 * @param userId
+	 *            The ID of the user to create an audit for.
 	 * @param field
 	 *            The name of the userAudit, required.
 	 * @param oldValue
@@ -81,6 +83,7 @@ public class UserAuditManager {
 	 * @param newValue
 	 *            The new value. Note that if this matches the old value no save
 	 *            will happen and method will return null.
+	 * @param type
 	 * @return The result of the creation, which will include the new userAudit
 	 *         at {@link DataOperationResult#getEntity()}. If the values are the
 	 *         same, returns null.

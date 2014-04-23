@@ -39,6 +39,8 @@ public interface AccountUserDao extends AjahDao<AccountUserId, AccountUser> {
 	/**
 	 * Returns a list of {@link AccountUser}s that match the specified criteria.
 	 * 
+	 * @param accountId
+	 *            The ID of the account to list users for.
 	 * @param type
 	 *            The type of accountUser, optional.
 	 * @param status

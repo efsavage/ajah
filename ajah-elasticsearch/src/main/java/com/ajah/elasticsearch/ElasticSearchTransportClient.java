@@ -52,6 +52,10 @@ public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T ex
 	}
 
 	/**
+	 * Constructs a transport client that wraps a {@link TransportClient}.
+	 * 
+	 * @param hostname
+	 *            The name of the elastic search host/cluster.
 	 * @param typeName
 	 *            The name of the type. If null it will attempt to infer the
 	 *            type from the class parameters.

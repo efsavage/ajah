@@ -92,6 +92,8 @@ public class AccountUserManager {
 	/**
 	 * Returns a list of {@link AccountUser}s that match the specified criteria.
 	 * 
+	 * @param accountId
+	 *            The account ID to list users for.
 	 * @param type
 	 *            The type of accountUser, optional.
 	 * @param status
@@ -111,6 +113,8 @@ public class AccountUserManager {
 	/**
 	 * Returns a list of {@link AccountUser}s that match the specified criteria.
 	 * 
+	 * @param accountId
+	 *            The account ID to list users for.
 	 * @param type
 	 *            The type of accountUser, optional.
 	 * @param status

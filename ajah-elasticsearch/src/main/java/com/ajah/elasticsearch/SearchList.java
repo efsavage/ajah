@@ -13,7 +13,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 package com.ajah.elasticsearch;
 
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ import lombok.Setter;
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @param <T>
+ *            The type of object in the list.
  * 
  */
 public class SearchList<T> extends ArrayList<T> {

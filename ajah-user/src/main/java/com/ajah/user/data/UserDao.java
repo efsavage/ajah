@@ -152,6 +152,8 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @param userId
 	 *            The ID of the user to fetch the status of.
 	 * @return The user's status.
+	 * @throws UserNotFoundException
+	 *             If the user could not be found.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
