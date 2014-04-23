@@ -138,15 +138,15 @@ public class Crypto {
 		final byte[] keyBytes = new byte[128];
 		sr.nextBytes(keyBytes);
 
-		final Scanner scanner = new Scanner(System.in);
-		System.out.print("Algorithm: [HmacSHA1] ");
-		final String algorithm = scanner.nextLine();
-		if (StringUtils.isBlank(algorithm) || algorithm.equals("HmacSHA1")) {
-			System.out.print("Secret: ");
-			final String secret = scanner.nextLine();
-			System.out.print(getHmacSha1Hex(secret));
+		try (final Scanner scanner = new Scanner(System.in)) {
+			System.out.print("Algorithm: [HmacSHA1] ");
+			final String algorithm = scanner.nextLine();
+			if (StringUtils.isBlank(algorithm) || algorithm.equals("HmacSHA1")) {
+				System.out.print("Secret: ");
+				final String secret = scanner.nextLine();
+				System.out.print(getHmacSha1Hex(secret));
+			}
 		}
-		scanner.close();
 	}
 
 	private static void listProviders() {

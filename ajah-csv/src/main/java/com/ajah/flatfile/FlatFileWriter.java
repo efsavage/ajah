@@ -99,7 +99,7 @@ public class FlatFileWriter implements Closeable {
 		} else {
 			writeRow();
 		}
-		this.row = new FlatFileRow(this.map, this, lineNumber++);
+		this.row = new FlatFileRow(this.map, this, this.lineNumber++);
 		return this.row;
 	}
 
@@ -124,7 +124,8 @@ public class FlatFileWriter implements Closeable {
 			}
 			this.writer.write(value);
 			break;
-
+		default:
+			throw new IllegalArgumentException("Unsupported format: " + this.format);
 		}
 	}
 

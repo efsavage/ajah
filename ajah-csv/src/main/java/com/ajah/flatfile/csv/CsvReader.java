@@ -46,6 +46,7 @@ public class CsvReader implements AutoCloseable, Iterable<CsvRow>, Iterator<CsvR
 	 * @throws IOException
 	 *             If the file could not be opened.
 	 */
+	@SuppressWarnings("resource")
 	public CsvReader(final File file) throws IOException {
 		this.reader = new CSVReader(new FileReader(file));
 		final String[] headers = this.reader.readNext();

@@ -82,7 +82,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		this.format = format;
 		this.reader = bufferedReader;
 		final String header = this.reader.readLine();
-		lineNumber++;
+		this.lineNumber++;
 		if (header != null) {
 			createColumns(header);
 		}
@@ -98,6 +98,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 * @throws IOException
 	 *             If the file could not be read.
 	 */
+	@SuppressWarnings("resource")
 	public FlatFileReader(final FlatFileFormat format, final File file) throws IOException {
 		this(format, new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8")));
 	}
@@ -183,7 +184,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 
 	@Override
 	public FlatFileRow next() {
-		this.row = new FlatFileRow(this.map, this, lineNumber++);
+		this.row = new FlatFileRow(this.map, this, this.lineNumber++);
 		this.row.setStripWrappedQuotes(this.stripWrappedQuotes);
 		String line;
 		try {
@@ -194,16 +195,15 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		switch (this.format) {
 		case CSV: {
 			int currentPos = 0;
-			int fieldStartPos = 0;
 			boolean inField = false;
 			final char[] chars = line.toCharArray();
 			final int len = chars.length;
 			for (int i = 0; i < this.columns.size() && currentPos < len; i++) {
 				final char c = chars[currentPos];
 				if (c == ',' || c == '"') {
+					// Skip
 				} else {
 					if (inField) {
-						fieldStartPos = currentPos;
 						currentPos++;
 						inField = true;
 					}
