@@ -413,4 +413,26 @@ public class StringUtils {
 		return defaultValue;
 	}
 
+	/**
+	 * Wraps each string in a collection with another string, often quotes or
+	 * parentheses.
+	 * 
+	 * @param strings
+	 *            The strings to wrap.
+	 * @param wrapper
+	 *            The wrapper to prepend and append.
+	 * @return A new collection of the same size, with the wrapper prepended and
+	 *         appended to each member.
+	 */
+	public static List<String> wrap(List<String> strings, String wrapper) {
+		if (strings == null) {
+			return null;
+		}
+		List<String> wrapped = new ArrayList<>(strings.size());
+		for (String string : strings) {
+			wrapped.add(wrapper + string + wrapper);
+		}
+		return wrapped;
+	}
+
 }
