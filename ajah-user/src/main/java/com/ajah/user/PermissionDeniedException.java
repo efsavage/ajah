@@ -15,6 +15,7 @@
  */
 package com.ajah.user;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -24,13 +25,17 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @EqualsAndHashCode(callSuper = false)
+@Data
 public class PermissionDeniedException extends Exception {
+
+	private final String resourceName;
 
 	/**
 	 * @see Exception#Exception()
 	 */
 	public PermissionDeniedException() {
 		super();
+		this.resourceName = null;
 	}
 
 }

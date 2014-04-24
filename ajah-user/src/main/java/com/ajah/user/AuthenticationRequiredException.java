@@ -15,6 +15,7 @@
  */
 package com.ajah.user;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -24,15 +25,18 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @EqualsAndHashCode(callSuper = false)
+@Data
 public class AuthenticationRequiredException extends Exception {
 
 	private static final long serialVersionUID = -578203020126337952L;
+	private final String resourceName;
 
 	/**
 	 * @see Exception#Exception()
 	 */
 	public AuthenticationRequiredException() {
 		super();
+		this.resourceName = null;
 	}
 
 }
