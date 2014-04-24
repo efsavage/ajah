@@ -17,6 +17,7 @@ package com.efsavage.amazon.s3;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import lombok.extern.java.Log;
@@ -132,6 +133,7 @@ public class S3Client {
 	 * @throws S3Exception
 	 *             If an error occurs storing the object.
 	 */
+	@SuppressWarnings("resource")
 	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip, final AjahMimeType mimeType, final S3ACL acl) throws S3Exception {
 		if (data == null || data.length == 0) {
 			log.warning("Data is empty, skipping upload");
@@ -140,15 +142,17 @@ public class S3Client {
 		if (name.startsWith("/")) {
 			log.warning("Name starts with \"/\", could cause unpredictable results");
 		}
-		try {
+		try (InputStream is = new ByteArrayInputStream(data)) {
+			InputStream gzipIs = null;
 			log.finest(data.length + " bytes to upload");
 			S3Object object;
 			if (gzip) {
 				object = new S3Object(name + ".gz");
-				object.setDataInputStream(new GZipDeflatingInputStream(new ByteArrayInputStream(data)));
+				object.setDataInputStream(is);
 			} else {
 				object = new S3Object(name);
-				object.setDataInputStream(new ByteArrayInputStream(data));
+				gzipIs = new GZipDeflatingInputStream(is);
+				object.setDataInputStream(gzipIs);
 				object.setContentLength(data.length);
 			}
 			if (mimeType != null) {
@@ -157,10 +161,16 @@ public class S3Client {
 			object.setAcl(acl.getJets3t());
 			if (!overwrite && this.s3Service.isObjectInBucket(bucket.getName(), object.getName())) {
 				log.fine(object.getName() + " already exists in bucket " + bucket.getName() + " and overwriting is disabled");
+				if (gzipIs != null) {
+					gzipIs.close();
+				}
 				return;
 			}
 			object = this.s3Service.putObject(bucket.toString(), object);
 			log.fine("Uploaded " + object.getName() + " to bucket " + bucket.getName());
+			if (gzipIs != null) {
+				gzipIs.close();
+			}
 		} catch (final UnsupportedEncodingException e) {
 			throw new ConfigException(e);
 		} catch (IOException | ServiceException e) {
