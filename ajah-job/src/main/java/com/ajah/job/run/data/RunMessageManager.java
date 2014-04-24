@@ -82,10 +82,16 @@ public class RunMessageManager {
 	/**
 	 * Creates a new {@link RunMessage} with the given properties.
 	 * 
+	 * @param job
+	 *            The job to create this message for.
 	 * @param runId
 	 *            The name of the runMessage, required.
 	 * @param message
 	 *            The type of runMessage, required.
+	 * @param throwable
+	 *            The throwable related to this message, may be null.
+	 * @param type
+	 *            The type of message this is.
 	 * @param external
 	 *            Notify external services of this message?
 	 * @return The result of the creation, which will include the new runMessage

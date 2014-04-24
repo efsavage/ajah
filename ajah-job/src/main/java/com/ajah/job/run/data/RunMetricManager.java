@@ -82,6 +82,13 @@ public class RunMetricManager {
 	 * 
 	 * @param name
 	 *            The name of the runMetric, required.
+	 * @param value
+	 *            The value to submit for the metric.
+	 * @param runId
+	 *            The ID of the Run this metric is associated with.
+	 * @param job
+	 *            The job this run is for.
+	 * @param external
 	 * @return The result of the creation, which will include the new runMetric
 	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException

@@ -70,6 +70,9 @@ public abstract class AbstractJobRunner implements JobRunner {
 
 	/**
 	 * Sets up and validates the {@link Task}s for this job.
+	 * 
+	 * @param _applicationContext
+	 *            The context where beans can be fetched from.
 	 */
 	public void init(final ApplicationContext _applicationContext) {
 
