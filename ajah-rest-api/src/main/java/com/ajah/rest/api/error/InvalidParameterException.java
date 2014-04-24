@@ -19,14 +19,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a required parameter was not found on the request.
+ * Thrown when a required parameter was not acceptable. If the parameter was
+ * missing, use {@link RequiredParameterException}.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RequiredParameterException extends Exception {
+public class InvalidParameterException extends Exception {
 
 	private String name;
 
@@ -35,9 +36,11 @@ public class RequiredParameterException extends Exception {
 	 * 
 	 * @param name
 	 *            the Name of the missing parameter.
+	 * @param message
+	 *            The message explaining why it was invalid.
 	 */
-	public RequiredParameterException(final String name) {
-		super("Paramter '" + name + "' is required.");
+	public InvalidParameterException(final String name, final String message) {
+		super(message);
 		this.name = name;
 	}
 
