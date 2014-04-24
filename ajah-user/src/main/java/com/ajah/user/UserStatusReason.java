@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,25 +18,21 @@ package com.ajah.user;
 import com.ajah.util.IdentifiableEnum;
 
 /**
- * Basic implementations of UserStatus.
+ * The reason a user is in the current status.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum UserStatus implements IdentifiableEnum<String> {
+public enum UserStatusReason implements IdentifiableEnum<String> {
 
 	/**
-	 * New user, unverified/unpaid.
+	 * USER
 	 */
-	NEW("0", "New", "New", "New"),
+	USER("1", "user", "User", "Status was per user's request"),
 	/**
-	 * User is inactive.
+	 * ADMIN
 	 */
-	INACTIVE("-1", "Inactive", "Inactive", "Inactive"),
-	/**
-	 * User is active.
-	 */
-	ACTIVE("1", "Active", "Active", "Active");
+	ADMIN("2", "admin", "Admin", "Status changed by admin");
 
 	/**
 	 * Finds a UserStatus that matches the id on id, name, or name().
@@ -45,8 +41,8 @@ public enum UserStatus implements IdentifiableEnum<String> {
 	 *            Value to match against id, name, or name()
 	 * @return Matching UserStatus, or null.
 	 */
-	public static UserStatus get(final String id) {
-		for (final UserStatus type : values()) {
+	public static UserStatusReason get(final String id) {
+		for (final UserStatusReason type : values()) {
 			if (type.getId().equals(id) || type.getCode().equals(id) || type.name().equals(id)) {
 				return type;
 			}
@@ -59,7 +55,7 @@ public enum UserStatus implements IdentifiableEnum<String> {
 	private final String name;
 	private final String description;
 
-	private UserStatus(final String id, final String code, final String name, final String description) {
+	private UserStatusReason(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

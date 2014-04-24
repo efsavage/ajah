@@ -14,11 +14,13 @@
  */
 package com.ajah.user.data;
 
+import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
+import com.ajah.user.UserNotFoundException;
 import com.ajah.user.UserStatus;
 import com.ajah.user.UserType;
 
@@ -54,7 +56,20 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	public int update(final UserId userId, final Password password) throws DataOperationException;
+	public int updatePassword(final UserId userId, final Password password) throws DataOperationException;
+
+	/**
+	 * Updates a user's password in the database.
+	 * 
+	 * @param userId
+	 *            The ID of the user to update.
+	 * @param username
+	 *            The user's new username.
+	 * @return The number of rows inserted.
+	 * @throws DataOperationException
+	 *             If the record could not be inserted.
+	 */
+	public int updateUsername(final UserId userId, final String username) throws DataOperationException;
 
 	/**
 	 * Finds a user by username field.
@@ -116,5 +131,30 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 *             If the query could not be executed.
 	 */
 	User getRandomUser(final UserStatus status) throws DataOperationException;
+
+	/**
+	 * Fetches a user's (hashed) password.
+	 * 
+	 * @param userId
+	 *            The user to fetch the password for.
+	 * @return The hashed password.
+	 * @throws CryptoException
+	 *             If there was a problem with the hashing (which should not
+	 *             happen since the value is already hashed).
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	Password getPassword(final UserId userId) throws CryptoException, DataOperationException;
+
+	/**
+	 * Fetches the status of the specified user.
+	 * 
+	 * @param userId
+	 *            The ID of the user to fetch the status of.
+	 * @return The user's status.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public UserStatus getStatus(final UserId userId) throws UserNotFoundException, DataOperationException;
 
 }

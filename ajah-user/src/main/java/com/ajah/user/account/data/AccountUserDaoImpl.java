@@ -56,7 +56,7 @@ public class AccountUserDaoImpl extends AbstractAjahDao<AccountUserId, AccountUs
 			criteria.eq("status", status);
 		}
 		if (!StringUtils.isBlank(search)) {
-
+			// TODO Add search phrase
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}

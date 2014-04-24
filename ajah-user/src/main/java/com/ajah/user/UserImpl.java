@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ public class UserImpl implements User {
 
 	protected UserId id;
 	protected String username;
-	protected String password;
 	protected UserStatus status;
+	protected UserStatusReason statusReason;
 	protected UserType type;
 
 }

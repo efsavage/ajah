@@ -25,6 +25,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
@@ -34,7 +35,11 @@ import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
 import com.ajah.user.UserNotFoundException;
 import com.ajah.user.UserStatus;
+import com.ajah.user.UserStatusReason;
 import com.ajah.user.UserType;
+import com.ajah.user.audit.UserAuditField;
+import com.ajah.user.audit.UserAuditType;
+import com.ajah.user.audit.data.UserAuditManager;
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailStatus;
 import com.ajah.user.email.EmailType;
@@ -61,6 +66,9 @@ public class UserManager {
 	private UserDao userDao;
 
 	@Autowired
+	private UserAuditManager userAuditManager;
+
+	@Autowired
 	private UserInfoDao userInfoDao;
 
 	@Autowired
@@ -73,11 +81,31 @@ public class UserManager {
 	 *            The ID of the user to update.
 	 * @param password
 	 *            The new password.
+	 * @param type
+	 *            The type of change this is.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws CryptoException
+	 *             If there was a problem hashing the password.
+	 */
+	public void changePassword(final UserId userId, final Password password, final UserAuditType type) throws DataOperationException, CryptoException {
+		final Password oldPassword = this.userDao.getPassword(userId);
+		this.userDao.updatePassword(userId, password);
+		this.userAuditManager.create(userId, UserAuditField.PASSWORD, oldPassword.toString(), password.toString(), type);
+	}
+
+	/**
+	 * Changes a user's username.
+	 * 
+	 * @param userId
+	 *            The ID of the user to update.
+	 * @param username
+	 *            The new username.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public void changePassword(final UserId userId, final Password password) throws DataOperationException {
-		this.userDao.update(userId, password);
+	public void changeUsername(final UserId userId, final String username) throws DataOperationException {
+		this.userDao.updateUsername(userId, username);
 	}
 
 	/**
@@ -142,6 +170,27 @@ public class UserManager {
 		userInfo.setCreated(new Date());
 		this.userInfoDao.insert(userInfo);
 		return user;
+	}
+
+	/**
+	 * Deactivates a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to deactivate.
+	 * @param statusReason
+	 *            The reason for deactivation.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void deactivate(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.INACTIVE);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type);
+
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -34,6 +34,13 @@ public interface User extends Identifiable<UserId> {
 	UserStatus getStatus();
 
 	/**
+	 * The status reason of the user.
+	 * 
+	 * @return The status reason of the user. May be null.
+	 */
+	UserStatusReason getStatusReason();
+
+	/**
 	 * The type of the user.
 	 * 
 	 * @return The type of the user. May be null if not saved/complete.
@@ -66,6 +73,14 @@ public interface User extends Identifiable<UserId> {
 	 *            The user's status, should not be null.
 	 */
 	void setStatus(final UserStatus status);
+
+	/**
+	 * Sets the user status reason.
+	 * 
+	 * @param statusReason
+	 *            The user's status reason, may be null.
+	 */
+	void setStatusReason(final UserStatusReason statusReason);
 
 	/**
 	 * Sets the user's type.
