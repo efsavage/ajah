@@ -159,4 +159,15 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 */
 	public UserStatus getStatus(final UserId userId) throws UserNotFoundException, DataOperationException;
 
+	/**
+	 * Fetches a user's username.
+	 * 
+	 * @param userId
+	 *            The user to fetch the password for.
+	 * @return The hashed password.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public String getUsername(UserId userId) throws DataOperationException;
+
 }

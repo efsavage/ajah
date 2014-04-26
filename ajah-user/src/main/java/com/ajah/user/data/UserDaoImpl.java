@@ -17,6 +17,7 @@ package com.ajah.user.data;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.ajah.crypto.CryptoException;
@@ -80,8 +81,24 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	@Override
 	public Password getPassword(final UserId userId) throws CryptoException, DataOperationException {
 		try {
-			final String value = this.jdbcTemplate.queryForObject("SELECT status from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
+			final String value = this.jdbcTemplate.queryForObject("SELECT password from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
 			return new HmacSha1Password(value, true);
+		} catch (final EmptyResultDataAccessException e) {
+			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, "user");
+		}
+	}
+
+	/**
+	 * @see com.ajah.user.data.UserDao#getUsername(com.ajah.user.UserId)
+	 */
+	@Override
+	public String getUsername(final UserId userId) throws DataOperationException {
+		try {
+			return this.jdbcTemplate.queryForObject("SELECT username from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
+		} catch (final EmptyResultDataAccessException e) {
+			return null;
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}

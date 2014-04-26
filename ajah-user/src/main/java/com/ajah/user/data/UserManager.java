@@ -101,11 +101,15 @@ public class UserManager {
 	 *            The ID of the user to update.
 	 * @param username
 	 *            The new username.
+	 * @param type
+	 *            The type of change this is.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public void changeUsername(final UserId userId, final String username) throws DataOperationException {
+	public void changeUsername(final UserId userId, final String username, UserAuditType type) throws DataOperationException {
+		final String oldUsername = this.userDao.getUsername(userId);
 		this.userDao.updateUsername(userId, username);
+		this.userAuditManager.create(userId, UserAuditField.USERNAME, oldUsername, username, type);
 	}
 
 	/**
