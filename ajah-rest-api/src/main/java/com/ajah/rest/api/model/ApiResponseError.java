@@ -62,6 +62,10 @@ public class ApiResponseError {
 	 * An invalid email format.
 	 */
 	public static final int INVALID_EMAIL_FORMAT = 1006;
+	/**
+	 * General invalid parameter error.
+	 */
+	public static final int INVALID_PARAMETER = 1007;
 
 	/*
 	 * Data errors
