@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -45,16 +45,19 @@ public enum Config {
 
 	private Config() {
 		final String config = StringUtils.isBlank(System.getProperty("config")) ? "/ajah.properties" : System.getProperty("config");
-		final InputStream stream = getClass().getResourceAsStream(config);
-		if (stream != null) {
-			try {
-				this.properties.load(stream);
-				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Loaded properties from " + config);
-			} catch (final IOException e) {
-				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, e.getMessage(), e);
+		try (final InputStream stream = getClass().getResourceAsStream(config)) {
+			if (stream != null) {
+				try {
+					this.properties.load(stream);
+					Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Loaded properties from " + config);
+				} catch (final IOException e) {
+					Logger.getLogger(Config.class.getName()).log(Level.CONFIG, e.getMessage(), e);
+				}
+			} else {
+				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "No resource " + config + " found.");
 			}
-		} else {
-			Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "No resource " + config + " found.");
+		} catch (IOException e) {
+			getLog().log(Level.WARNING, e.getMessage(), e);
 		}
 		for (final Object propKey : this.properties.keySet()) {
 			final String sysProp = System.getProperty((String) propKey);
@@ -63,6 +66,15 @@ public enum Config {
 				this.properties.setProperty((String) propKey, sysProp);
 			}
 		}
+	}
+
+	/**
+	 * Returns the logger.
+	 * 
+	 * @return The logger.
+	 */
+	private static Logger getLog() {
+		return log;
 	}
 
 	/**
