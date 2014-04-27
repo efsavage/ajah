@@ -109,6 +109,9 @@ public class Tally<T> {
 
 	/**
 	 * Write a report with totals to the configured output.
+	 * 
+	 * @param threshold
+	 *            Only print totals of at least this value.
 	 */
 	public void report(final long threshold) {
 		this.out.println(Strings.HYPEN35);

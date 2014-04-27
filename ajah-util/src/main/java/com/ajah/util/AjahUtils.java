@@ -46,7 +46,7 @@ public class AjahUtils {
 	 * @throws RequiredParamterException
 	 *             If parameter is null, or possibly if it is empty.
 	 */
-	public static void requireParam(final Collection<?> parameter, final String name, final boolean emptyAllowed) throws IllegalArgumentException {
+	public static void requireParam(final Collection<?> parameter, final String name, final boolean emptyAllowed) throws RequiredParamterException {
 		if (parameter == null) {
 			throw new RequiredParamterException(name + " cannot be null");
 		}
@@ -89,7 +89,7 @@ public class AjahUtils {
 	 * @throws RequiredParamterException
 	 *             If parameter is a String and is empty
 	 */
-	public static void requireParam(final Object parameter, final String name) throws IllegalArgumentException {
+	public static void requireParam(final Object parameter, final String name) throws RequiredParamterException {
 		if (parameter == null) {
 			throw new RequiredParamterException(name + " cannot be null");
 		}

@@ -22,10 +22,13 @@ import java.io.FileReader;
 import java.util.Iterator;
 
 /**
+ * An {@link Iterable} extension of {@link BufferedReader}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@SuppressWarnings("resource")
 public class LineReader extends BufferedReader implements Iterable<Line> {
 
 	/**
