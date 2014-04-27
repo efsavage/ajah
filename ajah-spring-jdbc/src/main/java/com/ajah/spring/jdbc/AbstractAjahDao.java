@@ -996,11 +996,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * Find a list of entities by an arbitrary WHERE clause, allowing
 	 * multi-table queries as well as limit and order clauses.
 	 * 
+	 * @param tables
+	 *            The tables to include.
+	 * 
 	 * @param where
 	 *            The WHERE clause, required. Do not include the actual "WHERE"
 	 *            phrase as it is inserted automatically.
-	 * @param order
 	 * @param orderBy
+	 *            The ORDER BY clause, may be empty, should include the
+	 *            "ORDER BY" phrase.
+	 * @param order
+	 *            The ASC or DESC clause, may be empty. Will be ignored if
+	 *            orderBy param is empty.
+	 * @param limit
+	 *            The offset and number of rows to fetch.
 	 * @return The list of entities satisfying the WHERE, may be null.
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.

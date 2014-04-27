@@ -26,8 +26,12 @@ import com.ajah.util.ToStringable;
 import com.ajah.util.lang.NameValuePair;
 
 /**
+ * Base class for {@link Criteria}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @param <C>
+ *            The implemented type, for method chaining.
  * 
  */
 public abstract class AbstractCriteria<C> {
