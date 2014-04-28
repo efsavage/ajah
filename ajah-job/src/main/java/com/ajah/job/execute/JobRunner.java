@@ -29,6 +29,15 @@ import com.ajah.spring.jdbc.err.DataOperationException;
  */
 public interface JobRunner {
 
+	/**
+	 * Execute a run.
+	 * 
+	 * @param run
+	 *            The run to execute.
+	 * @throws DataOperationException
+	 *             If there was a problem loading the run or it's tasks. This
+	 *             should not be thrown by any of the task executions.
+	 */
 	void execute(final Run run) throws DataOperationException;
 
 }

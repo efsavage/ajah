@@ -21,9 +21,18 @@ import lombok.Data;
 
 import org.springframework.context.ApplicationContext;
 
+import com.ajah.job.Job;
 import com.ajah.job.run.Run;
 import com.ajah.util.Identifiable;
 
+/**
+ * A task is a definition of something that can be executed as part of a
+ * {@link Job}. It is assigned to the Job via a {@link JobTask}.
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
+ */
 @Data
 public class Task implements Identifiable<TaskId> {
 
@@ -34,11 +43,26 @@ public class Task implements Identifiable<TaskId> {
 	private TaskType type;
 	private Date created;
 
+	/**
+	 * Execute the task.
+	 * 
+	 * @param run
+	 *            The run this execution is part of.
+	 * @param jobTask
+	 *            The configuration within the current job.
+	 * @param applicationContext
+	 *            The application context for fetching beans from.
+	 * @throws TaskExecutionException
+	 *             If there are any errors that occur while executing the job.
+	 *             This includes all {@link RuntimeException}s.
+	 */
 	public void execute(final Run run, final JobTask jobTask, final ApplicationContext applicationContext) throws TaskExecutionException {
 		try {
 			final AjahTask ajahTask = (AjahTask) Class.forName(getClazz()).newInstance();
 			ajahTask.setApplicationContext(applicationContext);
 			ajahTask.execute(run, jobTask);
+		} catch (final RuntimeException e) {
+			throw new TaskConfigurationException(e);
 		} catch (final InstantiationException e) {
 			throw new TaskConfigurationException(e);
 		} catch (final IllegalAccessException e) {

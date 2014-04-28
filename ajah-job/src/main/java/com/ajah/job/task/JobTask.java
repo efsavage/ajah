@@ -22,9 +22,17 @@ import javax.persistence.Transient;
 
 import lombok.Data;
 
+import com.ajah.job.Job;
 import com.ajah.job.JobId;
 import com.ajah.util.Identifiable;
 
+/**
+ * A configurable association between a {@link Job} and a {@link Task}.
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
+ */
 @Data
 @Table(name = "job__task")
 public class JobTask implements Identifiable<JobTaskId> {

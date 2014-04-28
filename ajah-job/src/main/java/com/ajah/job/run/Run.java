@@ -31,6 +31,13 @@ import com.ajah.job.run.data.RunMetricManager;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.Identifiable;
 
+/**
+ * A Run is a unique execution of a {@link Job}.
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
+ */
 @Data
 @Slf4j
 public class Run implements Identifiable<RunId> {
@@ -55,6 +62,12 @@ public class Run implements Identifiable<RunId> {
 	@Transient
 	Job job;
 
+	/**
+	 * Create a {@link RunMessageType#DEBUG} {@link RunMessage}.
+	 * 
+	 * @param message
+	 *            The message to create.
+	 */
 	public void debug(final String message) {
 		try {
 			this.runMessageManager.create(this.job, getId(), message, null, RunMessageType.DEBUG, false);
@@ -63,14 +76,31 @@ public class Run implements Identifiable<RunId> {
 		}
 	}
 
-	public void error(final Throwable t) {
+	/**
+	 * Create a {@link RunMessageType#ERROR} {@link RunMessage}.
+	 * 
+	 * @param throwable
+	 *            The throwable to create the message from.
+	 */
+	public void error(final Throwable throwable) {
 		try {
-			this.runMessageManager.create(this.job, getId(), t.getMessage(), t, RunMessageType.ERROR, true);
+			this.runMessageManager.create(this.job, getId(), throwable.getMessage(), throwable, RunMessageType.ERROR, true);
 		} catch (final DataOperationException e) {
 			log.error(e.getMessage(), e);
 		}
 	}
 
+	/**
+	 * Create a {@link RunMetric}.
+	 * 
+	 * @param name
+	 *            The name of the metric.
+	 * @param value
+	 *            The new value of the metric.
+	 * @param external
+	 *            Should this metric be published externally?
+	 * 
+	 */
 	public void metric(final String name, final BigDecimal value, final boolean external) {
 		try {
 			this.runMetricManager.create(name, value, getId(), this.job, external);
