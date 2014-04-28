@@ -16,12 +16,17 @@
 
 package com.ajah.rest.api.model;
 
+import com.ajah.util.IdentifiableEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
+ * A simple bean to represent an {@link IdentifiableEnum} in transit.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @param <K>
+ *            The type of the unique key.
  * 
  */
 @JsonInclude(Include.NON_NULL)

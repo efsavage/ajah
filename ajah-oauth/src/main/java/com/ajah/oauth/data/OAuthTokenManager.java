@@ -164,6 +164,8 @@ public class OAuthTokenManager {
 	 * 
 	 * @param user
 	 *            The user to verify.
+	 * @param provider
+	 *            The provider to verify with.
 	 * @param oauthToken
 	 *            The token to verify.
 	 * @param oauthVerifier

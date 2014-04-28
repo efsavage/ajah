@@ -59,6 +59,8 @@ public class RomeUtils {
 	 * 
 	 * @param syndFeed
 	 *            The feed to create entries for.
+	 * @param feed
+	 *            The feed to create entries in.
 	 * @return The list of Entries, may be empty, will not be null.
 	 */
 	private static List<Entry> createEntries(final SyndFeed syndFeed, final Feed feed) {
@@ -80,6 +82,8 @@ public class RomeUtils {
 	 * 
 	 * @param syndEntry
 	 *            The entry to convert.
+	 * @param feed
+	 *            The feed to create the entry in.
 	 * @return The converted entry. Will not be null.
 	 */
 	private static Entry createEntry(final SyndEntry syndEntry, final Feed feed) {

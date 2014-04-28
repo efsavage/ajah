@@ -61,6 +61,8 @@ public class FlatFileRow {
 	 *            The columns in the row.
 	 * @param reader
 	 *            The reader that created this row.
+	 * @param lineNumber
+	 *            The line number this row is from.
 	 */
 	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileReader reader, final int lineNumber) {
 		this.columns = columns;
@@ -75,6 +77,8 @@ public class FlatFileRow {
 	 *            The columns in the row.
 	 * @param writer
 	 *            The writer that created this row.
+	 * @param lineNumber
+	 *            The line number this row is from.
 	 */
 	public FlatFileRow(final Map<String, FlatFileColumn> columns, final FlatFileWriter writer, final int lineNumber) {
 		this.columns = columns;

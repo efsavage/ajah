@@ -58,6 +58,8 @@ public class LoremIpsum {
 	/**
 	 * Appends a paragraph of 3-8 sentences.
 	 * 
+	 * @param builder
+	 *            The builder to add to.
 	 * @return The builder supplied as a parameter, with an appended paragraph
 	 *         of 3-8 sentences.
 	 */
