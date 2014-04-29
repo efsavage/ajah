@@ -15,10 +15,16 @@
  */
 package com.ajah.swagger;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,12 +36,16 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ajah.lang.ListMap;
+import com.ajah.lang.MapMap;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
+ * Scans a class for Swagger annotations.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
@@ -49,6 +59,7 @@ public class SwaggerScanner {
 	private String basePackage;
 	private ClassPathScanningCandidateComponentProvider scanner;
 	private ListMap<String, SwaggerApi> apis = new ListMap<>();
+	private MapMap<String, String, SwaggerModel> models = new MapMap<>();
 	List<SwaggerApiShort> apiShorts = new ArrayList<>();
 
 	/**
@@ -57,6 +68,102 @@ public class SwaggerScanner {
 	public SwaggerScanner() {
 		this.scanner = new ClassPathScanningCandidateComponentProvider(false);
 		this.scanner.addIncludeFilter(new AnnotationTypeFilter(Api.class));
+	}
+
+	private void addModels(final SwaggerApi api, final Class<?> type) {
+		log.fine("Adding model: " + type.getName());
+		final SwaggerModel typeModel = new SwaggerModel(type.getSimpleName());
+		if (this.models.get(api.path, typeModel.getId()) != null) {
+			return;
+		}
+		this.models.put(api.path, typeModel.getId(), typeModel);
+		log.fine("Storing models under: " + api.path);
+		final Field[] fields = type.getFields();
+		log.fine(fields.length + " fields");
+		for (final Field field : fields) {
+			log.fine("Field: " + field.getName());
+			log.fine("\tAccessible: " + field.isAccessible());
+			log.fine("\tSynthetic: " + field.isSynthetic());
+			log.fine("\tModifiers: " + field.getModifiers());
+			log.fine("\tPublic: " + Modifier.isPublic(field.getModifiers()));
+			if (Modifier.isPublic(field.getModifiers())) {
+				final SwaggerModelProperty fieldProp = new SwaggerModelProperty(convert(field.getType()), false);
+				// lookupResponseProp.items = new SwaggerItemsRef("League");
+				typeModel.getProperties().put(field.getName(), fieldProp);
+				// api.models.put(lookupResponseModel.getId(),
+				// lookupResponseModel);
+				if (!isBasic(field.getType())) {
+					addModels(api, field.getType());
+				}
+			}
+		}
+	}
+
+	private String convert(final Class<?> type) {
+		switch (type.getSimpleName()) {
+		case "String":
+			return "string";
+		case "BigDecimal":
+			return "integer";
+		case "Date":
+			return "integer";
+		case "double":
+			return "double";
+		case "boolean":
+			return "boolean";
+		case "int":
+			return "integer";
+		default:
+			return type.getSimpleName();
+		}
+	}
+
+	/**
+	 * Fetches an api by its path.
+	 * 
+	 * @param path
+	 *            The path to this API.
+	 * @return The API, or null if none match.
+	 */
+	public List<SwaggerApi> getApi(final String path) {
+		if (this.apis.size() == 0) {
+			scanForApi();
+		}
+		return this.apis.get(path);
+	}
+
+	/**
+	 * Fetches models for an api by its path.
+	 * 
+	 * @param path
+	 *            The path to this API.
+	 * @return The API, or null if none match.
+	 */
+	public Map<String, SwaggerModel> getModels(final String path) {
+		log.fine("Fetching models for " + path);
+		if (this.models.size() == 0) {
+			scanForApi();
+		}
+		return this.models.get(path);
+	}
+
+	private boolean isBasic(final Class<?> type) {
+		switch (type.getSimpleName()) {
+		case "String":
+			return true;
+		case "BigDecimal":
+			return true;
+		case "Date":
+			return true;
+		case "double":
+			return true;
+		case "boolean":
+			return true;
+		case "int":
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	/**
@@ -68,51 +175,69 @@ public class SwaggerScanner {
 		if (this.scanned) {
 			return this.apiShorts;
 		}
-		for (BeanDefinition bd : this.scanner.findCandidateComponents(this.basePackage)) {
+		for (final BeanDefinition bd : this.scanner.findCandidateComponents(this.basePackage)) {
 			Api annotation;
 			Class<?> clazz;
 			try {
 				clazz = Class.forName(bd.getBeanClassName());
 				annotation = AnnotationUtils.findAnnotation(clazz, Api.class);
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				// This really shouldn't happen since we just got the class
 				// name.
 				log.log(Level.SEVERE, e.getMessage(), e);
 				continue;
 			}
-			String path = annotation.basePath();
-			String description = annotation.description();
-			SwaggerApiShort apiShort = new SwaggerApiShort("/" + path, description);
+			final String path = annotation.basePath();
+			final String description = annotation.description();
+			final SwaggerApiShort apiShort = new SwaggerApiShort("/" + path, description);
 			this.apiShorts.add(apiShort);
 
-			for (Method method : clazz.getMethods()) {
-				ApiOperation apiOperation = AnnotationUtils.findAnnotation(method, ApiOperation.class);
-				RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+			for (final Method method : clazz.getMethods()) {
+				final ApiOperation apiOperation = AnnotationUtils.findAnnotation(method, ApiOperation.class);
+				if (apiOperation == null) {
+					continue;
+				}
+				final RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 				if (requestMapping == null) {
 					log.warning("Found @ApiOperation on " + clazz.getName() + "." + method.getName() + " but no @RequestMapping");
 					continue;
 				}
-				// TODO Handle multiple request mappings?
-				String apiPath = requestMapping.value()[0];
-				if (apiPath.startsWith(path)) {
-					apiPath = apiPath.substring(path.length());
-				} else {
-					log.warning("API Path " + apiPath + " does not start with base path " + path);
+				RequestMethod[] requestMethods = requestMapping.method();
+				if (requestMethods == null || requestMethods.length == 0) {
+					requestMethods = new RequestMethod[] { RequestMethod.GET, RequestMethod.POST };
 				}
-				SwaggerApi api = new SwaggerApi(apiPath, description);
-				this.apis.putValue(path, api);
-				log.fine("Found API " + path + " in class" + bd.getBeanClassName());
+				for (final RequestMethod requestMethod : requestMapping.method()) {
+					// TODO Handle multiple request mappings?
+					String apiPath = requestMapping.value()[0];
+					if (apiPath.startsWith(path)) {
+						apiPath = apiPath.substring(path.length());
+					} else {
+						log.warning("API Path " + apiPath + " does not start with base path " + path);
+					}
+					final SwaggerApi api = new SwaggerApi(apiPath, description);
+					this.apis.putValue(path, api);
+					log.fine("Found API " + path + " in class" + bd.getBeanClassName());
 
-				if (apiOperation == null) {
-					continue;
+					final SwaggerOperation operation = new SwaggerOperation();
+					operation.method = requestMethod == null ? "GET" : requestMethod.name();
+					operation.responseClass = method.getReturnType().getSimpleName();
+					operation.notes = apiOperation.notes();
+					operation.nickname = apiOperation.nickname();
+					operation.summary = apiOperation.value();
+
+					operation.parameters = getParameters(method);
+
+					api.operations.add(operation);
+
+					// SwaggerModelProperty lookupResponseProp = new
+					// SwaggerModelProperty("array", false);
+					// lookupResponseProp.items = new SwaggerItemsRef("League");
+					// lookupResponseModel.getProperties().put("leagues",
+					// lookupResponseProp);
+
+					addModels(api, method.getReturnType());
+
 				}
-				SwaggerOperation operation = new SwaggerOperation();
-				operation.method = requestMapping.method() == null ? "GET" : requestMapping.method()[0].name();
-				operation.responseClass = method.getReturnType().getName();
-				operation.notes = apiOperation.notes();
-				operation.nickname = apiOperation.nickname();
-				operation.summary = apiOperation.value();
-				api.operations.add(operation);
 			}
 
 		}
@@ -120,18 +245,18 @@ public class SwaggerScanner {
 		return this.apiShorts;
 	}
 
-	/**
-	 * Fetches an api by its path.
-	 * 
-	 * @param path
-	 *            The path to this API.
-	 * @return The API, or null if none match.
-	 */
-	public List<SwaggerApi> getApi(String path) {
-		if (this.apis.size() == 0) {
-			scanForApi();
+	private List<SwaggerParameter> getParameters(Method method) {
+		List<SwaggerParameter> swaggerParameters = new ArrayList<>();
+		Class<?>[] params = method.getParameterTypes();
+		int index = 1;
+		for (Class<?> param : params) {
+			if (HttpServletRequest.class.isAssignableFrom(param) || HttpServletResponse.class.isAssignableFrom(param)) {
+				continue;
+			}
+			SwaggerParameter swaggerParameter = new SwaggerParameter(param.getSimpleName() + index++, param.getSimpleName(), "?");
+			swaggerParameters.add(swaggerParameter);
 		}
-		return this.apis.get(path);
+		return swaggerParameters;
 	}
 
 }
