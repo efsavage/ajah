@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,24 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.signup;
+package com.ajah.rest.api.error;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a username exists and a new user cannot be created with it.
+ * Thrown when a requested username already exists, most likely during a signup
+ * process.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class UsernameExistsException extends Exception {
 
+	private String username;
+
 	/**
-	 * Constructor with the attempted username.
+	 * Public constructor.
 	 * 
 	 * @param username
-	 *            The username that was used.
+	 *            The username requested.
+	 * @param message
+	 *            The message explaining why it was invalid.
 	 */
-	public UsernameExistsException(final String username) {
-		super("USERNAME: " + username);
+	public UsernameExistsException(final String username, final String message) {
+		super(message);
+		this.username = username;
 	}
 
 }

@@ -66,6 +66,10 @@ public class ApiResponseError {
 	 * General invalid parameter error.
 	 */
 	public static final int INVALID_PARAMETER = 1007;
+	/**
+	 * Resource is missing (404).
+	 */
+	public static final int RESOURCE_MISSING = 1008;
 
 	/*
 	 * Data errors
@@ -83,6 +87,10 @@ public class ApiResponseError {
 	 * The requested email is already in use.
 	 */
 	public static final int EMAIL_EXISTS = 2201;
+	/**
+	 * The user is not old enough to perform the operation.
+	 */
+	public static final int AGE_REQUIREMENT_NOT_MET = 2202;
 
 	/*
 	 * Internal errors
