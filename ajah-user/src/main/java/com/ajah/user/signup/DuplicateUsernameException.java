@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,31 +15,23 @@
  */
 package com.ajah.user.signup;
 
-import java.util.Date;
-
-import lombok.Data;
-
-import com.ajah.user.User;
-import com.ajah.user.UserType;
-import com.ajah.user.info.UserInfo;
-import com.ajah.user.info.UserSourceId;
-
 /**
- * A signUp is a bean used during a registration attempt by a user.
+ * Thrown on an attempt to create a user with a non-unique username.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Data
-public class SignUp {
+public class DuplicateUsernameException extends Exception {
 
-	protected String ip;
-	protected Date created;
-	protected SignUpStatus status;
-	protected UserSourceId source;
-	protected UserType type;
-	protected String username;
-	protected User user;
-	protected UserInfo userInfo;
+	/**
+	 * Username constructor.
+	 * 
+	 * @param username
+	 *            The username attempted.
+	 */
+	public DuplicateUsernameException(String username) {
+		super(username);
+	}
 
 }

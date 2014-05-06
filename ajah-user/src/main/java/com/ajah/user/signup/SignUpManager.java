@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -24,11 +24,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.crypto.Password;
+import com.ajah.geo.iso.ISOCountry;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserType;
 import com.ajah.user.data.UserManager;
+import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserSourceId;
+import com.ajah.util.data.Month;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -61,11 +64,11 @@ public class SignUpManager {
 	 * @return SignUp record, will never return null.
 	 * @throws DataOperationException
 	 *             If the queries could not be completed.
-	 * @throws UsernameExistsException
+	 * @throws DuplicateUsernameException
 	 *             If a user with that username already exists.
 	 */
 	public SignUp signUp(final EmailAddress emailAddress, final Password password, final String ip, final UserSourceId source, final UserType type) throws DataOperationException,
-			UsernameExistsException {
+			DuplicateUsernameException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
 		signUp.setIp(ip);
@@ -75,11 +78,41 @@ public class SignUpManager {
 		// TODO signup should be saved
 		if (this.userManager.usernameExists(emailAddress.toString())) {
 			log.fine(emailAddress.toString() + " is in use");
-			throw new UsernameExistsException(emailAddress.toString());
+			throw new DuplicateUsernameException(emailAddress.toString());
 		}
 
 		final User user = this.userManager.createUser(emailAddress.toString(), emailAddress, password, ip, source, type);
 		log.info(user.getUsername() + " created!");
+		signUp.setUser(user);
+		return signUp;
+	}
+
+	public SignUp signUp(String username, Password password, EmailAddress emailAddress, String firstName, String lastName, Integer birthDay, Month birthMonth, Integer birthYear, ISOCountry country,
+			String ip, UserSourceId source, UserType type) throws DataOperationException, DuplicateUsernameException {
+		log.fine("SignUp attempt for: " + emailAddress);
+		final SignUp signUp = new SignUp();
+		signUp.setIp(ip);
+		signUp.setCreated(new Date());
+		signUp.setSource(source);
+		signUp.setStatus(SignUpStatus.SUCCESS);
+		// TODO signup should be saved
+		if (this.userManager.usernameExists(emailAddress.toString())) {
+			log.fine(emailAddress.toString() + " is in use");
+			throw new DuplicateUsernameException(emailAddress.toString());
+		}
+
+		final User user = this.userManager.createUser(username, emailAddress, password, ip, source, type);
+		final UserInfo userInfo = this.userManager.getUserInfo(user.getId());
+		userInfo.setFirstName(firstName);
+		userInfo.setLastName(lastName);
+		userInfo.setBirthDay(birthDay);
+		userInfo.setBirthMonth(birthMonth);
+		userInfo.setBirthYear(birthYear);
+		userInfo.setCurrentCountry(country);
+		this.userManager.save(userInfo);
+		log.info(user.getUsername() + " created!");
+		signUp.setUser(user);
+		signUp.setUserInfo(userInfo);
 		return signUp;
 	}
 
