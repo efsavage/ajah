@@ -35,4 +35,11 @@ public class SearchList<T> extends ArrayList<T> {
 	@Setter
 	private long totalHits;
 
+	/**
+	 * Measures the time spent executing the query, including any JSON parsing.
+	 */
+	@Getter
+	@Setter
+	private long time;
+
 }

@@ -74,6 +74,11 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		this.client.close();
 	}
 
+	/**
+	 * Creates the index for this type.
+	 * 
+	 * @return The acknowledgment of the request.
+	 */
 	public boolean createIndex() {
 		final CreateIndexRequest createIndexRequest = new CreateIndexRequest(this.index);
 		final CreateIndexResponse createResponse = this.client.admin().indices().create(createIndexRequest).actionGet();
@@ -128,6 +133,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	@Override
 	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException {
 		final SearchList<C> results = new SearchList<>();
+		long start = System.currentTimeMillis();
 		try {
 			final SearchRequestBuilder requestBuilder = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setFrom(page * count).setSize(count)
 					.setQuery(queryBuilder);
@@ -153,6 +159,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		} catch (final IndexMissingException e) {
 			log.warning(e.getMessage());
 		}
+		results.setTime(System.currentTimeMillis() - start);
 		return results;
 	}
 
@@ -172,6 +179,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	@Override
 	public SearchList<C> search(final String query) throws IOException {
 		final SearchList<C> results = new SearchList<>();
+		long start = System.currentTimeMillis();
 		try {
 			final SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.matchQuery("_all", query))
 					.execute().actionGet();
@@ -183,6 +191,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		} catch (final IndexMissingException e) {
 			log.warning(e.getMessage());
 		}
+		results.setTime(System.currentTimeMillis() - start);
 		return results;
 	}
 
