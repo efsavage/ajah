@@ -28,14 +28,20 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PermissionDeniedException extends Exception {
 
-	private final String resourceName;
-
 	/**
 	 * @see Exception#Exception()
 	 */
 	public PermissionDeniedException() {
 		super();
-		this.resourceName = null;
+	}
+
+	/**
+	 * @see Exception#Exception(String)
+	 * @param message
+	 *            The error message
+	 */
+	public PermissionDeniedException(String message) {
+		super(message);
 	}
 
 }
