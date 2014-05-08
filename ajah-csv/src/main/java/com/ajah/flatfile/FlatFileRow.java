@@ -105,7 +105,7 @@ public class FlatFileRow {
 				if (this.reader == null) {
 					return this.writer.isTrimContents() ? value.trim() : value;
 				}
-				return this.reader.isTrimContents() ? value.trim() : value;
+				return value != null && this.reader.isTrimContents() ? value.trim() : value;
 			}
 			if (!StringUtils.isBlank(column.getDefaultValue())) {
 				return column.getDefaultValue();
