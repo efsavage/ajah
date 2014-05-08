@@ -198,4 +198,9 @@ public class UserSettingManager {
 		save(userSetting);
 		return userSetting;
 	}
+
+	public void set(UserId userId, String name, boolean value) throws DataOperationException {
+		set(userId, name, String.valueOf(value));
+	}
+
 }

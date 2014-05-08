@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -31,5 +31,18 @@ public class UserSetting implements Identifiable<UserSettingId> {
 	private UserSettingStatus status;
 	private UserSettingType type;
 	private Date created;
+
+	/**
+	 * Returns a boolean value based on {@link #getValue()}.
+	 * 
+	 * @param defaultValue
+	 * @return The value as a boolean, or the defaultValue.
+	 */
+	public boolean getBoolean(boolean defaultValue) {
+		if ("true".equals(this.value)) {
+			return true;
+		}
+		return defaultValue;
+	}
 
 }
