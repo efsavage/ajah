@@ -314,6 +314,7 @@
 		<module>../ajah-syndicate</module>
 		<module>../ajah-thread</module>
 		<module>../ajah-user</module>
+		<module>../ajah-user-social</module>
 		<module>../ajah-amazon-s3</module>
 		<module>../ajah-achievement</module>
 		<module>../ajah-rest-api</module>
