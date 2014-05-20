@@ -72,7 +72,7 @@ public class CacheEntryTest {
 	 */
 	@Test
 	public void testCacheHashCode() {
-		Assert.assertTrue(this.cacheEntry.hashCode() > 0);
+		Assert.assertTrue(this.cacheEntry.hashCode() != 0);
 	}
 
 	/**
