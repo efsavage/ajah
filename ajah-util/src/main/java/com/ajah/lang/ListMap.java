@@ -96,4 +96,17 @@ public class ListMap<K, V> extends HashMap<K, List<V>> {
 		list.add(value);
 	}
 
+	/**
+	 * Returns the total number of values across all keys.
+	 * 
+	 * @return The total number of values across all keys.
+	 */
+	public int valuesSize() {
+		int size = 0;
+		for (K key : keySet()) {
+			size += get(key) == null ? 0 : get(key).size();
+		}
+		return size;
+	}
+
 }
