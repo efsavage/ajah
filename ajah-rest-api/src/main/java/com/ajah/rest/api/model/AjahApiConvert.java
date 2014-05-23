@@ -13,18 +13,29 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 package com.ajah.rest.api.model;
 
+import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
 import com.ajah.util.IdentifiableEnum;
 
 /**
+ * Converts any enum implementing {@link IdentifiableEnum} to an
+ * {@link IdentifiableEnumRelay}.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class AjahApiConvert {
 
+	/**
+	 * Converts any enum implementing {@link IdentifiableEnum} to an
+	 * {@link IdentifiableEnumRelay}.
+	 * 
+	 * @param identifiableEnum
+	 *            The enum to convert. If null will return null.
+	 * @return The converted enum, or null.
+	 */
 	public static <K extends Comparable<K>> IdentifiableEnumRelay<K> convert(final IdentifiableEnum<K> identifiableEnum) {
 		if (identifiableEnum == null) {
 			return null;

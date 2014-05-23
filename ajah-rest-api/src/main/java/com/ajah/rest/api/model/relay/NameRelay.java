@@ -15,24 +15,19 @@
  */
 package com.ajah.rest.api.model.relay;
 
-import com.ajah.util.IdentifiableEnum;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 /**
- * A simple bean to represent an {@link IdentifiableEnum} in transit.
+ * A name format with fields broken out.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * @param <K>
- *            The type of the unique key.
  * 
  */
-@JsonInclude(Include.NON_NULL)
-public class IdentifiableEnumRelay<K> {
+public class NameRelay {
 
-	public K id;
-	public String code;
-	public String name;
+	public String first;
+	public String middle;
+	public String last;
+	public String suffix;
+	public String display;
 
 }

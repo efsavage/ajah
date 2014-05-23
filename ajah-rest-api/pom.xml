@@ -14,9 +14,16 @@
 	</parent>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-spring-mvc</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-geo</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
