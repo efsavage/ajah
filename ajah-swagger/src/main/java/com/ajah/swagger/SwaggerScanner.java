@@ -40,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ajah.lang.ListMap;
 import com.ajah.lang.MapMap;
+import com.ajah.util.ToStringable;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -61,6 +64,7 @@ public class SwaggerScanner {
 	private ListMap<String, SwaggerApi> apis = new ListMap<>();
 	private MapMap<String, String, SwaggerModel> models = new MapMap<>();
 	List<SwaggerApiShort> apiShorts = new ArrayList<>();
+	Paranamer paranamer = new CachingParanamer();
 
 	/**
 	 * Constructs a scanner looking for {@link Api} annotated classes.
@@ -92,14 +96,19 @@ public class SwaggerScanner {
 				typeModel.getProperties().put(field.getName(), fieldProp);
 				// api.models.put(lookupResponseModel.getId(),
 				// lookupResponseModel);
-				if (!isBasic(field.getType())) {
+				if (field.getType().equals("array")) {
+					fieldProp.items = new SwaggerItemsRef("stuff");
+				} else if (!isBasic(field.getType())) {
 					addModels(api, field.getType());
 				}
 			}
 		}
 	}
 
-	private String convert(final Class<?> type) {
+	private static String convert(final Class<?> type) {
+		if (ToStringable.class.isAssignableFrom(type)) {
+			return "string";
+		}
 		switch (type.getSimpleName()) {
 		case "String":
 			return "string";
@@ -113,6 +122,8 @@ public class SwaggerScanner {
 			return "boolean";
 		case "int":
 			return "integer";
+		case "List":
+			return "array";
 		default:
 			return type.getSimpleName();
 		}
@@ -147,7 +158,7 @@ public class SwaggerScanner {
 		return this.models.get(path);
 	}
 
-	private boolean isBasic(final Class<?> type) {
+	private static boolean isBasic(final Class<?> type) {
 		switch (type.getSimpleName()) {
 		case "String":
 			return true;
@@ -236,6 +247,7 @@ public class SwaggerScanner {
 					// lookupResponseProp);
 
 					addModels(api, method.getReturnType());
+					addErrors(api, method.getExceptionTypes());
 
 				}
 			}
@@ -245,15 +257,65 @@ public class SwaggerScanner {
 		return this.apiShorts;
 	}
 
+	/**
+	 * Adds errors based on thrown exceptions.
+	 * 
+	 * @param api
+	 *            The API we're documenting.
+	 * @param exceptionTypes
+	 *            The exceptions that are declared.
+	 */
+	private static void addErrors(SwaggerApi api, Class<?>[] exceptionTypes) {
+		if (exceptionTypes == null || exceptionTypes.length == 0) {
+			return;
+		}
+		for (Class<?> exceptionType : exceptionTypes) {
+			log.fine("Adding exception: " + exceptionType.getName());
+			api.description += "<br />Throws " + exceptionType.getSimpleName();
+		}
+
+		// final SwaggerModel typeModel = new
+		// SwaggerModel(type.getSimpleName());
+		// if (this.models.get(api.path, typeModel.getId()) != null) {
+		// return;
+		// }
+		// this.models.put(api.path, typeModel.getId(), typeModel);
+		// log.fine("Storing models under: " + api.path);
+		// final Field[] fields = type.getFields();
+		// log.fine(fields.length + " fields");
+		// for (final Field field : fields) {
+		// log.fine("Field: " + field.getName());
+		// log.fine("\tAccessible: " + field.isAccessible());
+		// log.fine("\tSynthetic: " + field.isSynthetic());
+		// log.fine("\tModifiers: " + field.getModifiers());
+		// log.fine("\tPublic: " + Modifier.isPublic(field.getModifiers()));
+		// if (Modifier.isPublic(field.getModifiers())) {
+		// final SwaggerModelProperty fieldProp = new
+		// SwaggerModelProperty(convert(field.getType()), false);
+		// // lookupResponseProp.items = new SwaggerItemsRef("League");
+		// typeModel.getProperties().put(field.getName(), fieldProp);
+		// // api.models.put(lookupResponseModel.getId(),
+		// // lookupResponseModel);
+		// if (!isBasic(field.getType())) {
+		// addModels(api, field.getType());
+		// }
+		// }
+		// }
+	}
+
 	private List<SwaggerParameter> getParameters(Method method) {
 		List<SwaggerParameter> swaggerParameters = new ArrayList<>();
 		Class<?>[] params = method.getParameterTypes();
-		int index = 1;
-		for (Class<?> param : params) {
-			if (HttpServletRequest.class.isAssignableFrom(param) || HttpServletResponse.class.isAssignableFrom(param)) {
+		String[] parameterNames = this.paranamer.lookupParameterNames(method);
+		if (parameterNames.length != params.length) {
+			parameterNames = null;
+		}
+		int index = 0;
+		for (int i = 0; i < params.length; i++) {
+			if (HttpServletRequest.class.isAssignableFrom(params[i]) || HttpServletResponse.class.isAssignableFrom(params[i])) {
 				continue;
 			}
-			SwaggerParameter swaggerParameter = new SwaggerParameter(param.getSimpleName() + index++, param.getSimpleName(), "?");
+			SwaggerParameter swaggerParameter = new SwaggerParameter(parameterNames == null ? (params[i].getSimpleName() + "(" + index++ + ")") : parameterNames[i], convert(params[i]), "?");
 			swaggerParameters.add(swaggerParameter);
 		}
 		return swaggerParameters;
