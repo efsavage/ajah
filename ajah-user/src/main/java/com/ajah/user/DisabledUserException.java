@@ -19,14 +19,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a user is {@link UserStatus#INACTIVE}.
+ * Thrown when a user is {@link UserStatus#DISABLED}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class InactiveUserException extends Exception {
+public class DisabledUserException extends Exception {
 
 	private UserId userId;
 	private String username;
@@ -37,7 +37,7 @@ public class InactiveUserException extends Exception {
 	 * @param username
 	 *            User that failed to authenticate.
 	 */
-	public InactiveUserException(final UserId userId, final String username) {
+	public DisabledUserException(final UserId userId, final String username) {
 		super(username);
 		this.userId = userId;
 	}

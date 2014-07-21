@@ -70,6 +70,18 @@ public class ApiResponseError {
 	 * Resource is missing (404).
 	 */
 	public static final int RESOURCE_MISSING = 1008;
+	/**
+	 * User is inactive.
+	 */
+	public static final int INACTIVE_USER = 1009;
+	/**
+	 * User is blocked (temporarily).
+	 */
+	public static final int BLOCKED_USER = 1010;
+	/**
+	 * User is disabled (permanently).
+	 */
+	public static final int DISABLED_USER = 1011;
 
 	/*
 	 * Data errors
