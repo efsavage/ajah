@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,35 +13,36 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.rest.api.error;
+package com.ajah.rest.api.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a required parameter was not acceptable. If the parameter was
- * missing, use {@link RequiredRequestParameterException}.
+ * Thrown when a request was aborted due to being rate-limited.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InvalidParameterException extends Exception {
+@JsonInclude(Include.NON_NULL)
+public class RequestThrottledResponse extends SimpleApiResponse {
 
-	private String name;
+	private final long delay;
 
 	/**
 	 * Public constructor.
 	 * 
-	 * @param name
-	 *            the Name of the missing parameter.
-	 * @param message
-	 *            The message explaining why it was invalid.
+	 * @param delay
+	 *            The delay until this type of request won't be throttled.
 	 */
-	public InvalidParameterException(final String name, final String message) {
-		super(message);
-		this.name = name;
+	public RequestThrottledResponse(long delay) {
+		this.delay = delay;
 	}
 
 }

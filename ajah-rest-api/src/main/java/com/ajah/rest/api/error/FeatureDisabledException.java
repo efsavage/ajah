@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,29 +19,30 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a required parameter was not acceptable. If the parameter was
- * missing, use {@link RequiredRequestParameterException}.
+ * Thrown when a feature that is being access has been disabled.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InvalidParameterException extends Exception {
+public class FeatureDisabledException extends Exception {
 
 	private String name;
+	private boolean temporary;
 
 	/**
 	 * Public constructor.
 	 * 
 	 * @param name
 	 *            the Name of the missing parameter.
-	 * @param message
-	 *            The message explaining why it was invalid.
+	 * @param temporary
+	 *            Is this only temporarily disabled?
 	 */
-	public InvalidParameterException(final String name, final String message) {
-		super(message);
+	public FeatureDisabledException(final String name, final boolean temporary) {
+		super("Parameter '" + name + "' is " + (temporary ? "temporarily unavailable." : "no longer available."));
 		this.name = name;
+		this.temporary = temporary;
 	}
 
 }

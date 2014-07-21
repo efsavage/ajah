@@ -44,4 +44,15 @@ public class UsernameExistsException extends Exception {
 		this.username = username;
 	}
 
+	/**
+	 * Public constructor.
+	 * 
+	 * @param username
+	 *            The username requested.
+	 */
+	public UsernameExistsException(String username) {
+		super("Username '" + username + "' exists");
+		this.username = username;
+	}
+
 }

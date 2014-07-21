@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,29 +19,34 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a required parameter was not acceptable. If the parameter was
- * missing, use {@link RequiredRequestParameterException}.
+ * Thrown when a requested action is not permitted in the user's location.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InvalidParameterException extends Exception {
+public class GeographicRestrictionException extends Exception {
 
-	private String name;
+	private boolean current;
+	private boolean home;
 
 	/**
 	 * Public constructor.
 	 * 
-	 * @param name
-	 *            the Name of the missing parameter.
+	 * @param current
+	 *            Is the restriction based on the user's current location?
+	 * @param home
+	 *            Is the restriction based on the user/account's home
+	 *            location/residence?
+	 * 
 	 * @param message
-	 *            The message explaining why it was invalid.
+	 *            The message explaining the error.
 	 */
-	public InvalidParameterException(final String name, final String message) {
+	public GeographicRestrictionException(final boolean current, final boolean home, final String message) {
 		super(message);
-		this.name = name;
+		this.current = current;
+		this.home = home;
 	}
 
 }
