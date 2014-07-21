@@ -15,6 +15,7 @@
  */
 package com.ajah.util.compare;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -401,6 +402,27 @@ public class CompareUtils {
 			return retVal;
 		}
 		if (retVal != 0) {
+			return retVal;
+		}
+		return first.compareTo(second);
+	}
+
+	/**
+	 * Compares two {@link BigDecimal}s, allowing for nulls.
+	 * 
+	 * @param first
+	 *            The first number, may be null.
+	 * @param second
+	 *            The second number, may be null.
+	 * @param nullsEqual
+	 *            Should two null objects be treated as equal (true) or throw an
+	 *            exception (false)?
+	 * @return The comparison of the two numbers or 0 if both are null and
+	 *         nullsEqual is true.
+	 */
+	public static int compare(BigDecimal first, BigDecimal second, final boolean nullsEqual) {
+		final int retVal = compareNulls(first, second, nullsEqual);
+		if (retVal != 0 || (nullsEqual && first == null)) {
 			return retVal;
 		}
 		return first.compareTo(second);
