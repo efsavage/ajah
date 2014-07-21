@@ -24,84 +24,83 @@ import com.ajah.util.IdentifiableEnum;
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-public enum Month implements IdentifiableEnum<Integer> {
+public enum Month implements IdentifiableEnum<String> {
 	/**
 	 * January
 	 */
-	JANUARY(1, "January", "Jan"),
+	JANUARY("1", 1, "January", "Jan"),
 	/**
 	 * February
 	 */
-	FEBRUARY(2, "February", "Feb"),
+	FEBRUARY("2", 2, "February", "Feb"),
 	/**
 	 * March
 	 */
-	MARCH(3, "March", "Mar"),
+	MARCH("3", 3, "March", "Mar"),
 	/**
 	 * April
 	 */
-	APRIL(4, "April", "Apr"),
+	APRIL("4", 4, "April", "Apr"),
 	/**
 	 * May
 	 */
-	MAY(5, "May", "May"),
+	MAY("5", 5, "May", "May"),
 	/**
 	 * June
 	 */
-	JUNE(6, "June", "Jun"),
+	JUNE("6", 6, "June", "Jun"),
 	/**
 	 * July
 	 */
-	JULY(7, "July", "Jul"),
+	JULY("7", 7, "July", "Jul"),
 	/**
 	 * August
 	 */
-	AUGUST(8, "August", "Aug"),
+	AUGUST("8", 8, "August", "Aug"),
 	/**
 	 * September
 	 */
-	SEPTEMBER(9, "September", "Sep"),
+	SEPTEMBER("9", 9, "September", "Sep"),
 	/**
 	 * October
 	 */
-	OCTOBER(10, "October", "Oct"),
+	OCTOBER("10", 10, "October", "Oct"),
 	/**
 	 * November
 	 */
-	NOVEMBER(11, "November", "Nov"),
+	NOVEMBER("11", 11, "November", "Nov"),
 	/**
 	 * December
 	 */
-	DECEMBER(12, "December", "Dec");
+	DECEMBER("12", 12, "December", "Dec");
 
 	/**
 	 * Returns the Month that corresponds to the supplied ID.
 	 * 
-	 * @param id
+	 * @param _intId
 	 *            ID/ordinal value of the month.
 	 * @return Month if found, otherwise null.
 	 */
-	public static Month get(final int id) {
-		if (id < 1 || id > 12) {
+	public static Month get(final int _intId) {
+		if (_intId < 1 || _intId > 12) {
 			return null;
 		}
-		Integer intId = Integer.valueOf(id);
 		for (final Month month : values()) {
-			if (month.id == intId) {
+			if (month.intId == _intId) {
 				return month;
 			}
 		}
 		return null;
 	}
 
-	private final Integer id;
-
+	private final String id;
+	private final int intId;
 	private final String name;
-
 	private final String shortName;
 
-	private Month(final int id, final String name, final String shortName) {
-		this.id = new Integer(id);
+	private Month(final String id, final int intId, final String name, final String shortName) {
+		this.id = id;
+		this.intId = intId;
 		this.name = name;
 		this.shortName = shortName;
 	}
@@ -121,7 +120,7 @@ public enum Month implements IdentifiableEnum<Integer> {
 	 * @return ID/Ordinal value.
 	 */
 	@Override
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -145,7 +144,7 @@ public enum Month implements IdentifiableEnum<Integer> {
 	}
 
 	@Override
-	public void setId(final Integer id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
 
