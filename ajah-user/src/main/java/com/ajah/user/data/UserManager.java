@@ -389,4 +389,64 @@ public class UserManager {
 		return this.userDao.list("username", page, count);
 	}
 
+	/**
+	 * Activates a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to deactivate.
+	 * @param statusReason
+	 *            The reason for deactivation.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void activate(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.ACTIVE);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type);
+	}
+
+	/**
+	 * Blocks a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to block.
+	 * @param statusReason
+	 *            The reason for blocking.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void block(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.BLOCKED);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type);
+	}
+
+	/**
+	 * Blocks a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to disable.
+	 * @param statusReason
+	 *            The reason for disabling.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void disable(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.DISABLED);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
+	}
+
 }
