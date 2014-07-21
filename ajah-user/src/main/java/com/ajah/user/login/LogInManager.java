@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -27,11 +27,13 @@ import com.ajah.crypto.Crypto;
 import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
+import com.ajah.lang.ConfigException;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenicationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserNotFoundException;
+import com.ajah.user.UserStatus;
 import com.ajah.user.data.UserManager;
 
 /**
@@ -57,11 +59,15 @@ public class LogInManager {
 	 * @param password
 	 *            Password object for user to include in the token.
 	 * @return Token that can be used to authenticate.
-	 * @throws CryptoException
+	 * @throws ConfigException
 	 *             If there is a cryptographic error.
 	 */
-	public static String getTokenValue(final User user, final Password password) throws CryptoException {
-		return Crypto.toAES(user.getUsername() + "|" + password.toString());
+	public static String getTokenValue(final User user, final Password password) {
+		try {
+			return Crypto.toAES(user.getUsername() + "|" + password.toString());
+		} catch (CryptoException e) {
+			throw new ConfigException(e);
+		}
 	}
 
 	@Autowired
@@ -138,7 +144,12 @@ public class LogInManager {
 			final User user = this.userManager.getUser(userId, password);
 			login.setUser(user);
 			login.setUsername(user.getUsername());
-			login.setStatus(LogInStatus.SUCCESS);
+			if (user.getStatus() == UserStatus.ACTIVE || user.getStatus() == UserStatus.NEW) {
+				login.setStatus(LogInStatus.SUCCESS);
+			} else {
+				log.warning("Failed login because user is status: " + user.getStatus());
+				login.setStatus(LogInStatus.FAIL);
+			}
 			log.fine("User " + user.getUsername() + " logged in");
 		} catch (final RuntimeException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
