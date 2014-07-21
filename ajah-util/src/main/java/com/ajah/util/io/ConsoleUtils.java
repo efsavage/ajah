@@ -15,6 +15,7 @@
  */
 package com.ajah.util.io;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import com.ajah.util.StringUtils;
@@ -130,6 +131,76 @@ public class ConsoleUtils {
 			return defaultAnswer;
 		}
 		return response;
+	}
+
+	@SuppressWarnings("resource")
+	public static int askInt(String message) {
+		while (true) {
+			int answer = 0;
+			final Scanner in = new Scanner(System.in);
+			System.out.println(message);
+			final String response = in.nextLine().trim();
+			if (!StringUtils.isBlank(response)) {
+				try {
+					answer = Integer.parseInt(response);
+				} catch (final NumberFormatException e) {
+					System.out.println("Unrecognized response, please answer 'y' or 'n'");
+					continue;
+				}
+			}
+			return answer;
+		}
+	}
+
+	/**
+	 * Asks a question, requiring a numerical answer, appending the default
+	 * value.
+	 * 
+	 * @param message
+	 *            The question to ask.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
+	@SuppressWarnings("resource")
+	// Don't need to close System.in
+	public static int ask(final String message, final int defaultAnswer) {
+		while (true) {
+			int answer = defaultAnswer;
+			final Scanner in = new Scanner(System.in);
+			System.out.println(message + " [" + defaultAnswer + "]");
+			final String response = in.nextLine().trim();
+			if (StringUtils.isBlank(response)) {
+				answer = defaultAnswer;
+			} else {
+				try {
+					answer = Integer.parseInt(response);
+				} catch (final NumberFormatException e) {
+					System.out.println("Unrecognized response, please answer 'y' or 'n'");
+					continue;
+				}
+			}
+			return answer;
+		}
+	}
+
+	@SuppressWarnings("resource")
+	public static BigDecimal askBigDecimal(String message) {
+		while (true) {
+			BigDecimal answer = BigDecimal.ZERO;
+			final Scanner in = new Scanner(System.in);
+			System.out.println(message);
+			final String response = in.nextLine().trim();
+			if (!StringUtils.isBlank(response)) {
+				try {
+					answer = new BigDecimal(response);
+				} catch (final NumberFormatException e) {
+					System.out.println("Unrecognized response, please answer 'y' or 'n'");
+					continue;
+				}
+			}
+			return answer;
+		}
 	}
 
 }
