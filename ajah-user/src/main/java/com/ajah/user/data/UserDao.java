@@ -14,6 +14,8 @@
  */
 package com.ajah.user.data;
 
+import java.util.List;
+
 import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AjahDao;
@@ -169,5 +171,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 *             If the query could not be executed.
 	 */
 	public String getUsername(UserId userId) throws DataOperationException;
+
+	public List<User> list(String sortField, int page, int count) throws DataOperationException;
 
 }

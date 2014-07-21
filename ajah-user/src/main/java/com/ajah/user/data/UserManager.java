@@ -16,6 +16,7 @@
 package com.ajah.user.data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.extern.java.Log;
@@ -382,6 +383,10 @@ public class UserManager {
 	 */
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
+	}
+
+	public List<User> list(int page, int count) throws DataOperationException {
+		return this.userDao.list("username", page, count);
 	}
 
 }

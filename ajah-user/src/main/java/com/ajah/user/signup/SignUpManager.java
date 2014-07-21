@@ -109,6 +109,7 @@ public class SignUpManager {
 		userInfo.setBirthMonth(birthMonth);
 		userInfo.setBirthYear(birthYear);
 		userInfo.setCurrentCountry(country);
+		userInfo.setSource(source);
 		this.userManager.save(userInfo);
 		log.info(user.getUsername() + " created!");
 		signUp.setUser(user);

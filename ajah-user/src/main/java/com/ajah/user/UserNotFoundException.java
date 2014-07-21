@@ -15,6 +15,7 @@
  */
 package com.ajah.user;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.ajah.util.data.format.EmailAddress;
@@ -25,6 +26,7 @@ import com.ajah.util.data.format.EmailAddress;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Data
 @EqualsAndHashCode(callSuper = false)
 public class UserNotFoundException extends Exception {
 

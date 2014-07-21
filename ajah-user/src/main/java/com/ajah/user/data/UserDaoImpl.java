@@ -15,6 +15,8 @@
  */
 package com.ajah.user.data;
 
+import java.util.List;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,6 +27,7 @@ import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
+import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.user.User;
@@ -188,4 +191,10 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
 	}
+
+	@Override
+	public List<User> list(String sortField, int page, int count) throws DataOperationException {
+		return super.list(new Criteria().offset(page * count).rows(count).orderBy(sortField, Order.ASC));
+	}
+
 }
