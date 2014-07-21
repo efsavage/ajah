@@ -22,12 +22,12 @@ package com.ajah.util;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public class RequiredParamterException extends IllegalArgumentException {
+public class RequiredParameterException extends IllegalArgumentException {
 
 	/**
 	 * @see Exception#Exception(String)
 	 */
-	public RequiredParamterException(final String message) {
+	public RequiredParameterException(final String message) {
 		super(message);
 	}
 
