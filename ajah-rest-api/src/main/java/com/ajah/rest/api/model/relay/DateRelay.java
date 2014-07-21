@@ -15,8 +15,6 @@
  */
 package com.ajah.rest.api.model.relay;
 
-import com.ajah.util.data.Month;
-
 /**
  * A date format with fields broken out.
  * 
