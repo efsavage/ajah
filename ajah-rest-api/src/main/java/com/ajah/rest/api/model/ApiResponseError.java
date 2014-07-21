@@ -70,6 +70,27 @@ public class ApiResponseError {
 	 * Resource is missing (404).
 	 */
 	public static final int RESOURCE_MISSING = 1008;
+	/**
+	 * Action not permitted in user's current location.
+	 */
+	public static final int GEOGRAPHIC_RESTRICTION_CURRENT = 1009;
+	/**
+	 * Action not permitted in user/account's home location/residence.
+	 */
+	public static final int GEOGRAPHIC_RESTRICTION_HOME = 1010;
+
+	/**
+	 * Specified user could not be found.
+	 */
+	public static final int USER_NOT_FOUND = 1500;
+	/**
+	 * Email requested by ID could not be found.
+	 */
+	public static final int EMAIL_NOT_FOUND = 1501;
+	/**
+	 * EmailVerification requested by ID could not be found.
+	 */
+	public static final int EMAIL_VERIFICATION_NOT_FOUND = 1502;
 
 	/*
 	 * Data errors
@@ -91,6 +112,22 @@ public class ApiResponseError {
 	 * The user is not old enough to perform the operation.
 	 */
 	public static final int AGE_REQUIREMENT_NOT_MET = 2202;
+
+	/*
+	 * Permission/availability errors(4000s)
+	 */
+	/**
+	 * The request was rate-limited.
+	 */
+	public static final int REQUEST_THROTTLED = 4001;
+	/**
+	 * The feature has been permanently disabled.
+	 */
+	public static final int FEATURE_DISABLED_PERM = 4002;
+	/**
+	 * The feature has been temporarily disabled.
+	 */
+	public static final int FEATURE_DISABLED_TEMP = 4003;
 
 	/*
 	 * Internal errors
