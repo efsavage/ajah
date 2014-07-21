@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RequiredParameterException extends Exception {
+public class RequiredRequestParameterException extends Exception {
 
 	private String name;
 
@@ -36,7 +36,7 @@ public class RequiredParameterException extends Exception {
 	 * @param name
 	 *            the Name of the missing parameter.
 	 */
-	public RequiredParameterException(final String name) {
+	public RequiredRequestParameterException(final String name) {
 		super("Paramter '" + name + "' is required.");
 		this.name = name;
 	}
