@@ -15,6 +15,8 @@
  */
 package com.ajah.util;
 
+import lombok.extern.java.Log;
+
 /**
  * Utilities for dealing with numbers.
  * 
@@ -22,6 +24,7 @@ package com.ajah.util;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@Log
 public class NumberUtils {
 
 	/**
@@ -62,6 +65,7 @@ public class NumberUtils {
 		try {
 			return Integer.parseInt(value);
 		} catch (final NumberFormatException e) {
+			log.fine(e.getMessage());
 			return defaultValue;
 		}
 	}
