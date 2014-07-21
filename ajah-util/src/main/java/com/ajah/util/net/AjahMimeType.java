@@ -80,6 +80,10 @@ public enum AjahMimeType implements Identifiable<String> {
 	 */
 	IMAGE_JPG("image", "jpeg"),
 	/**
+	 * image/svg+xml
+	 */
+	IMAGE_SVG("image", "svg+xml"),
+	/**
 	 * text/html
 	 */
 	TEXT_HTML("text", "html", true),
