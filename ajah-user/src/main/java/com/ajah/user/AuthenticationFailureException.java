@@ -24,9 +24,8 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @EqualsAndHashCode(callSuper = false)
-public class AuthenicationFailureException extends Exception {
+public class AuthenticationFailureException extends AuthenticationException {
 
-	private static final long serialVersionUID = -6419026421126337952L;
 	private String username;
 
 	/**
@@ -35,7 +34,7 @@ public class AuthenicationFailureException extends Exception {
 	 * @param username
 	 *            User that failed to authenticate.
 	 */
-	public AuthenicationFailureException(final String username) {
+	public AuthenticationFailureException(final String username) {
 		super(username);
 	}
 

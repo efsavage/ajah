@@ -30,7 +30,7 @@ import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.user.AuthenicationFailureException;
+import com.ajah.user.AuthenticationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserImpl;
@@ -281,14 +281,14 @@ public class UserManager {
 	 *            The user's password, unencrypted.
 	 * @return User if found and authenticated correctly, will never return
 	 *         null.
-	 * @throws AuthenicationFailureException
+	 * @throws AuthenticationFailureException
 	 *             If the password was not correct
 	 * @throws UserNotFoundException
 	 *             If no user could be found for the username supplied
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User getUser(final String username, final Password password) throws AuthenicationFailureException, UserNotFoundException, DataOperationException {
+	public User getUser(final String username, final Password password) throws AuthenticationFailureException, UserNotFoundException, DataOperationException {
 		AjahUtils.requireParam(username, "username");
 		final User user = this.userDao.findByUsernameAndPassword(username, password.toString());
 		if (user != null) {
@@ -297,7 +297,7 @@ public class UserManager {
 		}
 		log.fine("getUser failed");
 
-		throw new AuthenicationFailureException(username + " authentication failed");
+		throw new AuthenticationFailureException(username + " authentication failed");
 	}
 
 	/**
@@ -309,14 +309,14 @@ public class UserManager {
 	 *            The user's password, unencrypted.
 	 * @return User if found and authenticated correctly, will never return
 	 *         null.
-	 * @throws AuthenicationFailureException
+	 * @throws AuthenticationFailureException
 	 *             If the password was not correct
 	 * @throws UserNotFoundException
 	 *             If no user could be found for the username supplied
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User getUser(final UserId userId, final Password password) throws AuthenicationFailureException, UserNotFoundException, DataOperationException {
+	public User getUser(final UserId userId, final Password password) throws AuthenticationFailureException, UserNotFoundException, DataOperationException {
 		AjahUtils.requireParam(userId, "userId");
 		final User user = this.userDao.findByUserIdAndPassword(userId, password.toString());
 		if (user != null) {
@@ -325,7 +325,7 @@ public class UserManager {
 		}
 		log.fine("getUser failed");
 
-		throw new AuthenicationFailureException(userId + " authentication failed");
+		throw new AuthenticationFailureException(userId + " authentication failed");
 	}
 
 	/**

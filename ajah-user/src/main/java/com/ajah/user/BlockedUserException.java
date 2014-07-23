@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BlockedUserException extends Exception {
+public class BlockedUserException extends AuthenticationException {
 
 	private UserId userId;
 	private String username;

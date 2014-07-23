@@ -29,7 +29,7 @@ import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
 import com.ajah.lang.ConfigException;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.user.AuthenicationFailureException;
+import com.ajah.user.AuthenticationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.UserNotFoundException;
@@ -105,7 +105,7 @@ public class LogInManager {
 		} catch (final RuntimeException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 			login.setStatus(LogInStatus.ABORT);
-		} catch (final AuthenicationFailureException e) {
+		} catch (final AuthenticationFailureException e) {
 			log.log(Level.INFO, e.getMessage());
 			login.setUsername(e.getUsername());
 			login.setStatus(LogInStatus.FAIL);
@@ -154,7 +154,7 @@ public class LogInManager {
 		} catch (final RuntimeException e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 			login.setStatus(LogInStatus.ABORT);
-		} catch (final AuthenicationFailureException e) {
+		} catch (final AuthenticationFailureException e) {
 			log.log(Level.INFO, e.getMessage());
 			login.setUsername(e.getUsername());
 			login.setStatus(LogInStatus.FAIL);

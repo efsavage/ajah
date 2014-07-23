@@ -26,9 +26,8 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class AuthenticationRequiredException extends Exception {
+public class AuthenticationRequiredException extends AuthenticationException {
 
-	private static final long serialVersionUID = -578203020126337952L;
 	private final String resourceName;
 
 	/**
