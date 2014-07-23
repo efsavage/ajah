@@ -15,21 +15,24 @@
  */
 package com.ajah.user;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Thrown when a user is {@link UserStatus#INACTIVE}.
+ * Thrown when a user is {@link UserStatus#BLOCKED}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class InactiveUserException extends Exception {
+public class BlockedUserException extends Exception {
 
 	private UserId userId;
 	private String username;
+	private Date expiration;
 
 	/**
 	 * Calls super with username as message.
@@ -37,9 +40,10 @@ public class InactiveUserException extends Exception {
 	 * @param username
 	 *            User that failed to authenticate.
 	 */
-	public InactiveUserException(final UserId userId, final String username) {
+	public BlockedUserException(final UserId userId, final String username, final Date expiration) {
 		super(username);
 		this.userId = userId;
+		this.expiration = expiration;
 	}
 
 	/**

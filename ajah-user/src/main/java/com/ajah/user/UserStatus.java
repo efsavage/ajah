@@ -34,6 +34,16 @@ public enum UserStatus implements IdentifiableEnum<String> {
 	 */
 	INACTIVE("-1", "Inactive", "Inactive", "Inactive"),
 	/**
+	 * User is temporarily blocked. Application may have some way to determine
+	 * why or for how long.
+	 */
+	BLOCKED("-2", "Blocked", "Blocked (Temporarily)", "Blocked (Temporarily)"),
+	/**
+	 * User is permanently disabled. Application may have some way to determine
+	 * why.
+	 */
+	DISABLED("-3", "Disabled", "Blocked (Permanently)", "Disabled (Permanently)"),
+	/**
 	 * User is active.
 	 */
 	ACTIVE("1", "Active", "Active", "Active");

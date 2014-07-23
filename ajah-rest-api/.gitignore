@@ -4,3 +4,4 @@ target
 .factorypath
 .project
 .DS_Store
+/bin/

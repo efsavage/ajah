@@ -78,6 +78,18 @@ public class ApiResponseError {
 	 * Action not permitted in user/account's home location/residence.
 	 */
 	public static final int GEOGRAPHIC_RESTRICTION_HOME = 1010;
+	/**
+	 * User is inactive.
+	 */
+	public static final int INACTIVE_USER = 1011;
+	/**
+	 * User is blocked (temporarily).
+	 */
+	public static final int BLOCKED_USER = 1012;
+	/**
+	 * User is disabled (permanently).
+	 */
+	public static final int DISABLED_USER = 1013;
 
 	/**
 	 * Specified user could not be found.
