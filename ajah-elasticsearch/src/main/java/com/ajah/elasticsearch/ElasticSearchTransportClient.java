@@ -94,4 +94,5 @@ public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T ex
 		this.client.admin().cluster().prepareHealth().setWaitForGreenStatus().execute().actionGet();
 		log.fine("Green status achieved");
 	}
+
 }

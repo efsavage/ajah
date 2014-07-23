@@ -23,6 +23,7 @@ import lombok.extern.java.Log;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -193,6 +194,11 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		}
 		results.setTime(System.currentTimeMillis() - start);
 		return results;
+	}
+
+	public C load(K id) throws IOException {
+		final GetResponse response = this.client.prepareGet(this.index, this.type, id.toString()).execute().actionGet();
+		return this.mapper.readValue(response.getSourceAsString(), getTargetClass());
 	}
 
 }
