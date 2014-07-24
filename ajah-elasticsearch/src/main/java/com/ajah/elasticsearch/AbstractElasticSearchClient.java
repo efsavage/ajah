@@ -71,7 +71,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	 * @see java.lang.AutoCloseable#close()
 	 */
 	@Override
-	public void close() throws Exception {
+	public void close() {
 		this.client.close();
 	}
 

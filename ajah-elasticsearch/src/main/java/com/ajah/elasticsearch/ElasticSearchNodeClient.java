@@ -106,7 +106,7 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 * @see java.lang.AutoCloseable#close()
 	 */
 	@Override
-	public void close() throws Exception {
+	public void close() {
 		this.node.stop();
 		this.node.close();
 		super.close();

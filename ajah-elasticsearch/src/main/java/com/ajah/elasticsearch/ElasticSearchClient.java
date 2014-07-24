@@ -47,4 +47,6 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 
 	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException;
 
+	public void close();
+
 }
