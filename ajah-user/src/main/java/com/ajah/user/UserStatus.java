@@ -42,7 +42,7 @@ public enum UserStatus implements IdentifiableEnum<String> {
 	 * User is permanently disabled. Application may have some way to determine
 	 * why.
 	 */
-	DISABLED("-3", "Disabled", "Blocked (Permanently)", "Disabled (Permanently)"),
+	DISABLED("-3", "Disabled", "Disabled (Permanently)", "Disabled (Permanently)"),
 	/**
 	 * User is active.
 	 */
