@@ -18,6 +18,7 @@ package com.ajah.elasticsearch;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.elasticsearch.action.ListenableActionFuture;
@@ -61,8 +62,11 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 
 	protected Client client;
 	private final ObjectMapper mapper = new ObjectMapper();
+	@Getter
 	protected String index;
+	@Getter
 	protected String type;
+	@Getter
 	protected String clusterName;
 
 	/**
