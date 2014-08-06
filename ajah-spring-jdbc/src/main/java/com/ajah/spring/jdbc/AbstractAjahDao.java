@@ -405,16 +405,19 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	/**
 	 * Finds a single object by the Criteria specified.
 	 * 
-	 * @param value
-	 *            The value to use to find the object. The column name must
+	 * @param values
+	 *            The value(s) to use to find the object. The column name must
 	 *            match the class name (e.g. a UserId would query the user_id
 	 *            column).
 	 * @return The object, if found.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public T find(final ToStringable value) throws DataOperationException {
-		final Criteria criteria = new Criteria().eq(value);
+	public T find(final ToStringable... values) throws DataOperationException {
+		Criteria criteria = new Criteria();
+		for (ToStringable value : values) {
+			criteria.eq(value);
+		}
 		criteria.rows(1);
 		return find(criteria.getWhere(), criteria.getLimit(), criteria.getOrderBySql());
 	}
@@ -996,7 +999,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * Find a list of entities by an arbitrary WHERE clause, allowing
 	 * multi-table queries as well as limit and order clauses.
 	 * 
-	 * @param tables
+	 * @param additionalTables
 	 *            The tables to include.
 	 * 
 	 * @param where
@@ -1014,7 +1017,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 */
-	public List<T> list(final String[] tables, final String where, final String orderBy, final Order order, final Limit limit) throws DataOperationException {
+	public List<T> list(final String[] additionalTables, final String where, final String orderBy, final Order order, final Limit limit) throws DataOperationException {
 		AjahUtils.requireParam(where, "where");
 		try {
 			String orderBySql = "";
@@ -1024,7 +1027,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					orderBySql += " " + order.name();
 				}
 			}
-			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(tables) + " WHERE " + where + orderBySql + limit.getSql();
+			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(additionalTables) + " WHERE " + where + orderBySql
+					+ (limit == null ? "" : limit.getSql());
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
@@ -1041,15 +1045,19 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * Find a list of entities by a simple field match, ideal for searching by
 	 * related entity IDs.
 	 * 
-	 * @param value
-	 *            The value to use to build the query.
+	 * @param values
+	 *            The value(s) to use to build the query.
 	 * @return List of entities if found, otherwise null.
 	 * @throws DataOperationException
 	 *             If an error occurs executing the query.
 	 * @since 1.0.1
 	 */
-	public List<T> list(final ToStringable value) throws DataOperationException {
-		return list(new Criteria().eq(value));
+	public List<T> list(final ToStringable... values) throws DataOperationException {
+		Criteria criteria = new Criteria();
+		for (ToStringable value : values) {
+			criteria.eq(value);
+		}
+		return list(criteria);
 	}
 
 	/**
@@ -1433,6 +1441,20 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
+	protected <T> T sum(final String field, final Criteria criteria, Class<T> clazz) throws DataOperationException {
+		try {
+			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
+			sqlLog.finest(sql);
+			final T sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), clazz);
+			return sum;
+		} catch (final EmptyResultDataAccessException e) {
+			log.fine(e.getMessage());
+			return null;
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
 	protected BigDecimal sumBigDecimal(final String field, final Criteria criteria) throws DataOperationException {
 		try {
 			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
@@ -1468,6 +1490,28 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				sqlLog.finest(sql);
 			}
 			return new DataOperationResult<>(entity, getJdbcTemplate().update(sql, getUpdateValues(entity)));
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, getTableName());
+		}
+	}
+
+	/**
+	 * Runs a {@link JdbcTemplate#update(String)}.
+	 * 
+	 * @param sql
+	 *            The full SQL statement to execute.
+	 * @return The number of rows returned.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public int updateSql(String sql) throws DataOperationException {
+		AjahUtils.requireParam(sql, "sql");
+		AjahUtils.requireParam(getJdbcTemplate(), "this.jdbcTemplate");
+		try {
+			if (sqlLog.isLoggable(Level.FINEST)) {
+				sqlLog.finest(sql);
+			}
+			return getJdbcTemplate().update(sql);
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}
