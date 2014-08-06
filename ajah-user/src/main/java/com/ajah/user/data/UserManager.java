@@ -195,6 +195,8 @@ public class UserManager {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.INACTIVE);
 		user.setStatusReason(statusReason);
+		this.userDao.update(user);
+		log.info("User " + user.getUsername() + " is now status " + user.getStatus() + " (" + user.getStatusReason() + ")");
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type);
 
 	}
