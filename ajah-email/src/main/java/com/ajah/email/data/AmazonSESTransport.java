@@ -55,7 +55,6 @@ import com.amazonaws.services.simpleemail.model.VerifyEmailAddressRequest;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Service
 @Transactional(rollbackFor = Exception.class)
 @Log
 public class AmazonSESTransport implements EmailTransport {
