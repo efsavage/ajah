@@ -19,6 +19,7 @@ import java.util.List;
 import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
@@ -121,7 +122,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(final UserType type, final UserStatus status) throws DataOperationException;
+	int count(final UserType type, final UserStatus status) throws DataOperationException;
 
 	/**
 	 * Returns a random user in the status specified.
@@ -172,6 +173,10 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 */
 	public String getUsername(UserId userId) throws DataOperationException;
 
-	public List<User> list(String sortField, int page, int count) throws DataOperationException;
+	public List<User> list(String sortField, Order order, int page, int count) throws DataOperationException;
+
+	public int searchCount(String search) throws DataOperationException;
+
+	public List<User> list(String search, int page, int count) throws DataOperationException;
 
 }

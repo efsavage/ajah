@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenticationFailureException;
 import com.ajah.user.User;
@@ -120,7 +121,7 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public long count() throws DataOperationException {
+	public int count() throws DataOperationException {
 		return count(null, null);
 	}
 
@@ -135,7 +136,7 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public long count(final UserType type, final UserStatus status) throws DataOperationException {
+	public int count(final UserType type, final UserStatus status) throws DataOperationException {
 		return this.userDao.count(type, status);
 	}
 
@@ -386,7 +387,7 @@ public class UserManager {
 	}
 
 	public List<User> list(int page, int count) throws DataOperationException {
-		return this.userDao.list("username", page, count);
+		return this.userDao.list("username", Order.ASC, page, count);
 	}
 
 	/**
@@ -447,6 +448,14 @@ public class UserManager {
 		user.setStatus(UserStatus.DISABLED);
 		user.setStatusReason(statusReason);
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
+	}
+
+	public int searchCount(String search) throws DataOperationException {
+		return this.userDao.searchCount(search);
+	}
+
+	public List<User> list(String search, int page, int count) throws DataOperationException {
+		return this.userDao.list(search, page, count);
 	}
 
 }

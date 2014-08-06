@@ -28,6 +28,7 @@ import com.ajah.crypto.Password;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.criteria.SubCriteria;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
 import com.ajah.user.User;
@@ -37,6 +38,7 @@ import com.ajah.user.UserNotFoundException;
 import com.ajah.user.UserStatus;
 import com.ajah.user.UserType;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.StringUtils;
 
 /**
  * Data operations on the "user" table.
@@ -52,7 +54,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 *      com.ajah.user.UserStatus)
 	 */
 	@Override
-	public long count(final UserType type, final UserStatus status) throws DataOperationException {
+	public int count(final UserType type, final UserStatus status) throws DataOperationException {
 		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
@@ -193,8 +195,30 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	}
 
 	@Override
-	public List<User> list(String sortField, int page, int count) throws DataOperationException {
-		return super.list(new Criteria().offset(page * count).rows(count).orderBy(sortField, Order.ASC));
+	public List<User> list(String sortField, Order order, int page, int count) throws DataOperationException {
+		return super.list(new Criteria().offset(page * count).rows(count).orderBy(sortField, order));
+	}
+
+	@Override
+	public int searchCount(String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (!StringUtils.isBlank(search)) {
+			String pattern = "%" + search.replaceAll("\\*", "%") + "%";
+			criteria.and(new SubCriteria().orLike("username", pattern));
+		}
+		return super.count(criteria);
+	}
+
+	@Override
+	public List<User> list(String search, int page, int count) throws DataOperationException {
+		final Criteria criteria = new Criteria().rows(count).offset(page * count);
+		if (!StringUtils.isBlank(search)) {
+			String pattern = "%" + search.replaceAll("\\*", "%") + "%";
+			criteria.and(new SubCriteria().orLike("username", pattern));
+		}
+		criteria.orderBy("status", Order.DESC);
+		criteria.orderBy("username", Order.ASC);
+		return super.list(criteria);
 	}
 
 }
