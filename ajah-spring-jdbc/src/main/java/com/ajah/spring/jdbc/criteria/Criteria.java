@@ -23,6 +23,7 @@ import lombok.extern.java.Log;
 
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
+import com.ajah.util.StringUtils;
 import com.ajah.util.lang.NameValuePair;
 
 /**
@@ -138,24 +139,31 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		return this;
 	}
 
+	public Where getWhere() {
+		return getWhere(null);
+	}
+
 	/**
 	 * Constructs a {@link Where} object from this instance, suitable for
 	 * creating a prepared SQL statement.
 	 * 
 	 * @return A where clause that is equivalent to this criteria.
 	 */
-	public Where getWhere() {
+	public Where getWhere(String tableName) {
 		final List<String> values = new ArrayList<>();
 		final StringBuilder where = new StringBuilder();
 		boolean first = true;
+		String tablePrefix = StringUtils.isBlank(tableName) ? "" : "`" + tableName + "`.";
+
 		if (!CollectionUtils.isEmpty(this.eqs)) {
 			for (final NameValuePair<String> eq : this.eqs) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
+				
+				where.append(tablePrefix);
 				where.append("`");
 				where.append(eq.getName());
 				where.append("`");
@@ -170,11 +178,11 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (!CollectionUtils.isEmpty(this.gtes)) {
 			for (final NameValuePair<String> gte : this.gtes) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
+				where.append(tablePrefix);
 				where.append("`");
 				where.append(gte.getName());
 				where.append("`");
@@ -185,11 +193,11 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (!CollectionUtils.isEmpty(this.gts)) {
 			for (final NameValuePair<String> gt : this.gts) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
+				where.append(tablePrefix);
 				where.append("`");
 				where.append(gt.getName());
 				where.append("`");
@@ -200,11 +208,11 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (!CollectionUtils.isEmpty(this.ltes)) {
 			for (final NameValuePair<String> lte : this.ltes) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
+				where.append(tablePrefix);
 				where.append("`");
 				where.append(lte.getName());
 				where.append("`");
@@ -215,7 +223,6 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (!CollectionUtils.isEmpty(this.joins)) {
 			for (final NameValuePair<String> join : this.joins) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
@@ -228,11 +235,11 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (!CollectionUtils.isEmpty(this.likes)) {
 			for (final NameValuePair<String> like : this.likes) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
+				where.append(tablePrefix);
 				where.append("`");
 				where.append(like.getName());
 				where.append("`");
@@ -244,24 +251,22 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (!CollectionUtils.isEmpty(this.ands)) {
 			for (final SubCriteria and : this.ands) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" AND ");
 				}
-				where.append(and.getWhere().getSql());
+				where.append(and.getWhere().getSql(false));
 				values.addAll(and.getWhere().getValues());
 			}
 		}
 		if (!CollectionUtils.isEmpty(this.ors)) {
 			for (final SubCriteria or : this.ors) {
 				if (first) {
-					where.append(" WHERE ");
 					first = false;
 				} else {
 					where.append(" OR ");
 				}
-				where.append(or.getWhere().getSql());
+				where.append(or.getWhere().getSql(false));
 				values.addAll(or.getWhere().getValues());
 			}
 		}

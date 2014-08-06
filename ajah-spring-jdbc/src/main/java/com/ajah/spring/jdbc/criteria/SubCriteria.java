@@ -34,6 +34,7 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 	private List<NameValuePair<String>> orLikes = null;
 	private List<NameValuePair<Number>> gts = null;
 	private List<SubCriteria> ands = null;
+	private List<SubCriteria> ors = null;
 
 	/**
 	 * A subclause, included as an AND, but may contain ORs.
@@ -48,6 +49,22 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 			this.ands = new ArrayList<>();
 		}
 		this.ands.add(subCriteria);
+		return this;
+	}
+
+	/**
+	 * A subclause, included as an OR
+	 * 
+	 * @param subCriteria
+	 *            The subCriteria to include
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public SubCriteria or(final SubCriteria subCriteria) {
+		AjahUtils.requireParam(subCriteria, "field");
+		if (this.ors == null) {
+			this.ors = new ArrayList<>();
+		}
+		this.ors.add(subCriteria);
 		return this;
 	}
 
@@ -68,7 +85,7 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 	 */
 	public Where getWhere() {
 		final List<String> values = new ArrayList<>();
-		final StringBuilder where = new StringBuilder();
+		final StringBuilder where = new StringBuilder().append("(");
 		boolean first = true;
 		if (!CollectionUtils.isEmpty(this.eqs)) {
 			for (final NameValuePair<String> eq : this.eqs) {
@@ -112,7 +129,19 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 				} else {
 					where.append(" AND ");
 				}
-				where.append(and.getWhere().toString());
+				where.append(and.getWhere().getSql(false));
+				values.addAll(and.getWhere().getValues());
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.ors)) {
+			for (final SubCriteria or : this.ors) {
+				if (first) {
+					first = false;
+				} else {
+					where.append(" OR ");
+				}
+				where.append(or.getWhere().getSql(false));
+				values.addAll(or.getWhere().getValues());
 			}
 		}
 		if (!CollectionUtils.isEmpty(this.gts)) {
@@ -129,7 +158,7 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 				where.append(gt.getValue());
 			}
 		}
-		return new Where(where.toString(), values);
+		return new Where(where.toString() + ")", values);
 
 	}
 

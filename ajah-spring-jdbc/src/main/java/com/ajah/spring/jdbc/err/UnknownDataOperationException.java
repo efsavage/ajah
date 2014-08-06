@@ -44,4 +44,11 @@ public class UnknownDataOperationException extends DataOperationException {
 		super(cause);
 	}
 
+	/**
+	 * @see DataOperationException#DataOperationException(String)
+	 */
+	public UnknownDataOperationException(String message) {
+		super(message);
+	}
+
 }
