@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.jets3t.service.model.S3Object;
 import org.jets3t.service.security.AWSCredentials;
 
 import com.ajah.lang.ConfigException;
+import com.ajah.util.AjahUtils;
 import com.ajah.util.config.Config;
 import com.ajah.util.lang.StreamUtils;
 import com.ajah.util.net.AjahMimeType;
@@ -135,6 +136,7 @@ public class S3Client {
 	 */
 	@SuppressWarnings("resource")
 	public void put(final Bucket bucket, final String name, final byte[] data, final boolean overwrite, final boolean gzip, final AjahMimeType mimeType, final S3ACL acl) throws S3Exception {
+		log.finest("Putting " + name + " in bucket " + bucket.getName());
 		if (data == null || data.length == 0) {
 			log.warning("Data is empty, skipping upload");
 			return;
@@ -148,11 +150,11 @@ public class S3Client {
 			S3Object object;
 			if (gzip) {
 				object = new S3Object(name + ".gz");
-				object.setDataInputStream(is);
-			} else {
-				object = new S3Object(name);
 				gzipIs = new GZipDeflatingInputStream(is);
 				object.setDataInputStream(gzipIs);
+			} else {
+				object = new S3Object(name);
+				object.setDataInputStream(is);
 				object.setContentLength(data.length);
 			}
 			if (mimeType != null) {
@@ -166,6 +168,7 @@ public class S3Client {
 				}
 				return;
 			}
+			log.finest("Beginning upload of " + object.getName());
 			object = this.s3Service.putObject(bucket.toString(), object);
 			log.fine("Uploaded " + object.getName() + " to bucket " + bucket.getName());
 			if (gzipIs != null) {
@@ -195,6 +198,9 @@ public class S3Client {
 	 *             If an error occurs storing the object.
 	 */
 	public void put(final Bucket bucket, final String name, final String data) throws S3Exception {
+		AjahUtils.requireParam(bucket, "bucket");
+		AjahUtils.requireParam(name, "name");
+		AjahUtils.requireParam(data, "data");
 		byte[] input;
 		try {
 			input = data.getBytes("UTF-8");
@@ -202,6 +208,19 @@ public class S3Client {
 			throw new ConfigException(e);
 		}
 		put(bucket, name, input, true, true, AjahMimeType.TEXT_PLAIN, S3ACL.PRIVATE);
+	}
+
+	public void put(final Bucket bucket, final String name, final String data, final boolean overwrite, final boolean gzip, final AjahMimeType mimeType, final S3ACL acl) throws S3Exception {
+		AjahUtils.requireParam(bucket, "bucket");
+		AjahUtils.requireParam(name, "name");
+		AjahUtils.requireParam(data, "data");
+		byte[] input;
+		try {
+			input = data.getBytes("UTF-8");
+		} catch (final UnsupportedEncodingException e) {
+			throw new ConfigException(e);
+		}
+		put(bucket, name, input, overwrite, gzip, mimeType, acl);
 	}
 
 }
