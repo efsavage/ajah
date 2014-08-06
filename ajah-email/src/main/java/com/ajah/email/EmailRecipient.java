@@ -16,6 +16,10 @@
 
 package com.ajah.email;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -35,5 +39,13 @@ public class EmailRecipient {
 	private EmailAddress address;
 	private String name;
 	private EmailRecipientType type;
+
+	public static Collection<EmailRecipient> from(EmailAddress[] emailAddresses, EmailRecipientType type) {
+		List<EmailRecipient> list = new ArrayList<>(emailAddresses.length);
+		for (EmailAddress emailAddress : emailAddresses) {
+			list.add(new EmailRecipient(emailAddress, emailAddress.toString(), type));
+		}
+		return list;
+	}
 
 }
