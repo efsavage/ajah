@@ -30,6 +30,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import com.ajah.email.EmailMessage;
 import com.ajah.email.EmailRecipient;
+import com.ajah.email.EmailRecipientType;
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.format.EmailAddress;
 
@@ -68,6 +69,10 @@ public class VelocityEmailMessage implements EmailMessage {
 		this.velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		this.velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		this.velocityEngine.init();
+	}
+
+	public VelocityEmailMessage(EmailAddress emailAddress, EmailAddress[] emailAddresses) {
+		this(emailAddress, EmailRecipient.from(emailAddresses, EmailRecipientType.TO));
 	}
 
 	/**
