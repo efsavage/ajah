@@ -121,4 +121,11 @@ public class MandrillTransport implements EmailTransport {
 		this.mandrillApi = new MandrillApi(apiKey);
 	}
 
+	public MandrillTransport() {
+	}
+
+	public MandrillTransport(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 }
