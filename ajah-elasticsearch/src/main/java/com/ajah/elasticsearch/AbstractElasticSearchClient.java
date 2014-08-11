@@ -39,6 +39,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import com.ajah.util.Identifiable;
+import com.ajah.util.StringUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -202,7 +203,11 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 
 	public C load(K id) throws IOException {
 		final GetResponse response = this.client.prepareGet(this.index, this.type, id.toString()).execute().actionGet();
-		return this.mapper.readValue(response.getSourceAsString(), getTargetClass());
+		String source = response.getSourceAsString();
+		if (StringUtils.isBlank(source)) {
+			return null;
+		}
+		return this.mapper.readValue(source, getTargetClass());
 	}
 
 }
