@@ -75,8 +75,8 @@ public class DiskCache implements HttpCache {
 	 * @param uri
 	 *            The URI to fetch.
 	 * @param maxAge
-	 *            The maximum age of the cached copy to return. Use -1 to force
-	 *            a fresh fetch.
+	 *            The maximum age in milliseconds of the cached copy to return.
+	 *            Use -1 to force a fresh fetch.
 	 * @return The content from cache or as fetched.
 	 * @throws IOException
 	 *             If the URI could not be fetched.
@@ -128,7 +128,7 @@ public class DiskCache implements HttpCache {
 	 * @param uri
 	 *            The URI to fetch.
 	 * @param maxAge
-	 *            The maximum age of the cached copy to use.
+	 *            The maximum age in milliseconds of the cached copy to use.
 	 * @return The fetched content.
 	 * @throws NotFoundException
 	 *             If the URI is 404
