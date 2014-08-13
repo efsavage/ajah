@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -433,6 +433,23 @@ public class StringUtils {
 			wrapped.add(wrapper + string + wrapper);
 		}
 		return wrapped;
+	}
+
+	/**
+	 * Returns the leftmost characters of a string. If the string is empty or
+	 * null or shorter than the requested length, returns the original string.
+	 * 
+	 * @param string
+	 *            The string to truncate.
+	 * @param chars
+	 *            The number characters to truncate to.
+	 * @return A string that is no longer than the length specified.
+	 */
+	public static String safeLeft(String string, int chars) {
+		if (StringUtils.isBlank(string) || string.length() <= chars) {
+			return string;
+		}
+		return string.substring(0, chars);
 	}
 
 }
