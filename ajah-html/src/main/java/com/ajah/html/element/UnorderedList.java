@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  *   limitations under the License.
  */
 package com.ajah.html.element;
+
+import java.net.URL;
 
 /**
  * ul element
@@ -37,6 +39,22 @@ public class UnorderedList extends AbstractNestableHtmlCoreElement<UnorderedList
 	@Override
 	public UnorderedList getThis() {
 		return this;
+	}
+
+	/**
+	 * Creates a new {@link Anchor} within a new {@link ListItem} and adds it to
+	 * this element's children.
+	 * 
+	 * @param url
+	 *            The URL of the link.
+	 * @param text
+	 *            The text to display for the link.
+	 */
+	public void addLink(URL url, String text) {
+		ListItem li = new ListItem();
+		Anchor a = new Anchor(url, text);
+		li.add(a);
+		add(li);
 	}
 
 }

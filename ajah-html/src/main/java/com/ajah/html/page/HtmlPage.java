@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.ajah.html.element.Body;
 import com.ajah.html.element.Div;
 import com.ajah.html.element.Html;
 import com.ajah.html.element.Paragraph;
+import com.ajah.html.element.UnorderedList;
 import com.ajah.html.element.head.Head;
 import com.ajah.html.element.head.Title;
 import com.ajah.util.AjahUtils;
@@ -118,6 +119,16 @@ public class HtmlPage {
 	public HtmlPage title(final String title) {
 		this.head.add(new Title(title));
 		return this;
+	}
+
+	/**
+	 * Adds a new {@link UnorderedList} to the body.
+	 * 
+	 * @param unorderedList
+	 *            The list to add.
+	 */
+	public void add(UnorderedList unorderedList) {
+		this.body.add(unorderedList);
 	}
 
 }
