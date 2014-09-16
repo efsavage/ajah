@@ -1,0 +1,209 @@
+/*
+ *  Copyright 2014 Eric F. Savage, code@efsavage.com
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+package com.ajah.user.invitation.data;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import lombok.extern.java.Log;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.User;
+import com.ajah.user.info.UserInfo;
+import com.ajah.user.invitation.Invitation;
+import com.ajah.user.invitation.InvitationId;
+import com.ajah.user.invitation.InvitationSender;
+import com.ajah.user.invitation.InvitationStatus;
+import com.ajah.user.invitation.InvitationType;
+
+/**
+ * Manages data operations for {@link Invitation}.
+ * 
+ * @author Eric F. Savage <code@efsavage.com>
+ * 
+ */
+@Service
+@Log
+public class InvitationManager {
+
+	@Autowired
+	private InvitationDao invitationDao;
+
+	/**
+	 * Saves an {@link Invitation}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param invitation
+	 *            The invitation to save.
+	 * @return The result of the save operation, which will include the new
+	 *         invitation at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<Invitation> save(Invitation invitation) throws DataOperationException {
+		boolean create = false;
+		if (invitation.getId() == null) {
+			invitation.setId(new InvitationId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (invitation.getCreated() == null) {
+			invitation.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			DataOperationResult<Invitation> result = this.invitationDao.insert(invitation);
+			log.fine("Created Invitation " + invitation.getAddress() + " [" + invitation.getId() + "]");
+			return result;
+		}
+		DataOperationResult<Invitation> result = this.invitationDao.update(invitation);
+		if (result.getRowsAffected() > 0) {
+			log.fine("Updated Invitation " + invitation.getAddress() + " [" + invitation.getId() + "]");
+		}
+		return result;
+	}
+
+	/**
+	 * Loads an {@link Invitation} by it's ID.
+	 * 
+	 * @param invitationId
+	 *            The ID to load, required.
+	 * @return The matching invitation, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws InvitationNotFoundException
+	 *             If the ID specified did not match any invitations.
+	 */
+	public Invitation load(InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
+		Invitation invitation = this.invitationDao.load(invitationId);
+		if (invitation == null) {
+			throw new InvitationNotFoundException(invitationId);
+		}
+		return invitation;
+	}
+
+	/**
+	 * Returns a list of {@link Invitation}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of invitation, optional.
+	 * @param status
+	 *            The status of the invitation, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link Invitation}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<Invitation> list(InvitationType type, InvitationStatus status, long page, long count) throws DataOperationException {
+		return this.invitationDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Creates a new {@link Invitation} with the given properties.
+	 * 
+	 * @param user
+	 *            The user who is sending the invitation.
+	 * @param userInfo
+	 *            The address the invitation is being sent to, required.
+	 * @param address
+	 *            The type of invitation, required.
+	 * @param type
+	 *            The purpose of the invitation.
+	 * @param sender
+	 *            The delivery mechanism.
+	 * @return The result of the creation, which will include the new invitation
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<Invitation> create(User user, UserInfo userInfo, String address, InvitationType type, InvitationSender sender) throws DataOperationException {
+		Invitation invitation = new Invitation();
+		invitation.setUserId(user.getId());
+		invitation.setAddress(address);
+		invitation.setType(type);
+		invitation.setStatus(InvitationStatus.UNSENT);
+		DataOperationResult<Invitation> result = save(invitation);
+		sender.send(invitation, user, userInfo);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link InvitationStatus#DELETED}.
+	 * 
+	 * @param invitationId
+	 *            The ID of the invitation to delete.
+	 * @return The result of the deletion, will not include the new invitation
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws InvitationNotFoundException
+	 *             If the ID specified did not match any invitations.
+	 */
+	public DataOperationResult<Invitation> delete(InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
+		Invitation invitation = load(invitationId);
+		invitation.setStatus(InvitationStatus.DELETED);
+		DataOperationResult<Invitation> result = save(invitation);
+		return result;
+	}
+
+	/**
+	 * Returns a count of all records.
+	 * 
+	 * @return Count of all records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count() throws DataOperationException {
+		return count(null, null);
+	}
+
+	/**
+	 * Counts the records available that match the criteria.
+	 * 
+	 * @param type
+	 *            The invitation type to limit to, optional.
+	 * @param status
+	 *            The status to limit to, optional.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public long count(final InvitationType type, final InvitationStatus status) throws DataOperationException {
+		return this.invitationDao.count(type, status);
+	}
+
+	/**
+	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param search
+	 *            The search query.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public int searchCount(String search) throws DataOperationException {
+		return this.invitationDao.searchCount(search);
+	}
+
+}
