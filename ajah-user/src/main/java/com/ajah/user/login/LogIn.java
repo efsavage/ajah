@@ -20,6 +20,7 @@ import java.util.Date;
 import lombok.Data;
 
 import com.ajah.user.User;
+import com.ajah.user.info.UserInfo;
 
 /**
  * A login is a data record of an authentication attempt by a user. It should
@@ -45,6 +46,7 @@ public class LogIn {
 	protected LogInType type;
 	protected String username;
 	protected User user;
+	protected UserInfo userInfo;
 	protected String token;
 
 }
