@@ -69,4 +69,12 @@ public class DataTablesRequest {
 		return this.sortColumn;
 	}
 
+	public void setStart(int start) {
+		setIDisplayStart(start);
+	}
+
+	public void setLength(int length) {
+		setIDisplayLength(length);
+	}
+
 }
