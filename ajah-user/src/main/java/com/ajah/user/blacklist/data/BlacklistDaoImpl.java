@@ -46,10 +46,10 @@ public class BlacklistDaoImpl extends AbstractAjahDao<BlacklistId, Blacklist, Bl
 	public List<Blacklist> list(String part1, String part2, BlacklistType type, BlacklistStatus status, long page, long count) throws DataOperationException {
 		Criteria criteria = new Criteria();
 		if (part1 != null) {
-			criteria.like("part_1", part1);
+			criteria.reverseLike("part_1", part1);
 		}
 		if (part2 != null) {
-			criteria.like("part_2", part2);
+			criteria.reverseLike("part_2", part2);
 		}
 		if (type != null) {
 			criteria.eq("type", type);
