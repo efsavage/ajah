@@ -42,6 +42,7 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	private List<NameValuePair<String>> gtes = null;
 	private List<NameValuePair<String>> ltes = null;
 	private List<NameValuePair<String>> likes = null;
+	private List<NameValuePair<String>> reverseLikes = null;
 	private List<NameValuePair<String>> joins = null;
 	private List<NameValuePair<Order>> orderBys = null;
 	private List<SubCriteria> ands = null;
@@ -162,7 +163,7 @@ public class Criteria extends AbstractCriteria<Criteria> {
 				} else {
 					where.append(" AND ");
 				}
-				
+
 				where.append(tablePrefix);
 				where.append("`");
 				where.append(eq.getName());
@@ -244,8 +245,23 @@ public class Criteria extends AbstractCriteria<Criteria> {
 				where.append(like.getName());
 				where.append("`");
 				where.append(" LIKE '");
-				where.append(like.getValue());
+				where.append(like.getValue().replaceAll("'", "\\'"));
 				where.append("'");
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.reverseLikes)) {
+			for (final NameValuePair<String> reverseLike : this.reverseLikes) {
+				if (first) {
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+				where.append(tablePrefix);
+				where.append("'");
+				where.append(reverseLike.getValue().replaceAll("'", "\\'"));
+				where.append("'");
+				where.append(" LIKE ");
+				where.append(reverseLike.getName());
 			}
 		}
 		if (!CollectionUtils.isEmpty(this.ands)) {
@@ -404,6 +420,27 @@ public class Criteria extends AbstractCriteria<Criteria> {
 			this.likes = new ArrayList<>();
 		}
 		this.likes.add(new NameValuePair<>(field, pattern));
+		return this;
+	}
+
+	/**
+	 * A reverse LIKE field match. Intended for when the wildcard is in the
+	 * database, e.g. 'value' like field. Uses the query as-is (i.e. add your
+	 * own wildcards).
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param pattern
+	 *            The pattern the field must match.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria reverseLike(final String field, final String pattern) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(pattern, "pattern");
+		if (this.reverseLikes == null) {
+			this.reverseLikes = new ArrayList<>();
+		}
+		this.reverseLikes.add(new NameValuePair<>(field, pattern));
 		return this;
 	}
 
