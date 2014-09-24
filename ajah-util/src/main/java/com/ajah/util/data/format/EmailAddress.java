@@ -58,4 +58,24 @@ public class EmailAddress implements ToStringable, FromStringable {
 		return this.address;
 	}
 
+	/**
+	 * Returns the part of the email address up to but not including the "@"
+	 * character.
+	 * 
+	 * @return The email's username.
+	 */
+	public String getUsername() {
+		return this.address.substring(0, this.address.indexOf('@'));
+	}
+
+	/**
+	 * Returns the part of the email address after but not including the "@"
+	 * character.
+	 * 
+	 * @return The email's domain.
+	 */
+	public String getDomain() {
+		return this.address.substring(this.address.indexOf('@') + 1);
+	}
+
 }
