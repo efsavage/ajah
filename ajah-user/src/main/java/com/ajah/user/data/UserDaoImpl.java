@@ -200,21 +200,24 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	}
 
 	@Override
-	public int searchCount(String search) throws DataOperationException {
+	public int searchCount(String username, String firstName, String lastName, UserStatus status) throws DataOperationException {
 		final Criteria criteria = new Criteria();
-		if (!StringUtils.isBlank(search)) {
-			String pattern = "%" + search.replaceAll("\\*", "%") + "%";
+		if (!StringUtils.isBlank(username)) {
+			String pattern = username.replaceAll("\\*", "%");
 			criteria.and(new SubCriteria().orLike("username", pattern));
 		}
 		return super.count(criteria);
 	}
 
 	@Override
-	public List<User> list(String search, int page, int count) throws DataOperationException {
+	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
 		final Criteria criteria = new Criteria().rows(count).offset(page * count);
-		if (!StringUtils.isBlank(search)) {
-			String pattern = "%" + search.replaceAll("\\*", "%") + "%";
+		if (!StringUtils.isBlank(username)) {
+			String pattern = username.replaceAll("\\*", "%");
 			criteria.and(new SubCriteria().orLike("username", pattern));
+		}
+		if ("username".equals(sort)) {
+			criteria.orderBy(sort, Order.DESC);
 		}
 		criteria.orderBy("status", Order.DESC);
 		criteria.orderBy("username", Order.ASC);

@@ -15,6 +15,7 @@
  */
 package com.ajah.user;
 
+import com.ajah.user.info.UserInfo;
 import com.ajah.util.Identifiable;
 
 /**
@@ -97,5 +98,20 @@ public interface User extends Identifiable<UserId> {
 	 *            Should not be null.
 	 */
 	void setUsername(final String username);
+
+	/**
+	 * Return the associated UserInfo object with extra fields.
+	 * 
+	 * @return The associated UserInfo object.
+	 */
+	UserInfo getUserInfo();
+
+	/**
+	 * Sets Return the associated UserInfo object with extra fields.
+	 * 
+	 * @param userInfo
+	 *            The associated UserInfo object.
+	 */
+	void setUserInfo(UserInfo userInfo);
 
 }

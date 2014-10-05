@@ -175,8 +175,8 @@ public interface UserDao extends AjahDao<UserId, User> {
 
 	public List<User> list(String sortField, Order order, int page, int count) throws DataOperationException;
 
-	public int searchCount(String search) throws DataOperationException;
+	public int searchCount(String username, String firstName, String lastName, UserStatus status) throws DataOperationException;
 
-	public List<User> list(String search, int page, int count) throws DataOperationException;
+	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException;
 
 }

@@ -452,12 +452,12 @@ public class UserManager {
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
 	}
 
-	public int searchCount(String search) throws DataOperationException {
-		return this.userDao.searchCount(search);
+	public int searchCount(String username, String firstName, String lastName, UserStatus status) throws DataOperationException {
+		return this.userDao.searchCount(username, firstName, lastName, status);
 	}
 
-	public List<User> list(String search, int page, int count) throws DataOperationException {
-		return this.userDao.list(search, page, count);
+	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
+		return this.userDao.list(username, firstName, lastName, status, sort, order, page, count);
 	}
 
 }

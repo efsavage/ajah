@@ -15,7 +15,11 @@
  */
 package com.ajah.user;
 
+import javax.persistence.Transient;
+
 import lombok.Data;
+
+import com.ajah.user.info.UserInfo;
 
 /**
  * Basic implmentation of User interface.
@@ -31,5 +35,8 @@ public class UserImpl implements User {
 	protected UserStatus status;
 	protected UserStatusReason statusReason;
 	protected UserType type;
+
+	@Transient
+	protected UserInfo userInfo;
 
 }
