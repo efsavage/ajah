@@ -17,22 +17,20 @@ package com.ajah.user.invitation.data;
 
 import java.util.List;
 
-import com.ajah.user.invitation.Invitation;
-import com.ajah.user.invitation.InvitationId;
-import com.ajah.user.invitation.InvitationStatus;
-import com.ajah.user.invitation.InvitationType;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.invitation.Invitation;
+import com.ajah.user.invitation.InvitationId;
+import com.ajah.user.invitation.InvitationStatus;
+import com.ajah.user.invitation.InvitationType;
 import com.ajah.util.StringUtils;
 
-
 /**
- *  MySQL-based implementation of {@link InvitationDao}. 
+ * MySQL-based implementation of {@link InvitationDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -69,7 +67,8 @@ public class InvitationDaoImpl extends AbstractAjahDao<InvitationId, Invitation,
 	}
 
 	/**
-	 * @see com.ajah.user.invitation.data.InvitationDao#searchCount(String search)
+	 * @see com.ajah.user.invitation.data.InvitationDao#searchCount(String
+	 *      search)
 	 */
 	@Override
 	public int searchCount(String search) throws DataOperationException {
@@ -78,6 +77,14 @@ public class InvitationDaoImpl extends AbstractAjahDao<InvitationId, Invitation,
 			criteria.like("address", "%" + search.replaceAll("\\*", "%") + "%");
 		}
 		return super.count(criteria);
+	}
+
+	/**
+	 * @see com.ajah.user.invitation.data.InvitationDao#findByReference(String)
+	 */
+	@Override
+	public Invitation findByReference(String reference) throws DataOperationException {
+		return super.find("reference", reference);
 	}
 
 }

@@ -29,6 +29,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.invitation.Invitation;
+import com.ajah.user.invitation.InvitationChannel;
 import com.ajah.user.invitation.InvitationId;
 import com.ajah.user.invitation.InvitationSender;
 import com.ajah.user.invitation.InvitationStatus;
@@ -128,6 +129,8 @@ public class InvitationManager {
 	 *            The address the invitation is being sent to, required.
 	 * @param address
 	 *            The type of invitation, required.
+	 * @param channel
+	 *            The delivery channel for the invite.
 	 * @param type
 	 *            The purpose of the invitation.
 	 * @param sender
@@ -137,10 +140,11 @@ public class InvitationManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<Invitation> create(User user, UserInfo userInfo, String address, InvitationType type, InvitationSender sender) throws DataOperationException {
+	public DataOperationResult<Invitation> create(User user, UserInfo userInfo, String address, InvitationChannel channel, InvitationType type, InvitationSender sender) throws DataOperationException {
 		Invitation invitation = new Invitation();
 		invitation.setUserId(user.getId());
 		invitation.setAddress(address);
+		invitation.setChannel(channel);
 		invitation.setType(type);
 		invitation.setStatus(InvitationStatus.UNSENT);
 		DataOperationResult<Invitation> result = save(invitation);
@@ -204,6 +208,19 @@ public class InvitationManager {
 	 */
 	public int searchCount(String search) throws DataOperationException {
 		return this.invitationDao.searchCount(search);
+	}
+
+	/**
+	 * Finds an invitation by it's {@link Invitation#getReference()}.
+	 * 
+	 * @param reference
+	 *            The reference ID
+	 * @return The first matching invitation for this reference.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public Invitation findByReference(String reference) throws DataOperationException {
+		return this.invitationDao.findByReference(reference);
 	}
 
 }

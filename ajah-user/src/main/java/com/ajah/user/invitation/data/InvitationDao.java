@@ -17,13 +17,12 @@ package com.ajah.user.invitation.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.invitation.Invitation;
 import com.ajah.user.invitation.InvitationId;
 import com.ajah.user.invitation.InvitationStatus;
 import com.ajah.user.invitation.InvitationType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link Invitation}.
@@ -73,5 +72,16 @@ public interface InvitationDao extends AjahDao<InvitationId, Invitation> {
 	 *             If the query could not be executed.
 	 */
 	int searchCount(String search) throws DataOperationException;
+
+	/**
+	 * Finds an invitation by it's {@link Invitation#getReference()}.
+	 * 
+	 * @param reference
+	 *            The reference ID
+	 * @return The first matching invitation for this reference.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	Invitation findByReference(String reference) throws DataOperationException;
 
 }
