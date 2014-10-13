@@ -452,4 +452,19 @@ public class StringUtils {
 		return string.substring(0, chars);
 	}
 
+	/**
+	 * Returns null if the supplied string is null or empty.
+	 * 
+	 * @param string
+	 *            The string to test.
+	 * @return null if the supplied string is null or empty, otherwise returns
+	 *         the original string.
+	 */
+	public static String nullIfEmpty(String string) {
+		if (string == null || string.length() == 0) {
+			return null;
+		}
+		return string;
+	}
+
 }
