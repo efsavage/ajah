@@ -99,6 +99,33 @@ public class AjahUtils {
 	}
 
 	/**
+	 * Check a string array and throw an exception if its null, empty, or
+	 * contains only empty strings. Commonly used at the very beginning of a
+	 * method for things that should never be null.
+	 * 
+	 * @param parameter
+	 *            Array to check.
+	 * @param name
+	 *            Name of the parameter (for the error message)
+	 * @throws RequiredParameterException
+	 *             If parameter is null, empty or contains only empty strings
+	 */
+	public static void requireParam(final String[] parameter, final String name) throws RequiredParameterException {
+		if (parameter == null) {
+			throw new RequiredParameterException(name + " cannot be null");
+		}
+		if (parameter.length == 0) {
+			throw new RequiredParameterException(name + " cannot be empty");
+		}
+		for (String string : parameter) {
+			if (!StringUtils.isBlank(string)) {
+				return;
+			}
+		}
+		throw new RequiredParameterException(name + " cannot contain only empty strings");
+	}
+
+	/**
 	 * Checks for a null array. If the parameter is null, returns an empty array
 	 * so enhanced for loops don't NPE. This will create a new, empty array, so
 	 * if you're concerned about creating extra objects, don't use this where
