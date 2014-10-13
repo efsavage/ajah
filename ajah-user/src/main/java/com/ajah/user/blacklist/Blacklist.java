@@ -17,6 +17,8 @@ package com.ajah.user.blacklist;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+
 import lombok.Data;
 
 import com.ajah.util.Identifiable;
@@ -24,6 +26,7 @@ import com.ajah.util.Identifiable;
 @Data
 public class Blacklist implements Identifiable<BlacklistId> {
 
+	@GeneratedValue
 	private BlacklistId id;
 	private String part1;
 	private String part2;
