@@ -39,7 +39,7 @@ public enum BlacklistType implements IdentifiableEnum<String> {
 	 * Real name. {@link Blacklist#getPart1()} is the first name and
 	 * {@link Blacklist#getPart2()} is the last name.
 	 */
-	REAL_NAME("2", "username", "Username", "Username."), ;
+	REAL_NAME("3", "realname", "Real Name", "Real Name."), ;
 
 	/**
 	 * Finds a BlacklistType that matches the id on id, name, or name().
