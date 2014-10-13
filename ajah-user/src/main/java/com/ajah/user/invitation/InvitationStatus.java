@@ -34,9 +34,19 @@ public enum InvitationStatus implements IdentifiableEnum<String> {
 	 */
 	SENT("1", "sent", "Sent", "Sent.", true, false, false),
 	/**
+	 * Recipient opened the invitation (exactly what that means will vary by
+	 * channel).
+	 */
+	OPENED("2", "opened", "Opened", "Opened.", true, false, false),
+	/**
+	 * Recipient clicked/acknowledged the invitation (exactly what that means
+	 * will vary by channel).
+	 */
+	CLICKED("3", "clicked", "Clicked", "Clicked.", true, false, false),
+	/**
 	 * Accepted.
 	 */
-	ACCEPTED("2", "accepted", "Accepted", "Accepted.", true, false, false),
+	ACCEPTED("4", "accepted", "Accepted", "Accepted.", true, false, false),
 	/**
 	 * Rejected.
 	 */
