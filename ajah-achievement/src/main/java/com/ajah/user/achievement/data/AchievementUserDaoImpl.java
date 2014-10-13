@@ -24,6 +24,7 @@ import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
+import com.ajah.user.achievement.AchievementId;
 import com.ajah.user.achievement.AchievementUser;
 import com.ajah.user.achievement.AchievementUserId;
 import com.ajah.user.achievement.AchievementUserStatus;
@@ -74,6 +75,15 @@ public class AchievementUserDaoImpl extends AbstractAjahDao<AchievementUserId, A
 			criteria.eq("status", status);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+	}
+
+	/**
+	 * @see com.ajah.user.achievement.data.AchievementUserDao#find(UserId,
+	 *      AchievementId)
+	 */
+	@Override
+	public AchievementUser find(UserId userId, AchievementId achievementId) throws DataOperationException {
+		return super.find(userId, achievementId);
 	}
 
 }

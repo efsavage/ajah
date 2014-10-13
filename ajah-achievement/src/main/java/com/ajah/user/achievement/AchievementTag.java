@@ -21,6 +21,16 @@ import lombok.Data;
 
 import com.ajah.util.Identifiable;
 
+/**
+ * A tag for an achievement, to aid in determining which to analyze upon certain
+ * events happening. For example, if inviting a friend is an achievement, it
+ * might be tagged "invite", and the invitation process will then process all
+ * achievements tagged as "invite".
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * 
+ */
 @Data
 public class AchievementTag implements Identifiable<AchievementTagId> {
 

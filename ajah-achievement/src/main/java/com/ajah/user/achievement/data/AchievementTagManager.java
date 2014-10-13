@@ -26,10 +26,13 @@ import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
+import com.ajah.user.achievement.AchievementId;
 import com.ajah.user.achievement.AchievementTag;
 import com.ajah.user.achievement.AchievementTagId;
 import com.ajah.user.achievement.AchievementTagStatus;
 import com.ajah.user.achievement.AchievementTagType;
+import com.ajah.user.achievement.AchievementUser;
 
 /**
  * Manages data operations for {@link AchievementTag}.
@@ -181,6 +184,19 @@ public class AchievementTagManager {
 		final DataOperationResult<AchievementTag> result = this.achievementTagDao.update(achievementTag);
 		log.fine("Updated AchievementTag " + achievementTag.getName() + " [" + achievementTag.getId() + "]");
 		return result;
+	}
+
+	/**
+	 * Lists the tags matching an achievement.
+	 * 
+	 * @param achievementId
+	 *            The ID of the achievement to match.
+	 * @return The list of tags, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<AchievementTag> list(final AchievementId achievementId) throws DataOperationException {
+		return this.achievementTagDao.list(achievementId);
 	}
 
 }

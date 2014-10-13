@@ -18,6 +18,8 @@ package com.ajah.user.achievement;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import lombok.Data;
 
 import com.ajah.user.User;
@@ -51,5 +53,8 @@ public class Achievement implements Identifiable<AchievementId> {
 	private AchievementType type;
 	private Date created;
 	private String analyzer;
+
+	@Transient
+	private AchievementAnalyzer achievementAnalyzer;
 
 }

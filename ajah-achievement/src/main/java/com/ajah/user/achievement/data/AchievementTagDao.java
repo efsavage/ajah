@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.achievement.AchievementId;
 import com.ajah.user.achievement.AchievementTag;
 import com.ajah.user.achievement.AchievementTagId;
 import com.ajah.user.achievement.AchievementTagStatus;
@@ -62,5 +63,16 @@ public interface AchievementTagDao extends AjahDao<AchievementTagId, Achievement
 	 *             If the query could not be executed.
 	 */
 	long count(final AchievementTagType type, final AchievementTagStatus status) throws DataOperationException;
+
+	/**
+	 * Lists the tags matching an achievement.
+	 * 
+	 * @param achievementId
+	 *            The ID of the achievement to match.
+	 * @return The list of tags, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	List<AchievementTag> list(AchievementId achievementId) throws DataOperationException;
 
 }

@@ -28,11 +28,7 @@ public enum AchievementUserType implements IdentifiableEnum<String> {
 	/**
 	 * Standard.
 	 */
-	STANDARD("0", "std", "Standard", "Standard."),
-	/**
-	 * Special.
-	 */
-	SPECIAL("1", "spe", "Special", "Special.");
+	STANDARD("1", "std", "Standard", "Standard.");
 
 	/**
 	 * Finds a AchievementUserType that matches the id on id, name, or name().

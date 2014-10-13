@@ -94,18 +94,20 @@ public class AchievementUserManager {
 	 *            The type of achievementUser, required.
 	 * @param status
 	 *            The status of the achievementUser, required.
+	 * @param completed
 	 * @return The result of the creation, which will include the new
 	 *         achievementUser at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<AchievementUser> create(final AchievementId achievementId, final UserId userId, final AchievementUserType type, final AchievementUserStatus status)
+	public DataOperationResult<AchievementUser> create(final AchievementId achievementId, final UserId userId, final AchievementUserType type, final AchievementUserStatus status, Date completed)
 			throws DataOperationException {
 		final AchievementUser achievementUser = new AchievementUser();
 		achievementUser.setAchievementId(achievementId);
 		achievementUser.setUserId(userId);
 		achievementUser.setType(type);
 		achievementUser.setStatus(status);
+		achievementUser.setCompleted(completed);
 		final DataOperationResult<AchievementUser> result = save(achievementUser);
 		return result;
 	}
@@ -179,6 +181,7 @@ public class AchievementUserManager {
 		}
 		if (achievementUser.getCreated() == null) {
 			achievementUser.setCreated(new Date());
+			achievementUser.setModified(achievementUser.getCreated());
 			create = true;
 		}
 		if (create) {
@@ -186,9 +189,25 @@ public class AchievementUserManager {
 			log.fine("Created AchievementUser " + achievementUser.getId());
 			return result;
 		}
+		achievementUser.setModified(achievementUser.getCreated());
 		final DataOperationResult<AchievementUser> result = this.achievementUserDao.update(achievementUser);
 		log.fine("Updated AchievementUser " + achievementUser.getId());
 		return result;
+	}
+
+	/**
+	 * Finds a user's achievement record.
+	 * 
+	 * @param userId
+	 *            The user to look up.
+	 * @param achievementId
+	 *            The achievement to look up.
+	 * @return The user's achievement progress, may be null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public AchievementUser find(UserId userId, AchievementId achievementId) throws DataOperationException {
+		return this.achievementUserDao.find(userId, achievementId);
 	}
 
 }

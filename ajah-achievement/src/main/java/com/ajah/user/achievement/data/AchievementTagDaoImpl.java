@@ -23,6 +23,7 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.achievement.AchievementId;
 import com.ajah.user.achievement.AchievementTag;
 import com.ajah.user.achievement.AchievementTagId;
 import com.ajah.user.achievement.AchievementTagStatus;
@@ -63,6 +64,14 @@ public class AchievementTagDaoImpl extends AbstractAjahDao<AchievementTagId, Ach
 			criteria.eq("status", status);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+	}
+
+	/**
+	 * @see com.ajah.user.achievement.data.AchievementTagDao#list(AchievementId)
+	 */
+	@Override
+	public List<AchievementTag> list(AchievementId achievementId) throws DataOperationException {
+		return super.list(achievementId);
 	}
 
 }

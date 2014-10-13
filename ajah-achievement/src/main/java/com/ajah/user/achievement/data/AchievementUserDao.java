@@ -20,6 +20,7 @@ import java.util.List;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
+import com.ajah.user.achievement.AchievementId;
 import com.ajah.user.achievement.AchievementUser;
 import com.ajah.user.achievement.AchievementUserId;
 import com.ajah.user.achievement.AchievementUserStatus;
@@ -65,5 +66,18 @@ public interface AchievementUserDao extends AjahDao<AchievementUserId, Achieveme
 	long count(final AchievementUserType type, final AchievementUserStatus status) throws DataOperationException;
 
 	List<AchievementUser> findCompleted(final UserId userId, final int count) throws DataOperationException;
+
+	/**
+	 * Finds a user's achievement record.
+	 * 
+	 * @param userId
+	 *            The user to look up.
+	 * @param achievementId
+	 *            The achievement to look up.
+	 * @return The user's achievement progress, may be null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	AchievementUser find(UserId userId, AchievementId achievementId) throws DataOperationException;
 
 }
