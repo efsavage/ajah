@@ -36,7 +36,17 @@ public enum UserType implements IdentifiableEnum<String> {
 	/**
 	 * Super (root) user, has all permissions.
 	 */
-	SUPER_USER("2", "Super", "Super User", "Super user, has all permissions.", true, false);
+	SUPER_USER("2", "Super", "Super User", "Super user, has all permissions.", true, false),
+	/**
+	 * A staff user that may or may not have special restrictions or
+	 * permissions.
+	 */
+	STAFF("4", "Staff", "Staff", "Staff.", true, false),
+	/**
+	 * A test account, may be restricted from some operations in some
+	 * environments.
+	 */
+	TEST("5", "Test", "Test", "Test.", true, false);
 
 	/**
 	 * Finds a UserType that matches the id on id, name, or name().
