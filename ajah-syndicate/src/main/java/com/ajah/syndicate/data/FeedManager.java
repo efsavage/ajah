@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.syndicate.Entry;
+import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
@@ -44,7 +44,7 @@ public class FeedManager {
 	private FeedDao feedDao;
 
 	@Autowired
-	private EntryManager entryManager;
+	private FeedEntryManager entryManager;
 
 	/**
 	 * Finds the most recent version of a feed for a {@link FeedSource}.
@@ -81,7 +81,7 @@ public class FeedManager {
 	 *             If the feed could not be saved.
 	 */
 	public void save(final Feed feed, final boolean saveEntries) throws DataOperationException {
-		final List<Entry> entries = new ArrayList<>();
+		final List<FeedEntry> entries = new ArrayList<>();
 		if (feed.getId() == null) {
 			feed.setId(new FeedId(UUID.randomUUID().toString()));
 			this.feedDao.insert(feed);
@@ -89,12 +89,12 @@ public class FeedManager {
 			this.feedDao.update(feed);
 		}
 		if (saveEntries && feed.getEntries() != null) {
-			for (final Entry entry : feed.getEntries()) {
+			for (final FeedEntry entry : feed.getEntries()) {
 				if (entry.getId() != null) {
 					entries.add(entry);
 					this.entryManager.save(entry);
 				} else {
-					final Entry match = this.entryManager.matchAndSave(entry);
+					final FeedEntry match = this.entryManager.matchAndSave(entry);
 					entries.add(match);
 				}
 			}

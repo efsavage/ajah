@@ -28,15 +28,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.ajah.html.HtmlUtils;
-import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
+import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.SyndicationException;
+import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.HashUtils;
 import com.ajah.util.data.XmlString;
 import com.ajah.util.net.AjahMimeType;
+import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -63,15 +65,15 @@ public class RomeUtils {
 	 *            The feed to create entries in.
 	 * @return The list of Entries, may be empty, will not be null.
 	 */
-	private static List<Entry> createEntries(final SyndFeed syndFeed, final Feed feed) {
+	private static List<FeedEntry> createEntries(final SyndFeed syndFeed, final Feed feed) {
 		@SuppressWarnings("unchecked")
 		final List<SyndEntry> syndEntries = syndFeed.getEntries();
 		if (syndEntries == null || syndEntries.size() < 1) {
 			return Collections.emptyList();
 		}
-		final List<Entry> entries = new ArrayList<>(syndEntries.size());
+		final List<FeedEntry> entries = new ArrayList<>(syndEntries.size());
 		for (final SyndEntry syndEntry : syndEntries) {
-			final Entry entry = createEntry(syndEntry, feed);
+			final FeedEntry entry = createEntry(syndEntry, feed);
 			entries.add(entry);
 		}
 		return entries;
@@ -86,13 +88,13 @@ public class RomeUtils {
 	 *            The feed to create the entry in.
 	 * @return The converted entry. Will not be null.
 	 */
-	private static Entry createEntry(final SyndEntry syndEntry, final Feed feed) {
-		final Entry entry = new Entry();
+	private static FeedEntry createEntry(final SyndEntry syndEntry, final Feed feed) {
+		final FeedEntry entry = new FeedEntry();
 		entry.setFeedId(feed.getId());
 		entry.setFeedSourceId(feed.getFeedSourceId());
 		entry.setAuthor(syndEntry.getAuthor());
 		entry.setTitle(syndEntry.getTitle());
-		entry.setHtmlUrl(syndEntry.getUri());
+		entry.setHtmlUrl(syndEntry.getLink());
 		entry.setHtmlUrlSha1(HashUtils.sha1Hex(syndEntry.getUri()));
 		entry.setPublished(syndEntry.getPublishedDate());
 		entry.setUpdated(syndEntry.getUpdatedDate());
@@ -112,7 +114,6 @@ public class RomeUtils {
 				entry.setContentType(AjahMimeType.get(content.getType()));
 			}
 			entry.setContent(content.getValue());
-			entry.setContentSha1(HashUtils.sha1Hex(content.getValue()));
 
 			if (!entry.getContentType().isText()) {
 				log.warning("Non-text type of content: " + content.getType());
@@ -139,6 +140,19 @@ public class RomeUtils {
 				log.warning("Non-text type of description: " + descriptionType + " [" + syndEntry.getDescription().getType() + "]");
 			}
 		}
+		@SuppressWarnings("unchecked")
+		List<SyndCategory> categories = syndEntry.getCategories();
+		if (!CollectionUtils.isEmpty(categories)) {
+			StringBuilder categoryString = new StringBuilder();
+			categoryString.append("|");
+			for (SyndCategory category : categories) {
+				categoryString.append(category.getName());
+				categoryString.append("|");
+			}
+			log.fine(categoryString.toString());
+			entry.setCategories(categoryString.toString());
+		}
+
 		if (StringUtils.isBlank(entry.getTitle())) {
 			if (!StringUtils.isBlank(entry.getDescription())) {
 				entry.setTitle(Jsoup.clean(StringUtils.truncate(entry.getDescription(), 100), Whitelist.simpleText()));
@@ -149,6 +163,9 @@ public class RomeUtils {
 		if (StringUtils.isBlank(entry.getContent()) && StringUtils.isBlank(entry.getDescription()) && StringUtils.isBlank(entry.getTitle())) {
 			log.warning("Title, contents and description are all null");
 		}
+
+		entry.setContentSha1(HashUtils.sha1Hex(entry.getContent() + entry.getDescription() + entry.getCategories()));
+
 		return entry;
 	}
 

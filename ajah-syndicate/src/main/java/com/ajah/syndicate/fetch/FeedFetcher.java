@@ -26,12 +26,12 @@ import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.syndicate.Entry;
 import com.ajah.syndicate.Feed;
+import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.PollStatus;
 import com.ajah.syndicate.SyndicationException;
-import com.ajah.syndicate.data.EntryManager;
+import com.ajah.syndicate.data.FeedEntryManager;
 import com.ajah.syndicate.data.FeedManager;
 import com.ajah.syndicate.data.FeedSourceManager;
 import com.ajah.syndicate.rome.RomeUtils;
@@ -73,7 +73,7 @@ public class FeedFetcher {
 	FeedManager feedManager;
 
 	@Autowired
-	EntryManager entryManager;
+	FeedEntryManager entryManager;
 
 	private final List<EntryListener> entryListeners = new ArrayList<>();
 
@@ -157,7 +157,7 @@ public class FeedFetcher {
 					log.fine("Found " + feed.getEntries().size() + " entries");
 					this.feedManager.save(feed, true);
 					for (final EntryListener entryListener : this.entryListeners) {
-						for (final Entry entry : feed.getEntries()) {
+						for (final FeedEntry entry : feed.getEntries()) {
 							entryListener.handle(entry);
 						}
 					}
@@ -168,7 +168,7 @@ public class FeedFetcher {
 						feedSource.setHtmlUrl(feed.getLink());
 					}
 				}
-				feedSource.setNextPoll(DateUtils.addHours(6));
+				feedSource.setNextPoll(DateUtils.addMinutes(feedSource.getFetchFrequency()));
 				this.feedSourceManager.save(feedSource);
 			} catch (SyndicationException | IOException | RuntimeException e) {
 				log.log(Level.WARNING, e.getMessage(), e);

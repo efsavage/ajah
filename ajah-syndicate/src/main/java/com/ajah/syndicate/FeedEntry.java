@@ -34,9 +34,9 @@ import com.ajah.util.net.AjahMimeType;
  */
 @Data
 @Audited
-public class Entry implements Identifiable<EntryId> {
+public class FeedEntry implements Identifiable<FeedEntryId> {
 
-	private EntryId id;
+	private FeedEntryId id;
 	private String title;
 	private String author;
 	private String htmlUrl;
@@ -50,6 +50,7 @@ public class Entry implements Identifiable<EntryId> {
 	private String description;
 	private FeedId feedId;
 	private FeedSourceId feedSourceId;
+	private String categories;
 
 	/**
 	 * Returns the SHA-1 of the contentUrl field, if it is available.

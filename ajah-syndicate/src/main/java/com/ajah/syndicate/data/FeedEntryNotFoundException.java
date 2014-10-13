@@ -17,7 +17,7 @@ package com.ajah.syndicate.data;
 
 import lombok.EqualsAndHashCode;
 
-import com.ajah.syndicate.EntryId;
+import com.ajah.syndicate.FeedEntryId;
 
 /**
  * Thrown when a entry is requested that does not exist.
@@ -26,9 +26,9 @@ import com.ajah.syndicate.EntryId;
  * 
  */
 @EqualsAndHashCode(callSuper = false)
-public class EntryNotFoundException extends Exception {
+public class FeedEntryNotFoundException extends Exception {
 
-	private final EntryId entryId;
+	private final FeedEntryId entryId;
 
 	/**
 	 * Thrown when a entry is requested by an ID that does not exist.
@@ -36,7 +36,7 @@ public class EntryNotFoundException extends Exception {
 	 * @param entryId
 	 *            Entry ID that was sought.
 	 */
-	public EntryNotFoundException(final EntryId entryId) {
+	public FeedEntryNotFoundException(final FeedEntryId entryId) {
 		super("id: " + entryId + " not found");
 		this.entryId = entryId;
 	}

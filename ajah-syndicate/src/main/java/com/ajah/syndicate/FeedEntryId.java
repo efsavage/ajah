@@ -26,7 +26,7 @@ import com.ajah.util.ToStringable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public class EntryId implements Serializable, ToStringable, FromStringable, Comparable<EntryId> {
+public class FeedEntryId implements Serializable, ToStringable, FromStringable, Comparable<FeedEntryId> {
 
 	private final String id;
 
@@ -36,7 +36,7 @@ public class EntryId implements Serializable, ToStringable, FromStringable, Comp
 	 * @param id
 	 *            UID of entry, cannot be null.
 	 */
-	public EntryId(final String id) {
+	public FeedEntryId(final String id) {
 		this.id = id;
 	}
 
@@ -44,7 +44,7 @@ public class EntryId implements Serializable, ToStringable, FromStringable, Comp
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(final EntryId other) {
+	public int compareTo(final FeedEntryId other) {
 		return this.id.compareTo(other.getId());
 	}
 
@@ -55,7 +55,7 @@ public class EntryId implements Serializable, ToStringable, FromStringable, Comp
 	 *            The other EntryId
 	 * @return The results of {@link String#compareTo(String)}
 	 */
-	public boolean equals(final EntryId other) {
+	public boolean equals(final FeedEntryId other) {
 		return this.id.equals(other.id);
 	}
 

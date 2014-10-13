@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
-import com.ajah.syndicate.data.EntryManager;
+import com.ajah.syndicate.data.FeedEntryManager;
 import com.ajah.syndicate.data.FeedManager;
 import com.ajah.syndicate.data.FeedSourceManager;
 
@@ -47,7 +47,7 @@ public class FeedDiscovery {
 	FeedManager feedManager;
 
 	@Autowired
-	EntryManager entryManager;
+	FeedEntryManager entryManager;
 
 	/**
 	 * Pulls a page and attempts to discover a feed for it via

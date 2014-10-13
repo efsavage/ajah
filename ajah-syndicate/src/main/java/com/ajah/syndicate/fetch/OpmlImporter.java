@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.SyndicationException;
-import com.ajah.syndicate.data.EntryManager;
+import com.ajah.syndicate.data.FeedEntryManager;
 import com.ajah.syndicate.data.FeedManager;
 import com.ajah.syndicate.data.FeedSourceManager;
 import com.ajah.syndicate.opml.Opml;
@@ -46,7 +46,7 @@ public class OpmlImporter {
 	FeedManager feedManager;
 
 	@Autowired
-	EntryManager entryManager;
+	FeedEntryManager entryManager;
 
 	/**
 	 * Imports an opml file and creates feed sources for it.

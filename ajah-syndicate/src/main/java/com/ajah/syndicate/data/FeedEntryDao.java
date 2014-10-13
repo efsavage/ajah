@@ -15,24 +15,26 @@
  */
 package com.ajah.syndicate.data;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.syndicate.Entry;
-import com.ajah.syndicate.EntryId;
+import com.ajah.syndicate.FeedEntry;
+import com.ajah.syndicate.FeedEntryId;
 import com.ajah.syndicate.FeedSourceId;
 
 /**
- * Dao for {@link Entry}s.
+ * Dao for {@link FeedEntry}s.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Repository
-public interface EntryDao extends AjahDao<EntryId, Entry> {
+public interface FeedEntryDao extends AjahDao<FeedEntryId, FeedEntry> {
 
 	/**
 	 * Update an entry that already exists.
@@ -44,10 +46,10 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 *             If the query could not be executed.
 	 */
 	@Override
-	DataOperationResult<Entry> update(final Entry entry) throws DataOperationException;
+	DataOperationResult<FeedEntry> update(final FeedEntry entry) throws DataOperationException;
 
 	/**
-	 * Finds an entry by {@link Entry#getHtmlUrlSha1()} and feed source.
+	 * Finds an entry by {@link FeedEntry#getHtmlUrlSha1()} and feed source.
 	 * 
 	 * @param feedSourceId
 	 *            The feed source.
@@ -56,8 +58,10 @@ public interface EntryDao extends AjahDao<EntryId, Entry> {
 	 * @return The matching entry, if found, otherwise null.
 	 * @throws DataOperationException
 	 */
-	Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException;
+	FeedEntry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException;
 
-	Entry findMatch(final FeedSourceId feedId, final String htmlUrlSha1, final String contentSha1) throws DataOperationException;
+	FeedEntry findMatch(final FeedSourceId feedId, final String htmlUrlSha1, final String contentSha1) throws DataOperationException;
+
+	List<FeedEntry> list(FeedSourceId feedSourceId, String[] categories, boolean orCategories) throws DataOperationException;
 
 }

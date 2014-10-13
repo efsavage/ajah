@@ -21,7 +21,7 @@ import lombok.extern.java.Log;
 
 import org.junit.Test;
 
-import com.ajah.syndicate.Entry;
+import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.SyndicationException;
@@ -59,7 +59,7 @@ public class SimpleFeedTest {
 		System.out.println(xml.toString());
 		final Feed feed = RomeUtils.createFeed(xml, feedSource);
 		log.info(feed.getEntries().size() + " entries");
-		for (final Entry entry : feed.getEntries()) {
+		for (final FeedEntry entry : feed.getEntries()) {
 			log.info("Title: " + entry.getTitle());
 			log.info("Author: " + entry.getAuthor());
 			log.info("Content: " + entry.getContent() + "\n");

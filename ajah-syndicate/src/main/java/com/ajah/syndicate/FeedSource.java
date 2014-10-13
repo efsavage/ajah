@@ -48,6 +48,8 @@ public class FeedSource implements Identifiable<FeedSourceId> {
 	private Date nextPoll;
 	private Date created;
 	private Date modified;
+	// Frequency in minutes
+	private int fetchFrequency;
 
 	/**
 	 * Returns the SHA-1 of the feedUrl field, if it is available.

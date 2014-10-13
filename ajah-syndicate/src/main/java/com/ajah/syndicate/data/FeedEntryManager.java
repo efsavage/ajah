@@ -16,6 +16,7 @@
 package com.ajah.syndicate.data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.extern.java.Log;
@@ -25,14 +26,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.syndicate.Entry;
-import com.ajah.syndicate.EntryId;
+import com.ajah.syndicate.FeedEntry;
+import com.ajah.syndicate.FeedEntryId;
 import com.ajah.syndicate.FeedSourceId;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.data.HashUtils;
 
 /**
- * Manages persistence of {@link Entry}s.
+ * Manages persistence of {@link FeedEntry}s.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -41,10 +42,10 @@ import com.ajah.util.data.HashUtils;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @Log
-public class EntryManager {
+public class FeedEntryManager {
 
 	@Autowired
-	private EntryDao entryDao;
+	private FeedEntryDao entryDao;
 
 	/**
 	 * Fetches an Entry by the SHA-1 of it's html url.
@@ -56,7 +57,7 @@ public class EntryManager {
 	 * @return The Entry, if found, otherwise null.
 	 * @throws DataOperationException
 	 */
-	public Entry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException {
+	public FeedEntry findByHtmlUrlSha1(final FeedSourceId feedSourceId, final String htmlUrlSha1) throws DataOperationException {
 		// TODO this field may not necessarily be unique, order by something?
 		return this.entryDao.findByHtmlUrlSha1(feedSourceId, htmlUrlSha1);
 	}
@@ -69,13 +70,13 @@ public class EntryManager {
 	 * @return The entry, will not be null.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
-	 * @throws EntryNotFoundException
+	 * @throws FeedEntryNotFoundException
 	 *             If no entry could be found with the specified ID.
 	 */
-	public Entry load(final EntryId entryId) throws DataOperationException, EntryNotFoundException {
-		final Entry entry = this.entryDao.load(entryId);
+	public FeedEntry load(final FeedEntryId entryId) throws DataOperationException, FeedEntryNotFoundException {
+		final FeedEntry entry = this.entryDao.load(entryId);
 		if (entry == null) {
-			throw new EntryNotFoundException(entryId);
+			throw new FeedEntryNotFoundException(entryId);
 		}
 		return entry;
 	}
@@ -89,8 +90,8 @@ public class EntryManager {
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
-	public Entry matchAndSave(final Entry entry) throws DataOperationException {
-		Entry match = this.entryDao.findMatch(entry.getFeedSourceId(), entry.getHtmlUrlSha1(), entry.getContentSha1());
+	public FeedEntry matchAndSave(final FeedEntry entry) throws DataOperationException {
+		FeedEntry match = this.entryDao.findMatch(entry.getFeedSourceId(), entry.getHtmlUrlSha1(), entry.getContentSha1());
 		if (match != null) {
 			log.finest("Exact match found replacing");
 			return match;
@@ -99,7 +100,9 @@ public class EntryManager {
 		match = this.entryDao.findByHtmlUrlSha1(entry.getFeedSourceId(), entry.getHtmlUrlSha1());
 		if (match != null) {
 			match.setContent(entry.getContent());
-			match.setContentSha1(HashUtils.sha1Hex(entry.getContent()));
+			match.setDescription(entry.getDescription());
+			match.setCategories(entry.getCategories());
+			match.setContentSha1(HashUtils.sha1Hex(entry.getContent() + entry.getDescription() + entry.getCategories()));
 			match.setFeedId(entry.getFeedId());
 			log.finest("Match found updating and replacing");
 			save(match);
@@ -120,7 +123,7 @@ public class EntryManager {
 	 * @throws DataOperationException
 	 *             if the entry could not be saved.
 	 */
-	public void save(final Entry entry) throws DataOperationException {
+	public void save(final FeedEntry entry) throws DataOperationException {
 		if (entry.getPublished().getTime() < 0) {
 			log.warning("Very old date, ignoring");
 			entry.setPublished(new Date(0));
@@ -131,11 +134,30 @@ public class EntryManager {
 			entry.setCreated(new Date());
 		}
 		if (entry.getId() == null) {
-			entry.setId(new EntryId(UUID.randomUUID().toString()));
+			entry.setId(new FeedEntryId(UUID.randomUUID().toString()));
 			this.entryDao.insert(entry);
 		} else {
 			this.entryDao.update(entry);
 		}
+	}
+
+	/**
+	 * Finds a list of entries for a feed source with a specified set of
+	 * tags/categories.
+	 * 
+	 * @param feedSourceId
+	 *            The feed source to search on.
+	 * @param categories
+	 *            The categories the entries must have.
+	 * @param orCategories
+	 *            If true, the categories are an OR and only one must match,
+	 *            otherwise the entry must match all of them.
+	 * @return List of matching entries.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<FeedEntry> list(FeedSourceId feedSourceId, String[] categories, boolean orCategories) throws DataOperationException {
+		return this.entryDao.list(feedSourceId, categories, orCategories);
 	}
 
 }

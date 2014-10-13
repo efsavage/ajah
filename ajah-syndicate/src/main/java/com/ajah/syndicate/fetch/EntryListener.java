@@ -15,7 +15,7 @@
  */
 package com.ajah.syndicate.fetch;
 
-import com.ajah.syndicate.Entry;
+import com.ajah.syndicate.FeedEntry;
 
 /**
  * A listener that is fired when a new or updated entry is found.
@@ -36,6 +36,6 @@ public interface EntryListener {
 	 * @param entry
 	 *            The new or update entry.
 	 */
-	void handle(final Entry entry);
+	void handle(final FeedEntry entry);
 
 }

@@ -39,7 +39,7 @@ public class Feed implements Identifiable<FeedId> {
 	private String author;
 	private String link;
 	private String url;
-	private List<Entry> entries;
+	private List<FeedEntry> entries;
 	private Date created;
 	private Date published;
 	private String sha1;
