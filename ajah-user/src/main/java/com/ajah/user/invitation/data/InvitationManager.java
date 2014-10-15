@@ -129,23 +129,32 @@ public class InvitationManager {
 	 *            The address the invitation is being sent to, required.
 	 * @param address
 	 *            The type of invitation, required.
+	 * @param message
+	 * @param targetId
+	 * @param targetType
 	 * @param channel
 	 *            The delivery channel for the invite.
 	 * @param type
 	 *            The purpose of the invitation.
 	 * @param sender
 	 *            The delivery mechanism.
+	 * @param lang 
 	 * @return The result of the creation, which will include the new invitation
 	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<Invitation> create(User user, UserInfo userInfo, String address, InvitationChannel channel, InvitationType type, InvitationSender sender) throws DataOperationException {
+	public DataOperationResult<Invitation> create(User user, UserInfo userInfo, String address, String targetType, String targetId, String message, InvitationChannel channel, InvitationType type,
+			InvitationSender sender, String lang) throws DataOperationException {
 		Invitation invitation = new Invitation();
 		invitation.setUserId(user.getId());
 		invitation.setAddress(address);
 		invitation.setChannel(channel);
 		invitation.setType(type);
+		invitation.setTargetType(targetType);
+		invitation.setTargetId(targetId);
+		invitation.setMessage(message);
+		invitation.setLang(lang);
 		invitation.setStatus(InvitationStatus.UNSENT);
 		DataOperationResult<Invitation> result = save(invitation);
 		sender.send(invitation, user, userInfo);

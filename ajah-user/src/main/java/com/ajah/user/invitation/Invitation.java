@@ -46,5 +46,7 @@ public class Invitation implements Identifiable<InvitationId> {
 	private String reference;
 	private String targetType;
 	private String targetId;
+	private String message;
+	private String lang;
 
 }
