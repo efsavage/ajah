@@ -296,7 +296,9 @@ public class FileUtils {
 	 */
 	public static int write(final File file, final Collection<String> lines) throws IOException {
 		// TODO Write to temp file then rename
-		file.getParentFile().mkdirs();
+		if (file.getParentFile() != null) {
+			file.getParentFile().mkdirs();
+		}
 		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			for (final String line : lines) {
 				out.write(line.getBytes());
