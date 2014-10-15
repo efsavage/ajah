@@ -44,5 +44,7 @@ public class Invitation implements Identifiable<InvitationId> {
 	private Date responded;
 	private int sendCount;
 	private String reference;
+	private String targetType;
+	private String targetId;
 
 }
