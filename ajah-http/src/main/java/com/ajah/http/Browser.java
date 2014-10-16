@@ -46,6 +46,10 @@ public enum Browser {
 	 */
 	SAFARI(5, "Safari", "SAF"),
 	/**
+	 * Facebook
+	 */
+	FACEBOOK(6, "Facebook", "FB"),
+	/**
 	 * Unknown
 	 */
 	UNKNOWN(0, "Unknown", "?");
@@ -58,7 +62,11 @@ public enum Browser {
 	 * @return The browser, if one can be deduced, or {@link #UNKNOWN}.
 	 */
 	public static Browser get(final String userAgent) {
-		if (userAgent.contains("(KHTML, like Gecko) Chrome/")) {
+		if (userAgent.contains("facebookexternalhit/")) {
+			return FACEBOOK;
+		} else if (userAgent.contains("Facebot")) {
+			return FACEBOOK;
+		} else if (userAgent.contains("(KHTML, like Gecko) Chrome/")) {
 			return CHROME;
 		} else if (userAgent.contains("(KHTML,like Gecko) Chrome/")) {
 			return CHROME;
