@@ -320,7 +320,7 @@
 		<module>../ajah-rest-api</module>
 		<module>../ajah-report</module>
 		<module>../ajah-sitemap</module>
-		<module>../ajah-ftp</module>
+		
 	</modules>
 
 	<licenses>
