@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.Data;
 
 import com.ajah.event.Event;
+import com.ajah.http.Browser;
 import com.ajah.http.HttpMethod;
 import com.ajah.http.UserAgent;
 
@@ -49,6 +50,7 @@ public class RequestEvent implements Event<RequestEventId> {
 	private String queryString;
 	private String ip;
 	private UserAgent userAgent;
+	private Browser browser;
 
 	/**
 	 * Populates a RequestEvent from a servlet request.
@@ -63,6 +65,7 @@ public class RequestEvent implements Event<RequestEventId> {
 		this.queryString = request.getQueryString();
 		this.ip = request.getRemoteAddr();
 		this.userAgent = UserAgent.from(request.getHeader("User-Agent"));
+		this.browser = userAgent.getBrowser(); 
 	}
 
 	/**

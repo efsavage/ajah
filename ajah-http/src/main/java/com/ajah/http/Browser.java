@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package com.ajah.http;
 
+import com.ajah.util.IdentifiableEnum;
+
 /**
  * Enum of browser types. Note that this class is currently incomplete and only
  * does some basic tests for Chrome.
@@ -23,36 +25,44 @@ package com.ajah.http;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public enum Browser {
+public enum Browser implements IdentifiableEnum<String> {
 
 	/**
 	 * Internet Explorer
 	 */
-	IE(1, "Internet Explorer", "IE"),
+	IE("1", "Internet Explorer", "IE", false),
 	/**
 	 * Mozilla Firefox
 	 */
-	FIREFOX(2, "Firefox", "FF"),
+	FIREFOX("2", "Firefox", "FF", false),
 	/**
 	 * Google Chrome
 	 */
-	CHROME(3, "Chrome", "CHR"),
+	CHROME("3", "Chrome", "CHR", false),
 	/**
 	 * Opera
 	 */
-	OPERA(4, "Opera", "OP"),
+	OPERA("4", "Opera", "OP", false),
 	/**
 	 * Safari
 	 */
-	SAFARI(5, "Safari", "SAF"),
+	SAFARI("5", "Safari", "SAF", false),
 	/**
 	 * Facebook
 	 */
-	FACEBOOK(6, "Facebook", "FB"),
+	FACEBOOK("1000", "Facebook", "FB", true),
+	/**
+	 * Google(bot)
+	 */
+	GOOGLE("1002", "Google", "GOOG", true),
+	/**
+	 * Facebook
+	 */
+	ELB("1001", "Amazon ELB", "ELB", true),
 	/**
 	 * Unknown
 	 */
-	UNKNOWN(0, "Unknown", "?");
+	UNKNOWN("0", "Unknown", "?", false);
 
 	/**
 	 * Looks at user agent string and extracts browser.
@@ -66,6 +76,10 @@ public enum Browser {
 			return FACEBOOK;
 		} else if (userAgent.contains("Facebot")) {
 			return FACEBOOK;
+		} else if (userAgent.contains("ELB-HealthChecker/")) {
+			return ELB;
+		} else if (userAgent.contains("https://developers.google.com/+/web/snippet/")) {
+			return GOOGLE;
 		} else if (userAgent.contains("(KHTML, like Gecko) Chrome/")) {
 			return CHROME;
 		} else if (userAgent.contains("(KHTML,like Gecko) Chrome/")) {
@@ -84,16 +98,16 @@ public enum Browser {
 		return UNKNOWN;
 	}
 
-	private final int id;
+	private final String id;
 	private final String name;
-
 	private final String abbreviation;
+	private final boolean bot;
 
-	private Browser(final int id, final String name, final String abbreviation) {
+	private Browser(final String id, final String name, final String abbreviation, final boolean bot) {
 		this.id = id;
 		this.name = name;
 		this.abbreviation = abbreviation;
-
+		this.bot = bot;
 	}
 
 	/**
@@ -111,7 +125,8 @@ public enum Browser {
 	 * 
 	 * @return the id The unique internal ID of the browser.
 	 */
-	public int getId() {
+	@Override
+	public String getId() {
 		return this.id;
 	}
 
@@ -122,6 +137,25 @@ public enum Browser {
 	 */
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * Is ths a known bot or crawler?
+	 * 
+	 * @return true if this "browser" is known bot or crawler.
+	 */
+	public boolean isBot() {
+		return bot;
+	}
+
+	@Override
+	public void setId(String id) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String getCode() {
+		return abbreviation;
 	}
 
 }
