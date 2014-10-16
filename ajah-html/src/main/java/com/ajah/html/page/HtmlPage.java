@@ -25,6 +25,7 @@ import com.ajah.html.element.Html;
 import com.ajah.html.element.Paragraph;
 import com.ajah.html.element.UnorderedList;
 import com.ajah.html.element.head.Head;
+import com.ajah.html.element.head.Meta;
 import com.ajah.html.element.head.Title;
 import com.ajah.util.AjahUtils;
 
@@ -110,7 +111,7 @@ public class HtmlPage {
 	}
 
 	/**
-	 * Adds a new {@link Title} element to this page's {@link Body} element.
+	 * Adds a new {@link Title} element to this page's {@link Head} element.
 	 * 
 	 * @param title
 	 *            The text of the title element.
@@ -129,6 +130,35 @@ public class HtmlPage {
 	 */
 	public void add(UnorderedList unorderedList) {
 		this.body.add(unorderedList);
+	}
+
+	/**
+	 * Adds a new {@link Meta} element to this page's {@link Head} element.
+	 * 
+	 * @param property
+	 *            The value of the property attribute.
+	 * @param content
+	 *            The value of the content attribute.
+	 * @return This page.
+	 */
+	public HtmlPage meta(String property, String content) {
+		this.head.add(new Meta(property, null, content));
+		return this;
+	}
+
+	/**
+	 * Adds a new {@link Meta} "refresh" element to this page's {@link Head}
+	 * element.
+	 * 
+	 * @param property
+	 *            The value of the property attribute.
+	 * @param content
+	 *            The value of the content attribute.
+	 * @return This page.
+	 */
+	public HtmlPage metaRefresh(int delay, String url) {
+		this.head.add(new Meta(null, "refresh", delay + "; url=" + url));
+		return this;
 	}
 
 }
