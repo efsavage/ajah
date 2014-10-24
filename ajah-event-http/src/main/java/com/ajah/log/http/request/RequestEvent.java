@@ -51,6 +51,9 @@ public class RequestEvent implements Event<RequestEventId> {
 	private String ip;
 	private UserAgent userAgent;
 	private Browser browser;
+	private String userId;
+	private int statusCode;
+	private String contentType;
 
 	/**
 	 * Populates a RequestEvent from a servlet request.
@@ -65,7 +68,7 @@ public class RequestEvent implements Event<RequestEventId> {
 		this.queryString = request.getQueryString();
 		this.ip = request.getRemoteAddr();
 		this.userAgent = UserAgent.from(request.getHeader("User-Agent"));
-		this.browser = userAgent.getBrowser(); 
+		this.browser = userAgent.getBrowser();
 	}
 
 	/**

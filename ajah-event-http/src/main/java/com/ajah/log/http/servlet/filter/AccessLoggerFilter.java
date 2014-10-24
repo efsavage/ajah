@@ -82,6 +82,8 @@ public class AccessLoggerFilter extends AjahFilter {
 		try {
 			chain.doFilter(request, response);
 		} finally {
+			requestEvent.setStatusCode(response.getStatus());
+			requestEvent.setContentType(response.getContentType());
 			requestEvent.complete();
 			if (isLoggable(request)) {
 				log.finest(requestEvent.getUri() + " took " + requestEvent.getDuration() + "ms");
