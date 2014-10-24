@@ -16,6 +16,7 @@
 package com.ajah.http;
 
 import com.ajah.util.IdentifiableEnum;
+import com.ajah.util.StringUtils;
 
 /**
  * Enum of browser types. Note that this class is currently incomplete and only
@@ -56,9 +57,17 @@ public enum Browser implements IdentifiableEnum<String> {
 	 */
 	GOOGLE("1002", "Google", "GOOG", true),
 	/**
-	 * Facebook
+	 * Amazon's ELB status check
 	 */
 	ELB("1001", "Amazon ELB", "ELB", true),
+	/**
+	 * Pingdom
+	 */
+	PINGDOM("1003", "Pingdom", "PING", true),
+	/**
+	 * Runscope
+	 */
+	RUNSCOPE("1004", "Runscope", "RNSC", true),
 	/**
 	 * Unknown
 	 */
@@ -72,12 +81,19 @@ public enum Browser implements IdentifiableEnum<String> {
 	 * @return The browser, if one can be deduced, or {@link #UNKNOWN}.
 	 */
 	public static Browser get(final String userAgent) {
+		if (StringUtils.isBlank(userAgent)) {
+			return UNKNOWN;
+		}
 		if (userAgent.contains("facebookexternalhit/")) {
 			return FACEBOOK;
 		} else if (userAgent.contains("Facebot")) {
 			return FACEBOOK;
 		} else if (userAgent.contains("ELB-HealthChecker/")) {
 			return ELB;
+		} else if (userAgent.contains("Pingdom.com_bot_version")) {
+			return PINGDOM;
+		} else if (userAgent.contains("runscope-radar")) {
+			return RUNSCOPE;
 		} else if (userAgent.contains("https://developers.google.com/+/web/snippet/")) {
 			return GOOGLE;
 		} else if (userAgent.contains("(KHTML, like Gecko) Chrome/")) {
