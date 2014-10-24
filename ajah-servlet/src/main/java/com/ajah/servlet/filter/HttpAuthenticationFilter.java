@@ -83,11 +83,20 @@ public class HttpAuthenticationFilter extends BaseFilter {
 		final HttpServletRequest request = (HttpServletRequest) req;
 		final HttpServletResponse response = (HttpServletResponse) res;
 		final String auth = request.getHeader("Authorization");
-		if (!allowUser(auth, username, password)) {
+		// Enable params to allow things like status checkers and scripts to
+		// access the app
+		if (StringUtils.isBlank(auth) && Config.i.getBoolean("ajah.http-auth.enable-params", false) && username.equals(request.getParameter("user"))
+				&& password.equals(request.getParameter("password"))) {
+			super.doFilter(request, response, chain);
+		} else if (allowUser(auth, username, password)) {
+			super.doFilter(request, response, chain);
+		} else {
+			log.finest("Supplied auth header: " + auth);
+			log.finest("Params enabled: " + Config.i.getBoolean("ajah.http-auth.enable-params", false));
+			log.finest("Supplied username: " + request.getParameter("user"));
+			log.finest("Supplied password: " + request.getParameter("password"));
 			response.setHeader("WWW-Authenticate", "BASIC realm=\"" + realm + "\"");
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-		} else {
-			super.doFilter(request, response, chain);
 		}
 	}
 
