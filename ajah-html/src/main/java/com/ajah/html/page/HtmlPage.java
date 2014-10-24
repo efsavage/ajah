@@ -150,10 +150,10 @@ public class HtmlPage {
 	 * Adds a new {@link Meta} "refresh" element to this page's {@link Head}
 	 * element.
 	 * 
-	 * @param property
-	 *            The value of the property attribute.
-	 * @param content
-	 *            The value of the content attribute.
+	 * @param delay
+	 *            The delay before redirecting.
+	 * @param url
+	 *            The url to redirect to.
 	 * @return This page.
 	 */
 	public HtmlPage metaRefresh(int delay, String url) {
