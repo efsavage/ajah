@@ -140,6 +140,15 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				return prop;
 			}
 		}
+		for (final PropertyDescriptor prop : props) {
+			if (prop.getName().equalsIgnoreCase(field.getName())) {
+				return prop;
+			}
+		}
+		log.warning("No property descriptor found for field " + field.getName() + " in:");
+		for (final PropertyDescriptor prop : props) {
+			log.warning(" - " + prop.getName());
+		}
 		return null;
 	}
 
@@ -1392,6 +1401,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	private void propSet(final T entity, final PropertyDescriptor prop, final Object value) {
 		try {
+			AjahUtils.requireParam(prop, "prop");
 			final Method setter = prop.getWriteMethod();
 			if (setter == null) {
 				throw new IllegalArgumentException("No setter found for " + prop.getName());
@@ -1401,7 +1411,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		} catch (final IllegalArgumentException e) {
 			// TODO See if we're trying to set a null on a primitive
-			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
+			if (prop == null) {
+				log.log(Level.SEVERE, e.getMessage(), e);
+			} else {
+				log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
+			}
 		} catch (final InvocationTargetException e) {
 			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		}
