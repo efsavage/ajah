@@ -35,6 +35,7 @@ public interface UserSettingDao extends AjahDao<UserSettingId, UserSetting> {
 
 	/**
 	 * Returns a list of {@link UserSetting}s that match the specified criteria.
+	 * @param userId 
 	 * 
 	 * @param type
 	 *            The type of userSetting, optional.
@@ -48,7 +49,7 @@ public interface UserSettingDao extends AjahDao<UserSettingId, UserSetting> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<UserSetting> list(final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException;
+	List<UserSetting> list(UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.

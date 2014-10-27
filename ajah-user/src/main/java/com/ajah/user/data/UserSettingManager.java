@@ -118,6 +118,8 @@ public class UserSettingManager {
 	/**
 	 * Returns a list of {@link UserSetting}s that match the specified criteria.
 	 * 
+	 * @param userId
+	 * 
 	 * @param type
 	 *            The type of userSetting, optional.
 	 * @param status
@@ -130,8 +132,8 @@ public class UserSettingManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<UserSetting> list(final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
-		return this.userSettingDao.list(type, status, page, count);
+	public List<UserSetting> list(UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
+		return this.userSettingDao.list(userId, type, status, page, count);
 	}
 
 	/**
@@ -191,12 +193,16 @@ public class UserSettingManager {
 			userSetting.setType(UserSettingType.STANDARD);
 			userSetting.setStatus(UserSettingStatus.ACTIVE);
 		}
-		if (CompareUtils.compare(value, userSetting.getValue()) == 0) {
+		if (CompareUtils.compare(value, userSetting.getValue(), true) == 0) {
 			return userSetting;
 		}
 		userSetting.setValue(value);
 		save(userSetting);
 		return userSetting;
+	}
+
+	public void set(UserId userId, String name, Boolean value) throws DataOperationException {
+		set(userId, name, value == null ? null : String.valueOf(value));
 	}
 
 	public void set(UserId userId, String name, boolean value) throws DataOperationException {
