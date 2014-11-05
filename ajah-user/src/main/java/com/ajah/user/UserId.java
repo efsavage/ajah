@@ -17,6 +17,8 @@ package com.ajah.user;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 
@@ -26,6 +28,7 @@ import com.ajah.util.ToStringable;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
+@Data
 public class UserId implements Serializable, ToStringable, FromStringable, Comparable<UserId> {
 
 	private final String id;
@@ -49,34 +52,12 @@ public class UserId implements Serializable, ToStringable, FromStringable, Compa
 	}
 
 	/**
-	 * Compares the wrapped string values.
-	 * 
-	 * @param other
-	 *            The other UserId
-	 * @return The results of {@link String#compareTo(String)}
-	 */
-	public boolean equals(final UserId other) {
-		return this.id.equals(other.id);
-	}
-
-	/**
 	 * Returns the String passed into the constructor.
 	 * 
 	 * @return The String passed into the constructor.
 	 */
 	public String getId() {
 		return this.id;
-	}
-
-	/**
-	 * Returns consistent hashcode based on (but different from) the wrapped
-	 * string.
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return 9525 + this.id.hashCode();
 	}
 
 	/**
