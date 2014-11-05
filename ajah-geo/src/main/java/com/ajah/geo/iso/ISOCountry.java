@@ -171,6 +171,12 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	ES("es", "ESP", "Spain"),
 	/** Ethiopia */
 	ET("et", "ETH", "Ethiopia"),
+	/** 
+	 * European Union
+	 * 
+	 * <strong>NOT STANDARD</strong>
+	 * */
+	EU("eu", "EUR", "European Union"),
 	/** Finland */
 	FI("fi", "FIN", "Finland"),
 	/** Fiji */
