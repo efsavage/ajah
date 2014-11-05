@@ -15,6 +15,7 @@
  */
 package com.ajah.user.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -458,6 +459,15 @@ public class UserManager {
 
 	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
 		return this.userDao.list(username, firstName, lastName, status, sort, order, page, count);
+	}
+
+	public List<User> load(List<UserId> userIds) throws UserNotFoundException, DataOperationException {
+		// TODO Optimize this to a single query?
+		List<User> users = new ArrayList<User>();
+		for (UserId userId : userIds) {
+			users.add(load(userId));
+		}
+		return users;
 	}
 
 }
