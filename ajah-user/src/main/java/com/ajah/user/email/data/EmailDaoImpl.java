@@ -29,6 +29,7 @@ import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailStatus;
 import com.ajah.user.email.EmailType;
 import com.ajah.util.AjahUtils;
+import com.ajah.util.StringUtils;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -73,6 +74,26 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 		}
 		if (status != null) {
 			criteria.eq("status", status);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
+	}
+
+	@Override
+	public int searchCount(String address) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (!StringUtils.isBlank(address)) {
+			String pattern = address.replaceAll("\\*", "%");
+			criteria.like("address", pattern);
+		}
+		return super.count(criteria);
+	}
+
+	@Override
+	public List<Email> list(String address,int page, int count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (!StringUtils.isBlank(address)) {
+			String pattern = address.replaceAll("\\*", "%");
+			criteria.like("address", pattern);
 		}
 		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
 	}

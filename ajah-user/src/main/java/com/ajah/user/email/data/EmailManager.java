@@ -206,4 +206,12 @@ public class EmailManager {
 		return result;
 	}
 
+	public int searchCount(String address) throws DataOperationException {
+		return this.emailDao.searchCount(address);
+	}
+
+	public List<Email> list(String address, int page, int count) throws DataOperationException {
+		return this.emailDao.list(address, page, count);
+	}
+
 }

@@ -79,4 +79,8 @@ public interface EmailDao extends AjahDao<EmailId, Email> {
 	 */
 	Email find(final EmailAddress emailAddress) throws DataOperationException;
 
+	int searchCount(String address) throws DataOperationException;
+
+	List<Email> list(String address, int page, int count) throws DataOperationException;
+	
 }
