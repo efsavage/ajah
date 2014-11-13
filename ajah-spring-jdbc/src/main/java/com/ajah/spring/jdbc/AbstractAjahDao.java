@@ -1244,7 +1244,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	private void loadColumns() {
+	private synchronized void loadColumns() {
 		log.finest("Loading columns");
 		if (this.tableName == null) {
 			this.tableName = JDBCMapperUtils.getTableName(getTargetClass());
