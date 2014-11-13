@@ -360,7 +360,6 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	@Cacheable("User")
 	public User load(final UserId userId) throws UserNotFoundException, DataOperationException {
 		final User user = this.userDao.load(userId);
 		if (user == null) {
