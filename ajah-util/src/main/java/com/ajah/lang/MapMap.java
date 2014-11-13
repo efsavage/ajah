@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-14 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package com.ajah.lang;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This classes makes storing maps of maps easier.
@@ -30,7 +30,7 @@ import java.util.Map;
  * @param <V>
  *            The value.
  */
-public class MapMap<K1, K2, V> extends HashMap<K1, Map<K2, V>> {
+public class MapMap<K1, K2, V> extends ConcurrentHashMap<K1, Map<K2, V>> {
 
 	/**
 	 * Fetches a value based on both keys. Avoids the possible NPE caused by
@@ -64,7 +64,7 @@ public class MapMap<K1, K2, V> extends HashMap<K1, Map<K2, V>> {
 	public void put(final K1 key1, final K2 key2, final V value) {
 		Map<K2, V> innerMap = get(key1);
 		if (innerMap == null) {
-			innerMap = new HashMap<>();
+			innerMap = new ConcurrentHashMap<>();
 			put(key1, innerMap);
 		}
 		innerMap.put(key2, value);

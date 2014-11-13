@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-14 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
@@ -34,7 +35,7 @@ import lombok.extern.java.Log;
  * @param <V>
  */
 @Log
-public class ListMap<K, V> extends HashMap<K, List<V>> {
+public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
 
 	/**
 	 * Returns the list found at the specified key or an empty list. Avoids
