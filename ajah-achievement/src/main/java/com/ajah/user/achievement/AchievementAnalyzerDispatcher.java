@@ -15,10 +15,8 @@
  */
 package com.ajah.user.achievement;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -65,7 +63,6 @@ public class AchievementAnalyzerDispatcher implements ApplicationContextAware {
 
 	private synchronized void init() throws DataOperationException {
 		ListMap<String, Achievement> myTagCache = new ListMap<>();
-		Map<Achievement, AchievementAnalyzer> myAnalyzerCache = new HashMap<>();
 		List<Achievement> achievements = null;
 		while (achievements == null || achievements.size() == 100) {
 			achievements = this.achievementManager.list(null, AchievementStatus.ACTIVE, 0, 100);
@@ -98,6 +95,8 @@ public class AchievementAnalyzerDispatcher implements ApplicationContextAware {
 	 *            The user to check for, required.
 	 * @param tags
 	 *            The tags to match achievements on, required.
+	 * @return true if the analyzers were successfully dispatched, otherwise
+	 *         false
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
@@ -126,7 +125,7 @@ public class AchievementAnalyzerDispatcher implements ApplicationContextAware {
 				achievement.getAchievementAnalyzer().analyze(userId, achievement, achievementUser);
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/**
