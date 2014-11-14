@@ -136,6 +136,18 @@ public abstract class AbstractCriteria<C> {
 		return eq(StringUtils.splitCamelCase(value.getClass().getSimpleName()).replaceAll("\\W+", "_").toLowerCase(), value.toString());
 	}
 
+	/**
+	 * A field that must be NULL.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public C isNull(final String field) {
+		AjahUtils.requireParam(field, "field");
+		return eq(field, (String) null);
+	}
+
 	protected abstract C getThis();
 
 }
