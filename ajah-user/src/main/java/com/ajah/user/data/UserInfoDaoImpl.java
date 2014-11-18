@@ -48,12 +48,12 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 			public MapMap<LocalDate, String, Integer> extractData(ResultSet rs) throws SQLException, DataAccessException {
 				MapMap<LocalDate, String, Integer> mapMap = new MapMap<LocalDate, String, Integer>();
 				while (rs.next()) {
-					mapMap.put(new LocalDate(rs.getString("date")), rs.getString("source"), rs.getInt("total"));
+					String source = rs.getString("source") == null ? "mg" : rs.getString("source");
+					mapMap.put(new LocalDate(rs.getString("date")), source, rs.getInt("total"));
 				}
 				return mapMap;
 			}
-			
+
 		});
 	}
-
 }
