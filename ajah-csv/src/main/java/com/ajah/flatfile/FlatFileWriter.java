@@ -50,6 +50,9 @@ public class FlatFileWriter implements Closeable {
 	@Setter
 	private boolean flushEveryLine;
 	private int lineNumber;
+	@Getter
+	@Setter
+	private boolean columnsLocked;
 
 	@Getter
 	@Setter
@@ -66,6 +69,9 @@ public class FlatFileWriter implements Closeable {
 	}
 
 	public void addColumn(final String name, final boolean required) {
+		if (columnsLocked) {
+			throw new IllegalArgumentException("Columns are locked");
+		}
 		if (this.map.get(name) != null) {
 			throw new IllegalArgumentException("Duplicate column name " + name);
 		}
@@ -75,6 +81,9 @@ public class FlatFileWriter implements Closeable {
 	}
 
 	public void addColumn(final String name, final String defaultValue) {
+		if (columnsLocked) {
+			throw new IllegalArgumentException("Columns are locked");
+		}
 		if (this.map.get(name) != null) {
 			throw new IllegalArgumentException("Duplicate column name " + name);
 		}
