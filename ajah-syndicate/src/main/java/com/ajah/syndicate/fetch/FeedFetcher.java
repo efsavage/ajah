@@ -136,11 +136,22 @@ public class FeedFetcher {
 	 */
 	public void run() throws InterruptedException, DataOperationException {
 		while (true) {
-			final FeedSource feedSource = this.feedSourceManager.getStaleFeedSource();
+			poll();
+		}
+
+	}
+
+	/**
+	 * Polls until there are no more stale feeds.
+	 * 
+	 * @throws DataOperationException
+	 */
+	public void poll() throws DataOperationException {
+		while (true) {
+			FeedSource feedSource = this.feedSourceManager.getStaleFeedSource();
 			if (feedSource == null) {
 				log.finest("No feed source to poll");
-				Thread.sleep(60000);
-				continue;
+				return;
 			}
 			log.fine("Polling " + feedSource.getTitle() + " [" + feedSource.getId() + "]");
 
@@ -176,7 +187,6 @@ public class FeedFetcher {
 				this.feedSourceManager.save(feedSource);
 			}
 		}
-
 	}
 
 }
