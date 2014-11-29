@@ -62,6 +62,9 @@ public class AchievementAnalyzerDispatcher implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 
 	private synchronized void init() throws DataOperationException {
+		if (this.tagCache != null) {
+			return;
+		}
 		ListMap<String, Achievement> myTagCache = new ListMap<>();
 		List<Achievement> achievements = null;
 		while (achievements == null || achievements.size() == 100) {
