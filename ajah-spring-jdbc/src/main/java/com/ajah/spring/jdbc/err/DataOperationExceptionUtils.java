@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ public class DataOperationExceptionUtils {
 	static final Pattern mysqlUnknownTable = Pattern.compile("Table '(.*?)' doesn't exist");
 	static final Pattern mysqlNotNullColumn = Pattern.compile("Column '(.*?)' cannot be null");
 	static final Pattern mysqlOutOfRangeColumn = Pattern.compile("Out of range value for column '(.*?)' at row");
+	static final Pattern mysqlOutLockWaitTimeout = Pattern.compile("Lock wait timeout exceeded; try restarting transaction");
 
 	/**
 	 * Translates a Spring JDBC exception to an Ajah exception.
@@ -75,6 +76,12 @@ public class DataOperationExceptionUtils {
 			System.out.println(e.getCause().getMessage());
 			return new QuerySyntaxException(e);
 		}
+		if (e instanceof org.springframework.dao.CannotAcquireLockException) {
+			if (e.getCause() != null && e.getCause().getMessage().matches(mysqlOutLockWaitTimeout.pattern())) {
+				return new LockWaitTimeoutException(e);
+			}
+		}
+
 		log.warning("Unknown: " + e.getClass().getName());
 		return new UnknownDataOperationException(e);
 	}
