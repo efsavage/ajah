@@ -18,35 +18,31 @@ package com.ajah.user.signup;
 import com.ajah.util.IdentifiableEnum;
 
 /**
- * Valid states of {@link SignUp} entities.
+ * Valid types of SignUp entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum SignUpStatus implements IdentifiableEnum<String> {
+public enum SignUpType implements IdentifiableEnum<String> {
 
 	/**
-	 * Success.
+	 * Standard.
 	 */
-	SUCCESS("1", "success", "Success", "Success.", true, false, false),
+	STANDARD("0", "std", "Standard", "Standard."),
 	/**
-	 * Error.
+	 * Special.
 	 */
-	ERROR("-2", "err", "Error", "Error.", false, true, false),
-	/**
-	 * Deleted.
-	 */
-	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
+	SPECIAL("1", "spe", "Special", "Special.");
 
 	/**
-	 * Finds a SignUpStatus that matches the id on id, name, or name().
+	 * Finds a SignUpType that matches the id on id, name, or name().
 	 * 
 	 * @param string
 	 *            Value to match against id, name, or name()
-	 * @return Matching SignUpStatus, or null.
+	 * @return Matching SignUpType, or null.
 	 */
-	public static SignUpStatus get(final String string) {
-		for (final SignUpStatus type : values()) {
+	public static SignUpType get(final String string) {
+		for (final SignUpType type : values()) {
 			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
 				return type;
 			}
@@ -58,18 +54,12 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 	private final String code;
 	private final String name;
 	private final String description;
-	private final boolean success;
-	private final boolean error;
-	private final boolean deleted;
 
-	private SignUpStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean deleted) {
+	private SignUpType(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
-		this.success = success;
-		this.error = error;
-		this.deleted = deleted;
 	}
 
 	/**
@@ -118,30 +108,4 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Does this status mean that the entity is success?
-	 * 
-	 * @return true if success, otherwise false
-	 */
-	public boolean isSuccess() {
-		return this.success;
-	}
-
-	/**
-	 * Does this status mean that the entity is in an error state?
-	 * 
-	 * @return true if in error state, otherwise false
-	 */
-	public boolean isError() {
-		return this.error;
-	}
-
-	/**
-	 * Does this status mean that the entity has been deleted?
-	 * 
-	 * @return true if deleted, otherwise false
-	 */
-	public boolean isDeleted() {
-		return this.deleted;
-	}
 }

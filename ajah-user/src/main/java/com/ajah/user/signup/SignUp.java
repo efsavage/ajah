@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,29 +17,44 @@ package com.ajah.user.signup;
 
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import lombok.Data;
 
 import com.ajah.user.User;
-import com.ajah.user.UserType;
+import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserSourceId;
+import com.ajah.util.Identifiable;
 
 /**
- * A signUp is a bean used during a registration attempt by a user.
+ * A signup is a registration, tracking information that doesn't necessarily
+ * need to be tied to a user but is useful to associate to the registration
+ * event.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Data
-public class SignUp {
+public class SignUp implements Identifiable<SignUpId> {
 
+	private SignUpId id;
+	private String username;
+	private SignUpStatus status;
+	private SignUpType type;
+	private Date created;
+	private UserId userId;
 	protected String ip;
-	protected Date created;
-	protected SignUpStatus status;
 	protected UserSourceId source;
-	protected UserType type;
-	protected String username;
-	protected User user;
-	protected UserInfo userInfo;
+	protected String promoCode;
+	protected String referralSource;
+	protected String referralSourceOther;
+
+	@Transient
+	User user;
+
+	@Transient
+	UserInfo userInfo;
 
 }
