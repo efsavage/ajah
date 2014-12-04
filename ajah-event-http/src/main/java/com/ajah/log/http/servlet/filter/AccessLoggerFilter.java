@@ -82,6 +82,7 @@ public class AccessLoggerFilter extends AjahFilter {
 		try {
 			chain.doFilter(request, response);
 		} finally {
+			requestEvent.setUserId((String) request.getAttribute("ajahRequestUserId"));
 			requestEvent.setStatusCode(response.getStatus());
 			requestEvent.setContentType(response.getContentType());
 			requestEvent.complete();
