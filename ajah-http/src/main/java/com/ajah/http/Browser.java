@@ -69,6 +69,10 @@ public enum Browser implements IdentifiableEnum<String> {
 	 */
 	RUNSCOPE("1004", "Runscope", "RNSC", true),
 	/**
+	 * Stackdriver
+	 */
+	STACKDRIVER("1005", "Stackdriver", "STKD", true),
+	/**
 	 * Unknown
 	 */
 	UNKNOWN("0", "Unknown", "?", false);
@@ -92,6 +96,8 @@ public enum Browser implements IdentifiableEnum<String> {
 			return ELB;
 		} else if (userAgent.contains("Pingdom.com_bot_version")) {
 			return PINGDOM;
+		} else if (userAgent.equals("Stackdriver_terminus_bot(http://www.stackdriver.com)")) {
+			return STACKDRIVER;
 		} else if (userAgent.contains("runscope-radar")) {
 			return RUNSCOPE;
 		} else if (userAgent.contains("https://developers.google.com/+/web/snippet/")) {
