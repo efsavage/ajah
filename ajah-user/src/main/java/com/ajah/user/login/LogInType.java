@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,21 +15,64 @@
  */
 package com.ajah.user.login;
 
+import com.ajah.util.IdentifiableEnum;
+
 /**
- * LoginType is the way a user logged in. Common examples would be MANUAL,
- * COOKIE, or TOKEN.
+ * Valid types of LogIn entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface LogInType {
+public enum LogInType implements IdentifiableEnum<String> {
 
 	/**
-	 * The internal ID of the type.
-	 * 
-	 * @return The internal ID of the type. Cannot be null.
+	 * Manual.
 	 */
-	String getId();
+	MANUAL("1", "manual", "Manual", "Login was done by human/form."),
+	/**
+	 * Cookie.
+	 */
+	COOKIE("2", "cookie", "Cookie", "Login was done via cookie."),
+	/**
+	 * Signup.
+	 */
+	SIGNUP("3", "signup", "Signup", "Login was done as part of signup process."),
+	/**
+	 * OAuth.
+	 */
+	OAUTH("4", "oauth", "OAuth", "Login was done via OAuth."),
+	/**
+	 * API Token.
+	 */
+	API_TOKEN("5", "apitoken", "API Token", "Login was done by API token.");
+
+	/**
+	 * Finds a LogInType that matches the id on id, name, or name().
+	 * 
+	 * @param string
+	 *            Value to match against id, name, or name()
+	 * @return Matching LogInType, or null.
+	 */
+	public static LogInType get(final String string) {
+		for (final LogInType type : values()) {
+			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	private final String id;
+	private final String code;
+	private final String name;
+	private final String description;
+
+	private LogInType(final String id, final String code, final String name, final String description) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+	}
 
 	/**
 	 * The short, display-friendly code of the type. If no code is applicable,
@@ -37,7 +80,29 @@ public interface LogInType {
 	 * 
 	 * @return The short, display-friendly code of the type. Cannot be null.
 	 */
-	String getCode();
+	@Override
+	public String getCode() {
+		return this.code;
+	}
+
+	/**
+	 * The display-friendly description of the type.
+	 * 
+	 * @return The display-friendly description of the type. May be null.
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * The internal ID of the type.
+	 * 
+	 * @return The internal ID of the type. Cannot be null.
+	 */
+	@Override
+	public String getId() {
+		return this.id;
+	}
 
 	/**
 	 * The display-friendly name of the type. If no name is applicable, it
@@ -45,26 +110,14 @@ public interface LogInType {
 	 * 
 	 * @return The display-friendly name of the type. Cannot be null.
 	 */
-	String getName();
+	@Override
+	public String getName() {
+		return this.name;
+	}
 
-	/**
-	 * The display-friendly description of the type.
-	 * 
-	 * @return The display-friendly description of the type. May be null.
-	 */
-	String getDescription();
-
-	/**
-	 * Did the user manually log in? This can be useful to determined if
-	 * authentication confirmation is needed for sensitive operations such as
-	 * changing a password or finalizing a checkout.
-	 * 
-	 * Note: Saved-password mechanisms are not typically detectable, this method
-	 * is more targeted as separating cookie/token-based logins from those
-	 * prompting for a password.
-	 * 
-	 * @return True if this login was manual.
-	 */
-	boolean isManual();
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
+	}
 
 }

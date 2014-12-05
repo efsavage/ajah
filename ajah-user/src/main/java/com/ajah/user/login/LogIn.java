@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@ package com.ajah.user.login;
 
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import lombok.Data;
 
 import com.ajah.user.User;
 import com.ajah.user.info.UserInfo;
+import com.ajah.util.Identifiable;
 
 /**
  * A login is a data record of an authentication attempt by a user. It should
@@ -37,16 +40,24 @@ import com.ajah.user.info.UserInfo;
  * 
  */
 @Data
-public class LogIn {
+public class LogIn implements Identifiable<LogInId> {
 
-	protected String ip;
-	protected Date created;
-	protected LogInStatus status;
-	protected LogInSource source;
-	protected LogInType type;
+	private LogInId id;
+	private String name;
+	private LogInStatus status;
+	private LogInSource source;
+	private LogInType type;
+	private Date created;
 	protected String username;
+	protected String ip;
+
+	@Transient
 	protected User user;
+
+	@Transient
 	protected UserInfo userInfo;
+
+	@Transient
 	protected String token;
 
 }
