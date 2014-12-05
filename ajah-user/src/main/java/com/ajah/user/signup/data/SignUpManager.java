@@ -230,14 +230,15 @@ public class SignUpManager {
 			String ip, UserSourceId source, String promoCode, String referralSource, String referralSourceOther, UserType type) throws DataOperationException, DuplicateUsernameException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
+		signUp.setUsername(username);
 		signUp.setIp(ip);
+		signUp.setType(SignUpType.STANDARD);
 		signUp.setCreated(new Date());
 		signUp.setSource(source);
 		signUp.setStatus(SignUpStatus.SUCCESS);
 		signUp.setPromoCode(promoCode);
 		signUp.setReferralSource(referralSource);
 		signUp.setReferralSourceOther(referralSourceOther);
-		// TODO signup should be saved
 		if (this.userManager.usernameExists(emailAddress.toString())) {
 			log.fine(emailAddress.toString() + " is in use");
 			throw new DuplicateUsernameException(emailAddress.toString());
@@ -254,6 +255,7 @@ public class SignUpManager {
 		userInfo.setSource(source);
 		this.userManager.save(userInfo);
 		log.info(user.getUsername() + " created!");
+		signUp.setUserId(user.getId());
 		signUp.setUser(user);
 		signUp.setUserInfo(userInfo);
 		save(signUp);
