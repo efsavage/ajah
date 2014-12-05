@@ -30,7 +30,7 @@ public class DuplicateUsernameException extends Exception {
 	 * @param username
 	 *            The username attempted.
 	 */
-	public DuplicateUsernameException(String username) {
+	public DuplicateUsernameException(final String username) {
 		super(username);
 	}
 

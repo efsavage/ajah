@@ -60,18 +60,18 @@ public class FeedEntryDaoImpl extends AbstractAjahDao<FeedEntryId, FeedEntry, Fe
 	 *      boolean)
 	 */
 	@Override
-	public List<FeedEntry> list(FeedSourceId feedSourceId, String[] categories, boolean orCategories) throws DataOperationException {
-		Criteria criteria = new Criteria().eq(feedSourceId);
+	public List<FeedEntry> list(final FeedSourceId feedSourceId, final String[] categories, final boolean orCategories) throws DataOperationException {
+		final Criteria criteria = new Criteria().eq(feedSourceId);
 		if (categories != null && categories.length > 0) {
 			if (orCategories) {
-				SubCriteria subCriteria = new SubCriteria();
-				for (String category : categories) {
+				final SubCriteria subCriteria = new SubCriteria();
+				for (final String category : categories) {
 					final String pattern = "%" + category + "%";
 					subCriteria.orLike("categories", pattern);
 				}
 				criteria.and(subCriteria);
 			} else {
-				for (String category : categories) {
+				for (final String category : categories) {
 					final String pattern = "%" + category + "%";
 					criteria.like("categories", pattern);
 				}

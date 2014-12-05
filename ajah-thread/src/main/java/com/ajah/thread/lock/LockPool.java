@@ -39,7 +39,7 @@ public class LockPool<T> {
 	 *            The value to lock.
 	 * @return The lockable object.
 	 */
-	public synchronized PooledLock<T> get(T lockValue) {
+	public synchronized PooledLock<T> get(final T lockValue) {
 		if (!this.pool.containsKey(lockValue)) {
 			this.pool.put(lockValue, new PooledLock<T>(lockValue));
 		}

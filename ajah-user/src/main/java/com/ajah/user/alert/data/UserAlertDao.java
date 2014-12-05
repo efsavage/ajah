@@ -17,13 +17,12 @@ package com.ajah.user.alert.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.alert.UserAlert;
 import com.ajah.user.alert.UserAlertId;
 import com.ajah.user.alert.UserAlertStatus;
 import com.ajah.user.alert.UserAlertType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link UserAlert}.
@@ -48,7 +47,7 @@ public interface UserAlertDao extends AjahDao<UserAlertId, UserAlert> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<UserAlert> list(UserAlertType type, UserAlertStatus status, long page, long count) throws DataOperationException;
+	List<UserAlert> list(final UserAlertType type, final UserAlertStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,7 +60,7 @@ public interface UserAlertDao extends AjahDao<UserAlertId, UserAlert> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(UserAlertType type, UserAlertStatus status) throws DataOperationException;
+	long count(final UserAlertType type, final UserAlertStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -72,6 +71,6 @@ public interface UserAlertDao extends AjahDao<UserAlertId, UserAlert> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
 }

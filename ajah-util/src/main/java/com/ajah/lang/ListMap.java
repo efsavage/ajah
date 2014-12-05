@@ -104,7 +104,7 @@ public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
 	 */
 	public int valuesSize() {
 		int size = 0;
-		for (K key : keySet()) {
+		for (final K key : keySet()) {
 			size += get(key) == null ? 0 : get(key).size();
 		}
 		return size;

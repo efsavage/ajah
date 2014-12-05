@@ -17,13 +17,12 @@ package com.ajah.user.signup.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.signup.SignUp;
 import com.ajah.user.signup.SignUpId;
 import com.ajah.user.signup.SignUpStatus;
 import com.ajah.user.signup.SignUpType;
-
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link SignUp}.
@@ -48,7 +47,7 @@ public interface SignUpDao extends AjahDao<SignUpId, SignUp> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<SignUp> list(SignUpType type, SignUpStatus status, long page, long count) throws DataOperationException;
+	List<SignUp> list(final SignUpType type, final SignUpStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -61,7 +60,7 @@ public interface SignUpDao extends AjahDao<SignUpId, SignUp> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(SignUpType type, SignUpStatus status) throws DataOperationException;
+	long count(final SignUpType type, final SignUpStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -72,6 +71,6 @@ public interface SignUpDao extends AjahDao<SignUpId, SignUp> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
 }

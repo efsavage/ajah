@@ -40,7 +40,7 @@ public class PermissionDeniedException extends Exception {
 	 * @param message
 	 *            The error message
 	 */
-	public PermissionDeniedException(String message) {
+	public PermissionDeniedException(final String message) {
 		super(message);
 	}
 

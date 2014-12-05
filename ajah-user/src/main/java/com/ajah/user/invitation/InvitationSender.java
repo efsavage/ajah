@@ -38,6 +38,6 @@ public interface InvitationSender {
 	 * @param userInfo
 	 *            Additional information about the sender.
 	 */
-	void send(Invitation invitation, User user, UserInfo userInfo);
+	void send(final Invitation invitation, final User user, final UserInfo userInfo);
 
 }

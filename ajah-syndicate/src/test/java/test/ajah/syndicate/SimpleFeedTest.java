@@ -21,8 +21,8 @@ import lombok.extern.java.Log;
 
 import org.junit.Test;
 
-import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.Feed;
+import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.FeedSource;
 import com.ajah.syndicate.SyndicationException;
 import com.ajah.syndicate.rome.RomeUtils;

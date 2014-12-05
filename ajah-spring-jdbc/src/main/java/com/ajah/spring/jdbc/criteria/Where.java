@@ -40,25 +40,6 @@ public class Where {
 
 	/**
 	 * Returns the SQL for this where, prepending the 'WHERE' if the clause is
-	 * not blank and includeWhere is true.
-	 * 
-	 * @param includeWhere
-	 *            Include the WHERE clause if the base SQL is not blank?
-	 * @return A valid WHERE clause, may be a single space (to avoid
-	 *         concatenation errors).
-	 */
-	public String getSql(boolean includeWhere) {
-		if (StringUtils.isBlank(this.sql)) {
-			return " ";
-		}
-		if (includeWhere) {
-			return " WHERE " + this.sql;
-		}
-		return this.sql;
-	}
-
-	/**
-	 * Returns the SQL for this where, prepending the 'WHERE' if the clause is
 	 * not blank.
 	 * 
 	 * @return A valid WHERE clause, may be single space (to avoid concatenation
@@ -69,6 +50,25 @@ public class Where {
 			return " ";
 		}
 		return " WHERE " + this.sql;
+	}
+
+	/**
+	 * Returns the SQL for this where, prepending the 'WHERE' if the clause is
+	 * not blank and includeWhere is true.
+	 * 
+	 * @param includeWhere
+	 *            Include the WHERE clause if the base SQL is not blank?
+	 * @return A valid WHERE clause, may be a single space (to avoid
+	 *         concatenation errors).
+	 */
+	public String getSql(final boolean includeWhere) {
+		if (StringUtils.isBlank(this.sql)) {
+			return " ";
+		}
+		if (includeWhere) {
+			return " WHERE " + this.sql;
+		}
+		return this.sql;
 	}
 
 }

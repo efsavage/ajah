@@ -41,7 +41,7 @@ public class ISOCountryTest {
 	 */
 	@Test
 	public void loop() {
-		for (ISOCountry isoCountry : ISOCountry.values()) {
+		for (final ISOCountry isoCountry : ISOCountry.values()) {
 			System.out.println("'" + isoCountry.getName().replaceAll("\\'", "\\\\'") + "',");
 		}
 	}

@@ -171,12 +171,13 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public String getUsername(UserId userId) throws DataOperationException;
+	public String getUsername(final UserId userId) throws DataOperationException;
 
-	public List<User> list(String sortField, Order order, int page, int count) throws DataOperationException;
+	public List<User> list(final String sortField, final Order order, final int page, final int count) throws DataOperationException;
 
-	public int searchCount(String username, String firstName, String lastName, UserStatus status) throws DataOperationException;
+	public int searchCount(final String username, final String firstName, final String lastName, final UserStatus status) throws DataOperationException;
 
-	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException;
+	public List<User> list(final String username, final String firstName, final String lastName, final UserStatus status, final String sort, final Order order, final int page, final int count)
+			throws DataOperationException;
 
 }

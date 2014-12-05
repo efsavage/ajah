@@ -71,7 +71,7 @@ public class VelocityEmailMessage implements EmailMessage {
 		this.velocityEngine.init();
 	}
 
-	public VelocityEmailMessage(EmailAddress emailAddress, EmailAddress[] emailAddresses) {
+	public VelocityEmailMessage(final EmailAddress emailAddress, final EmailAddress[] emailAddresses) {
 		this(emailAddress, EmailRecipient.from(emailAddresses, EmailRecipientType.TO));
 	}
 

@@ -117,7 +117,7 @@ public class AjahUtils {
 		if (parameter.length == 0) {
 			throw new RequiredParameterException(name + " cannot be empty");
 		}
-		for (String string : parameter) {
+		for (final String string : parameter) {
 			if (!StringUtils.isBlank(string)) {
 				return;
 			}

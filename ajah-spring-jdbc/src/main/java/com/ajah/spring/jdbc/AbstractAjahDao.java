@@ -423,8 +423,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 *             If the query could not be executed.
 	 */
 	public T find(final ToStringable... values) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		for (ToStringable value : values) {
+		final Criteria criteria = new Criteria();
+		for (final ToStringable value : values) {
 			criteria.eq(value);
 		}
 		criteria.rows(1);
@@ -1062,8 +1062,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @since 1.0.1
 	 */
 	public List<T> list(final ToStringable... values) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		for (ToStringable value : values) {
+		final Criteria criteria = new Criteria();
+		for (final ToStringable value : values) {
 			criteria.eq(value);
 		}
 		return list(criteria);
@@ -1455,7 +1455,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	protected <T> T sum(final String field, final Criteria criteria, Class<T> clazz) throws DataOperationException {
+	protected <T> T sum(final String field, final Criteria criteria, final Class<T> clazz) throws DataOperationException {
 		try {
 			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
@@ -1518,7 +1518,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int updateSql(String sql) throws DataOperationException {
+	public int updateSql(final String sql) throws DataOperationException {
 		AjahUtils.requireParam(sql, "sql");
 		AjahUtils.requireParam(getJdbcTemplate(), "this.jdbcTemplate");
 		try {

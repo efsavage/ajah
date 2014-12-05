@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.Feed;
+import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
 

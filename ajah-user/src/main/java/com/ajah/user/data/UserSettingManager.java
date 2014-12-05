@@ -132,7 +132,7 @@ public class UserSettingManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<UserSetting> list(UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
+	public List<UserSetting> list(final UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
 		return this.userSettingDao.list(userId, type, status, page, count);
 	}
 
@@ -184,6 +184,14 @@ public class UserSettingManager {
 		return result;
 	}
 
+	public void set(final UserId userId, final String name, final boolean value) throws DataOperationException {
+		set(userId, name, String.valueOf(value));
+	}
+
+	public void set(final UserId userId, final String name, final Boolean value) throws DataOperationException {
+		set(userId, name, value == null ? null : String.valueOf(value));
+	}
+
 	public UserSetting set(final UserId userId, final String name, final String value) throws DataOperationException {
 		UserSetting userSetting = find(userId, name);
 		if (userSetting == null) {
@@ -199,14 +207,6 @@ public class UserSettingManager {
 		userSetting.setValue(value);
 		save(userSetting);
 		return userSetting;
-	}
-
-	public void set(UserId userId, String name, Boolean value) throws DataOperationException {
-		set(userId, name, value == null ? null : String.valueOf(value));
-	}
-
-	public void set(UserId userId, String name, boolean value) throws DataOperationException {
-		set(userId, name, String.valueOf(value));
 	}
 
 }

@@ -39,9 +39,33 @@ import com.ajah.util.StringUtils;
 @Repository
 public class EmailVerificationDaoImpl extends AbstractAjahDao<EmailVerificationId, EmailVerification, EmailVerification> implements EmailVerificationDao {
 
+	/**
+	 * @see com.ajah.user.email.data.EmailVerificationDao#count(com.ajah.user.email.EmailVerificationType,
+	 *      com.ajah.user.email.EmailVerificationStatus)
+	 */
 	@Override
-	public List<EmailVerification> list(EmailVerificationType type, EmailVerificationStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final EmailVerificationType type, final EmailVerificationStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	/**
+	 * @see com.ajah.user.email.data.EmailVerificationDao#find(String)
+	 */
+	@Override
+	public EmailVerification find(final String code) throws DataOperationException {
+		return super.find(new Criteria().eq("code", code));
+	}
+
+	@Override
+	public List<EmailVerification> list(final EmailVerificationType type, final EmailVerificationStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -52,19 +76,11 @@ public class EmailVerificationDaoImpl extends AbstractAjahDao<EmailVerificationI
 	}
 
 	/**
-	 * @see com.ajah.user.email.data.EmailVerificationDao#count(com.ajah.user.email.EmailVerificationType,
-	 *      com.ajah.user.email.EmailVerificationStatus)
+	 * @see com.ajah.user.email.data.EmailVerificationDao#recent(EmailId)
 	 */
 	@Override
-	public long count(EmailVerificationType type, EmailVerificationStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
+	public EmailVerification recent(final EmailId emailId) throws DataOperationException {
+		return super.find(new Criteria().eq(emailId).orderBy("created_date", Order.DESC).rows(1));
 	}
 
 	/**
@@ -72,28 +88,12 @@ public class EmailVerificationDaoImpl extends AbstractAjahDao<EmailVerificationI
 	 *      search)
 	 */
 	@Override
-	public int searchCount(String search) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(final String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
 		}
 		return super.count(criteria);
-	}
-
-	/**
-	 * @see com.ajah.user.email.data.EmailVerificationDao#find(String)
-	 */
-	@Override
-	public EmailVerification find(String code) throws DataOperationException {
-		return super.find(new Criteria().eq("code", code));
-	}
-
-	/**
-	 * @see com.ajah.user.email.data.EmailVerificationDao#recent(EmailId)
-	 */
-	@Override
-	public EmailVerification recent(EmailId emailId) throws DataOperationException {
-		return super.find(new Criteria().eq(emailId).orderBy("created_date", Order.DESC).rows(1));
 	}
 
 }

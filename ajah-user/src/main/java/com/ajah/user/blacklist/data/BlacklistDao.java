@@ -51,7 +51,7 @@ public interface BlacklistDao extends AjahDao<BlacklistId, Blacklist> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<Blacklist> list(String part1, String part2, BlacklistType type, BlacklistStatus status, long page, long count) throws DataOperationException;
+	List<Blacklist> list(final String part1, final String part2, final BlacklistType type, final BlacklistStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -64,7 +64,7 @@ public interface BlacklistDao extends AjahDao<BlacklistId, Blacklist> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(BlacklistType type, BlacklistStatus status) throws DataOperationException;
+	long count(final BlacklistType type, final BlacklistStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -75,6 +75,6 @@ public interface BlacklistDao extends AjahDao<BlacklistId, Blacklist> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
 }

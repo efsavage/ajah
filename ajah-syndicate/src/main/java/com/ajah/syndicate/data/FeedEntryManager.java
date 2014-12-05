@@ -63,6 +63,25 @@ public class FeedEntryManager {
 	}
 
 	/**
+	 * Finds a list of entries for a feed source with a specified set of
+	 * tags/categories.
+	 * 
+	 * @param feedSourceId
+	 *            The feed source to search on.
+	 * @param categories
+	 *            The categories the entries must have.
+	 * @param orCategories
+	 *            If true, the categories are an OR and only one must match,
+	 *            otherwise the entry must match all of them.
+	 * @return List of matching entries.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<FeedEntry> list(final FeedSourceId feedSourceId, final String[] categories, final boolean orCategories) throws DataOperationException {
+		return this.entryDao.list(feedSourceId, categories, orCategories);
+	}
+
+	/**
 	 * Loads an entry by its ID.
 	 * 
 	 * @param entryId
@@ -139,25 +158,6 @@ public class FeedEntryManager {
 		} else {
 			this.entryDao.update(entry);
 		}
-	}
-
-	/**
-	 * Finds a list of entries for a feed source with a specified set of
-	 * tags/categories.
-	 * 
-	 * @param feedSourceId
-	 *            The feed source to search on.
-	 * @param categories
-	 *            The categories the entries must have.
-	 * @param orCategories
-	 *            If true, the categories are an OR and only one must match,
-	 *            otherwise the entry must match all of them.
-	 * @return List of matching entries.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<FeedEntry> list(FeedSourceId feedSourceId, String[] categories, boolean orCategories) throws DataOperationException {
-		return this.entryDao.list(feedSourceId, categories, orCategories);
 	}
 
 }

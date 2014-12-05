@@ -134,6 +134,10 @@ public class EmailManager {
 		return this.emailDao.find(emailAddress);
 	}
 
+	public List<Email> list(final String address, final int page, final int count) throws DataOperationException {
+		return this.emailDao.list(address, page, count);
+	}
+
 	/**
 	 * Returns a list of {@link Email}s that match the specified criteria.
 	 * 
@@ -206,12 +210,8 @@ public class EmailManager {
 		return result;
 	}
 
-	public int searchCount(String address) throws DataOperationException {
+	public int searchCount(final String address) throws DataOperationException {
 		return this.emailDao.searchCount(address);
-	}
-
-	public List<Email> list(String address, int page, int count) throws DataOperationException {
-		return this.emailDao.list(address, page, count);
 	}
 
 }

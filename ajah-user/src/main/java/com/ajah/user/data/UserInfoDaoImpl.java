@@ -45,10 +45,10 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 		return super.jdbcTemplate.query(sql, new ResultSetExtractor<MapMap<LocalDate, String, Integer>>() {
 
 			@Override
-			public MapMap<LocalDate, String, Integer> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				MapMap<LocalDate, String, Integer> mapMap = new MapMap<LocalDate, String, Integer>();
+			public MapMap<LocalDate, String, Integer> extractData(final ResultSet rs) throws SQLException, DataAccessException {
+				final MapMap<LocalDate, String, Integer> mapMap = new MapMap<LocalDate, String, Integer>();
 				while (rs.next()) {
-					String source = rs.getString("source") == null ? "mg" : rs.getString("source");
+					final String source = rs.getString("source") == null ? "mg" : rs.getString("source");
 					mapMap.put(new LocalDate(rs.getString("date")), source, rs.getInt("total"));
 				}
 				return mapMap;

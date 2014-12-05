@@ -13,66 +13,56 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.user.invitation;
+package com.ajah.geo;
 
 import com.ajah.util.IdentifiableEnum;
 
 /**
- * Valid states of {@link Invitation} entities.
+ * Valid states of Residence entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum InvitationStatus implements IdentifiableEnum<String> {
+public enum Continent implements IdentifiableEnum<String> {
 
 	/**
-	 * Unsent.
+	 * Africa.
 	 */
-	UNSENT("0", "unsent", "Unsent", "Invitation has not been sent yet.", false, false, false),
+	AFRICA("1", "af", "Africa", "Africa."),
 	/**
-	 * Sent.
+	 * Asia.
 	 */
-	SENT("1", "sent", "Sent", "Sent.", true, false, false),
+	ASIA("2", "as", "Asia", "Asia."),
 	/**
-	 * Recipient opened the invitation (exactly what that means will vary by
-	 * channel).
+	 * Europe.
 	 */
-	OPENED("2", "opened", "Opened", "Opened.", true, false, false),
+	EUROPE("3", "eu", "Europe", "Europe."),
 	/**
-	 * Recipient clicked/acknowledged the invitation (exactly what that means
-	 * will vary by channel).
+	 * No.
 	 */
-	CLICKED("3", "clicked", "Clicked", "Clicked.", true, false, false),
+	NORTH_AMERICA("4", "na", "North America", "North America."),
 	/**
-	 * Accepted.
+	 * Oceania
 	 */
-	ACCEPTED("4", "accepted", "Accepted", "Accepted.", true, false, false),
+	OCEANIA("5", "oc", "Oceania", "Oceania."),
 	/**
-	 * Rejected.
+	 * South America.
 	 */
-	REJECTED("-4", "rejected", "Rejected", "Rejected.", false, false, false),
+	SOUTH_AMERICA("6", "sa", "South America", "South America."),
 	/**
-	 * Expired.
+	 * Antartictica.
 	 */
-	EXPIRED("-3", "expired", "Expired", "Expired.", false, false, false),
-	/**
-	 * Error.
-	 */
-	ERROR("-2", "err", "Error", "Error.", false, true, false),
-	/**
-	 * Deleted.
-	 */
-	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
+	ANTARTICTICA("7", "an", "Antartictica", "Antartictica.");
 
 	/**
-	 * Finds a InvitationStatus that matches the id on id, name, or name().
+	 * Finds a Continent that matches the id on id, name, or name().
 	 * 
 	 * @param string
 	 *            Value to match against id, name, or name()
-	 * @return Matching InvitationStatus, or null.
+	 * @return Matching Continent, or null.
 	 */
-	public static InvitationStatus get(final String string) {
-		for (final InvitationStatus type : values()) {
+	public static Continent get(final String string) {
+		for (final Continent type : values()) {
 			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
 				return type;
 			}
@@ -84,18 +74,12 @@ public enum InvitationStatus implements IdentifiableEnum<String> {
 	private final String code;
 	private final String name;
 	private final String description;
-	private final boolean active;
-	private final boolean error;
-	private final boolean deleted;
 
-	private InvitationStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
+	private Continent(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
-		this.active = active;
-		this.error = error;
-		this.deleted = deleted;
 	}
 
 	/**
@@ -139,35 +123,9 @@ public enum InvitationStatus implements IdentifiableEnum<String> {
 		return this.name;
 	}
 
-	/**
-	 * Does this status mean that the entity is active?
-	 * 
-	 * @return true if active, otherwise false
-	 */
-	public boolean isActive() {
-		return this.active;
-	}
-
-	/**
-	 * Does this status mean that the entity has been deleted?
-	 * 
-	 * @return true if deleted, otherwise false
-	 */
-	public boolean isDeleted() {
-		return this.deleted;
-	}
-
-	/**
-	 * Does this status mean that the entity is in an error state?
-	 * 
-	 * @return true if in error state, otherwise false
-	 */
-	public boolean isError() {
-		return this.error;
-	}
-
 	@Override
 	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
+
 }

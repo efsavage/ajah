@@ -88,6 +88,7 @@ public class ReportWriter implements AutoCloseable {
 	/**
 	 * Closes all of the writers.
 	 */
+	@Override
 	public void close() {
 		for (final PrintWriter out : this.writers) {
 			out.close();

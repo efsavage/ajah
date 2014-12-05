@@ -46,125 +46,6 @@ public class BlacklistManager {
 	private BlacklistDao blacklistDao;
 
 	/**
-	 * Saves an {@link Blacklist}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param blacklist
-	 *            The blacklist to save.
-	 * @return The result of the save operation, which will include the new
-	 *         blacklist at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<Blacklist> save(Blacklist blacklist) throws DataOperationException {
-		boolean create = false;
-		if (blacklist.getId() == null) {
-			blacklist.setId(new BlacklistId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (blacklist.getCreated() == null) {
-			blacklist.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<Blacklist> result = this.blacklistDao.insert(blacklist);
-			log.fine("Created Blacklist " + blacklist.getPart1() + ", " + blacklist.getPart2() + " [" + blacklist.getId() + "]");
-			return result;
-		}
-		DataOperationResult<Blacklist> result = this.blacklistDao.update(blacklist);
-		if (result.getRowsAffected() > 0) {
-			log.fine("Updated Blacklist " + blacklist.getPart1() + ", " + blacklist.getPart2() + " [" + blacklist.getId() + "]");
-		}
-		return result;
-	}
-
-	/**
-	 * Loads an {@link Blacklist} by it's ID.
-	 * 
-	 * @param blacklistId
-	 *            The ID to load, required.
-	 * @return The matching blacklist, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws BlacklistNotFoundException
-	 *             If the ID specified did not match any blacklists.
-	 */
-	public Blacklist load(BlacklistId blacklistId) throws DataOperationException, BlacklistNotFoundException {
-		Blacklist blacklist = this.blacklistDao.load(blacklistId);
-		if (blacklist == null) {
-			throw new BlacklistNotFoundException(blacklistId);
-		}
-		return blacklist;
-	}
-
-	/**
-	 * Returns a list of {@link Blacklist}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of blacklist, optional.
-	 * @param status
-	 *            The status of the blacklist, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link Blacklist}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<Blacklist> list(BlacklistType type, BlacklistStatus status, long page, long count) throws DataOperationException {
-		return this.blacklistDao.list(null, null, type, status, page, count);
-	}
-
-	/**
-	 * Creates a new {@link Blacklist} with the given properties.
-	 * 
-	 * @param part1
-	 *            The first part of the blacklist, see {@link BlacklistType} for
-	 *            details on usage.
-	 * @param part2
-	 *            The second part of the blacklist, see {@link BlacklistType}
-	 *            for details on usage.
-	 * @param type
-	 *            The type of blacklist, required.
-	 * @param status
-	 *            The status of the blacklist, required.
-	 * @return The result of the creation, which will include the new blacklist
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<Blacklist> create(String part1, String part2, BlacklistType type, BlacklistStatus status) throws DataOperationException {
-		Blacklist blacklist = new Blacklist();
-		blacklist.setPart1(part1);
-		blacklist.setPart2(part2);
-		blacklist.setType(type);
-		blacklist.setStatus(status);
-		DataOperationResult<Blacklist> result = save(blacklist);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link BlacklistStatus#DELETED}.
-	 * 
-	 * @param blacklistId
-	 *            The ID of the blacklist to delete.
-	 * @return The result of the deletion, will not include the new blacklist at
-	 *         {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws BlacklistNotFoundException
-	 *             If the ID specified did not match any blacklists.
-	 */
-	public DataOperationResult<Blacklist> delete(BlacklistId blacklistId) throws DataOperationException, BlacklistNotFoundException {
-		Blacklist blacklist = load(blacklistId);
-		blacklist.setStatus(BlacklistStatus.DELETED);
-		DataOperationResult<Blacklist> result = save(blacklist);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -191,16 +72,69 @@ public class BlacklistManager {
 	}
 
 	/**
-	 * Counts the records available that match the search criteria.
+	 * Creates a new {@link Blacklist} with the given properties.
 	 * 
-	 * @param search
-	 *            The search query.
-	 * @return The number of matching records.
+	 * @param part1
+	 *            The first part of the blacklist, see {@link BlacklistType} for
+	 *            details on usage.
+	 * @param part2
+	 *            The second part of the blacklist, see {@link BlacklistType}
+	 *            for details on usage.
+	 * @param type
+	 *            The type of blacklist, required.
+	 * @param status
+	 *            The status of the blacklist, required.
+	 * @return The result of the creation, which will include the new blacklist
+	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search) throws DataOperationException {
-		return this.blacklistDao.searchCount(search);
+	public DataOperationResult<Blacklist> create(final String part1, final String part2, final BlacklistType type, final BlacklistStatus status) throws DataOperationException {
+		final Blacklist blacklist = new Blacklist();
+		blacklist.setPart1(part1);
+		blacklist.setPart2(part2);
+		blacklist.setType(type);
+		blacklist.setStatus(status);
+		final DataOperationResult<Blacklist> result = save(blacklist);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link BlacklistStatus#DELETED}.
+	 * 
+	 * @param blacklistId
+	 *            The ID of the blacklist to delete.
+	 * @return The result of the deletion, will not include the new blacklist at
+	 *         {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws BlacklistNotFoundException
+	 *             If the ID specified did not match any blacklists.
+	 */
+	public DataOperationResult<Blacklist> delete(final BlacklistId blacklistId) throws DataOperationException, BlacklistNotFoundException {
+		final Blacklist blacklist = load(blacklistId);
+		blacklist.setStatus(BlacklistStatus.DELETED);
+		final DataOperationResult<Blacklist> result = save(blacklist);
+		return result;
+	}
+
+	/**
+	 * Returns a list of {@link Blacklist}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of blacklist, optional.
+	 * @param status
+	 *            The status of the blacklist, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link Blacklist}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<Blacklist> list(final BlacklistType type, final BlacklistStatus status, final long page, final long count) throws DataOperationException {
+		return this.blacklistDao.list(null, null, type, status, page, count);
 	}
 
 	/**
@@ -214,23 +148,8 @@ public class BlacklistManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<Blacklist> list(EmailAddress emailAddress) throws DataOperationException {
+	public List<Blacklist> list(final EmailAddress emailAddress) throws DataOperationException {
 		return this.blacklistDao.list(emailAddress.getUsername(), emailAddress.getDomain(), BlacklistType.EMAIL, BlacklistStatus.ACTIVE, 0, 1000);
-	}
-
-	/**
-	 * Returns a list of {@link BlacklistStatus#ACTIVE}
-	 * {@link BlacklistType#USERNAME} {@link Blacklist}s that match the
-	 * specified criteria.
-	 * 
-	 * @param username
-	 *            The username to check.
-	 * @return A list of {@link Blacklist}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<Blacklist> listUsername(String username) throws DataOperationException {
-		return this.blacklistDao.list(username, null, BlacklistType.USERNAME, BlacklistStatus.ACTIVE, 0, 1000);
 	}
 
 	/**
@@ -246,8 +165,89 @@ public class BlacklistManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<Blacklist> listRealName(String firstName, String lastName) throws DataOperationException {
+	public List<Blacklist> listRealName(final String firstName, final String lastName) throws DataOperationException {
 		return this.blacklistDao.list(firstName, lastName, BlacklistType.REAL_NAME, BlacklistStatus.ACTIVE, 0, 1000);
+	}
+
+	/**
+	 * Returns a list of {@link BlacklistStatus#ACTIVE}
+	 * {@link BlacklistType#USERNAME} {@link Blacklist}s that match the
+	 * specified criteria.
+	 * 
+	 * @param username
+	 *            The username to check.
+	 * @return A list of {@link Blacklist}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<Blacklist> listUsername(final String username) throws DataOperationException {
+		return this.blacklistDao.list(username, null, BlacklistType.USERNAME, BlacklistStatus.ACTIVE, 0, 1000);
+	}
+
+	/**
+	 * Loads an {@link Blacklist} by it's ID.
+	 * 
+	 * @param blacklistId
+	 *            The ID to load, required.
+	 * @return The matching blacklist, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws BlacklistNotFoundException
+	 *             If the ID specified did not match any blacklists.
+	 */
+	public Blacklist load(final BlacklistId blacklistId) throws DataOperationException, BlacklistNotFoundException {
+		final Blacklist blacklist = this.blacklistDao.load(blacklistId);
+		if (blacklist == null) {
+			throw new BlacklistNotFoundException(blacklistId);
+		}
+		return blacklist;
+	}
+
+	/**
+	 * Saves an {@link Blacklist}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param blacklist
+	 *            The blacklist to save.
+	 * @return The result of the save operation, which will include the new
+	 *         blacklist at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<Blacklist> save(final Blacklist blacklist) throws DataOperationException {
+		boolean create = false;
+		if (blacklist.getId() == null) {
+			blacklist.setId(new BlacklistId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (blacklist.getCreated() == null) {
+			blacklist.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<Blacklist> result = this.blacklistDao.insert(blacklist);
+			log.fine("Created Blacklist " + blacklist.getPart1() + ", " + blacklist.getPart2() + " [" + blacklist.getId() + "]");
+			return result;
+		}
+		final DataOperationResult<Blacklist> result = this.blacklistDao.update(blacklist);
+		if (result.getRowsAffected() > 0) {
+			log.fine("Updated Blacklist " + blacklist.getPart1() + ", " + blacklist.getPart2() + " [" + blacklist.getId() + "]");
+		}
+		return result;
+	}
+
+	/**
+	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param search
+	 *            The search query.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public int searchCount(final String search) throws DataOperationException {
+		return this.blacklistDao.searchCount(search);
 	}
 
 }

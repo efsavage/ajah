@@ -47,7 +47,7 @@ public interface InvitationDao extends AjahDao<InvitationId, Invitation> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<Invitation> list(InvitationType type, InvitationStatus status, long page, long count) throws DataOperationException;
+	List<Invitation> list(final InvitationType type, final InvitationStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -60,7 +60,7 @@ public interface InvitationDao extends AjahDao<InvitationId, Invitation> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(InvitationType type, InvitationStatus status) throws DataOperationException;
+	long count(final InvitationType type, final InvitationStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -71,7 +71,7 @@ public interface InvitationDao extends AjahDao<InvitationId, Invitation> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
 	/**
 	 * Finds an invitation by it's {@link Invitation#getReference()}.
@@ -82,6 +82,6 @@ public interface InvitationDao extends AjahDao<InvitationId, Invitation> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	Invitation findByReference(String reference) throws DataOperationException;
+	Invitation findByReference(final String reference) throws DataOperationException;
 
 }

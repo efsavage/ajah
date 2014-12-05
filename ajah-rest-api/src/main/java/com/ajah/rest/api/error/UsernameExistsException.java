@@ -36,11 +36,9 @@ public class UsernameExistsException extends Exception {
 	 * 
 	 * @param username
 	 *            The username requested.
-	 * @param message
-	 *            The message explaining why it was invalid.
 	 */
-	public UsernameExistsException(final String username, final String message) {
-		super(message);
+	public UsernameExistsException(final String username) {
+		super("Username '" + username + "' exists");
 		this.username = username;
 	}
 
@@ -49,9 +47,11 @@ public class UsernameExistsException extends Exception {
 	 * 
 	 * @param username
 	 *            The username requested.
+	 * @param message
+	 *            The message explaining why it was invalid.
 	 */
-	public UsernameExistsException(String username) {
-		super("Username '" + username + "' exists");
+	public UsernameExistsException(final String username, final String message) {
+		super(message);
 		this.username = username;
 	}
 

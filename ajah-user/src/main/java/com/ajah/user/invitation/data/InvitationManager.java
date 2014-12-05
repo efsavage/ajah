@@ -49,138 +49,6 @@ public class InvitationManager {
 	private InvitationDao invitationDao;
 
 	/**
-	 * Saves an {@link Invitation}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param invitation
-	 *            The invitation to save.
-	 * @return The result of the save operation, which will include the new
-	 *         invitation at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<Invitation> save(Invitation invitation) throws DataOperationException {
-		boolean create = false;
-		if (invitation.getId() == null) {
-			invitation.setId(new InvitationId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (invitation.getCreated() == null) {
-			invitation.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<Invitation> result = this.invitationDao.insert(invitation);
-			log.fine("Created Invitation " + invitation.getAddress() + " [" + invitation.getId() + "]");
-			return result;
-		}
-		DataOperationResult<Invitation> result = this.invitationDao.update(invitation);
-		if (result.getRowsAffected() > 0) {
-			log.fine("Updated Invitation " + invitation.getAddress() + " [" + invitation.getId() + "]");
-		}
-		return result;
-	}
-
-	/**
-	 * Loads an {@link Invitation} by it's ID.
-	 * 
-	 * @param invitationId
-	 *            The ID to load, required.
-	 * @return The matching invitation, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws InvitationNotFoundException
-	 *             If the ID specified did not match any invitations.
-	 */
-	public Invitation load(InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
-		Invitation invitation = this.invitationDao.load(invitationId);
-		if (invitation == null) {
-			throw new InvitationNotFoundException(invitationId);
-		}
-		return invitation;
-	}
-
-	/**
-	 * Returns a list of {@link Invitation}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of invitation, optional.
-	 * @param status
-	 *            The status of the invitation, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link Invitation}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<Invitation> list(InvitationType type, InvitationStatus status, long page, long count) throws DataOperationException {
-		return this.invitationDao.list(type, status, page, count);
-	}
-
-	/**
-	 * Creates a new {@link Invitation} with the given properties.
-	 * 
-	 * @param user
-	 *            The user who is sending the invitation.
-	 * @param userInfo
-	 *            The address the invitation is being sent to, required.
-	 * @param address
-	 *            The type of invitation, required.
-	 * @param message
-	 * @param targetId
-	 * @param targetType
-	 * @param channel
-	 *            The delivery channel for the invite.
-	 * @param type
-	 *            The purpose of the invitation.
-	 * @param sender
-	 *            The delivery mechanism.
-	 * @param lang 
-	 * @return The result of the creation, which will include the new invitation
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<Invitation> create(User user, UserInfo userInfo, String address, String targetType, String targetId, String message, InvitationChannel channel, InvitationType type,
-			InvitationSender sender, String lang) throws DataOperationException {
-		Invitation invitation = new Invitation();
-		invitation.setUserId(user.getId());
-		invitation.setAddress(address);
-		invitation.setChannel(channel);
-		invitation.setType(type);
-		invitation.setTargetType(targetType);
-		invitation.setTargetId(targetId);
-		invitation.setMessage(message);
-		invitation.setLang(lang);
-		invitation.setStatus(InvitationStatus.UNSENT);
-		DataOperationResult<Invitation> result = save(invitation);
-		sender.send(invitation, user, userInfo);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link InvitationStatus#DELETED}.
-	 * 
-	 * @param invitationId
-	 *            The ID of the invitation to delete.
-	 * @return The result of the deletion, will not include the new invitation
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws InvitationNotFoundException
-	 *             If the ID specified did not match any invitations.
-	 */
-	public DataOperationResult<Invitation> delete(InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
-		Invitation invitation = load(invitationId);
-		invitation.setStatus(InvitationStatus.DELETED);
-		DataOperationResult<Invitation> result = save(invitation);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -207,16 +75,63 @@ public class InvitationManager {
 	}
 
 	/**
-	 * Counts the records available that match the search criteria.
+	 * Creates a new {@link Invitation} with the given properties.
 	 * 
-	 * @param search
-	 *            The search query.
-	 * @return The number of matching records.
+	 * @param user
+	 *            The user who is sending the invitation.
+	 * @param userInfo
+	 *            The address the invitation is being sent to, required.
+	 * @param address
+	 *            The type of invitation, required.
+	 * @param message
+	 * @param targetId
+	 * @param targetType
+	 * @param channel
+	 *            The delivery channel for the invite.
+	 * @param type
+	 *            The purpose of the invitation.
+	 * @param sender
+	 *            The delivery mechanism.
+	 * @param lang
+	 * @return The result of the creation, which will include the new invitation
+	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search) throws DataOperationException {
-		return this.invitationDao.searchCount(search);
+	public DataOperationResult<Invitation> create(final User user, final UserInfo userInfo, final String address, final String targetType, final String targetId, final String message,
+			final InvitationChannel channel, final InvitationType type, final InvitationSender sender, final String lang) throws DataOperationException {
+		final Invitation invitation = new Invitation();
+		invitation.setUserId(user.getId());
+		invitation.setAddress(address);
+		invitation.setChannel(channel);
+		invitation.setType(type);
+		invitation.setTargetType(targetType);
+		invitation.setTargetId(targetId);
+		invitation.setMessage(message);
+		invitation.setLang(lang);
+		invitation.setStatus(InvitationStatus.UNSENT);
+		final DataOperationResult<Invitation> result = save(invitation);
+		sender.send(invitation, user, userInfo);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link InvitationStatus#DELETED}.
+	 * 
+	 * @param invitationId
+	 *            The ID of the invitation to delete.
+	 * @return The result of the deletion, will not include the new invitation
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws InvitationNotFoundException
+	 *             If the ID specified did not match any invitations.
+	 */
+	public DataOperationResult<Invitation> delete(final InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
+		final Invitation invitation = load(invitationId);
+		invitation.setStatus(InvitationStatus.DELETED);
+		final DataOperationResult<Invitation> result = save(invitation);
+		return result;
 	}
 
 	/**
@@ -228,8 +143,93 @@ public class InvitationManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public Invitation findByReference(String reference) throws DataOperationException {
+	public Invitation findByReference(final String reference) throws DataOperationException {
 		return this.invitationDao.findByReference(reference);
+	}
+
+	/**
+	 * Returns a list of {@link Invitation}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of invitation, optional.
+	 * @param status
+	 *            The status of the invitation, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link Invitation}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<Invitation> list(final InvitationType type, final InvitationStatus status, final long page, final long count) throws DataOperationException {
+		return this.invitationDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Loads an {@link Invitation} by it's ID.
+	 * 
+	 * @param invitationId
+	 *            The ID to load, required.
+	 * @return The matching invitation, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws InvitationNotFoundException
+	 *             If the ID specified did not match any invitations.
+	 */
+	public Invitation load(final InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
+		final Invitation invitation = this.invitationDao.load(invitationId);
+		if (invitation == null) {
+			throw new InvitationNotFoundException(invitationId);
+		}
+		return invitation;
+	}
+
+	/**
+	 * Saves an {@link Invitation}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param invitation
+	 *            The invitation to save.
+	 * @return The result of the save operation, which will include the new
+	 *         invitation at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<Invitation> save(final Invitation invitation) throws DataOperationException {
+		boolean create = false;
+		if (invitation.getId() == null) {
+			invitation.setId(new InvitationId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (invitation.getCreated() == null) {
+			invitation.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<Invitation> result = this.invitationDao.insert(invitation);
+			log.fine("Created Invitation " + invitation.getAddress() + " [" + invitation.getId() + "]");
+			return result;
+		}
+		final DataOperationResult<Invitation> result = this.invitationDao.update(invitation);
+		if (result.getRowsAffected() > 0) {
+			log.fine("Updated Invitation " + invitation.getAddress() + " [" + invitation.getId() + "]");
+		}
+		return result;
+	}
+
+	/**
+	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param search
+	 *            The search query.
+	 * @return The number of matching records.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public int searchCount(final String search) throws DataOperationException {
+		return this.invitationDao.searchCount(search);
 	}
 
 }

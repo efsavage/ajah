@@ -54,7 +54,7 @@ public class EmailVerificationNotFoundException extends Exception {
 	 * @param code
 	 *            The internal ID that was sought.
 	 */
-	public EmailVerificationNotFoundException(String code) {
+	public EmailVerificationNotFoundException(final String code) {
 		this.id = null;
 		this.code = code;
 	}

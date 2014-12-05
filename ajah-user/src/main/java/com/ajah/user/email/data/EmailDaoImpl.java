@@ -67,6 +67,16 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 	}
 
 	@Override
+	public List<Email> list(final String address, final int page, final int count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (!StringUtils.isBlank(address)) {
+			final String pattern = address.replaceAll("\\*", "%");
+			criteria.like("address", pattern);
+		}
+		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
+	}
+
+	@Override
 	public List<Email> list(final UserId userId, final EmailType type, final EmailStatus status, final long page, final long count) throws DataOperationException {
 		final Criteria criteria = new Criteria().eq(userId);
 		if (type != null) {
@@ -79,23 +89,13 @@ public class EmailDaoImpl extends AbstractAjahDao<EmailId, Email, Email> impleme
 	}
 
 	@Override
-	public int searchCount(String address) throws DataOperationException {
+	public int searchCount(final String address) throws DataOperationException {
 		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(address)) {
-			String pattern = address.replaceAll("\\*", "%");
+			final String pattern = address.replaceAll("\\*", "%");
 			criteria.like("address", pattern);
 		}
 		return super.count(criteria);
-	}
-
-	@Override
-	public List<Email> list(String address,int page, int count) throws DataOperationException {
-		final Criteria criteria = new Criteria();
-		if (!StringUtils.isBlank(address)) {
-			String pattern = address.replaceAll("\\*", "%");
-			criteria.like("address", pattern);
-		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("address", Order.ASC));
 	}
 
 }

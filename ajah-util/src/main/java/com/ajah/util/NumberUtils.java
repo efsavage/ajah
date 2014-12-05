@@ -49,6 +49,40 @@ public class NumberUtils {
 	}
 
 	/**
+	 * Parses a double out of a String, falling back to zero if the string is
+	 * null, empty, or not a number.
+	 * 
+	 * @param value
+	 *            The value to parse.
+	 * @return The parsed value, or the specified default.
+	 */
+	public static double safeDouble(final String value) {
+		return safeDouble(value, 0);
+	}
+
+	/**
+	 * Parses a double out of a String, falling back to a default value if the
+	 * string is null, empty, or not a number.
+	 * 
+	 * @param value
+	 *            The value to parse.
+	 * @param defaultValue
+	 *            The value to use if no valid int could be parsed.
+	 * @return The parsed value, or the specified default.
+	 */
+	public static double safeDouble(final String value, final int defaultValue) {
+		if (StringUtils.isBlank(value)) {
+			return defaultValue;
+		}
+		try {
+			return Double.parseDouble(value);
+		} catch (final NumberFormatException e) {
+			log.fine(e.getMessage());
+			return defaultValue;
+		}
+	}
+
+	/**
 	 * Parses an int out of a String, falling back to a default value if the
 	 * string is null, empty, or not a number.
 	 * 
@@ -64,40 +98,6 @@ public class NumberUtils {
 		}
 		try {
 			return Integer.parseInt(value);
-		} catch (final NumberFormatException e) {
-			log.fine(e.getMessage());
-			return defaultValue;
-		}
-	}
-
-	/**
-	 * Parses a double out of a String, falling back to zero if the string is
-	 * null, empty, or not a number.
-	 * 
-	 * @param value
-	 *            The value to parse.
-	 * @return The parsed value, or the specified default.
-	 */
-	public static double safeDouble(String value) {
-		return safeDouble(value, 0);
-	}
-
-	/**
-	 * Parses a double out of a String, falling back to a default value if the
-	 * string is null, empty, or not a number.
-	 * 
-	 * @param value
-	 *            The value to parse.
-	 * @param defaultValue
-	 *            The value to use if no valid int could be parsed.
-	 * @return The parsed value, or the specified default.
-	 */
-	public static double safeDouble(String value, final int defaultValue) {
-		if (StringUtils.isBlank(value)) {
-			return defaultValue;
-		}
-		try {
-			return Double.parseDouble(value);
 		} catch (final NumberFormatException e) {
 			log.fine(e.getMessage());
 			return defaultValue;

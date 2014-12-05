@@ -39,12 +39,28 @@ import com.ajah.util.StringUtils;
 public class BlacklistDaoImpl extends AbstractAjahDao<BlacklistId, Blacklist, Blacklist> implements BlacklistDao {
 
 	/**
+	 * @see com.ajah.user.blacklist.data.BlacklistDao#count(BlacklistType,
+	 *      BlacklistStatus)
+	 */
+	@Override
+	public long count(final BlacklistType type, final BlacklistStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	/**
 	 * @see com.ajah.user.blacklist.data.BlacklistDao#list(String, String,
 	 *      BlacklistType, BlacklistStatus, long, long)
 	 */
 	@Override
-	public List<Blacklist> list(String part1, String part2, BlacklistType type, BlacklistStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public List<Blacklist> list(final String part1, final String part2, final BlacklistType type, final BlacklistStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (part1 != null) {
 			criteria.reverseLike("part_1", part1);
 		}
@@ -61,27 +77,11 @@ public class BlacklistDaoImpl extends AbstractAjahDao<BlacklistId, Blacklist, Bl
 	}
 
 	/**
-	 * @see com.ajah.user.blacklist.data.BlacklistDao#count(BlacklistType,
-	 *      BlacklistStatus)
-	 */
-	@Override
-	public long count(BlacklistType type, BlacklistStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
-	}
-
-	/**
 	 * @see com.ajah.user.blacklist.data.BlacklistDao#searchCount(String search)
 	 */
 	@Override
-	public int searchCount(String search) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(final String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
 		}

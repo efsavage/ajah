@@ -69,7 +69,7 @@ public class FlatFileWriter implements Closeable {
 	}
 
 	public void addColumn(final String name, final boolean required) {
-		if (columnsLocked) {
+		if (this.columnsLocked) {
 			throw new IllegalArgumentException("Columns are locked");
 		}
 		if (this.map.get(name) != null) {
@@ -81,7 +81,7 @@ public class FlatFileWriter implements Closeable {
 	}
 
 	public void addColumn(final String name, final String defaultValue) {
-		if (columnsLocked) {
+		if (this.columnsLocked) {
 			throw new IllegalArgumentException("Columns are locked");
 		}
 		if (this.map.get(name) != null) {

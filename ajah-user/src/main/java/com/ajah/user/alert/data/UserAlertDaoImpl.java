@@ -17,11 +17,6 @@ package com.ajah.user.alert.data;
 
 import java.util.List;
 
-import com.ajah.user.alert.UserAlert;
-import com.ajah.user.alert.UserAlertId;
-import com.ajah.user.alert.UserAlertStatus;
-import com.ajah.user.alert.UserAlertType;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
@@ -29,11 +24,14 @@ import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.criteria.SubCriteria;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.alert.UserAlert;
+import com.ajah.user.alert.UserAlertId;
+import com.ajah.user.alert.UserAlertStatus;
+import com.ajah.user.alert.UserAlertType;
 import com.ajah.util.StringUtils;
 
-
 /**
- *  MySQL-based implementation of {@link UserAlertDao}. 
+ * MySQL-based implementation of {@link UserAlertDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -41,9 +39,25 @@ import com.ajah.util.StringUtils;
 @Repository
 public class UserAlertDaoImpl extends AbstractAjahDao<UserAlertId, UserAlert, UserAlert> implements UserAlertDao {
 
+	/**
+	 * @see com.ajah.user.alert.data.UserAlertDao#count(com.ajah.user.alert.UserAlertType,
+	 *      com.ajah.user.alert.UserAlertStatus)
+	 */
 	@Override
-	public List<UserAlert> list(UserAlertType type, UserAlertStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final UserAlertType type, final UserAlertStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	@Override
+	public List<UserAlert> list(final UserAlertType type, final UserAlertStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -54,29 +68,13 @@ public class UserAlertDaoImpl extends AbstractAjahDao<UserAlertId, UserAlert, Us
 	}
 
 	/**
-	 * @see com.ajah.user.alert.data.UserAlertDao#count(com.ajah.user.alert.UserAlertType,
-	 *      com.ajah.user.alert.UserAlertStatus)
-	 */
-	@Override
-	public long count(UserAlertType type, UserAlertStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
-	}
-
-	/**
 	 * @see com.ajah.user.alert.data.UserAlertDao#searchCount(String search)
 	 */
 	@Override
-	public int searchCount(String search) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(final String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
-			String pattern = "%" + search.replaceAll("\\*", "%") + "%";
+			final String pattern = "%" + search.replaceAll("\\*", "%") + "%";
 			criteria.and(new SubCriteria().orLike("subject", pattern).orLike("body", pattern));
 		}
 		return super.count(criteria);

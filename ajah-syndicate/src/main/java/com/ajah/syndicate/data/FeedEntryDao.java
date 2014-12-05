@@ -62,6 +62,6 @@ public interface FeedEntryDao extends AjahDao<FeedEntryId, FeedEntry> {
 
 	FeedEntry findMatch(final FeedSourceId feedId, final String htmlUrlSha1, final String contentSha1) throws DataOperationException;
 
-	List<FeedEntry> list(FeedSourceId feedSourceId, String[] categories, boolean orCategories) throws DataOperationException;
+	List<FeedEntry> list(final FeedSourceId feedSourceId, final String[] categories, final boolean orCategories) throws DataOperationException;
 
 }

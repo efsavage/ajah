@@ -36,16 +36,17 @@ import com.ajah.util.data.format.EmailAddress;
 @AllArgsConstructor
 public class EmailRecipient {
 
-	private EmailAddress address;
-	private String name;
-	private EmailRecipientType type;
-
-	public static Collection<EmailRecipient> from(EmailAddress[] emailAddresses, EmailRecipientType type) {
-		List<EmailRecipient> list = new ArrayList<>(emailAddresses.length);
-		for (EmailAddress emailAddress : emailAddresses) {
+	public static Collection<EmailRecipient> from(final EmailAddress[] emailAddresses, final EmailRecipientType type) {
+		final List<EmailRecipient> list = new ArrayList<>(emailAddresses.length);
+		for (final EmailAddress emailAddress : emailAddresses) {
 			list.add(new EmailRecipient(emailAddress, emailAddress.toString(), type));
 		}
 		return list;
 	}
+
+	private EmailAddress address;
+	private String name;
+
+	private EmailRecipientType type;
 
 }

@@ -27,6 +27,22 @@ import java.net.URL;
 public class UnorderedList extends AbstractNestableHtmlCoreElement<UnorderedList> {
 
 	/**
+	 * Creates a new {@link Anchor} within a new {@link ListItem} and adds it to
+	 * this element's children.
+	 * 
+	 * @param url
+	 *            The URL of the link.
+	 * @param text
+	 *            The text to display for the link.
+	 */
+	public void addLink(final URL url, final String text) {
+		final ListItem li = new ListItem();
+		final Anchor a = new Anchor(url, text);
+		li.add(a);
+		add(li);
+	}
+
+	/**
 	 * Returns "ul"
 	 * 
 	 * @see com.ajah.html.element.AbstractNestableHtmlCoreElement#getName()
@@ -39,22 +55,6 @@ public class UnorderedList extends AbstractNestableHtmlCoreElement<UnorderedList
 	@Override
 	public UnorderedList getThis() {
 		return this;
-	}
-
-	/**
-	 * Creates a new {@link Anchor} within a new {@link ListItem} and adds it to
-	 * this element's children.
-	 * 
-	 * @param url
-	 *            The URL of the link.
-	 * @param text
-	 *            The text to display for the link.
-	 */
-	public void addLink(URL url, String text) {
-		ListItem li = new ListItem();
-		Anchor a = new Anchor(url, text);
-		li.add(a);
-		add(li);
 	}
 
 }

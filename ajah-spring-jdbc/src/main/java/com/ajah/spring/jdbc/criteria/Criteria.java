@@ -150,11 +150,11 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	 * 
 	 * @return A where clause that is equivalent to this criteria.
 	 */
-	public Where getWhere(String tableName) {
+	public Where getWhere(final String tableName) {
 		final List<String> values = new ArrayList<>();
 		final StringBuilder where = new StringBuilder();
 		boolean first = true;
-		String tablePrefix = StringUtils.isBlank(tableName) ? "" : "`" + tableName + "`.";
+		final String tablePrefix = StringUtils.isBlank(tableName) ? "" : "`" + tableName + "`.";
 
 		if (!CollectionUtils.isEmpty(this.eqs)) {
 			for (final NameValuePair<String> eq : this.eqs) {
@@ -412,27 +412,6 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	}
 
 	/**
-	 * A reverse LIKE field match. Intended for when the wildcard is in the
-	 * database, e.g. 'value' like field. Uses the query as-is (i.e. add your
-	 * own wildcards).
-	 * 
-	 * @param field
-	 *            The field to match
-	 * @param pattern
-	 *            The pattern the field must match.
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public Criteria reverseLike(final String field, final String pattern) {
-		AjahUtils.requireParam(field, "field");
-		AjahUtils.requireParam(pattern, "pattern");
-		if (this.reverseLikes == null) {
-			this.reverseLikes = new ArrayList<>();
-		}
-		this.reverseLikes.add(new NameValuePair<>(field, pattern));
-		return this;
-	}
-
-	/**
 	 * A greater-than or equal to match.
 	 * 
 	 * @param field
@@ -521,6 +500,27 @@ public class Criteria extends AbstractCriteria<Criteria> {
 			this.orderBys = new ArrayList<>();
 		}
 		this.orderBys.add(new NameValuePair<>("RAND()", (Order) null));
+		return this;
+	}
+
+	/**
+	 * A reverse LIKE field match. Intended for when the wildcard is in the
+	 * database, e.g. 'value' like field. Uses the query as-is (i.e. add your
+	 * own wildcards).
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param pattern
+	 *            The pattern the field must match.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria reverseLike(final String field, final String pattern) {
+		AjahUtils.requireParam(field, "field");
+		AjahUtils.requireParam(pattern, "pattern");
+		if (this.reverseLikes == null) {
+			this.reverseLikes = new ArrayList<>();
+		}
+		this.reverseLikes.add(new NameValuePair<>(field, pattern));
 		return this;
 	}
 

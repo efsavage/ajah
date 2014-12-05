@@ -58,97 +58,6 @@ public class SignUpManager {
 	private UserManager userManager;
 
 	/**
-	 * Saves an {@link SignUp}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param signUp
-	 *            The signUp to save.
-	 * @return The result of the save operation, which will include the new
-	 *         signUp at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<SignUp> save(SignUp signUp) throws DataOperationException {
-		boolean create = false;
-		if (signUp.getId() == null) {
-			signUp.setId(new SignUpId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (signUp.getCreated() == null) {
-			signUp.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<SignUp> result = this.signUpDao.insert(signUp);
-			log.fine("Created SignUp " + signUp.getUsername() + " [" + signUp.getId() + "]");
-			return result;
-		}
-		DataOperationResult<SignUp> result = this.signUpDao.update(signUp);
-		if (result.getRowsAffected() > 0) {
-			log.fine("Updated SignUp " + signUp.getUsername() + " [" + signUp.getId() + "]");
-		}
-		return result;
-	}
-
-	/**
-	 * Loads an {@link SignUp} by it's ID.
-	 * 
-	 * @param signUpId
-	 *            The ID to load, required.
-	 * @return The matching signUp, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws SignUpNotFoundException
-	 *             If the ID specified did not match any signUps.
-	 */
-	public SignUp load(SignUpId signUpId) throws DataOperationException, SignUpNotFoundException {
-		SignUp signUp = this.signUpDao.load(signUpId);
-		if (signUp == null) {
-			throw new SignUpNotFoundException(signUpId);
-		}
-		return signUp;
-	}
-
-	/**
-	 * Returns a list of {@link SignUp}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of signUp, optional.
-	 * @param status
-	 *            The status of the signUp, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link SignUp}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<SignUp> list(SignUpType type, SignUpStatus status, long page, long count) throws DataOperationException {
-		return this.signUpDao.list(type, status, page, count);
-	}
-
-	/**
-	 * Marks the entity as {@link SignUpStatus#DELETED}.
-	 * 
-	 * @param signUpId
-	 *            The ID of the signUp to delete.
-	 * @return The result of the deletion, will not include the new signUp at
-	 *         {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws SignUpNotFoundException
-	 *             If the ID specified did not match any signUps.
-	 */
-	public DataOperationResult<SignUp> delete(SignUpId signUpId) throws DataOperationException, SignUpNotFoundException {
-		SignUp signUp = load(signUpId);
-		signUp.setStatus(SignUpStatus.DELETED);
-		DataOperationResult<SignUp> result = save(signUp);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -175,6 +84,97 @@ public class SignUpManager {
 	}
 
 	/**
+	 * Marks the entity as {@link SignUpStatus#DELETED}.
+	 * 
+	 * @param signUpId
+	 *            The ID of the signUp to delete.
+	 * @return The result of the deletion, will not include the new signUp at
+	 *         {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws SignUpNotFoundException
+	 *             If the ID specified did not match any signUps.
+	 */
+	public DataOperationResult<SignUp> delete(final SignUpId signUpId) throws DataOperationException, SignUpNotFoundException {
+		final SignUp signUp = load(signUpId);
+		signUp.setStatus(SignUpStatus.DELETED);
+		final DataOperationResult<SignUp> result = save(signUp);
+		return result;
+	}
+
+	/**
+	 * Returns a list of {@link SignUp}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of signUp, optional.
+	 * @param status
+	 *            The status of the signUp, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link SignUp}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<SignUp> list(final SignUpType type, final SignUpStatus status, final long page, final long count) throws DataOperationException {
+		return this.signUpDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Loads an {@link SignUp} by it's ID.
+	 * 
+	 * @param signUpId
+	 *            The ID to load, required.
+	 * @return The matching signUp, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws SignUpNotFoundException
+	 *             If the ID specified did not match any signUps.
+	 */
+	public SignUp load(final SignUpId signUpId) throws DataOperationException, SignUpNotFoundException {
+		final SignUp signUp = this.signUpDao.load(signUpId);
+		if (signUp == null) {
+			throw new SignUpNotFoundException(signUpId);
+		}
+		return signUp;
+	}
+
+	/**
+	 * Saves an {@link SignUp}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param signUp
+	 *            The signUp to save.
+	 * @return The result of the save operation, which will include the new
+	 *         signUp at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<SignUp> save(final SignUp signUp) throws DataOperationException {
+		boolean create = false;
+		if (signUp.getId() == null) {
+			signUp.setId(new SignUpId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (signUp.getCreated() == null) {
+			signUp.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<SignUp> result = this.signUpDao.insert(signUp);
+			log.fine("Created SignUp " + signUp.getUsername() + " [" + signUp.getId() + "]");
+			return result;
+		}
+		final DataOperationResult<SignUp> result = this.signUpDao.update(signUp);
+		if (result.getRowsAffected() > 0) {
+			log.fine("Updated SignUp " + signUp.getUsername() + " [" + signUp.getId() + "]");
+		}
+		return result;
+	}
+
+	/**
 	 * Counts the records available that match the search criteria.
 	 * 
 	 * @param search
@@ -183,7 +183,7 @@ public class SignUpManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search) throws DataOperationException {
+	public int searchCount(final String search) throws DataOperationException {
 		return this.signUpDao.searchCount(search);
 	}
 
@@ -226,8 +226,9 @@ public class SignUpManager {
 		return signUp;
 	}
 
-	public SignUp signUp(String username, Password password, EmailAddress emailAddress, String firstName, String lastName, Integer birthDay, Month birthMonth, Integer birthYear, ISOCountry country,
-			String ip, UserSourceId source, String promoCode, String referralSource, String referralSourceOther, UserType type) throws DataOperationException, DuplicateUsernameException {
+	public SignUp signUp(final String username, final Password password, final EmailAddress emailAddress, final String firstName, final String lastName, final Integer birthDay,
+			final Month birthMonth, final Integer birthYear, final ISOCountry country, final String ip, final UserSourceId source, final String promoCode, final String referralSource,
+			final String referralSourceOther, final UserType type) throws DataOperationException, DuplicateUsernameException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
 		signUp.setUsername(username);

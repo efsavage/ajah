@@ -141,6 +141,11 @@ public enum Browser implements IdentifiableEnum<String> {
 		return this.abbreviation;
 	}
 
+	@Override
+	public String getCode() {
+		return this.abbreviation;
+	}
+
 	/**
 	 * Returns the unique ID of this browser. Note that this value is arbitrary
 	 * and does not come from the browser itself.
@@ -157,6 +162,7 @@ public enum Browser implements IdentifiableEnum<String> {
 	 * 
 	 * @return the common name of the browser.
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -167,17 +173,12 @@ public enum Browser implements IdentifiableEnum<String> {
 	 * @return true if this "browser" is known bot or crawler.
 	 */
 	public boolean isBot() {
-		return bot;
+		return this.bot;
 	}
 
 	@Override
-	public void setId(String id) {
+	public void setId(final String id) {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public String getCode() {
-		return abbreviation;
 	}
 
 }

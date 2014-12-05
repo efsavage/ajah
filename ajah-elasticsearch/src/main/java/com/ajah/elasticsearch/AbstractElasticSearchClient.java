@@ -122,6 +122,15 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		return result.actionGet();
 	}
 
+	public C load(final K id) throws IOException {
+		final GetResponse response = this.client.prepareGet(this.index, this.type, id.toString()).execute().actionGet();
+		final String source = response.getSourceAsString();
+		if (StringUtils.isBlank(source)) {
+			return null;
+		}
+		return this.mapper.readValue(source, getTargetClass());
+	}
+
 	/**
 	 * Returns a result of a search.
 	 * 
@@ -139,7 +148,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	@Override
 	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException {
 		final SearchList<C> results = new SearchList<>();
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 		try {
 			final SearchRequestBuilder requestBuilder = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setFrom(page * count).setSize(count)
 					.setQuery(queryBuilder);
@@ -185,7 +194,7 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 	@Override
 	public SearchList<C> search(final String query) throws IOException {
 		final SearchList<C> results = new SearchList<>();
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 		try {
 			final SearchResponse response = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setSize(100).setQuery(QueryBuilders.matchQuery("_all", query))
 					.execute().actionGet();
@@ -199,15 +208,6 @@ public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T ext
 		}
 		results.setTime(System.currentTimeMillis() - start);
 		return results;
-	}
-
-	public C load(K id) throws IOException {
-		final GetResponse response = this.client.prepareGet(this.index, this.type, id.toString()).execute().actionGet();
-		String source = response.getSourceAsString();
-		if (StringUtils.isBlank(source)) {
-			return null;
-		}
-		return this.mapper.readValue(source, getTargetClass());
 	}
 
 }

@@ -124,31 +124,13 @@ public class FeedFetcher {
 	}
 
 	/**
-	 * Finds a stale feed and fetches it, saving it to the database and invoking
-	 * any listeners needed. This will run until interrupted by a serious
-	 * exception.
-	 * 
-	 * @throws InterruptedException
-	 *             If the thread was interrupted while sleeping (while waiting
-	 *             for a feed to fetch).
-	 * @throws DataOperationException
-	 *             If a database query could not be executed.
-	 */
-	public void run() throws InterruptedException, DataOperationException {
-		while (true) {
-			poll();
-		}
-
-	}
-
-	/**
 	 * Polls until there are no more stale feeds.
 	 * 
 	 * @throws DataOperationException
 	 */
 	public void poll() throws DataOperationException {
 		while (true) {
-			FeedSource feedSource = this.feedSourceManager.getStaleFeedSource();
+			final FeedSource feedSource = this.feedSourceManager.getStaleFeedSource();
 			if (feedSource == null) {
 				log.finest("No feed source to poll");
 				return;
@@ -187,6 +169,24 @@ public class FeedFetcher {
 				this.feedSourceManager.save(feedSource);
 			}
 		}
+	}
+
+	/**
+	 * Finds a stale feed and fetches it, saving it to the database and invoking
+	 * any listeners needed. This will run until interrupted by a serious
+	 * exception.
+	 * 
+	 * @throws InterruptedException
+	 *             If the thread was interrupted while sleeping (while waiting
+	 *             for a feed to fetch).
+	 * @throws DataOperationException
+	 *             If a database query could not be executed.
+	 */
+	public void run() throws InterruptedException, DataOperationException {
+		while (true) {
+			poll();
+		}
+
 	}
 
 }

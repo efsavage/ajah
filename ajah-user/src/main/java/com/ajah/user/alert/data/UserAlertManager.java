@@ -47,132 +47,6 @@ public class UserAlertManager {
 	private UserAlertDao userAlertDao;
 
 	/**
-	 * Saves an {@link UserAlert}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
-	 * 
-	 * @param userAlert
-	 *            The userAlert to save.
-	 * @return The result of the save operation, which will include the new
-	 *         userAlert at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<UserAlert> save(UserAlert userAlert) throws DataOperationException {
-		boolean create = false;
-		if (userAlert.getId() == null) {
-			userAlert.setId(new UserAlertId(UUID.randomUUID().toString()));
-			create = true;
-		}
-		if (userAlert.getCreated() == null) {
-			userAlert.setCreated(new Date());
-			create = true;
-		}
-		if (create) {
-			DataOperationResult<UserAlert> result = this.userAlertDao.insert(userAlert);
-			log.fine("Created UserAlert " + userAlert.getSubject() + " [" + userAlert.getId() + "]");
-			return result;
-		}
-		DataOperationResult<UserAlert> result = this.userAlertDao.update(userAlert);
-		log.fine("Updated UserAlert " + userAlert.getSubject() + " [" + userAlert.getId() + "]");
-		return result;
-	}
-
-	/**
-	 * Loads an {@link UserAlert} by it's ID.
-	 * 
-	 * @param userAlertId
-	 *            The ID to load, required.
-	 * @return The matching userAlert, if found. Will not return null.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws UserAlertNotFoundException
-	 *             If the ID specified did not match any userAlerts.
-	 */
-	public UserAlert load(UserAlertId userAlertId) throws DataOperationException, UserAlertNotFoundException {
-		UserAlert userAlert = this.userAlertDao.load(userAlertId);
-		if (userAlert == null) {
-			throw new UserAlertNotFoundException(userAlertId);
-		}
-		return userAlert;
-	}
-
-	/**
-	 * Returns a list of {@link UserAlert}s that match the specified criteria.
-	 * 
-	 * @param type
-	 *            The type of userAlert, optional.
-	 * @param status
-	 *            The status of the userAlert, optional.
-	 * @param page
-	 *            The page of results to fetch.
-	 * @param count
-	 *            The number of results per page.
-	 * @return A list of {@link UserAlert}s, which may be empty.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public List<UserAlert> list(UserAlertType type, UserAlertStatus status, long page, long count) throws DataOperationException {
-		return this.userAlertDao.list(type, status, page, count);
-	}
-
-	/**
-	 * Creates a new {@link UserAlert} with the given properties.
-	 * 
-	 * @param userId
-	 *            The user the messages is for.
-	 * @param subject
-	 *            The subject of the userAlert, required if body is null.
-	 * @param body
-	 *            The body of the message, required if subject is null.
-	 * @param type
-	 *            The type of userAlert, required.
-	 * @param responseType
-	 *            The type of response desired.
-	 * @param expiration
-	 *            The date the message expires even without a response. Nulls
-	 *            permitted.
-	 * @param preserve
-	 *            Keep this message after a response?
-	 * @return The result of the creation, which will include the new userAlert
-	 *         at {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 */
-	public DataOperationResult<UserAlert> create(UserId userId, String subject, String body, UserAlertType type, UserAlertResponseType responseType, Date expiration, boolean preserve)
-			throws DataOperationException {
-		UserAlert userAlert = new UserAlert();
-		userAlert.setUserId(userId);
-		userAlert.setSubject(subject);
-		userAlert.setBody(body);
-		userAlert.setType(type);
-		userAlert.setResponseType(responseType);
-		userAlert.setExpiration(expiration);
-		userAlert.setPreserve(preserve);
-		DataOperationResult<UserAlert> result = save(userAlert);
-		return result;
-	}
-
-	/**
-	 * Marks the entity as {@link UserAlertStatus#DELETED}.
-	 * 
-	 * @param userAlertId
-	 *            The ID of the userAlert to delete.
-	 * @return The result of the deletion, will not include the new userAlert at
-	 *         {@link DataOperationResult#getEntity()}.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
-	 * @throws UserAlertNotFoundException
-	 *             If the ID specified did not match any userAlerts.
-	 */
-	public DataOperationResult<UserAlert> delete(UserAlertId userAlertId) throws DataOperationException, UserAlertNotFoundException {
-		UserAlert userAlert = load(userAlertId);
-		userAlert.setStatus(UserAlertStatus.DELETED);
-		DataOperationResult<UserAlert> result = save(userAlert);
-		return result;
-	}
-
-	/**
 	 * Returns a count of all records.
 	 * 
 	 * @return Count of all records.
@@ -199,6 +73,132 @@ public class UserAlertManager {
 	}
 
 	/**
+	 * Creates a new {@link UserAlert} with the given properties.
+	 * 
+	 * @param userId
+	 *            The user the messages is for.
+	 * @param subject
+	 *            The subject of the userAlert, required if body is null.
+	 * @param body
+	 *            The body of the message, required if subject is null.
+	 * @param type
+	 *            The type of userAlert, required.
+	 * @param responseType
+	 *            The type of response desired.
+	 * @param expiration
+	 *            The date the message expires even without a response. Nulls
+	 *            permitted.
+	 * @param preserve
+	 *            Keep this message after a response?
+	 * @return The result of the creation, which will include the new userAlert
+	 *         at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<UserAlert> create(final UserId userId, final String subject, final String body, final UserAlertType type, final UserAlertResponseType responseType,
+			final Date expiration, final boolean preserve) throws DataOperationException {
+		final UserAlert userAlert = new UserAlert();
+		userAlert.setUserId(userId);
+		userAlert.setSubject(subject);
+		userAlert.setBody(body);
+		userAlert.setType(type);
+		userAlert.setResponseType(responseType);
+		userAlert.setExpiration(expiration);
+		userAlert.setPreserve(preserve);
+		final DataOperationResult<UserAlert> result = save(userAlert);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link UserAlertStatus#DELETED}.
+	 * 
+	 * @param userAlertId
+	 *            The ID of the userAlert to delete.
+	 * @return The result of the deletion, will not include the new userAlert at
+	 *         {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws UserAlertNotFoundException
+	 *             If the ID specified did not match any userAlerts.
+	 */
+	public DataOperationResult<UserAlert> delete(final UserAlertId userAlertId) throws DataOperationException, UserAlertNotFoundException {
+		final UserAlert userAlert = load(userAlertId);
+		userAlert.setStatus(UserAlertStatus.DELETED);
+		final DataOperationResult<UserAlert> result = save(userAlert);
+		return result;
+	}
+
+	/**
+	 * Returns a list of {@link UserAlert}s that match the specified criteria.
+	 * 
+	 * @param type
+	 *            The type of userAlert, optional.
+	 * @param status
+	 *            The status of the userAlert, optional.
+	 * @param page
+	 *            The page of results to fetch.
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of {@link UserAlert}s, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<UserAlert> list(final UserAlertType type, final UserAlertStatus status, final long page, final long count) throws DataOperationException {
+		return this.userAlertDao.list(type, status, page, count);
+	}
+
+	/**
+	 * Loads an {@link UserAlert} by it's ID.
+	 * 
+	 * @param userAlertId
+	 *            The ID to load, required.
+	 * @return The matching userAlert, if found. Will not return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws UserAlertNotFoundException
+	 *             If the ID specified did not match any userAlerts.
+	 */
+	public UserAlert load(final UserAlertId userAlertId) throws DataOperationException, UserAlertNotFoundException {
+		final UserAlert userAlert = this.userAlertDao.load(userAlertId);
+		if (userAlert == null) {
+			throw new UserAlertNotFoundException(userAlertId);
+		}
+		return userAlert;
+	}
+
+	/**
+	 * Saves an {@link UserAlert}. Assigns a new ID ({@link UUID}) and sets the
+	 * creation date if necessary. If either of these elements are set, will
+	 * perform an insert. Otherwise will perform an update.
+	 * 
+	 * @param userAlert
+	 *            The userAlert to save.
+	 * @return The result of the save operation, which will include the new
+	 *         userAlert at {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public DataOperationResult<UserAlert> save(final UserAlert userAlert) throws DataOperationException {
+		boolean create = false;
+		if (userAlert.getId() == null) {
+			userAlert.setId(new UserAlertId(UUID.randomUUID().toString()));
+			create = true;
+		}
+		if (userAlert.getCreated() == null) {
+			userAlert.setCreated(new Date());
+			create = true;
+		}
+		if (create) {
+			final DataOperationResult<UserAlert> result = this.userAlertDao.insert(userAlert);
+			log.fine("Created UserAlert " + userAlert.getSubject() + " [" + userAlert.getId() + "]");
+			return result;
+		}
+		final DataOperationResult<UserAlert> result = this.userAlertDao.update(userAlert);
+		log.fine("Updated UserAlert " + userAlert.getSubject() + " [" + userAlert.getId() + "]");
+		return result;
+	}
+
+	/**
 	 * Counts the records available that match the search criteria.
 	 * 
 	 * @param search
@@ -207,7 +207,7 @@ public class UserAlertManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search) throws DataOperationException {
+	public int searchCount(final String search) throws DataOperationException {
 		return this.userAlertDao.searchCount(search);
 	}
 

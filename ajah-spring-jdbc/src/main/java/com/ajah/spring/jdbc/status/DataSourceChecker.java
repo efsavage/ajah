@@ -42,15 +42,15 @@ public class DataSourceChecker {
 	 *            The data source to check.
 	 * @return The status report. Should return even in the event of an error.
 	 */
-	public static DataSourceStatus check(DataSource dataSource) {
-		DataSourceStatus status = new DataSourceStatus();
+	public static DataSourceStatus check(final DataSource dataSource) {
+		final DataSourceStatus status = new DataSourceStatus();
 		try (Connection connection = dataSource.getConnection()) {
 			try (ResultSet rs = connection.createStatement().executeQuery("SELECT NOW()")) {
 				if (rs.next()) {
 					status.serverTimestamp = rs.getDate(1);
 				}
 			}
-			DatabaseMetaData metaData = connection.getMetaData();
+			final DatabaseMetaData metaData = connection.getMetaData();
 			if (metaData != null) {
 				status.serverProduct.name = metaData.getDatabaseProductName();
 				status.serverProduct.majorVersion = metaData.getDatabaseMajorVersion();
@@ -63,7 +63,7 @@ public class DataSourceChecker {
 			} else {
 				log.warning("DB metadata is null");
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			status.error = e;
 		}
 		return status;

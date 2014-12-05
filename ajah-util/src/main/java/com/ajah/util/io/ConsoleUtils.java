@@ -112,47 +112,6 @@ public class ConsoleUtils {
 	}
 
 	/**
-	 * Asks a question with a text answer, appending the default value if
-	 * present.
-	 * 
-	 * @param message
-	 *            The question to ask, required.
-	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
-	 * @return The response to the question.
-	 */
-	@SuppressWarnings("resource")
-	// Don't need to close System.in
-	public static String ask(final String message, final String defaultAnswer) {
-		final Scanner in = new Scanner(System.in);
-		System.out.println(message + (!StringUtils.isBlank(defaultAnswer) ? " [" + defaultAnswer + "]" : ""));
-		final String response = in.nextLine().trim();
-		if (StringUtils.isBlank(response)) {
-			return defaultAnswer;
-		}
-		return response;
-	}
-
-	@SuppressWarnings("resource")
-	public static int askInt(String message) {
-		while (true) {
-			int answer = 0;
-			final Scanner in = new Scanner(System.in);
-			System.out.println(message);
-			final String response = in.nextLine().trim();
-			if (!StringUtils.isBlank(response)) {
-				try {
-					answer = Integer.parseInt(response);
-				} catch (final NumberFormatException e) {
-					System.out.println("Unrecognized response, please answer 'y' or 'n'");
-					continue;
-				}
-			}
-			return answer;
-		}
-	}
-
-	/**
 	 * Asks a question, requiring a numerical answer, appending the default
 	 * value.
 	 * 
@@ -184,8 +143,30 @@ public class ConsoleUtils {
 		}
 	}
 
+	/**
+	 * Asks a question with a text answer, appending the default value if
+	 * present.
+	 * 
+	 * @param message
+	 *            The question to ask, required.
+	 * @param defaultAnswer
+	 *            The answer if someone just hits enter.
+	 * @return The response to the question.
+	 */
 	@SuppressWarnings("resource")
-	public static BigDecimal askBigDecimal(String message) {
+	// Don't need to close System.in
+	public static String ask(final String message, final String defaultAnswer) {
+		final Scanner in = new Scanner(System.in);
+		System.out.println(message + (!StringUtils.isBlank(defaultAnswer) ? " [" + defaultAnswer + "]" : ""));
+		final String response = in.nextLine().trim();
+		if (StringUtils.isBlank(response)) {
+			return defaultAnswer;
+		}
+		return response;
+	}
+
+	@SuppressWarnings("resource")
+	public static BigDecimal askBigDecimal(final String message) {
 		while (true) {
 			BigDecimal answer = BigDecimal.ZERO;
 			final Scanner in = new Scanner(System.in);
@@ -194,6 +175,25 @@ public class ConsoleUtils {
 			if (!StringUtils.isBlank(response)) {
 				try {
 					answer = new BigDecimal(response);
+				} catch (final NumberFormatException e) {
+					System.out.println("Unrecognized response, please answer 'y' or 'n'");
+					continue;
+				}
+			}
+			return answer;
+		}
+	}
+
+	@SuppressWarnings("resource")
+	public static int askInt(final String message) {
+		while (true) {
+			int answer = 0;
+			final Scanner in = new Scanner(System.in);
+			System.out.println(message);
+			final String response = in.nextLine().trim();
+			if (!StringUtils.isBlank(response)) {
+				try {
+					answer = Integer.parseInt(response);
 				} catch (final NumberFormatException e) {
 					System.out.println("Unrecognized response, please answer 'y' or 'n'");
 					continue;

@@ -68,7 +68,7 @@ public class RequestEvent implements Event<RequestEventId> {
 		this.queryString = request.getQueryString();
 		this.ip = request.getRemoteAddr();
 		this.userAgent = UserAgent.from(request.getHeader("User-Agent"));
-		this.browser = userAgent.getBrowser();
+		this.browser = this.userAgent.getBrowser();
 	}
 
 	/**

@@ -53,6 +53,13 @@ public class MandrillTransport implements EmailTransport {
 
 	private String apiKey;
 
+	public MandrillTransport() {
+	}
+
+	public MandrillTransport(final String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 	/**
 	 * @see com.ajah.email.data.EmailTransport#send(com.ajah.email.EmailMessage)
 	 */
@@ -119,13 +126,6 @@ public class MandrillTransport implements EmailTransport {
 	public void setApiKey(final String apiKey) {
 		this.apiKey = apiKey;
 		this.mandrillApi = new MandrillApi(apiKey);
-	}
-
-	public MandrillTransport() {
-	}
-
-	public MandrillTransport(String apiKey) {
-		this.apiKey = apiKey;
 	}
 
 }

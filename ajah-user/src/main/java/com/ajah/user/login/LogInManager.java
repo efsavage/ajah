@@ -65,7 +65,7 @@ public class LogInManager {
 	public static String getTokenValue(final User user, final Password password) {
 		try {
 			return Crypto.toAES(user.getUsername() + "|" + password.toString());
-		} catch (CryptoException e) {
+		} catch (final CryptoException e) {
 			throw new ConfigException(e);
 		}
 	}

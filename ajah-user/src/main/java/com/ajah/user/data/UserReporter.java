@@ -13,7 +13,7 @@ public class UserReporter {
 	private UserInfoDao userInfoDao;
 
 	public MapMap<LocalDate, String, Integer> getSourceCounts() {
-		return userInfoDao.getSourceCounts();
+		return this.userInfoDao.getSourceCounts();
 	}
 
 }

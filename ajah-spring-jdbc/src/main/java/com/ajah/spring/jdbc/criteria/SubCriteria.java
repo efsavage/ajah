@@ -53,22 +53,6 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 	}
 
 	/**
-	 * A subclause, included as an OR
-	 * 
-	 * @param subCriteria
-	 *            The subCriteria to include
-	 * @return Criteria instance the method was invoked on (for chaining).
-	 */
-	public SubCriteria or(final SubCriteria subCriteria) {
-		AjahUtils.requireParam(subCriteria, "field");
-		if (this.ors == null) {
-			this.ors = new ArrayList<>();
-		}
-		this.ors.add(subCriteria);
-		return this;
-	}
-
-	/**
 	 * @see com.ajah.spring.jdbc.criteria.AbstractCriteria#getThis()
 	 */
 	@Override
@@ -178,6 +162,22 @@ public class SubCriteria extends AbstractCriteria<SubCriteria> {
 			this.gts = new ArrayList<>();
 		}
 		this.gts.add(new NameValuePair<>(field, value));
+		return this;
+	}
+
+	/**
+	 * A subclause, included as an OR
+	 * 
+	 * @param subCriteria
+	 *            The subCriteria to include
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public SubCriteria or(final SubCriteria subCriteria) {
+		AjahUtils.requireParam(subCriteria, "field");
+		if (this.ors == null) {
+			this.ors = new ArrayList<>();
+		}
+		this.ors.add(subCriteria);
 		return this;
 	}
 

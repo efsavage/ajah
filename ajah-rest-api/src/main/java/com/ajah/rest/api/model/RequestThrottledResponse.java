@@ -15,11 +15,11 @@
  */
 package com.ajah.rest.api.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Thrown when a request was aborted due to being rate-limited.
@@ -41,7 +41,7 @@ public class RequestThrottledResponse extends SimpleApiResponse {
 	 * @param delay
 	 *            The delay until this type of request won't be throttled.
 	 */
-	public RequestThrottledResponse(long delay) {
+	public RequestThrottledResponse(final long delay) {
 		this.delay = delay;
 	}
 

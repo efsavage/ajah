@@ -113,18 +113,13 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 		return this.name;
 	}
 
-	@Override
-	public void setId(final String id) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
-	 * Does this status mean that the entity is success?
+	 * Does this status mean that the entity has been deleted?
 	 * 
-	 * @return true if success, otherwise false
+	 * @return true if deleted, otherwise false
 	 */
-	public boolean isSuccess() {
-		return this.success;
+	public boolean isDeleted() {
+		return this.deleted;
 	}
 
 	/**
@@ -137,11 +132,16 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 	}
 
 	/**
-	 * Does this status mean that the entity has been deleted?
+	 * Does this status mean that the entity is success?
 	 * 
-	 * @return true if deleted, otherwise false
+	 * @return true if success, otherwise false
 	 */
-	public boolean isDeleted() {
-		return this.deleted;
+	public boolean isSuccess() {
+		return this.success;
+	}
+
+	@Override
+	public void setId(final String id) {
+		throw new UnsupportedOperationException();
 	}
 }

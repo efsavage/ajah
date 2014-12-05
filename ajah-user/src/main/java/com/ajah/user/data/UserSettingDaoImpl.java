@@ -63,7 +63,7 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 	}
 
 	@Override
-	public List<UserSetting> list(UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
+	public List<UserSetting> list(final UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
 		final Criteria criteria = new Criteria().eq(userId);
 		if (type != null) {
 			criteria.eq("type", type);

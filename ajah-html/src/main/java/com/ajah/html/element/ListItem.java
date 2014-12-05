@@ -25,17 +25,17 @@ package com.ajah.html.element;
 public class ListItem extends AbstractNestableHtmlCoreElement<ListItem> {
 
 	/**
-	 * @see AbstractNestableHtmlCoreElement#AbstractNestableHtmlCoreElement(String)
-	 */
-	public ListItem(final String cData) {
-		super(cData);
-	}
-
-	/**
 	 * @see AbstractNestableHtmlCoreElement#AbstractNestableHtmlCoreElement()
 	 */
 	public ListItem() {
 		super();
+	}
+
+	/**
+	 * @see AbstractNestableHtmlCoreElement#AbstractNestableHtmlCoreElement(String)
+	 */
+	public ListItem(final String cData) {
+		super(cData);
 	}
 
 	/**

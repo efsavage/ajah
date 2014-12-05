@@ -112,6 +112,6 @@ public interface User extends Identifiable<UserId> {
 	 * @param userInfo
 	 *            The associated UserInfo object.
 	 */
-	void setUserInfo(UserInfo userInfo);
+	void setUserInfo(final UserInfo userInfo);
 
 }

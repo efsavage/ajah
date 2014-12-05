@@ -38,9 +38,33 @@ import com.ajah.util.StringUtils;
 @Repository
 public class InvitationDaoImpl extends AbstractAjahDao<InvitationId, Invitation, Invitation> implements InvitationDao {
 
+	/**
+	 * @see com.ajah.user.invitation.data.InvitationDao#count(com.ajah.user.invitation.InvitationType,
+	 *      com.ajah.user.invitation.InvitationStatus)
+	 */
 	@Override
-	public List<Invitation> list(InvitationType type, InvitationStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final InvitationType type, final InvitationStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	/**
+	 * @see com.ajah.user.invitation.data.InvitationDao#findByReference(String)
+	 */
+	@Override
+	public Invitation findByReference(final String reference) throws DataOperationException {
+		return super.find("reference", reference);
+	}
+
+	@Override
+	public List<Invitation> list(final InvitationType type, final InvitationStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -51,40 +75,16 @@ public class InvitationDaoImpl extends AbstractAjahDao<InvitationId, Invitation,
 	}
 
 	/**
-	 * @see com.ajah.user.invitation.data.InvitationDao#count(com.ajah.user.invitation.InvitationType,
-	 *      com.ajah.user.invitation.InvitationStatus)
-	 */
-	@Override
-	public long count(InvitationType type, InvitationStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
-	}
-
-	/**
 	 * @see com.ajah.user.invitation.data.InvitationDao#searchCount(String
 	 *      search)
 	 */
 	@Override
-	public int searchCount(String search) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(final String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("address", "%" + search.replaceAll("\\*", "%") + "%");
 		}
 		return super.count(criteria);
-	}
-
-	/**
-	 * @see com.ajah.user.invitation.data.InvitationDao#findByReference(String)
-	 */
-	@Override
-	public Invitation findByReference(String reference) throws DataOperationException {
-		return super.find("reference", reference);
 	}
 
 }

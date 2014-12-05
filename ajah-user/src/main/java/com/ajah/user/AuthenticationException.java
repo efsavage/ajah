@@ -9,17 +9,17 @@ package com.ajah.user;
 public abstract class AuthenticationException extends Exception {
 
 	/**
-	 * @see Exception#Exception(String)
-	 */
-	public AuthenticationException(String message) {
-		super(message);
-	}
-
-	/**
 	 * @see Exception#Exception()
 	 */
 	public AuthenticationException() {
 		super();
+	}
+
+	/**
+	 * @see Exception#Exception(String)
+	 */
+	public AuthenticationException(final String message) {
+		super(message);
 	}
 
 }

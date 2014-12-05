@@ -40,6 +40,18 @@ public class RequestUtils {
 	}
 
 	/**
+	 * Returns the 'Referer' header from a request.
+	 * 
+	 * @param request
+	 *            The request to analyze.
+	 * @return The referer, may be null.
+	 */
+	public static String getReferer(final HttpServletRequest request) {
+		AjahUtils.requireParam(request, "request");
+		return request.getHeader("Referer");
+	}
+
+	/**
 	 * Returns the {@link UserAgent} from a request.
 	 * 
 	 * @param request
@@ -50,18 +62,6 @@ public class RequestUtils {
 	public static UserAgent getUserAgent(final HttpServletRequest request) {
 		AjahUtils.requireParam(request, "request");
 		return UserAgent.from(request.getHeader("User-Agent"));
-	}
-
-	/**
-	 * Returns the 'Referer' header from a request.
-	 * 
-	 * @param request
-	 *            The request to analyze.
-	 * @return The referer, may be null.
-	 */
-	public static String getReferer(final HttpServletRequest request) {
-		AjahUtils.requireParam(request, "request");
-		return request.getHeader("Referer");
 	}
 
 }

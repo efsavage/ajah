@@ -96,20 +96,6 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	}
 
 	/**
-	 * @see com.ajah.user.data.UserDao#getUsername(com.ajah.user.UserId)
-	 */
-	@Override
-	public String getUsername(final UserId userId) throws DataOperationException {
-		try {
-			return this.jdbcTemplate.queryForObject("SELECT username from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
-		} catch (final EmptyResultDataAccessException e) {
-			return null;
-		} catch (final DataAccessException e) {
-			throw DataOperationExceptionUtils.translate(e, "user");
-		}
-	}
-
-	/**
 	 * @see com.ajah.user.data.UserDao#getRandomUser(UserStatus)
 	 */
 	@Override
@@ -125,6 +111,20 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		try {
 			final String value = this.jdbcTemplate.queryForObject("SELECT status from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
 			return UserStatus.get(value);
+		} catch (final DataAccessException e) {
+			throw DataOperationExceptionUtils.translate(e, "user");
+		}
+	}
+
+	/**
+	 * @see com.ajah.user.data.UserDao#getUsername(com.ajah.user.UserId)
+	 */
+	@Override
+	public String getUsername(final UserId userId) throws DataOperationException {
+		try {
+			return this.jdbcTemplate.queryForObject("SELECT username from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
+		} catch (final EmptyResultDataAccessException e) {
+			return null;
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
@@ -153,6 +153,37 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
+	}
+
+	@Override
+	public List<User> list(final String sortField, final Order order, final int page, final int count) throws DataOperationException {
+		return super.list(new Criteria().offset(page * count).rows(count).orderBy(sortField, order));
+	}
+
+	@Override
+	public List<User> list(final String username, final String firstName, final String lastName, final UserStatus status, final String sort, final Order order, final int page, final int count)
+			throws DataOperationException {
+		final Criteria criteria = new Criteria().rows(count).offset(page * count);
+		if (!StringUtils.isBlank(username)) {
+			final String pattern = username.replaceAll("\\*", "%");
+			criteria.and(new SubCriteria().orLike("username", pattern));
+		}
+		if ("username".equals(sort)) {
+			criteria.orderBy(sort, Order.DESC);
+		}
+		criteria.orderBy("status", Order.DESC);
+		criteria.orderBy("username", Order.ASC);
+		return super.list(criteria);
+	}
+
+	@Override
+	public int searchCount(final String username, final String firstName, final String lastName, final UserStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (!StringUtils.isBlank(username)) {
+			final String pattern = username.replaceAll("\\*", "%");
+			criteria.and(new SubCriteria().orLike("username", pattern));
+		}
+		return super.count(criteria);
 	}
 
 	/**
@@ -192,36 +223,6 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
-	}
-
-	@Override
-	public List<User> list(String sortField, Order order, int page, int count) throws DataOperationException {
-		return super.list(new Criteria().offset(page * count).rows(count).orderBy(sortField, order));
-	}
-
-	@Override
-	public int searchCount(String username, String firstName, String lastName, UserStatus status) throws DataOperationException {
-		final Criteria criteria = new Criteria();
-		if (!StringUtils.isBlank(username)) {
-			String pattern = username.replaceAll("\\*", "%");
-			criteria.and(new SubCriteria().orLike("username", pattern));
-		}
-		return super.count(criteria);
-	}
-
-	@Override
-	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		final Criteria criteria = new Criteria().rows(count).offset(page * count);
-		if (!StringUtils.isBlank(username)) {
-			String pattern = username.replaceAll("\\*", "%");
-			criteria.and(new SubCriteria().orLike("username", pattern));
-		}
-		if ("username".equals(sort)) {
-			criteria.orderBy(sort, Order.DESC);
-		}
-		criteria.orderBy("status", Order.DESC);
-		criteria.orderBy("username", Order.ASC);
-		return super.list(criteria);
 	}
 
 }

@@ -23,7 +23,6 @@ import java.util.UUID;
 import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +77,46 @@ public class UserManager {
 	EmailManager emailManager;
 
 	/**
+	 * Activates a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to deactivate.
+	 * @param statusReason
+	 *            The reason for deactivation.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void activate(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.ACTIVE);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type);
+	}
+
+	/**
+	 * Blocks a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to block.
+	 * @param statusReason
+	 *            The reason for blocking.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void block(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.BLOCKED);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type);
+	}
+
+	/**
 	 * Changes a user's password.
 	 * 
 	 * @param userId
@@ -109,7 +148,7 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public void changeUsername(final UserId userId, final String username, UserAuditType type) throws DataOperationException {
+	public void changeUsername(final UserId userId, final String username, final UserAuditType type) throws DataOperationException {
 		final String oldUsername = this.userDao.getUsername(userId);
 		this.userDao.updateUsername(userId, username);
 		this.userAuditManager.create(userId, UserAuditField.USERNAME, oldUsername, username, type);
@@ -200,6 +239,26 @@ public class UserManager {
 		log.info("User " + user.getUsername() + " is now status " + user.getStatus() + " (" + user.getStatusReason() + ")");
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type);
 
+	}
+
+	/**
+	 * Blocks a user for the specified reason.
+	 * 
+	 * @param user
+	 *            The user to disable.
+	 * @param statusReason
+	 *            The reason for disabling.
+	 * @param type
+	 * @throws DataOperationException
+	 *             If a query could not be executed.
+	 * @throws UserNotFoundException
+	 *             If the specified user was not found.
+	 */
+	public void disable(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
+		user.setStatus(UserStatus.DISABLED);
+		user.setStatusReason(statusReason);
+		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
 	}
 
 	/**
@@ -349,6 +408,24 @@ public class UserManager {
 		return new UserInfoImpl(userId);
 	}
 
+	public List<User> list(final int page, final int count) throws DataOperationException {
+		return this.userDao.list("username", Order.ASC, page, count);
+	}
+
+	public List<User> list(final String username, final String firstName, final String lastName, final UserStatus status, final String sort, final Order order, final int page, final int count)
+			throws DataOperationException {
+		return this.userDao.list(username, firstName, lastName, status, sort, order, page, count);
+	}
+
+	public List<User> load(final List<UserId> userIds) throws UserNotFoundException, DataOperationException {
+		// TODO Optimize this to a single query?
+		final List<User> users = new ArrayList<User>();
+		for (final UserId userId : userIds) {
+			users.add(load(userId));
+		}
+		return users;
+	}
+
 	/**
 	 * Loads a user by unique ID.
 	 * 
@@ -376,6 +453,10 @@ public class UserManager {
 		return result;
 	}
 
+	public int searchCount(final String username, final String firstName, final String lastName, final UserStatus status) throws DataOperationException {
+		return this.userDao.searchCount(username, firstName, lastName, status);
+	}
+
 	/**
 	 * Is this username already in use?
 	 * 
@@ -386,87 +467,6 @@ public class UserManager {
 	 */
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
-	}
-
-	public List<User> list(int page, int count) throws DataOperationException {
-		return this.userDao.list("username", Order.ASC, page, count);
-	}
-
-	/**
-	 * Activates a user for the specified reason.
-	 * 
-	 * @param user
-	 *            The user to deactivate.
-	 * @param statusReason
-	 *            The reason for deactivation.
-	 * @param type
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 * @throws UserNotFoundException
-	 *             If the specified user was not found.
-	 */
-	public void activate(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
-		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
-		user.setStatus(UserStatus.ACTIVE);
-		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type);
-	}
-
-	/**
-	 * Blocks a user for the specified reason.
-	 * 
-	 * @param user
-	 *            The user to block.
-	 * @param statusReason
-	 *            The reason for blocking.
-	 * @param type
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 * @throws UserNotFoundException
-	 *             If the specified user was not found.
-	 */
-	public void block(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
-		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
-		user.setStatus(UserStatus.BLOCKED);
-		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type);
-	}
-
-	/**
-	 * Blocks a user for the specified reason.
-	 * 
-	 * @param user
-	 *            The user to disable.
-	 * @param statusReason
-	 *            The reason for disabling.
-	 * @param type
-	 * @throws DataOperationException
-	 *             If a query could not be executed.
-	 * @throws UserNotFoundException
-	 *             If the specified user was not found.
-	 */
-	public void disable(final User user, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
-		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
-		user.setStatus(UserStatus.DISABLED);
-		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
-	}
-
-	public int searchCount(String username, String firstName, String lastName, UserStatus status) throws DataOperationException {
-		return this.userDao.searchCount(username, firstName, lastName, status);
-	}
-
-	public List<User> list(String username, String firstName, String lastName, UserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.userDao.list(username, firstName, lastName, status, sort, order, page, count);
-	}
-
-	public List<User> load(List<UserId> userIds) throws UserNotFoundException, DataOperationException {
-		// TODO Optimize this to a single query?
-		List<User> users = new ArrayList<User>();
-		for (UserId userId : userIds) {
-			users.add(load(userId));
-		}
-		return users;
 	}
 
 }

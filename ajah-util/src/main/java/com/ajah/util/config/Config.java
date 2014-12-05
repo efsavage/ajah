@@ -41,6 +41,15 @@ public enum Config {
 	 */
 	i;
 
+	/**
+	 * Returns the logger.
+	 * 
+	 * @return The logger.
+	 */
+	private static Logger getLog() {
+		return log;
+	}
+
 	private final Properties properties = new Properties();
 
 	private Config() {
@@ -56,7 +65,7 @@ public enum Config {
 			} else {
 				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "No resource " + config + " found.");
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			getLog().log(Level.WARNING, e.getMessage(), e);
 		}
 		for (final Object propKey : this.properties.keySet()) {
@@ -66,15 +75,6 @@ public enum Config {
 				this.properties.setProperty((String) propKey, sysProp);
 			}
 		}
-	}
-
-	/**
-	 * Returns the logger.
-	 * 
-	 * @return The logger.
-	 */
-	private static Logger getLog() {
-		return log;
 	}
 
 	/**

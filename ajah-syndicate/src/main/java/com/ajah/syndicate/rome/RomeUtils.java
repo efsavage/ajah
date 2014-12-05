@@ -141,11 +141,11 @@ public class RomeUtils {
 			}
 		}
 		@SuppressWarnings("unchecked")
-		List<SyndCategory> categories = syndEntry.getCategories();
+		final List<SyndCategory> categories = syndEntry.getCategories();
 		if (!CollectionUtils.isEmpty(categories)) {
-			StringBuilder categoryString = new StringBuilder();
+			final StringBuilder categoryString = new StringBuilder();
 			categoryString.append("|");
-			for (SyndCategory category : categories) {
+			for (final SyndCategory category : categories) {
 				categoryString.append(category.getName());
 				categoryString.append("|");
 			}

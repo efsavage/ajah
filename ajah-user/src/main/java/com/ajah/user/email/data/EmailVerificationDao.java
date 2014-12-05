@@ -17,13 +17,13 @@ package com.ajah.user.email.data;
 
 import java.util.List;
 
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.email.EmailId;
 import com.ajah.user.email.EmailVerification;
 import com.ajah.user.email.EmailVerificationId;
 import com.ajah.user.email.EmailVerificationStatus;
 import com.ajah.user.email.EmailVerificationType;
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link EmailVerification}.
@@ -49,7 +49,7 @@ public interface EmailVerificationDao extends AjahDao<EmailVerificationId, Email
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<EmailVerification> list(EmailVerificationType type, EmailVerificationStatus status, long page, long count) throws DataOperationException;
+	List<EmailVerification> list(final EmailVerificationType type, final EmailVerificationStatus status, final long page, final long count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -62,7 +62,7 @@ public interface EmailVerificationDao extends AjahDao<EmailVerificationId, Email
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(EmailVerificationType type, EmailVerificationStatus status) throws DataOperationException;
+	long count(final EmailVerificationType type, final EmailVerificationStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
@@ -73,10 +73,10 @@ public interface EmailVerificationDao extends AjahDao<EmailVerificationId, Email
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search) throws DataOperationException;
+	int searchCount(final String search) throws DataOperationException;
 
-	EmailVerification find(String code) throws DataOperationException;
+	EmailVerification find(final String code) throws DataOperationException;
 
-	EmailVerification recent(EmailId emailId) throws DataOperationException;
+	EmailVerification recent(final EmailId emailId) throws DataOperationException;
 
 }

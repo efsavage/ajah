@@ -42,7 +42,7 @@ public class PooledLock<T> {
 	 * @param lockValue
 	 *            The value to be locked.
 	 */
-	public PooledLock(T lockValue) {
+	public PooledLock(final T lockValue) {
 		this.lockValue = lockValue;
 		this.created = new Date();
 	}

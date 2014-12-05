@@ -25,6 +25,13 @@ package com.ajah.spring.jdbc.err;
 public class UnknownDataOperationException extends DataOperationException {
 
 	/**
+	 * @see DataOperationException#DataOperationException(String)
+	 */
+	public UnknownDataOperationException(final String message) {
+		super(message);
+	}
+
+	/**
 	 * Thrown when a message and cause is available.
 	 * 
 	 * @param message
@@ -42,13 +49,6 @@ public class UnknownDataOperationException extends DataOperationException {
 	 */
 	public UnknownDataOperationException(final Throwable cause) {
 		super(cause);
-	}
-
-	/**
-	 * @see DataOperationException#DataOperationException(String)
-	 */
-	public UnknownDataOperationException(String message) {
-		super(message);
 	}
 
 }

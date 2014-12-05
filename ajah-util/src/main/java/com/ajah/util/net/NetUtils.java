@@ -44,12 +44,12 @@ public class NetUtils {
 		String hostname = null;
 		try {
 			hostname = InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
-			File file = new File("/proc/sys/kernel/hostname");
+		} catch (final UnknownHostException e) {
+			final File file = new File("/proc/sys/kernel/hostname");
 			if (file.exists() && file.canRead()) {
 				try {
 					hostname = FileUtils.readFile(file);
-				} catch (IOException ioe) {
+				} catch (final IOException ioe) {
 					log.log(Level.WARNING, ioe.getMessage(), ioe);
 				}
 			}

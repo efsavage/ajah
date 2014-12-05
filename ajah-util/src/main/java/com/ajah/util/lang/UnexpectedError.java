@@ -40,7 +40,7 @@ public class UnexpectedError extends Exception {
 	 * @param t
 	 *            The unexpected error to be wrapped.
 	 */
-	public UnexpectedError(Throwable t) {
+	public UnexpectedError(final Throwable t) {
 		super(t);
 	}
 }

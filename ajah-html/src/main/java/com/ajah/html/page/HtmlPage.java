@@ -83,6 +83,16 @@ public class HtmlPage {
 	}
 
 	/**
+	 * Adds a new {@link UnorderedList} to the body.
+	 * 
+	 * @param unorderedList
+	 *            The list to add.
+	 */
+	public void add(final UnorderedList unorderedList) {
+		this.body.add(unorderedList);
+	}
+
+	/**
 	 * Creates a new {@link Paragraph} and calls {@link #add(Paragraph)}.
 	 * 
 	 * @param paragraphText
@@ -91,6 +101,35 @@ public class HtmlPage {
 	 */
 	public HtmlPage addParagraph(final String paragraphText) {
 		return add(new Paragraph().text(paragraphText));
+	}
+
+	/**
+	 * Adds a new {@link Meta} element to this page's {@link Head} element.
+	 * 
+	 * @param property
+	 *            The value of the property attribute.
+	 * @param content
+	 *            The value of the content attribute.
+	 * @return This page.
+	 */
+	public HtmlPage meta(final String property, final String content) {
+		this.head.add(new Meta(property, null, content));
+		return this;
+	}
+
+	/**
+	 * Adds a new {@link Meta} "refresh" element to this page's {@link Head}
+	 * element.
+	 * 
+	 * @param delay
+	 *            The delay before redirecting.
+	 * @param url
+	 *            The url to redirect to.
+	 * @return This page.
+	 */
+	public HtmlPage metaRefresh(final int delay, final String url) {
+		this.head.add(new Meta(null, "refresh", delay + "; url=" + url));
+		return this;
 	}
 
 	/**
@@ -119,45 +158,6 @@ public class HtmlPage {
 	 */
 	public HtmlPage title(final String title) {
 		this.head.add(new Title(title));
-		return this;
-	}
-
-	/**
-	 * Adds a new {@link UnorderedList} to the body.
-	 * 
-	 * @param unorderedList
-	 *            The list to add.
-	 */
-	public void add(UnorderedList unorderedList) {
-		this.body.add(unorderedList);
-	}
-
-	/**
-	 * Adds a new {@link Meta} element to this page's {@link Head} element.
-	 * 
-	 * @param property
-	 *            The value of the property attribute.
-	 * @param content
-	 *            The value of the content attribute.
-	 * @return This page.
-	 */
-	public HtmlPage meta(String property, String content) {
-		this.head.add(new Meta(property, null, content));
-		return this;
-	}
-
-	/**
-	 * Adds a new {@link Meta} "refresh" element to this page's {@link Head}
-	 * element.
-	 * 
-	 * @param delay
-	 *            The delay before redirecting.
-	 * @param url
-	 *            The url to redirect to.
-	 * @return This page.
-	 */
-	public HtmlPage metaRefresh(int delay, String url) {
-		this.head.add(new Meta(null, "refresh", delay + "; url=" + url));
 		return this;
 	}
 

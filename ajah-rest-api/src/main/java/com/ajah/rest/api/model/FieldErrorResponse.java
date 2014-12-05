@@ -41,7 +41,7 @@ public class FieldErrorResponse extends SimpleApiResponse {
 	 * @param field
 	 *            The delay until this type of request won't be throttled.
 	 */
-	public FieldErrorResponse(String field) {
+	public FieldErrorResponse(final String field) {
 		this.field = field;
 	}
 

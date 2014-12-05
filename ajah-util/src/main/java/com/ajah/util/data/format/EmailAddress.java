@@ -49,13 +49,13 @@ public class EmailAddress implements ToStringable, FromStringable {
 	}
 
 	/**
-	 * Returns address set in constructor.
+	 * Returns the part of the email address after but not including the "@"
+	 * character.
 	 * 
-	 * @see java.lang.Object#toString()
+	 * @return The email's domain.
 	 */
-	@Override
-	public String toString() {
-		return this.address;
+	public String getDomain() {
+		return this.address.substring(this.address.indexOf('@') + 1);
 	}
 
 	/**
@@ -69,13 +69,13 @@ public class EmailAddress implements ToStringable, FromStringable {
 	}
 
 	/**
-	 * Returns the part of the email address after but not including the "@"
-	 * character.
+	 * Returns address set in constructor.
 	 * 
-	 * @return The email's domain.
+	 * @see java.lang.Object#toString()
 	 */
-	public String getDomain() {
-		return this.address.substring(this.address.indexOf('@') + 1);
+	@Override
+	public String toString() {
+		return this.address;
 	}
 
 }

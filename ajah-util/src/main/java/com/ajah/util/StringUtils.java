@@ -274,6 +274,21 @@ public class StringUtils {
 	}
 
 	/**
+	 * Returns null if the supplied string is null or empty.
+	 * 
+	 * @param string
+	 *            The string to test.
+	 * @return null if the supplied string is null or empty, otherwise returns
+	 *         the original string.
+	 */
+	public static String nullIfEmpty(final String string) {
+		if (string == null || string.length() == 0) {
+			return null;
+		}
+		return string;
+	}
+
+	/**
 	 * Returns rightmost characters of a string.
 	 * 
 	 * @param string
@@ -290,6 +305,23 @@ public class StringUtils {
 		}
 		final int fullLength = string.length();
 		return string.substring(fullLength - length, fullLength);
+	}
+
+	/**
+	 * Returns the leftmost characters of a string. If the string is empty or
+	 * null or shorter than the requested length, returns the original string.
+	 * 
+	 * @param string
+	 *            The string to truncate.
+	 * @param chars
+	 *            The number characters to truncate to.
+	 * @return A string that is no longer than the length specified.
+	 */
+	public static String safeLeft(final String string, final int chars) {
+		if (StringUtils.isBlank(string) || string.length() <= chars) {
+			return string;
+		}
+		return string.substring(0, chars);
 	}
 
 	/**
@@ -424,47 +456,15 @@ public class StringUtils {
 	 * @return A new collection of the same size, with the wrapper prepended and
 	 *         appended to each member.
 	 */
-	public static List<String> wrap(List<String> strings, String wrapper) {
+	public static List<String> wrap(final List<String> strings, final String wrapper) {
 		if (strings == null) {
 			return null;
 		}
-		List<String> wrapped = new ArrayList<>(strings.size());
-		for (String string : strings) {
+		final List<String> wrapped = new ArrayList<>(strings.size());
+		for (final String string : strings) {
 			wrapped.add(wrapper + string + wrapper);
 		}
 		return wrapped;
-	}
-
-	/**
-	 * Returns the leftmost characters of a string. If the string is empty or
-	 * null or shorter than the requested length, returns the original string.
-	 * 
-	 * @param string
-	 *            The string to truncate.
-	 * @param chars
-	 *            The number characters to truncate to.
-	 * @return A string that is no longer than the length specified.
-	 */
-	public static String safeLeft(String string, int chars) {
-		if (StringUtils.isBlank(string) || string.length() <= chars) {
-			return string;
-		}
-		return string.substring(0, chars);
-	}
-
-	/**
-	 * Returns null if the supplied string is null or empty.
-	 * 
-	 * @param string
-	 *            The string to test.
-	 * @return null if the supplied string is null or empty, otherwise returns
-	 *         the original string.
-	 */
-	public static String nullIfEmpty(String string) {
-		if (string == null || string.length() == 0) {
-			return null;
-		}
-		return string;
 	}
 
 }

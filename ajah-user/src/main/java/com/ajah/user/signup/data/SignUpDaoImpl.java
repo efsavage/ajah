@@ -17,22 +17,20 @@ package com.ajah.user.signup.data;
 
 import java.util.List;
 
-import com.ajah.user.signup.SignUp;
-import com.ajah.user.signup.SignUpId;
-import com.ajah.user.signup.SignUpStatus;
-import com.ajah.user.signup.SignUpType;
-
 import org.springframework.stereotype.Repository;
 
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.signup.SignUp;
+import com.ajah.user.signup.SignUpId;
+import com.ajah.user.signup.SignUpStatus;
+import com.ajah.user.signup.SignUpType;
 import com.ajah.util.StringUtils;
 
-
 /**
- *  MySQL-based implementation of {@link SignUpDao}. 
+ * MySQL-based implementation of {@link SignUpDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
@@ -40,9 +38,25 @@ import com.ajah.util.StringUtils;
 @Repository
 public class SignUpDaoImpl extends AbstractAjahDao<SignUpId, SignUp, SignUp> implements SignUpDao {
 
+	/**
+	 * @see com.ajah.user.signup.data.SignUpDao#count(com.ajah.user.signup.SignUpType,
+	 *      com.ajah.user.signup.SignUpStatus)
+	 */
 	@Override
-	public List<SignUp> list(SignUpType type, SignUpStatus status, long page, long count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public long count(final SignUpType type, final SignUpStatus status) throws DataOperationException {
+		final Criteria criteria = new Criteria();
+		if (type != null) {
+			criteria.eq("type", type);
+		}
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+		return super.count(criteria);
+	}
+
+	@Override
+	public List<SignUp> list(final SignUpType type, final SignUpStatus status, final long page, final long count) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -53,27 +67,11 @@ public class SignUpDaoImpl extends AbstractAjahDao<SignUpId, SignUp, SignUp> imp
 	}
 
 	/**
-	 * @see com.ajah.user.signup.data.SignUpDao#count(com.ajah.user.signup.SignUpType,
-	 *      com.ajah.user.signup.SignUpStatus)
-	 */
-	@Override
-	public long count(SignUpType type, SignUpStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
-		if (type != null) {
-			criteria.eq("type", type);
-		}
-		if (status != null) {
-			criteria.eq("status", status);
-		}
-		return super.count(criteria);
-	}
-
-	/**
 	 * @see com.ajah.user.signup.data.SignUpDao#searchCount(String search)
 	 */
 	@Override
-	public int searchCount(String search) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(final String search) throws DataOperationException {
+		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("username", "%" + search.replaceAll("\\*", "%") + "%");
 		}
