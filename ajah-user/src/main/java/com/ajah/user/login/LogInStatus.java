@@ -28,19 +28,19 @@ public enum LogInStatus implements IdentifiableEnum<String> {
 	/**
 	 * Login was aborted before it could succeed or fail.
 	 */
-	ABORT("0", "abort", "Aborted", "Aborted.", false, false, false),
+	ABORT("0", "abort", "Aborted", "Aborted.", false, false, false, false),
 	/**
 	 * Success.
 	 */
-	SUCCESS("1", "success", "Successful", "Successful.", true, false, false),
+	SUCCESS("1", "success", "Successful", "Successful.", true, false, false, true),
 	/**
 	 * Error.
 	 */
-	ERROR("-2", "error", "Error", "Error.", false, true, false),
+	ERROR("-2", "error", "Error", "Error.", false, true, false, false),
 	/**
 	 * Failed.
 	 */
-	FAIL("-1", "fail", "Failed", "Failed.", false, false, true);
+	FAIL("-1", "fail", "Failed", "Failed.", false, false, true, true);
 
 	/**
 	 * Finds a LogInStatus that matches the id on id, name, or name().
@@ -65,8 +65,9 @@ public enum LogInStatus implements IdentifiableEnum<String> {
 	private final boolean success;
 	private final boolean error;
 	private final boolean failed;
+	private final boolean completed;
 
-	private LogInStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean failed) {
+	private LogInStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean failed, boolean completed) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
@@ -74,6 +75,7 @@ public enum LogInStatus implements IdentifiableEnum<String> {
 		this.success = success;
 		this.error = error;
 		this.failed = failed;
+		this.completed = completed;
 	}
 
 	/**
@@ -148,4 +150,12 @@ public enum LogInStatus implements IdentifiableEnum<String> {
 	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
+
+	/**
+	 * @return the completed
+	 */
+	public boolean isCompleted() {
+		return completed;
+	}
+
 }
