@@ -43,7 +43,6 @@ import com.ajah.util.Identifiable;
 public class LogIn implements Identifiable<LogInId> {
 
 	private LogInId id;
-	private String name;
 	private LogInStatus status;
 	private LogInSource source;
 	private LogInType type;
