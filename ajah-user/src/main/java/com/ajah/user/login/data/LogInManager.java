@@ -126,7 +126,7 @@ public class LogInManager {
 	 */
 	public DataOperationResult<LogIn> create(final String name, final LogInType type, final LogInStatus status) throws DataOperationException {
 		final LogIn logIn = new LogIn();
-		logIn.setName(name);
+		logIn.setUsername(name);
 		logIn.setType(type);
 		logIn.setStatus(status);
 		final DataOperationResult<LogIn> result = save(logIn);
@@ -336,12 +336,12 @@ public class LogInManager {
 		}
 		if (create) {
 			final DataOperationResult<LogIn> result = this.logInDao.insert(logIn);
-			log.fine("Created LogIn " + logIn.getName() + " [" + logIn.getId() + "]");
+			log.fine("Created LogIn " + logIn.getUsername() + " [" + logIn.getId() + "]");
 			return result;
 		}
 		final DataOperationResult<LogIn> result = this.logInDao.update(logIn);
 		if (result.getRowsAffected() > 0) {
-			log.fine("Updated LogIn " + logIn.getName() + " [" + logIn.getId() + "]");
+			log.fine("Updated LogIn " + logIn.getUsername() + " [" + logIn.getId() + "]");
 		}
 		return result;
 	}
