@@ -53,7 +53,10 @@ public class HashCacheTest {
 	@Test
 	public void testGetValidMaxAge() {
 		Assert.assertNotNull(this.hashCache);
-		Assert.assertNotNull(this.hashCache.get("myKey", 0).toString());
+		Assert.assertNotNull(
+				this.hashCache
+				.get("myKey", 0)
+				);
 		Assert.assertEquals("aString", this.hashCache.get("myKey", 1000000).toString());
 	}
 }

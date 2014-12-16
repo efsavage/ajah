@@ -22,7 +22,6 @@ import java.io.UnsupportedEncodingException;
 
 import lombok.extern.java.Log;
 
-import org.jets3t.service.S3ServiceException;
 import org.jets3t.service.ServiceException;
 import org.jets3t.service.impl.rest.httpclient.RestS3Service;
 import org.jets3t.service.io.GZipDeflatingInputStream;
@@ -76,7 +75,7 @@ public class S3Client {
 		final AWSCredentials awsCredentials = new AWSCredentials(accessKey, secretKey);
 		try {
 			this.s3Service = new RestS3Service(awsCredentials);
-		} catch (final S3ServiceException e) {
+		} catch (final RuntimeException e) {
 			throw new S3Exception(e);
 		}
 	}

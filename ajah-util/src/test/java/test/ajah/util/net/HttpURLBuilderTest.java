@@ -61,7 +61,7 @@ public class HttpURLBuilderTest {
 		Assert.assertEquals(443, this.httpURLBuilder.getPort());
 		Assert.assertNotNull(this.httpURLBuilder.toString());
 		Assert.assertNotNull(this.httpURLBuilder.toURL());
-		Assert.assertTrue(this.httpURLBuilder.canEqual(this.httpURLBuilder));
+//		Assert.assertTrue(this.httpURLBuilder.canEqual(this.httpURLBuilder));
 		Assert.assertTrue(this.httpURLBuilder.equals(this.httpURLBuilder));
 		Assert.assertNotNull(Integer.valueOf(this.httpURLBuilder.hashCode()));
 	}
