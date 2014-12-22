@@ -28,15 +28,15 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 	/**
 	 * Success.
 	 */
-	SUCCESS("1", "success", "Success", "Success.", true, false, false),
+	SUCCESS("1", "success", "Success", "Success.", true, false, false, true),
 	/**
 	 * Error.
 	 */
-	ERROR("-2", "err", "Error", "Error.", false, true, false),
+	ERROR("-2", "err", "Error", "Error.", false, true, false, false),
 	/**
 	 * Deleted.
 	 */
-	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
+	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true, false);
 
 	/**
 	 * Finds a SignUpStatus that matches the id on id, name, or name().
@@ -61,8 +61,9 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 	private final boolean success;
 	private final boolean error;
 	private final boolean deleted;
+	private final boolean completed;
 
-	private SignUpStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean deleted) {
+	private SignUpStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean deleted, boolean completed) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
@@ -70,6 +71,7 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 		this.success = success;
 		this.error = error;
 		this.deleted = deleted;
+		this.completed = completed;
 	}
 
 	/**
@@ -144,4 +146,12 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 	public void setId(final String id) {
 		throw new UnsupportedOperationException();
 	}
+
+	/**
+	 * @return the completed
+	 */
+	public boolean isCompleted() {
+		return completed;
+	}
+
 }
