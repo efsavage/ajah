@@ -59,7 +59,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *            The concrete class of the object stored/returned.
  */
 @Log
-public abstract class AbstractElasticSearchClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements ElasticSearchClient<K, T, C> {
+public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements ElasticSearchClient<K, T, C> {
 
 	protected Client client;
 	private final ObjectMapper mapper = new ObjectMapper();
