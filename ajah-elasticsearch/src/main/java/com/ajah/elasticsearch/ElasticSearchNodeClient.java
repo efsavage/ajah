@@ -37,7 +37,7 @@ import com.ajah.util.StringUtils;
  *            The concrete class of the object stored/returned.
  */
 @Log
-public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AbstractElasticSearchClient<K, T, C> {
+public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AbstractElasticSearchNativeClient<K, T, C> {
 
 	private Node node;
 
