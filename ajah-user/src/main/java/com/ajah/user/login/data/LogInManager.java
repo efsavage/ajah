@@ -194,6 +194,7 @@ public class LogInManager {
 		login.setIp(ip);
 		login.setCreated(new Date());
 		login.setSource(source);
+		login.setType(type);
 		try {
 			final User user = this.userManager.getUser(username, password);
 			login.setUser(user);
@@ -308,6 +309,7 @@ public class LogInManager {
 			login.setCreated(new Date());
 			login.setSource(source);
 			login.setStatus(LogInStatus.ERROR);
+			login.setType(type);
 			return login;
 		}
 	}
