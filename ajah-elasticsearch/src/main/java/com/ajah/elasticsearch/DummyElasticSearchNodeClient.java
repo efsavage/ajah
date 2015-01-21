@@ -15,7 +15,6 @@
  */
 package com.ajah.elasticsearch;
 
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
 import lombok.extern.java.Log;
@@ -24,9 +23,7 @@ import org.elasticsearch.action.index.IndexResponse;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -117,18 +114,18 @@ public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T ex
 	 * @param entity
 	 *            The document to index.
 	 * @return The response of the index operations, synchronously.
-	 * @throws JsonProcessingException
-	 *             If the entity could not be parsed into JSON.
 	 */
 	@Override
-	public IndexResponse index(final T entity) throws JsonProcessingException {
+	public IndexResponse index(final T entity) throws ElasticSearchException {
 
 		// IndexRequestBuilder irb = this.client.prepareIndex(this.index,
 		// this.type, entity.getId().toString());
-		final String json = this.mapper.writeValueAsString(entity);
-		log.finest(json);
-		// irb.setSource(json);
-		// ListenableActionFuture<IndexResponse> result = irb.execute();
+		try {
+			final String json = this.mapper.writeValueAsString(entity);
+			log.finest(json);
+		} catch (JsonProcessingException e) {
+			throw new ElasticSearchException(e);
+		}
 		log.finest("Executed");
 		return null;
 
@@ -140,15 +137,9 @@ public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T ex
 	 * @param query
 	 *            The search query.
 	 * @return The results of the search.
-	 * @throws JsonParseException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws JsonMappingException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws IOException
-	 *             If the query failed to execute.
 	 */
 	@Override
-	public SearchList<C> search(final String query) throws IOException {
+	public SearchList<C> search(final String query) throws ElasticSearchException {
 		return new SearchList<>();
 	}
 

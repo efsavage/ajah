@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,10 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 package com.ajah.elasticsearch;
-
-import java.io.IOException;
 
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.index.query.FilterBuilder;
@@ -24,7 +21,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import com.ajah.util.Identifiable;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Interface for Elastic Search Clients.
@@ -41,13 +37,64 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AutoCloseable {
 
-	public IndexResponse index(final T entity) throws JsonProcessingException;
+	/**
+	 * Indexes an entity.
+	 * 
+	 * @param entity
+	 *            The entity to index.
+	 * @return Object with details of the outcome of the operation.
+	 * @throws ElasticSearchException
+	 *             If the index could not be completed.
+	 */
+	public IndexResponse index(final T entity) throws ElasticSearchException;
 
-	public SearchList<C> search(final String query) throws IOException;
+	/**
+	 * Searches the default set of fields with the given query.
+	 * 
+	 * @param query
+	 *            The query to execute.
+	 * @return A list of results.
+	 * @throws ElasticSearchException
+	 *             If the search could not be executed.
+	 */
+	public SearchList<C> search(final String query) throws ElasticSearchException;
 
-	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException;
+	/**
+	 * Loads an entity by its ID.
+	 * 
+	 * @param id
+	 *            The ID to match on.
+	 * @return The entity, or null if not found.
+	 * @throws ElasticSearchException
+	 *             If the search could not be executed.
+	 */
+	public C load(final K id) throws ElasticSearchException;
 
+	/**
+	 * Executes a search based on builders.
+	 * 
+	 * @param queryBuilder
+	 *            The query builder, may be null or empty.
+	 * @param filterBuilder
+	 *            The filter builder, may be null or empty.
+	 * @param sortBuilders
+	 *            The sort builder, may be null or empty.
+	 * @param page
+	 *            The 0-based page of results
+	 * @param count
+	 *            The number of results per page.
+	 * @return A list of results.
+	 * @throws ElasticSearchException
+	 *             If the search could not be executed.
+	 */
+	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException;
+
+	/**
+	 * Closes the client.
+	 * 
+	 * @see java.lang.AutoCloseable#close()
+	 */
 	@Override
-	public void close() throws IOException;
+	public void close() throws ElasticSearchException;
 
 }

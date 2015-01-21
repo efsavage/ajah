@@ -40,9 +40,7 @@ import org.elasticsearch.search.sort.SortBuilder;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -107,14 +105,19 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 	 * @param entity
 	 *            The document to index.
 	 * @return The response of the index operations, synchronously.
-	 * @throws JsonProcessingException
+	 * @throws ElasticSearchException
 	 *             If the entity could not be parsed into JSON.
 	 */
 	@Override
-	public IndexResponse index(final T entity) throws JsonProcessingException {
+	public IndexResponse index(final T entity) throws ElasticSearchException {
 
 		final IndexRequestBuilder irb = this.client.prepareIndex(this.index, this.type, entity.getId().toString());
-		final String json = this.mapper.writeValueAsString(entity);
+		String json;
+		try {
+			json = this.mapper.writeValueAsString(entity);
+		} catch (JsonProcessingException e) {
+			throw new ElasticSearchException(e);
+		}
 		log.finest(json);
 		irb.setSource(json);
 		final ListenableActionFuture<IndexResponse> result = irb.execute();
@@ -122,13 +125,17 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 		return result.actionGet();
 	}
 
-	public C load(final K id) throws IOException {
+	public C load(final K id) throws ElasticSearchException {
 		final GetResponse response = this.client.prepareGet(this.index, this.type, id.toString()).execute().actionGet();
 		final String source = response.getSourceAsString();
 		if (StringUtils.isBlank(source)) {
 			return null;
 		}
-		return this.mapper.readValue(source, getTargetClass());
+		try {
+			return this.mapper.readValue(source, getTargetClass());
+		} catch (IOException e) {
+			throw new ElasticSearchException(e);
+		}
 	}
 
 	/**
@@ -138,15 +145,9 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 	 * @param page
 	 * 
 	 * @return The results of the search.
-	 * @throws JsonParseException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws JsonMappingException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws IOException
-	 *             If the query failed to execute.
 	 */
 	@Override
-	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException {
+	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException {
 		final SearchList<C> results = new SearchList<>();
 		final long start = System.currentTimeMillis();
 		try {
@@ -171,8 +172,9 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (final IndexMissingException e) {
+		} catch (final IndexMissingException | IOException e) {
 			log.warning(e.getMessage());
+			throw new ElasticSearchException(e);
 		}
 		results.setTime(System.currentTimeMillis() - start);
 		return results;
@@ -184,15 +186,9 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 	 * @param query
 	 *            The search query.
 	 * @return The results of the search.
-	 * @throws JsonParseException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws JsonMappingException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws IOException
-	 *             If the query failed to execute.
 	 */
 	@Override
-	public SearchList<C> search(final String query) throws IOException {
+	public SearchList<C> search(final String query) throws ElasticSearchException {
 		final SearchList<C> results = new SearchList<>();
 		final long start = System.currentTimeMillis();
 		try {
@@ -203,8 +199,9 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (final IndexMissingException e) {
+		} catch (final IndexMissingException | IOException e) {
 			log.warning(e.getMessage());
+			throw new ElasticSearchException(e);
 		}
 		results.setTime(System.currentTimeMillis() - start);
 		return results;
