@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,36 +13,36 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.elasticsearch;
+package com.ajah.elasticsearch.rest;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 
-import org.elasticsearch.action.ListenableActionFuture;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
+import com.ajah.elasticsearch.ElasticSearchClient;
+import com.ajah.elasticsearch.ElasticSearchException;
+import com.ajah.elasticsearch.SearchList;
 import com.ajah.util.Identifiable;
-import com.ajah.util.StringUtils;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -61,34 +61,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Log
 public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements ElasticSearchClient<K, T, C> {
 
-	protected Client client;
+	protected RestClient<C> client;
 	private final ObjectMapper mapper = new ObjectMapper();
 	@Getter
 	protected String index;
 	@Getter
 	protected String type;
 	@Getter
-	protected String clusterName;
+	@Setter
+	protected Class<?> clazz;
+
+	protected String hostname;
+	protected int port;
+	protected CloseableHttpClient http;
 
 	/**
-	 * Closes the node.
+	 * Closes the client.
+	 * 
+	 * @throws ElasticSearchException
+	 *             If there was an {@link IOException} when closing the client.
 	 * 
 	 * @see java.lang.AutoCloseable#close()
 	 */
 	@Override
-	public void close() {
-		this.client.close();
-	}
-
-	/**
-	 * Creates the index for this type.
-	 * 
-	 * @return The acknowledgment of the request.
-	 */
-	public boolean createIndex() {
-		final CreateIndexRequest createIndexRequest = new CreateIndexRequest(this.index);
-		final CreateIndexResponse createResponse = this.client.admin().indices().create(createIndexRequest).actionGet();
-		return createResponse.isAcknowledged();
+	public void close() throws ElasticSearchException {
+		try {
+			this.client.close();
+		} catch (IOException e) {
+			throw new ElasticSearchException(e);
+		}
 	}
 
 	@SuppressWarnings("static-method")
@@ -107,28 +108,10 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 	 * @param entity
 	 *            The document to index.
 	 * @return The response of the index operations, synchronously.
-	 * @throws JsonProcessingException
-	 *             If the entity could not be parsed into JSON.
 	 */
 	@Override
-	public IndexResponse index(final T entity) throws JsonProcessingException {
-
-		final IndexRequestBuilder irb = this.client.prepareIndex(this.index, this.type, entity.getId().toString());
-		final String json = this.mapper.writeValueAsString(entity);
-		log.finest(json);
-		irb.setSource(json);
-		final ListenableActionFuture<IndexResponse> result = irb.execute();
-		log.finest("Executed");
-		return result.actionGet();
-	}
-
-	public C load(final K id) throws IOException {
-		final GetResponse response = this.client.prepareGet(this.index, this.type, id.toString()).execute().actionGet();
-		final String source = response.getSourceAsString();
-		if (StringUtils.isBlank(source)) {
-			return null;
-		}
-		return this.mapper.readValue(source, getTargetClass());
+	public IndexResponse index(final T entity) {
+		throw new NotImplementedException("Indexing not implemented yet");
 	}
 
 	/**
@@ -138,39 +121,39 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 	 * @param page
 	 * 
 	 * @return The results of the search.
-	 * @throws JsonParseException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws JsonMappingException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws IOException
-	 *             If the query failed to execute.
 	 */
 	@Override
-	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws IOException {
+	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException {
 		final SearchList<C> results = new SearchList<>();
 		final long start = System.currentTimeMillis();
 		try {
-			final SearchRequestBuilder requestBuilder = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setFrom(page * count).setSize(count)
-					.setQuery(queryBuilder);
+			final SearchRequest requestBuilder = new SearchRequest().indices(this.index).types(this.type).searchType(SearchType.DEFAULT);
+			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder().from(page * count).size(count).query(queryBuilder);
 			if (sortBuilders != null) {
 				for (final SortBuilder sortBuilder : sortBuilders) {
-					requestBuilder.addSort(sortBuilder);
+					sourceBuilder.sort(sortBuilder);
 				}
 			}
 			if (filterBuilder != null) {
-				requestBuilder.setPostFilter(filterBuilder);
+				sourceBuilder.postFilter(filterBuilder);
 			}
 			if (getDefaultSort() != null) {
-				requestBuilder.addSort(getDefaultSort());
+				sourceBuilder.sort(getDefaultSort());
 			}
 
-			final SearchResponse response = requestBuilder.execute().actionGet();
+			log.severe(sourceBuilder.toString());
+			final RestSearchResponse<C> response = this.client.search(this.hostname, this.port, this.index, this.type, sourceBuilder.toString(), this.clazz, this.http);
+			sourceBuilder.toString();
+			// log.severe(sourceBuilder.buildAsBytes().toUtf8());
+			// final SearchResponse response =
+			// requestBuilder.execute().actionGet();
 			log.finest(results.getTotalHits() + " hits");
-			results.setTotalHits(response.getHits().getTotalHits());
-			for (final SearchHit hit : response.getHits()) {
-				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
-				results.add(result);
-			}
+			// results.setTotalHits(response.getHits().getTotalHits());
+			// for (final SearchHit hit : response.getHits()) {
+			// final C result = this.mapper.readValue(hit.getSourceAsString(),
+			// getTargetClass());
+			// results.add(result);
+			// }
 		} catch (final IndexMissingException e) {
 			log.warning(e.getMessage());
 		}
@@ -184,15 +167,9 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 	 * @param query
 	 *            The search query.
 	 * @return The results of the search.
-	 * @throws JsonParseException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws JsonMappingException
-	 *             If the entity could not be parsed from the JSON.
-	 * @throws IOException
-	 *             If the query failed to execute.
 	 */
 	@Override
-	public SearchList<C> search(final String query) throws IOException {
+	public SearchList<C> search(final String query) throws ElasticSearchException {
 		final SearchList<C> results = new SearchList<>();
 		final long start = System.currentTimeMillis();
 		try {
@@ -203,11 +180,31 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (final IndexMissingException e) {
+		} catch (final IndexMissingException | IOException e) {
 			log.warning(e.getMessage());
+			throw new ElasticSearchException(e);
 		}
 		results.setTime(System.currentTimeMillis() - start);
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public C load(K id) throws ElasticSearchException {
+		HttpGet get = new HttpGet("http://" + this.hostname + ":" + this.port + "/" + this.index + "/" + this.type + "/" + id);
+		log.fine(get.getURI().toString());
+		try (CloseableHttpResponse response = this.http.execute(get)) {
+			HttpEntity entity = response.getEntity();
+			// EntityUtils.consume(entity);
+			// for (final SearchHit hit : response.getHits()) {
+			// final C result = this.mapper.readValue(hit.getSourceAsString(),
+			// getTargetClass());
+			// results.add(result);
+			// }
+
+			return ((RestGetResponse<C>) mapper.readValue(entity.getContent(), clazz)).source;
+		} catch (IOException e) {
+			throw new ElasticSearchException(e);
+		}
+	}
 }
