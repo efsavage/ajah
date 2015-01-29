@@ -92,13 +92,17 @@ public enum AjahMimeType implements Identifiable<String> {
 	 */
 	TEXT_CSS("text", "css", true),
 	/**
+	 * text/csv
+	 */
+	TEXT_CSV("text", "csv", true),
+	/**
 	 * text/xml
 	 */
 	TEXT_XML("text", "xml", true),
 	/**
 	 * Unknown
 	 */
-	UNKNOWN("unknown", "unknown");
+	UNKNOWN("unknown", "unknown"); 
 
 	/**
 	 * Matches a contentType to a known Mime type.
