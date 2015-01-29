@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -36,7 +36,11 @@ public enum UserAuditField implements IdentifiableEnum<String> {
 	/**
 	 * Status.
 	 */
-	STATUS("2", "status", "Status", "Status.");
+	STATUS("2", "status", "Status", "Status."),
+	/**
+	 * Type.
+	 */
+	TYPE("3", "type", "Type", "Type.");
 
 	/**
 	 * Finds a UserAuditStatus that matches the id on id, name, or name().

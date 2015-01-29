@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -94,6 +94,7 @@ public class UserManager {
 		user.setStatus(UserStatus.ACTIVE);
 		user.setStatusReason(statusReason);
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type);
+		this.userDao.update(user);
 	}
 
 	/**
@@ -114,6 +115,7 @@ public class UserManager {
 		user.setStatus(UserStatus.BLOCKED);
 		user.setStatusReason(statusReason);
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type);
+		this.userDao.update(user);
 	}
 
 	/**
@@ -238,7 +240,7 @@ public class UserManager {
 		this.userDao.update(user);
 		log.info("User " + user.getUsername() + " is now status " + user.getStatus() + " (" + user.getStatusReason() + ")");
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type);
-
+		this.userDao.update(user);
 	}
 
 	/**
@@ -259,6 +261,7 @@ public class UserManager {
 		user.setStatus(UserStatus.DISABLED);
 		user.setStatusReason(statusReason);
 		this.userAuditManager.create(user.getId(), UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
+		this.userDao.update(user);
 	}
 
 	/**
@@ -467,6 +470,26 @@ public class UserManager {
 	 */
 	public boolean usernameExists(final String username) throws DataOperationException {
 		return this.userDao.findByUsername(username) != null;
+	}
+
+	/**
+	 * Converts a user to a test user. Only users that are
+	 * {@link UserType#NORMAL} can be converted, other types must be converted
+	 * to normal first.
+	 * 
+	 * @param user
+	 *            The user to convert.
+	 * @param type
+	 *            The type of audit to record.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public void convertToTest(User user, UserAuditType type) throws DataOperationException {
+		if (user.getType() == UserType.NORMAL) {
+			this.userAuditManager.create(user.getId(), UserAuditField.TYPE, user.getType().getId(), UserType.TEST.getId(), type);
+			user.setType(UserType.TEST);
+			this.userDao.update(user);
+		}
 	}
 
 }
