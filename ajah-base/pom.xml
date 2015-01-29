@@ -311,6 +311,7 @@
 		<module>../ajah-achievement</module>
 		<module>../ajah-rest-api</module>
 		<module>../ajah-report</module>
+		<module>../ajah-query-report</module>
 		<module>../ajah-sitemap</module>
 
 	</modules>
