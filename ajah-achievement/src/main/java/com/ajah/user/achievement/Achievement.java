@@ -53,6 +53,7 @@ public class Achievement implements Identifiable<AchievementId> {
 	private AchievementType type;
 	private Date created;
 	private String analyzer;
+	private int level;
 
 	@Transient
 	private AchievementAnalyzer achievementAnalyzer;
