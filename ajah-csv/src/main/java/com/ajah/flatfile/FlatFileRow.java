@@ -253,6 +253,19 @@ public class FlatFileRow {
 	}
 
 	/**
+	 * Sets a column to a big decimal value.
+	 * 
+	 * @param column
+	 *            The name of the column.
+	 * @param value
+	 *            The value to set.
+	 */
+	public void set(final String column, final BigDecimal value) {
+		// TODO Store as a number for formatting
+		set(column, String.valueOf(value));
+	}
+
+	/**
 	 * Sets a column to a string value.
 	 * 
 	 * @param column
