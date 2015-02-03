@@ -127,11 +127,11 @@ public class QueryReportRunner {
 				public void processRow(final ResultSet rs) throws SQLException {
 					final int columnCount = rs.getMetaData().getColumnCount();
 					results[0] = columnCount;
-					log.fine(columnCount + " columns");
 					if (!writer.isColumnsLocked()) {
+						log.fine(columnCount + " columns");
 						for (int i = 1; i <= columnCount; i++) {
-							log.finest("Column " + i);
 							final String label = rs.getMetaData().getColumnLabel(i);
+							log.finest("Column " + i + " is '" + label + "'");
 							writer.addColumn(label);
 						}
 						writer.setColumnsLocked(true);
