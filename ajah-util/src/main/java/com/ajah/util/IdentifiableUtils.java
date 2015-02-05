@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -90,6 +90,22 @@ public class IdentifiableUtils {
 			map.put(identifiable.getId(), identifiable);
 		}
 		return map;
+	}
+
+	/**
+	 * Checks an identifiable entity as well as the contents of the string it
+	 * wraps. If empty, will return null.
+	 * 
+	 * @param identifiable
+	 *            The identifiable to examine.
+	 * @return The identifiable if the string it wraps is not empty, otherwise
+	 *         null.
+	 */
+	public static <I> I nullIfEmpty(I identifiable) {
+		if (identifiable == null || StringUtils.isBlank(identifiable.toString())) {
+			return null;
+		}
+		return identifiable;
 	}
 
 }
