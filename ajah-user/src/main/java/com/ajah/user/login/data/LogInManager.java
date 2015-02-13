@@ -245,6 +245,7 @@ public class LogInManager {
 		login.setIp(ip);
 		login.setCreated(new Date());
 		login.setSource(source);
+		login.setType(type);
 		try {
 			final User user = this.userManager.getUser(userId, password);
 			login.setUser(user);
