@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@ package com.ajah.flatfile;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ import com.ajah.util.StringUtils;
 @Log
 public class FlatFileWriter implements Closeable {
 
-	private final FileWriter writer;
+	private final OutputStreamWriter writer;
 	private final List<FlatFileColumn> columns = new ArrayList<>();
 	private final Map<String, FlatFileColumn> map = new HashMap<>();
 	private FlatFileRow row = null;
@@ -61,7 +62,7 @@ public class FlatFileWriter implements Closeable {
 	public FlatFileWriter(final FlatFileFormat format, final File file) throws IOException {
 		this.format = format;
 		this.file = file;
-		this.writer = new FileWriter(file);
+		this.writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
 	}
 
 	public void addColumn(final String name) {
