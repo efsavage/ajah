@@ -17,11 +17,13 @@ package com.ajah.util.net;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import com.ajah.lang.ListMap;
+import com.ajah.util.AjahUtils;
+import com.ajah.util.StringUtils;
 
 /**
  * This class builds a URL to avoid error-prone string concatenation, especially
@@ -39,7 +41,7 @@ public class HttpURLBuilder {
 	private String path;
 	private int port = 0;
 	private boolean secure;
-	private Map<String, String> singleValueParameters;
+	private ListMap<String, String> parameters;
 
 	/**
 	 * Constructs an empty URLBuilder.
@@ -75,10 +77,14 @@ public class HttpURLBuilder {
 	 * @return The current instance, for chaining.
 	 */
 	public HttpURLBuilder setParam(final String name, final String value) {
-		if (this.singleValueParameters == null) {
-			this.singleValueParameters = new HashMap<>();
+		AjahUtils.requireParam(name, "name");
+		if (StringUtils.isBlank(value)) {
+			return this;
 		}
-		this.singleValueParameters.put(name, value);
+		if (this.parameters == null) {
+			this.parameters = new ListMap<String, String>();
+		}
+		this.parameters.putValue(name, value);
 		return this;
 	}
 
@@ -109,21 +115,23 @@ public class HttpURLBuilder {
 		string.append(this.path);
 
 		boolean params = false;
-		if (this.singleValueParameters != null && this.singleValueParameters.size() > 0) {
-			for (final String name : this.singleValueParameters.keySet()) {
-				if (this.singleValueParameters.get(name) == null) {
-					// Skip null values
-					continue;
+		if (this.parameters != null && this.parameters.size() > 0) {
+			for (final String name : this.parameters.keySet()) {
+				for (final String value : this.parameters.get(name)) {
+					if (this.parameters.get(name) == null) {
+						// Skip null values
+						continue;
+					}
+					if (params) {
+						string.append("&");
+					} else {
+						string.append("?");
+						params = true;
+					}
+					string.append(name);
+					string.append("=");
+					string.append(value);
 				}
-				if (params) {
-					string.append("&");
-				} else {
-					string.append("?");
-					params = true;
-				}
-				string.append(name);
-				string.append("=");
-				string.append(this.singleValueParameters.get(name));
 			}
 		}
 
@@ -147,4 +155,40 @@ public class HttpURLBuilder {
 		}
 	}
 
+	/**
+	 * Parses a URL into the component parts.
+	 * 
+	 * @param url
+	 *            The URL to parse.
+	 */
+	public void setUrl(String url) {
+		if (StringUtils.isBlank(url)) {
+			return;
+		}
+		int startPos = 0;
+		if (url.startsWith("http://")) {
+			startPos = 7;
+			setSecure(false);
+		} else if (url.startsWith("https://")) {
+			startPos = 8;
+			setSecure(true);
+		}
+		int slashPos = url.substring(startPos).indexOf('/');
+		int queryPos = url.indexOf('?');
+		if (slashPos > 0) {
+			host = url.substring(startPos, startPos + slashPos);
+			if (queryPos > 0) {
+				path = url.substring(startPos + slashPos, queryPos);
+			} else {
+				path = url.substring(startPos + slashPos);
+			}
+		}
+		if (queryPos > 0) {
+			String[] params = url.substring(queryPos + 1).split("&");
+			for (String param : params) {
+				String[] paramSplit = param.split("=");
+				setParam(paramSplit[0], paramSplit[1]);
+			}
+		}
+	}
 }
