@@ -57,6 +57,26 @@ public class IntegerMap<K> extends HashMap<K, Integer> {
 	}
 
 	/**
+	 * Increments a value at a key by one.
+	 * 
+	 * @param key
+	 *            The key to increment.
+	 */
+	public void increment(final K key) {
+		setInt(key, getInt(key) + 1);
+	}
+
+	/**
+	 * Decrements a value at a key by one.
+	 * 
+	 * @param key
+	 *            The key to increment.
+	 */
+	public void decrement(final K key) {
+		setInt(key, getInt(key) - 1);
+	}
+
+	/**
 	 * Sets the value of a key to a int value.
 	 * 
 	 * @param key
