@@ -78,6 +78,29 @@ public class ArrayUtils {
 	}
 
 	/**
+	 * Checks to see if an array contains a given int.
+	 * 
+	 * @see Object#equals(Object)
+	 * @param array
+	 *            The array to check.
+	 * @param member
+	 *            The int to look for in the array.
+	 * @return true if the parameters are not null and the object was found,
+	 *         otherwise false.
+	 */
+	public static boolean contains(final int[] array, final int member) {
+		if (array == null || array.length == 0) {
+			return false;
+		}
+		for (final int t : array) {
+			if (t == member) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Exception-free way to get an element from an array. Will return null if
 	 * the array is null or if the array is not large enough to contain the
 	 * index requested.
@@ -305,6 +328,24 @@ public class ArrayUtils {
 			}
 		}
 		return trimmed.toArray(new String[trimmed.size()]);
+	}
+
+	/**
+	 * Converts an array of Integer to an array of int.
+	 * 
+	 * @param integers
+	 *            The array of Integers.
+	 * @return The equivalent array of ints, or null if the parameter is null.
+	 */
+	public static int[] toIntArray(Integer[] integers) {
+		if (integers == null) {
+			return null;
+		}
+		int[] ints = new int[integers.length];
+		for (int i = 0; i < integers.length; i++) {
+			ints[i] = integers[i].intValue();
+		}
+		return ints;
 	}
 
 }
