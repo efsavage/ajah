@@ -190,4 +190,6 @@ public interface UserInfo extends Identifiable<UserId> {
 
 	void setCurrentCountry(final ISOCountry isoCountry);
 
+	ISOCountry getCurrentCountry();
+
 }
