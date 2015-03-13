@@ -124,6 +124,11 @@ public class ApiResponseError {
 	 * The user is not old enough to perform the operation.
 	 */
 	public static final int AGE_REQUIREMENT_NOT_MET = 2202;
+	/**
+	 * The requested username is not valid (it is empty or doesn't match the
+	 * pattern requirements).
+	 */
+	public static final int USERNAME_INVALID = 2203;
 
 	/*
 	 * Permission/availability errors(4000s)
