@@ -64,4 +64,16 @@ public class RequestUtils {
 		return UserAgent.from(request.getHeader("User-Agent"));
 	}
 
+	/**
+	 * Returns the raw User-Agent header from a request.
+	 * 
+	 * @param request
+	 *            The request to analyze.
+	 * @return The user agent.
+	 */
+	public static String getUserAgentString(final HttpServletRequest request) {
+		AjahUtils.requireParam(request, "request");
+		return request.getHeader("User-Agent");
+	}
+
 }
