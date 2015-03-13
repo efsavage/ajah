@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.UserSetting;
 import com.ajah.user.UserSettingId;
+import com.ajah.user.UserSettingKey;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
 import com.ajah.util.compare.CompareUtils;
@@ -167,7 +168,7 @@ public class UserSettingManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<UserSetting> save(final UserSetting userSetting) throws DataOperationException {
+	private DataOperationResult<UserSetting> save(final UserSetting userSetting) throws DataOperationException {
 		boolean create = false;
 		if (userSetting.getId() == null) {
 			userSetting.setId(new UserSettingId(UUID.randomUUID().toString()));
@@ -186,6 +187,10 @@ public class UserSettingManager {
 
 	public void set(final UserId userId, final String name, final boolean value) throws DataOperationException {
 		set(userId, name, String.valueOf(value));
+	}
+
+	public void set(final UserId userId, final UserSettingKey key, final boolean value) throws DataOperationException {
+		set(userId, key.getName(), String.valueOf(value));
 	}
 
 	public void set(final UserId userId, final String name, final Boolean value) throws DataOperationException {
@@ -207,6 +212,10 @@ public class UserSettingManager {
 		userSetting.setValue(value);
 		save(userSetting);
 		return userSetting;
+	}
+
+	public UserSetting find(UserId userId, UserSettingKey key) throws DataOperationException {
+		return find(userId, key.getName());
 	}
 
 }
