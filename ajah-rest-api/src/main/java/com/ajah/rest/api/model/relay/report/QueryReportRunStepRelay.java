@@ -13,26 +13,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.report.query;
+package com.ajah.rest.api.model.relay.report;
 
 import java.util.Date;
-import java.util.List;
 
 import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ajah.report.query.QueryReportRunId;
-import com.ajah.report.query.QueryReportRunStatus;
-import com.ajah.report.query.QueryReportRunType;
 
 /**
- * Simplified version of a QueryReportRun for easier serialization/deserialization.
+ * Simplified version of a QueryReportRunStep for easier serialization/deserialization.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
-public class QueryReportRunRelay {
+public class QueryReportRunStepRelay {
 
 	public String id;
 	public String name;
