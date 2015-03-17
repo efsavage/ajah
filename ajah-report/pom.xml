@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.ajah</groupId>
-			<artifactId>ajah-util</artifactId>
+			<artifactId>ajah-spring-jdbc</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
