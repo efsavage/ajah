@@ -24,13 +24,13 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ajah.spring.jdbc.DataOperationResult;
-import com.ajah.spring.jdbc.criteria.Order;
-import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.report.query.QueryReport;
 import com.ajah.report.query.QueryReportId;
 import com.ajah.report.query.QueryReportStatus;
 import com.ajah.report.query.QueryReportType;
+import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Manages data operations for {@link QueryReport}.

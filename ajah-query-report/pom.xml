@@ -16,25 +16,19 @@
 	</parent>
 
 	<dependencies>
-		
-		<dependency>
-			<groupId>com.ajah</groupId>
-			<artifactId>ajah-spring-jdbc</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-csv</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.ajah</groupId>
-			<artifactId>ajah-rest-api</artifactId>
+			<artifactId>ajah-report</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 	</dependencies>
 
 </project>

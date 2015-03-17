@@ -17,13 +17,13 @@ package com.ajah.report.query.data;
 
 import java.util.List;
 
-import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.criteria.Order;
-import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.report.query.QueryReportRun;
 import com.ajah.report.query.QueryReportRunId;
 import com.ajah.report.query.QueryReportRunStatus;
 import com.ajah.report.query.QueryReportRunType;
+import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * DAO interface for {@link QueryReportRun}.

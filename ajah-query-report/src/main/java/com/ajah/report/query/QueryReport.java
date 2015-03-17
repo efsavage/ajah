@@ -17,14 +17,19 @@ package com.ajah.report.query;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+
 import lombok.Data;
 
+import com.ajah.report.group.ReportGroupId;
 import com.ajah.util.Identifiable;
 
 @Data
 public class QueryReport implements Identifiable<QueryReportId> {
 
+	@GeneratedValue
 	private QueryReportId id;
+	private ReportGroupId reportGroupId;
 	private String name;
 	private String sql;
 	private QueryReportStatus status;

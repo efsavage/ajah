@@ -19,15 +19,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.ajah.report.query.QueryReportRun;
+import com.ajah.report.query.QueryReportRunId;
+import com.ajah.report.query.QueryReportRunStatus;
+import com.ajah.report.query.QueryReportRunType;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.StringUtils;
-import com.ajah.report.query.QueryReportRun;
-import com.ajah.report.query.QueryReportRunId;
-import com.ajah.report.query.QueryReportRunStatus;
-import com.ajah.report.query.QueryReportRunType;
 
 /**
  * MySQL-based implementation of {@link QueryReportRunDao}.
