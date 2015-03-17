@@ -217,7 +217,7 @@
 			<releases>
 				<enabled>false</enabled>
 			</releases>
-			<id>efsavage-s3repo-snap</id>
+			<id>efsavage-s3-repo-snap</id>
 			<name>efsavage public s3 snapshot repository</name>
 			<url>http://repo.efsavage.com.s3.amazonaws.com/snapshot</url>
 		</repository>
@@ -228,7 +228,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-			<id>efsavage-s3repo-release</id>
+			<id>efsavage-s3-repo-release</id>
 			<name>efsavage public s3 release repository</name>
 			<url>http://repo.efsavage.com.s3.amazonaws.com/release</url>
 		</repository>
