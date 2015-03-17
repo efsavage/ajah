@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ajah.crypto.Password;
+import com.ajah.geo.State;
 import com.ajah.geo.iso.ISOCountry;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
@@ -227,12 +228,16 @@ public class SignUpManager {
 	}
 
 	public SignUp signUp(final String username, final Password password, final EmailAddress emailAddress, final String firstName, final String lastName, final Integer birthDay,
-			final Month birthMonth, final Integer birthYear, final ISOCountry country, final String ip, final UserSourceId source, final String promoCode, final String referralSource,
-			final String referralSourceOther, final UserType type) throws DataOperationException, DuplicateUsernameException {
+			final Month birthMonth, final Integer birthYear, final String address1, final String address2, final String address3, final State state, final ISOCountry country, final String ip,
+			final String userAgent, final UserSourceId source, final String promoCode, final String referralSource, final String referralSourceOther, final UserType type)
+			throws DataOperationException, DuplicateUsernameException {
 		log.fine("SignUp attempt for: " + emailAddress);
 		final SignUp signUp = new SignUp();
-		signUp.setUsername(username);
+		signUp.setUsername(username.trim().replaceAll(" +", " "));
+
 		signUp.setIp(ip);
+		signUp.setUserAgent(userAgent);
+
 		signUp.setType(SignUpType.STANDARD);
 		signUp.setCreated(new Date());
 		signUp.setSource(source);
@@ -240,12 +245,23 @@ public class SignUpManager {
 		signUp.setPromoCode(promoCode);
 		signUp.setReferralSource(referralSource);
 		signUp.setReferralSourceOther(referralSourceOther);
+
+		signUp.setBirthDay(birthDay);
+		signUp.setBirthMonth(birthMonth);
+		signUp.setBirthYear(birthYear);
+
+		signUp.setAddress1(address1);
+		signUp.setAddress2(address2);
+		signUp.setAddress3(address3);
+		signUp.setState(state.getAbbr());
+		signUp.setCountry(country);
+
 		if (this.userManager.usernameExists(emailAddress.toString())) {
 			log.fine(emailAddress.toString() + " is in use");
 			throw new DuplicateUsernameException(emailAddress.toString());
 		}
 
-		final User user = this.userManager.createUser(username, emailAddress, password, ip, source, type);
+		final User user = this.userManager.createUser(username.trim().replaceAll(" +", " "), emailAddress, password, ip, source, type);
 		final UserInfo userInfo = this.userManager.getUserInfo(user.getId());
 		userInfo.setFirstName(firstName);
 		userInfo.setLastName(lastName);

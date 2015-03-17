@@ -21,11 +21,13 @@ import javax.persistence.Transient;
 
 import lombok.Data;
 
+import com.ajah.geo.iso.ISOCountry;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserSourceId;
 import com.ajah.util.Identifiable;
+import com.ajah.util.data.Month;
 
 /**
  * A signup is a registration, tracking information that doesn't necessarily
@@ -45,11 +47,26 @@ public class SignUp implements Identifiable<SignUpId> {
 	private SignUpType type;
 	private Date created;
 	private UserId userId;
+
+	protected Integer birthDay;
+	protected Month birthMonth;
+	protected Integer birthYear;
+
 	protected String ip;
+	protected String userAgent;
+
 	protected UserSourceId source;
 	protected String promoCode;
 	protected String referralSource;
 	protected String referralSourceOther;
+
+	protected String email;
+	protected String address1;
+	protected String address2;
+	protected String address3;
+	protected String city;
+	protected String state;
+	protected ISOCountry country;
 
 	@Transient
 	User user;
