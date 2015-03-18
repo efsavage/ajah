@@ -54,4 +54,7 @@ public class AchievementUser implements Identifiable<AchievementUserId> {
 	@Transient
 	Achievement achievement;
 
+	@Transient
+	User user;
+
 }
