@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.spring.jdbc.err.DuplicateKeyException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.achievement.Achievement;
@@ -102,14 +103,20 @@ public class AchievementUserManager {
 	 */
 	public DataOperationResult<AchievementUser> create(final AchievementId achievementId, final UserId userId, final AchievementUserType type, final AchievementUserStatus status, Date completed)
 			throws DataOperationException {
-		final AchievementUser achievementUser = new AchievementUser();
+		AchievementUser achievementUser = new AchievementUser();
 		achievementUser.setAchievementId(achievementId);
 		achievementUser.setUserId(userId);
 		achievementUser.setType(type);
 		achievementUser.setStatus(status);
 		achievementUser.setCompleted(completed);
-		final DataOperationResult<AchievementUser> result = save(achievementUser);
-		return result;
+		try {
+			return save(achievementUser);
+		} catch (DuplicateKeyException e) {
+			log.fine(e.getCause().getCause().getMessage());
+			achievementUser = find(userId, achievementId);
+			DataOperationResult<AchievementUser> result = new DataOperationResult<>(achievementUser, 0);
+			return result;
+		}
 	}
 
 	public List<AchievementUser> findCompleted(final UserId userId, final int count, final boolean loadAchievements) throws DataOperationException, AchievementNotFoundException {
