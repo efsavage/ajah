@@ -299,15 +299,17 @@ public class DateUtils {
 		}
 		final long interval = System.currentTimeMillis() - date.getTime();
 		if (interval > 0) {
-			if (interval < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
+			if (interval < 2000) {
+				return "just now";
+			} else if (interval < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 				return interval / CalendarUnit.SECOND.getMillis() + " seconds ago";
 			} else if (interval < 120 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
 				return interval / CalendarUnit.MINUTE.getMillis() + " minutes ago";
 			} else if (interval < 48 * CalendarUnit.HOUR.getMillis() || largestUnit == CalendarUnit.HOUR) {
 				return interval / CalendarUnit.HOUR.getMillis() + " hours ago";
-			} else if (interval < 14 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
+			} else if (interval < 21 * CalendarUnit.DAY.getMillis() || largestUnit == CalendarUnit.DAY) {
 				return interval / CalendarUnit.DAY.getMillis() + " days ago";
-			} else if (interval < 36 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
+			} else if (interval < 13 * CalendarUnit.WEEK.getMillis() || largestUnit == CalendarUnit.WEEK) {
 				return interval / CalendarUnit.WEEK.getMillis() + " weeks ago";
 			} else if (interval < 36 * CalendarUnit.MONTH.getMillis() || largestUnit == CalendarUnit.MONTH) {
 				return interval / CalendarUnit.MONTH.getMillis() + " months ago";
@@ -315,7 +317,9 @@ public class DateUtils {
 				return interval / CalendarUnit.YEAR.getMillis() + " years ago";
 			}
 		}
-		if (interval > -100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
+		if (interval > -1000) {
+			return "now";
+		} else if (interval > -100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 			return "in " + -interval / CalendarUnit.SECOND.getMillis() + " seconds";
 		} else if (interval > -120 * CalendarUnit.MINUTE.getMillis() || largestUnit == CalendarUnit.MINUTE) {
 			return "in " + -interval / CalendarUnit.MINUTE.getMillis() + " minutes";
