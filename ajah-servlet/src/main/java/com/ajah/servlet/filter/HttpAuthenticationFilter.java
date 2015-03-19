@@ -62,6 +62,9 @@ public class HttpAuthenticationFilter extends BaseFilter {
 
 	@Override
 	public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain) throws IOException, ServletException {
+		if (((HttpServletRequest) req).getRequestURI().equals("/favicon.ico")) {
+			super.doFilter(req, res, chain);
+		}
 		if (!Config.i.getBoolean("ajah.http-auth.enable", true)) {
 			// If this filter is being invoked, we assume it's supposed to be
 			// enabled unless explicitly configured otherwise.
