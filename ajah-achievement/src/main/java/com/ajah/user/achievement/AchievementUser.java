@@ -50,6 +50,7 @@ public class AchievementUser implements Identifiable<AchievementUserId> {
 	private Date completed;
 	private Date modified;
 	private Date created;
+	private Date lastAnalyzed;
 
 	@Transient
 	Achievement achievement;
