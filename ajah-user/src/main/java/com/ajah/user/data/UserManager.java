@@ -492,4 +492,8 @@ public class UserManager {
 		}
 	}
 
+	public List<UserInfo> listBySource(String source, int page, int count) throws DataOperationException {
+		return this.userInfoDao.listBySource(source, page, count);
+	}
+
 }

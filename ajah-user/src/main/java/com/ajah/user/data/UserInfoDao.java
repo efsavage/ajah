@@ -15,10 +15,13 @@
  */
 package com.ajah.user.data;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 
 import com.ajah.lang.MapMap;
 import com.ajah.spring.jdbc.AjahDao;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 
@@ -31,5 +34,7 @@ import com.ajah.user.info.UserInfo;
 public interface UserInfoDao extends AjahDao<UserId, UserInfo> {
 
 	MapMap<LocalDate, String, Integer> getSourceCounts();
+
+	List<UserInfo> listBySource(String source, int page, int count) throws DataOperationException;
 
 }

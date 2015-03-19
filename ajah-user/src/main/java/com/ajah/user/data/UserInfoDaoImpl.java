@@ -17,6 +17,7 @@ package com.ajah.user.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +26,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ajah.lang.MapMap;
 import com.ajah.spring.jdbc.AbstractAjahDao;
+import com.ajah.spring.jdbc.criteria.Criteria;
+import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
@@ -55,5 +59,10 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 			}
 
 		});
+	}
+
+	@Override
+	public List<UserInfo> listBySource(String source, int page, int count) throws DataOperationException {
+		return super.list(new Criteria().eq("source", source).offset(page * count).rows(count).orderBy("created_date", Order.ASC));
 	}
 }
