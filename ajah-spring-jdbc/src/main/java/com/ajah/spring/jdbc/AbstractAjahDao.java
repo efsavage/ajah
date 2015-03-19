@@ -95,6 +95,7 @@ import com.ajah.util.reflect.ReflectionUtils;
 public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements AjahDao<K, T> {
 
 	protected static final Logger sqlLog = Logger.getLogger("ajah.sql");
+	protected static final Logger sqlVarsLog = Logger.getLogger("ajah.sql.vars");
 
 	private static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
@@ -456,9 +457,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final Object[] values = where.getValues().toArray();
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
-				sqlLog.finest(values.length + " values");
+				sqlVarsLog.finest(values.length + " values");
 				for (int i = 0; i < values.length; i++) {
-					sqlLog.finest("value " + i + ": " + values[i].toString());
+					sqlVarsLog.finest("value " + i + ": " + values[i].toString());
 				}
 			}
 			return getJdbcTemplate().queryForObject(sql, values, getRowMapper());
@@ -511,8 +512,9 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE " + getFieldsClause(fields);
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
-				for (final Object value : values) {
-					log.finest(value.toString());
+				sqlVarsLog.finest(values.length + " values");
+				for (int i = 0; i < values.length; i++) {
+					sqlVarsLog.finest("value " + i + ": " + values[i].toString());
 				}
 			}
 			return getJdbcTemplate().queryForObject(sql, values, getRowMapper());
@@ -859,6 +861,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 						}
 						final PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 						final Object[] values = getInsertValues(entity);
+						sqlVarsLog.finest(values.length + " values");
+						for (int i = 0; i < values.length; i++) {
+							sqlVarsLog.finest("value " + i + ": " + values[i].toString());
+						}
 						for (int i = 0; i < values.length; i++) {
 							if (sqlLog.isLoggable(Level.FINEST)) {
 								sqlLog.finest("Setting value " + (i + 1) + " to " + values[i]);
