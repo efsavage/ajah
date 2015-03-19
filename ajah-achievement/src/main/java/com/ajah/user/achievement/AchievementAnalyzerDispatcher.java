@@ -103,7 +103,7 @@ public class AchievementAnalyzerDispatcher implements ApplicationContextAware {
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
-	public boolean dispatch(UserId userId, String[] tags) throws DataOperationException {
+	public boolean dispatch(UserId userId, String[] tags, AchievementDispatchListener listener) throws DataOperationException {
 		AjahUtils.requireParam(userId, "userId");
 		AjahUtils.requireParam(tags, "tags");
 		if (this.tagCache == null) {
@@ -125,7 +125,11 @@ public class AchievementAnalyzerDispatcher implements ApplicationContextAware {
 			if (achievementUser != null && achievementUser.getStatus() == AchievementUserStatus.COMPLETED) {
 				log.fine("Already completed");
 			} else {
+				if(listener==null) {
 				achievement.getAchievementAnalyzer().analyze(userId, achievement, achievementUser);
+				} else {
+					listener.execute(userId, achievement, achievementUser);
+				}
 			}
 		}
 		return true;
