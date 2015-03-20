@@ -16,6 +16,7 @@
 package com.ajah.util.net;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -205,4 +206,7 @@ public class HttpURLBuilder {
 		setParam(name, String.valueOf(value));
 	}
 
+	public void setParam(String name, BigDecimal value) {
+		setParam(name, value.toString());
+	}
 }

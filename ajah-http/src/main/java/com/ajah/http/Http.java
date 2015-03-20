@@ -25,9 +25,9 @@ import lombok.extern.java.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import com.ajah.http.err.BadRequestException;
@@ -130,9 +130,9 @@ public class Http {
 	}
 
 	private static HttpEntity internalGet(final URI uri) throws IOException, ClientProtocolException, NotFoundException, UnexpectedResponseCode {
-		final HttpClient httpclient = new DefaultHttpClient();
+		CloseableHttpClient client = HttpClientBuilder.create().build();
 		final HttpGet httpget = new HttpGet(uri);
-		final HttpResponse response = httpclient.execute(httpget);
+		final HttpResponse response = client.execute(httpget);
 		if (response.getStatusLine().getStatusCode() == 200) {
 			final HttpEntity entity = response.getEntity();
 			return entity;

@@ -1461,11 +1461,11 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		}
 	}
 
-	protected <T> T sum(final String field, final Criteria criteria, final Class<T> clazz) throws DataOperationException {
+	protected <N> N sum(final String field, final Criteria criteria, final Class<N> clazz) throws DataOperationException {
 		try {
 			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
-			final T sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), clazz);
+			final N sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), clazz);
 			return sum;
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());

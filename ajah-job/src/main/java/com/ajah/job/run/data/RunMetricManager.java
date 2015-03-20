@@ -104,7 +104,7 @@ public class RunMetricManager {
 		final DataOperationResult<RunMetric> result = save(runMetric);
 		if (external) {
 			if (this.vigilancedClient != null) {
-				this.vigilancedClient.updateMetric(job.getMonitorKey(), name, value, null);
+//				this.vigilancedClient.updateMetric(job.getMonitorKey(), name, value, null);
 			} else {
 				log.debug("No Vigilanced client is configured");
 			}
