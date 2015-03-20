@@ -15,6 +15,7 @@
  */
 package com.ajah.util.net;
 
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -190,5 +191,13 @@ public class HttpURLBuilder {
 				setParam(paramSplit[0], paramSplit[1]);
 			}
 		}
+	}
+
+	public void setParam(String name, int value) {
+		setParam(name, String.valueOf(value));
+	}
+
+	public void setParam(String name, BigDecimal value) {
+		setParam(name, value.toString());
 	}
 }
