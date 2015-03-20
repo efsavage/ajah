@@ -15,11 +15,15 @@
  */
 package com.ajah.util.net;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.logging.Level;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.extern.java.Log;
 
 import com.ajah.lang.ListMap;
 import com.ajah.util.AjahUtils;
@@ -35,6 +39,7 @@ import com.ajah.util.StringUtils;
  */
 @Data
 @Accessors(chain = true)
+@Log
 public class HttpURLBuilder {
 
 	private String host;
@@ -130,7 +135,11 @@ public class HttpURLBuilder {
 					}
 					string.append(name);
 					string.append("=");
-					string.append(value);
+					try {
+						string.append(URLEncoder.encode(value, "UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						log.log(Level.SEVERE, e.getMessage(), e);
+					}
 				}
 			}
 		}
@@ -191,4 +200,9 @@ public class HttpURLBuilder {
 			}
 		}
 	}
+
+	public void setParam(String name, int value) {
+		setParam(name, String.valueOf(value));
+	}
+
 }
