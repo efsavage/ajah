@@ -59,7 +59,6 @@ public class ReportWriter implements AutoCloseable {
 	 * @throws FileNotFoundException
 	 *             If the file could not be found.
 	 */
-	@SuppressWarnings("resource")
 	public void add(final File file) throws FileNotFoundException {
 		this.writers.add(new PrintWriter(file));
 	}

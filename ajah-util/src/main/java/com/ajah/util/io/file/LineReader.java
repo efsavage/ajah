@@ -28,7 +28,6 @@ import java.util.Iterator;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@SuppressWarnings("resource")
 public class LineReader extends BufferedReader implements Iterable<Line> {
 
 	/**
