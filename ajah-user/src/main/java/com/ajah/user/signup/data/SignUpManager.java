@@ -253,7 +253,7 @@ public class SignUpManager {
 		signUp.setAddress1(address1);
 		signUp.setAddress2(address2);
 		signUp.setAddress3(address3);
-		signUp.setState(state.getAbbr());
+		signUp.setState(state == null ? null : state.getAbbr());
 		signUp.setCountry(country);
 
 		if (this.userManager.usernameExists(emailAddress.toString())) {
@@ -278,5 +278,4 @@ public class SignUpManager {
 		save(signUp);
 		return signUp;
 	}
-
 }
