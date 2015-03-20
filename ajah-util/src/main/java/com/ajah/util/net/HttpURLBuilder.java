@@ -115,10 +115,10 @@ public class HttpURLBuilder {
 			string.append(":" + this.port);
 		}
 
-		if (!this.path.startsWith("/")) {
+		if (this.path != null && !this.path.startsWith("/")) {
 			string.append("/");
 		}
-		string.append(this.path);
+		string.append(this.path == null ? "" : this.path);
 
 		boolean params = false;
 		if (this.parameters != null && this.parameters.size() > 0) {
