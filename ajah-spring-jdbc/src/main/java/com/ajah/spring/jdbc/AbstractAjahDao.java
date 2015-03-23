@@ -863,7 +863,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 						final Object[] values = getInsertValues(entity);
 						sqlVarsLog.finest(values.length + " values");
 						for (int i = 0; i < values.length; i++) {
-							sqlVarsLog.finest("value " + i + ": " + values[i].toString());
+							sqlVarsLog.finest("value " + i + ": " + (values[i] == null ? null : values[i].toString()));
 						}
 						for (int i = 0; i < values.length; i++) {
 							if (sqlLog.isLoggable(Level.FINEST)) {
