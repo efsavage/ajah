@@ -24,13 +24,15 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ajah.spring.jdbc.DataOperationResult;
-import com.ajah.spring.jdbc.criteria.Order;
-import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.report.query.QueryReportRunId;
 import com.ajah.report.query.QueryReportRunStep;
 import com.ajah.report.query.QueryReportRunStepId;
 import com.ajah.report.query.QueryReportRunStepStatus;
 import com.ajah.report.query.QueryReportRunStepType;
+import com.ajah.report.query.QueryReportStepId;
+import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Manages data operations for {@link QueryReportRunStep}.
@@ -46,9 +48,9 @@ public class QueryReportRunStepManager {
 	private QueryReportRunStepDao queryReportRunStepDao;
 
 	/**
-	 * Saves an {@link QueryReportRunStep}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
+	 * Saves an {@link QueryReportRunStep}. Assigns a new ID ({@link UUID}) and
+	 * sets the creation date if necessary. If either of these elements are set,
+	 * will perform an insert. Otherwise will perform an update.
 	 * 
 	 * @param queryReportRunStep
 	 *            The queryReportRunStep to save.
@@ -99,7 +101,8 @@ public class QueryReportRunStepManager {
 	}
 
 	/**
-	 * Returns a list of {@link QueryReportRunStep}s that match the specified criteria.
+	 * Returns a list of {@link QueryReportRunStep}s that match the specified
+	 * criteria.
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -126,6 +129,7 @@ public class QueryReportRunStepManager {
 
 	/**
 	 * Creates a new {@link QueryReportRunStep} with the given properties.
+	 * @param  
 	 * 
 	 * @param name
 	 *            The name of the queryReportRunStep, required.
@@ -133,13 +137,17 @@ public class QueryReportRunStepManager {
 	 *            The type of queryReportRunStep, required.
 	 * @param status
 	 *            The status of the queryReportRunStep, required.
-	 * @return The result of the creation, which will include the new queryReportRunStep at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the creation, which will include the new
+	 *         queryReportRunStep at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<QueryReportRunStep> create(String name, QueryReportRunStepType type, QueryReportRunStepStatus status) throws DataOperationException {
+	public DataOperationResult<QueryReportRunStep> create(QueryReportRunId queryReportRunId, QueryReportStepId queryReportStepId, int sequence, String name, QueryReportRunStepType type,
+			QueryReportRunStepStatus status) throws DataOperationException {
 		QueryReportRunStep queryReportRunStep = new QueryReportRunStep();
+		queryReportRunStep.setQueryReportRunId(queryReportRunId);
+		queryReportRunStep.setQueryReportStepId(queryReportStepId);
+		queryReportRunStep.setSequence(sequence);
 		queryReportRunStep.setName(name);
 		queryReportRunStep.setType(type);
 		queryReportRunStep.setStatus(status);
@@ -152,8 +160,8 @@ public class QueryReportRunStepManager {
 	 * 
 	 * @param queryReportRunStepId
 	 *            The ID of the queryReportRunStep to delete.
-	 * @return The result of the deletion, will not include the new queryReportRunStep at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the deletion, will not include the new
+	 *         queryReportRunStep at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws QueryReportRunStepNotFoundException

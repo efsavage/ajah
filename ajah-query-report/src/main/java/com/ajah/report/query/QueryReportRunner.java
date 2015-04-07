@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
@@ -39,6 +40,8 @@ import com.ajah.flatfile.FlatFileWriter;
 import com.ajah.report.query.data.QueryReportManager;
 import com.ajah.report.query.data.QueryReportNotFoundException;
 import com.ajah.report.query.data.QueryReportRunManager;
+import com.ajah.report.query.data.QueryReportRunStepManager;
+import com.ajah.report.query.data.QueryReportStepManager;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.io.file.FileUtils;
 
@@ -58,6 +61,12 @@ public class QueryReportRunner {
 
 	@Autowired
 	QueryReportRunManager runManager;
+
+	@Autowired
+	QueryReportStepManager stepManager;
+
+	@Autowired
+	QueryReportRunStepManager runStepManager;
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -87,6 +96,7 @@ public class QueryReportRunner {
 		QueryReportRun run = null;
 		try {
 			run = this.runManager.create(report.getId(), report.getName() + "-" + DATE_FORMAT.format(now), QueryReportRunType.STANDARD, QueryReportRunStatus.RUNNING).getEntity();
+			doSteps(report, run);
 			// File file = File.createTempFile("query-report-" + queryReportId +
 			// "-", ".csv");
 			File file = new File("/tmp/query-report-" + queryReportId + "-" + System.currentTimeMillis(), ".csv");
@@ -114,6 +124,19 @@ public class QueryReportRunner {
 			throw e;
 		}
 		return run;
+	}
+
+	private void doSteps(QueryReport report, QueryReportRun run) throws DataOperationException {
+		List<QueryReportStep> steps = this.stepManager.list(report.getId());
+		log.fine(steps.size() + " steps to run");
+		for (QueryReportStep step : steps) {
+			QueryReportRunStep runStep = this.runStepManager.create(run.getId(), step.getId(), step.getSequence(), step.getName() + "-" + DATE_FORMAT.format(new Date()), QueryReportRunStepType.STANDARD,
+					QueryReportRunStepStatus.RUNNING).getEntity();
+			int rowsAffected = this.jdbcTemplate.update(step.getSql());
+			runStep.setRowsAffected(rowsAffected);
+			runStep.setStatus(QueryReportRunStepStatus.COMPLETE);
+			this.runStepManager.save(runStep);
+		}
 	}
 
 	private int[] writeResultSet(final String sql, final File file) throws IOException {

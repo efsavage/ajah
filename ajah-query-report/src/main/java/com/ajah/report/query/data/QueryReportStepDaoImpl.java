@@ -19,15 +19,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.ajah.report.query.QueryReportId;
+import com.ajah.report.query.QueryReportStep;
+import com.ajah.report.query.QueryReportStepId;
+import com.ajah.report.query.QueryReportStepStatus;
+import com.ajah.report.query.QueryReportStepType;
 import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.util.StringUtils;
-import com.ajah.report.query.QueryReportStep;
-import com.ajah.report.query.QueryReportStepId;
-import com.ajah.report.query.QueryReportStepStatus;
-import com.ajah.report.query.QueryReportStepType;
 
 /**
  * MySQL-based implementation of {@link QueryReportStepDao}.
@@ -39,8 +40,12 @@ import com.ajah.report.query.QueryReportStepType;
 public class QueryReportStepDaoImpl extends AbstractAjahDao<QueryReportStepId, QueryReportStep, QueryReportStep> implements QueryReportStepDao {
 
 	@Override
-	public List<QueryReportStep> list(String search, QueryReportStepType type, QueryReportStepStatus status, String sort, Order order, int page, int count) throws DataOperationException {
+	public List<QueryReportStep> list(QueryReportId queryReportId, String search, QueryReportStepType type, QueryReportStepStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (queryReportId != null) {
+			criteria.eq(queryReportId);
+		}
 		if (!StringUtils.isBlank(search)) {
 			final String pattern = "%" + search.replaceAll("\\*", "%") + "%";
 			criteria.like("name", pattern);

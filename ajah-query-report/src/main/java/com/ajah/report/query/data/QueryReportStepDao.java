@@ -20,6 +20,7 @@ import java.util.List;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.report.query.QueryReportId;
 import com.ajah.report.query.QueryReportStep;
 import com.ajah.report.query.QueryReportStepId;
 import com.ajah.report.query.QueryReportStepStatus;
@@ -35,6 +36,7 @@ public interface QueryReportStepDao extends AjahDao<QueryReportStepId, QueryRepo
 
 	/**
 	 * Returns a list of {@link QueryReportStep}s that match the specified criteria.
+	 * @param queryReportId 
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -55,7 +57,7 @@ public interface QueryReportStepDao extends AjahDao<QueryReportStepId, QueryRepo
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<QueryReportStep> list(String search, QueryReportStepType type, QueryReportStepStatus status, String sort, Order order, int page, int count) throws DataOperationException;
+	List<QueryReportStep> list(QueryReportId queryReportId, String search, QueryReportStepType type, QueryReportStepStatus status, String sort, Order order, int page, int count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.

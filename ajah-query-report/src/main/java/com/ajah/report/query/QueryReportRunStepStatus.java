@@ -26,13 +26,13 @@ import com.ajah.util.IdentifiableEnum;
 public enum QueryReportRunStepStatus implements IdentifiableEnum<String> {
 
 	/**
-	 * Inactive.
+	 * Running.
 	 */
-	INACTIVE("0", "ina", "Inactive", "Inactive.", false, false, false),
+	RUNNING("0", "running", "Running", "Running.", false, false, false),
 	/**
-	 * Active.
+	 * Complete.
 	 */
-	ACTIVE("1", "act", "Active", "Active.", true, false, false),
+	COMPLETE("1", "complete", "Complete", "Complete.", true, false, false),
 	/**
 	 * Error.
 	 */

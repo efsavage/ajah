@@ -24,13 +24,14 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ajah.spring.jdbc.DataOperationResult;
-import com.ajah.spring.jdbc.criteria.Order;
-import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.report.query.QueryReportId;
 import com.ajah.report.query.QueryReportStep;
 import com.ajah.report.query.QueryReportStepId;
 import com.ajah.report.query.QueryReportStepStatus;
 import com.ajah.report.query.QueryReportStepType;
+import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.criteria.Order;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Manages data operations for {@link QueryReportStep}.
@@ -46,9 +47,9 @@ public class QueryReportStepManager {
 	private QueryReportStepDao queryReportStepDao;
 
 	/**
-	 * Saves an {@link QueryReportStep}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
+	 * Saves an {@link QueryReportStep}. Assigns a new ID ({@link UUID}) and
+	 * sets the creation date if necessary. If either of these elements are set,
+	 * will perform an insert. Otherwise will perform an update.
 	 * 
 	 * @param queryReportStep
 	 *            The queryReportStep to save.
@@ -99,7 +100,8 @@ public class QueryReportStepManager {
 	}
 
 	/**
-	 * Returns a list of {@link QueryReportStep}s that match the specified criteria.
+	 * Returns a list of {@link QueryReportStep}s that match the specified
+	 * criteria.
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -120,8 +122,9 @@ public class QueryReportStepManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<QueryReportStep> list(String search, QueryReportStepType type, QueryReportStepStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.queryReportStepDao.list(search, type, status, sort, order, page, count);
+	public List<QueryReportStep> list(QueryReportId queryReportId, String search, QueryReportStepType type, QueryReportStepStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException {
+		return this.queryReportStepDao.list(queryReportId, search, type, status, sort, order, page, count);
 	}
 
 	/**
@@ -133,8 +136,8 @@ public class QueryReportStepManager {
 	 *            The type of queryReportStep, required.
 	 * @param status
 	 *            The status of the queryReportStep, required.
-	 * @return The result of the creation, which will include the new queryReportStep at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the creation, which will include the new
+	 *         queryReportStep at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
@@ -152,8 +155,8 @@ public class QueryReportStepManager {
 	 * 
 	 * @param queryReportStepId
 	 *            The ID of the queryReportStep to delete.
-	 * @return The result of the deletion, will not include the new queryReportStep at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the deletion, will not include the new
+	 *         queryReportStep at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws QueryReportStepNotFoundException
@@ -207,6 +210,10 @@ public class QueryReportStepManager {
 	 */
 	public int searchCount(String search, QueryReportStepType type, QueryReportStepStatus status) throws DataOperationException {
 		return this.queryReportStepDao.searchCount(search, type, status);
+	}
+
+	public List<QueryReportStep> list(QueryReportId queryReportId) throws DataOperationException {
+		return list(queryReportId, null, null, null, "sequence", Order.ASC, 0, 1000);
 	}
 
 }

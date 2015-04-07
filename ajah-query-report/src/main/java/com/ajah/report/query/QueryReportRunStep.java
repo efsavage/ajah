@@ -21,12 +21,15 @@ import lombok.Data;
 
 import com.ajah.util.Identifiable;
 
-
 @Data
 public class QueryReportRunStep implements Identifiable<QueryReportRunStepId> {
 
 	private QueryReportRunStepId id;
+	private QueryReportRunId queryReportRunId;
+	private QueryReportStepId queryReportStepId;
 	private String name;
+	private int rowsAffected;
+	private int sequence;
 	private QueryReportRunStepStatus status;
 	private QueryReportRunStepType type;
 	private Date created;
