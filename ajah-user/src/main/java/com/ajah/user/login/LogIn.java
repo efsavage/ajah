@@ -49,6 +49,11 @@ public class LogIn implements Identifiable<LogInId> {
 	private Date created;
 	protected String username;
 	protected String ip;
+	/**
+	 * retry can be used for an intermittent failure, or some sequence where it
+	 * is cleaner to re-attempt the login (such as automatic reactivation).
+	 */
+	private boolean retry;
 
 	@Transient
 	protected User user;

@@ -362,4 +362,9 @@ public class LogInManager {
 		return this.logInDao.searchCount(search);
 	}
 
+	public void retry(LogIn logIn) throws DataOperationException {
+		logIn.setRetry(true);
+		save(logIn);
+	}
+
 }
