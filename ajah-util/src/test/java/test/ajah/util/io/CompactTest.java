@@ -69,4 +69,5 @@ public class CompactTest {
 	public void testLessThan() {
 		Assert.assertTrue(this.compactL.lt(this.compactH));
 	}
+
 }
