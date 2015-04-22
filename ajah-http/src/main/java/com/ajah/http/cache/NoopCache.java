@@ -20,8 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.ajah.http.Http;
-import com.ajah.http.err.NotFoundException;
-import com.ajah.http.err.UnexpectedResponseCode;
+import com.ajah.http.err.HttpException;
 
 /**
  * Non-caching noop passthrough to {@link Http}. This exists so you can program
@@ -39,7 +38,7 @@ public class NoopCache implements HttpCache {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException {
+	public String get(final URI uri) throws IOException, HttpException {
 		return new String(getBytes(uri));
 	}
 
@@ -47,7 +46,7 @@ public class NoopCache implements HttpCache {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode, URISyntaxException {
+	public byte[] getBytes(final String uri) throws IOException, URISyntaxException, HttpException {
 		return getBytes(new URI(uri));
 	}
 
@@ -55,7 +54,7 @@ public class NoopCache implements HttpCache {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+	public byte[] getBytes(final URI uri) throws IOException, HttpException {
 		return Http.getBytes(uri);
 	}
 

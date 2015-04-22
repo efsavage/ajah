@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.ajah.http.Http;
+import com.ajah.http.err.HttpException;
 import com.ajah.http.err.NotFoundException;
 import com.ajah.http.err.UnexpectedResponseCode;
 
@@ -49,7 +50,7 @@ public interface HttpCache {
 	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
-	public byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode;
+	public byte[] getBytes(final URI uri) throws IOException, HttpException;
 
 	/**
 	 * Attempts to find a cached response of a URI. If not found, fetches the
@@ -66,7 +67,7 @@ public interface HttpCache {
 	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
-	public String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException;
+	public String get(final URI uri) throws IOException, HttpException;
 
 	/**
 	 * Attempts to find a cached response of a URI. If not found, fetches the
@@ -84,6 +85,6 @@ public interface HttpCache {
 	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
-	public byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode, URISyntaxException;
+	public byte[] getBytes(final String uri) throws IOException, HttpException, URISyntaxException;
 
 }

@@ -28,6 +28,8 @@ import lombok.extern.java.Log;
 
 import com.ajah.crypto.SHA;
 import com.ajah.http.Http;
+import com.ajah.http.err.HttpException;
+import com.ajah.http.err.InternalServerError;
 import com.ajah.http.err.NotFoundException;
 import com.ajah.http.err.UnexpectedResponseCode;
 import com.ajah.util.config.Config;
@@ -63,8 +65,9 @@ public class DiskCache implements HttpCache {
 	 * @throws UnexpectedResponseCode
 	 *             If the URI returns a response code that {@link Http} cannot
 	 *             not handle.
+	 * @throws InternalServerError
 	 */
-	public static String get(final URI uri, final long maxAge) throws NotFoundException, IOException, UnexpectedResponseCode {
+	public static String get(final URI uri, final long maxAge) throws IOException, HttpException {
 		return new String(getBytes(uri, maxAge), "UTF-8");
 	}
 
@@ -85,8 +88,9 @@ public class DiskCache implements HttpCache {
 	 * @throws UnexpectedResponseCode
 	 *             If the URI returns a response code that {@link Http} cannot
 	 *             not handle.
+	 * @throws InternalServerError
 	 */
-	public static byte[] getBytes(final URI uri, final long maxAge) throws IOException, NotFoundException, UnexpectedResponseCode {
+	public static byte[] getBytes(final URI uri, final long maxAge) throws IOException, HttpException {
 		// TODO Add max-age
 		// IDEA Store expires header, check last-modified
 		final String path = FileHashUtils.getHashedFileName(SHA.sha1Hex(uri.toString()), 3, 2);
@@ -139,24 +143,29 @@ public class DiskCache implements HttpCache {
 	 *             not handle.
 	 * @throws IOException
 	 *             If the URI could not be fetched.
+	 * @throws InternalServerError
 	 */
-	public static InputStream getStream(final URI uri, final int maxAge) throws NotFoundException, UnexpectedResponseCode, IOException {
+	public static InputStream getStream(final URI uri, final int maxAge) throws IOException, HttpException {
 		return new ByteArrayInputStream(getBytes(uri, maxAge));
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws InternalServerError
 	 */
 	@Override
-	public String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException {
+	public String get(final URI uri) throws IOException, HttpException {
 		return new String(getBytes(uri, Long.MAX_VALUE));
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws InternalServerError
 	 */
 	@Override
-	public byte[] getBytes(final String uri) throws IOException, NotFoundException, UnexpectedResponseCode, URISyntaxException {
+	public byte[] getBytes(final String uri) throws IOException, URISyntaxException, HttpException {
 		return getBytes(new URI(uri), Long.MAX_VALUE);
 	}
 
@@ -164,10 +173,12 @@ public class DiskCache implements HttpCache {
 	 * Calls {@link #getBytes(URI, long)} with {@link Long#MAX_VALUE} for a
 	 * maxAge.
 	 * 
+	 * @throws InternalServerError
+	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
 	@Override
-	public byte[] getBytes(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode {
+	public byte[] getBytes(final URI uri) throws IOException, HttpException {
 		return getBytes(uri, Long.MAX_VALUE);
 	}
 
