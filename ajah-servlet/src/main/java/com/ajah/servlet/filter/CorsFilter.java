@@ -49,6 +49,10 @@ public class CorsFilter extends BaseFilter {
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		String value = Config.i.get("ajah.header.cors", "null");
+		doFilter(value, request, response, chain);
+	}
+
+	protected void doFilter(String value, final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		if (value.contains(",")) {
 			final HttpServletRequest servletRequest = (HttpServletRequest) request;
 			String origin = servletRequest.getHeader("Origin");
@@ -90,4 +94,5 @@ public class CorsFilter extends BaseFilter {
 
 		super.doFilter(request, response, chain);
 	}
+
 }
