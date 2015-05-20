@@ -23,6 +23,8 @@ import java.util.logging.Level;
 
 import lombok.extern.java.Log;
 
+import org.joda.time.LocalDate;
+
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
@@ -574,6 +576,10 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	public Criteria unique() {
 		this.rowCount = 1;
 		return this;
+	}
+
+	public Criteria eq(String field, LocalDate from) {
+		return eq(field, from.toString());
 	}
 
 }
