@@ -149,8 +149,22 @@ public class Tally<T> {
 	 * @param tallyObject
 	 *            The object to tally by.
 	 */
-	public void tally(final T tallyObject) {
-		tally(tallyObject, 1);
+	public long tally(final T tallyObject) {
+		return tally(tallyObject, 1);
+	}
+
+	/**
+	 * Get but do not increment the tally for an object.
+	 * 
+	 * @param tallyObject
+	 *            The object to get the current count for.
+	 */
+	public long getValue(final T tallyObject) {
+		final Long value = this.map.get(tallyObject);
+		if (value == null) {
+			return 0;
+		}
+		return value.longValue();
 	}
 
 	/**
@@ -160,8 +174,9 @@ public class Tally<T> {
 	 *            The object to tally by.
 	 * @param increment
 	 *            The number to increment the tally by.
+	 * @return
 	 */
-	public void tally(final T tallyObject, final long increment) {
+	public long tally(final T tallyObject, final long increment) {
 		final Long oldValue = this.map.get(tallyObject);
 		if (oldValue == null) {
 			this.map.putIfAbsent(tallyObject, Long.valueOf(increment));
@@ -169,6 +184,7 @@ public class Tally<T> {
 			final Long newValue = Long.valueOf(oldValue.intValue() + increment);
 			this.map.replace(tallyObject, oldValue, newValue);
 		}
+		return this.map.get(tallyObject).longValue();
 	}
 
 }
