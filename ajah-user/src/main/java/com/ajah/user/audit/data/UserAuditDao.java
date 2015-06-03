@@ -60,7 +60,7 @@ public interface UserAuditDao extends AjahDao<UserAuditId, UserAudit> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	long count(final UserAuditType type, final UserAuditField status) throws DataOperationException;
+	int count(final UserAuditType type, final UserAuditField status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.

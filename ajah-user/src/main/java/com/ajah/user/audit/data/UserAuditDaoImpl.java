@@ -43,7 +43,7 @@ public class UserAuditDaoImpl extends AbstractAjahDao<UserAuditId, UserAudit, Us
 	 *      com.ajah.user.audit.UserAuditField)
 	 */
 	@Override
-	public long count(final UserAuditType type, final UserAuditField status) throws DataOperationException {
+	public int count(final UserAuditType type, final UserAuditField status) throws DataOperationException {
 		final Criteria criteria = new Criteria();
 		if (type != null) {
 			criteria.eq("type", type);
@@ -63,7 +63,7 @@ public class UserAuditDaoImpl extends AbstractAjahDao<UserAuditId, UserAudit, Us
 		if (status != null) {
 			criteria.eq("status", status);
 		}
-		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
+		return super.list(criteria.offset(page * count).rows(count).orderBy("created_date", Order.DESC));
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class UserAuditDaoImpl extends AbstractAjahDao<UserAuditId, UserAudit, Us
 	public int searchCount(final String search) throws DataOperationException {
 		final Criteria criteria = new Criteria();
 		if (!StringUtils.isBlank(search)) {
-			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
+			criteria.like("field", "%" + search.replaceAll("\\*", "%") + "%");
 		}
 		return super.count(criteria);
 	}

@@ -52,7 +52,7 @@ public class UserAuditManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public long count() throws DataOperationException {
+	public int count() throws DataOperationException {
 		return count(null, null);
 	}
 
@@ -61,14 +61,14 @@ public class UserAuditManager {
 	 * 
 	 * @param type
 	 *            The userAudit type to limit to, optional.
-	 * @param status
-	 *            The status to limit to, optional.
+	 * @param field
+	 *            The field to limit to, optional.
 	 * @return The number of matching records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public long count(final UserAuditType type, final UserAuditField status) throws DataOperationException {
-		return this.userAuditDao.count(type, status);
+	public int count(final UserAuditType type, final UserAuditField field) throws DataOperationException {
+		return this.userAuditDao.count(type, field);
 	}
 
 	/**
@@ -108,8 +108,8 @@ public class UserAuditManager {
 	 * 
 	 * @param type
 	 *            The type of userAudit, optional.
-	 * @param status
-	 *            The status of the userAudit, optional.
+	 * @param field
+	 *            The field of the userAudit, optional.
 	 * @param page
 	 *            The page of results to fetch.
 	 * @param count
@@ -118,8 +118,8 @@ public class UserAuditManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<UserAudit> list(final UserAuditType type, final UserAuditField status, final long page, final long count) throws DataOperationException {
-		return this.userAuditDao.list(type, status, page, count);
+	public List<UserAudit> list(final UserAuditType type, final UserAuditField field, final long page, final long count) throws DataOperationException {
+		return this.userAuditDao.list(type, field, page, count);
 	}
 
 	/**
