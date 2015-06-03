@@ -90,9 +90,11 @@ public class UserAuditManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<UserAudit> create(final UserId userId, final UserAuditField field, final String oldValue, final String newValue, final UserAuditType type) throws DataOperationException {
+	public DataOperationResult<UserAudit> create(final UserId userId, final UserId staffUserId, final UserAuditField field, final String oldValue, final String newValue, final UserAuditType type)
+			throws DataOperationException {
 		final UserAudit userAudit = new UserAudit();
 		userAudit.setUserId(userId);
+		userAudit.setStaffUserId(staffUserId);
 		userAudit.setField(field);
 		userAudit.setOldValue(oldValue);
 		userAudit.setNewValue(newValue);

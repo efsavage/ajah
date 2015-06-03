@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -26,7 +26,15 @@ import com.ajah.util.Identifiable;
 public class UserAudit implements Identifiable<UserAuditId> {
 
 	private UserAuditId id;
+	/**
+	 * The user the changed occurred for.
+	 */
 	private UserId userId;
+	/**
+	 * If this changed was performed by administrative staff, the user that made
+	 * the change.
+	 */
+	private UserId staffUserId;
 	private UserAuditField field;
 	private String oldValue;
 	private String newValue;
