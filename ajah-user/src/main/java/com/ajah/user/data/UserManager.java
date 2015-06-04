@@ -84,16 +84,19 @@ public class UserManager {
 	 * @param statusReason
 	 *            The reason for deactivation.
 	 * @param type
+	 * @param ip
+	 * @param headers
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 * @throws UserNotFoundException
 	 *             If the specified user was not found.
 	 */
-	public void activate(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+	public void activate(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException, UserNotFoundException {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.ACTIVE);
 		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -105,16 +108,19 @@ public class UserManager {
 	 * @param statusReason
 	 *            The reason for blocking.
 	 * @param type
+	 * @param ip
+	 * @param headers
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 * @throws UserNotFoundException
 	 *             If the specified user was not found.
 	 */
-	public void block(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+	public void block(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException, UserNotFoundException {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.BLOCKED);
 		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -127,15 +133,18 @@ public class UserManager {
 	 *            The new password.
 	 * @param type
 	 *            The type of change this is.
+	 * @param ip
+	 * @param headers
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws CryptoException
 	 *             If there was a problem hashing the password.
 	 */
-	public void changePassword(final UserId userId, final UserId staffUserId, final Password password, final UserAuditType type) throws DataOperationException, CryptoException {
+	public void changePassword(final UserId userId, final UserId staffUserId, final Password password, final UserAuditType type, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException, CryptoException {
 		final Password oldPassword = this.userDao.getPassword(userId);
 		this.userDao.updatePassword(userId, password);
-		this.userAuditManager.create(userId, staffUserId, UserAuditField.PASSWORD, oldPassword.toString(), password.toString(), type);
+		this.userAuditManager.create(userId, staffUserId, UserAuditField.PASSWORD, oldPassword.toString(), password.toString(), type, userComment, staffComment, ip, headers);
 	}
 
 	/**
@@ -147,13 +156,16 @@ public class UserManager {
 	 *            The new username.
 	 * @param type
 	 *            The type of change this is.
+	 * @param ip
+	 * @param headers
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public void changeUsername(final UserId userId, final UserId staffUserId, final String username, final UserAuditType type) throws DataOperationException {
+	public void changeUsername(final UserId userId, final UserId staffUserId, final String username, final UserAuditType type, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
 		final String oldUsername = this.userDao.getUsername(userId);
 		this.userDao.updateUsername(userId, username);
-		this.userAuditManager.create(userId, staffUserId, UserAuditField.USERNAME, oldUsername, username, type);
+		this.userAuditManager.create(userId, staffUserId, UserAuditField.USERNAME, oldUsername, username, type, userComment, staffComment, ip, headers);
 	}
 
 	/**
@@ -233,13 +245,14 @@ public class UserManager {
 	 * @throws UserNotFoundException
 	 *             If the specified user was not found.
 	 */
-	public void deactivate(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+	public void deactivate(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException, UserNotFoundException {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.INACTIVE);
 		user.setStatusReason(statusReason);
 		this.userDao.update(user);
 		log.info("User " + user.getUsername() + " is now status " + user.getStatus() + " (" + user.getStatusReason() + ")");
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -251,16 +264,19 @@ public class UserManager {
 	 * @param statusReason
 	 *            The reason for disabling.
 	 * @param type
+	 * @param string2
+	 * @param string
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 * @throws UserNotFoundException
 	 *             If the specified user was not found.
 	 */
-	public void disable(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type) throws DataOperationException, UserNotFoundException {
+	public void disable(final User user, final UserId staffUserId, final UserStatusReason statusReason, final UserAuditType type, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException, UserNotFoundException {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.DISABLED);
 		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -484,9 +500,9 @@ public class UserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public void convertToTest(User user, final UserId staffUserId, UserAuditType type) throws DataOperationException {
+	public void convertToTest(User user, final UserId staffUserId, UserAuditType type, String userComment, String staffComment, String ip, String headers) throws DataOperationException {
 		if (user.getType() == UserType.NORMAL) {
-			this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.TYPE, user.getType().getId(), UserType.TEST.getId(), type);
+			this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.TYPE, user.getType().getId(), UserType.TEST.getId(), type, userComment, staffComment, ip, headers);
 			user.setType(UserType.TEST);
 			this.userDao.update(user);
 		}

@@ -17,8 +17,11 @@ package com.ajah.user.audit;
 
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import lombok.Data;
 
+import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
 
@@ -40,5 +43,29 @@ public class UserAudit implements Identifiable<UserAuditId> {
 	private String newValue;
 	private UserAuditType type;
 	private Date created;
+	private String userComment;
+	private String staffComment;
+	private String ip;
+	private String headers;
+
+	@Transient
+	private User user;
+
+	@Transient
+	private User staffUser;
+
+	/**
+	 * A human readable version of the data, for where the actual data is a code
+	 * or something unreadable or should be redacted.
+	 */
+	@Transient
+	private String oldValueHuman;
+
+	/**
+	 * A human readable version of the data, for where the actual data is a code
+	 * or something unreadable or should be redacted.
+	 */
+	@Transient
+	private String newValueHuman;
 
 }

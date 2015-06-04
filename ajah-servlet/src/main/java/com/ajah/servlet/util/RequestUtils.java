@@ -15,6 +15,8 @@
  */
 package com.ajah.servlet.util;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.ajah.http.UserAgent;
@@ -74,6 +76,27 @@ public class RequestUtils {
 	public static String getUserAgentString(final HttpServletRequest request) {
 		AjahUtils.requireParam(request, "request");
 		return request.getHeader("User-Agent");
+	}
+
+	public static String getHeadersAsString(HttpServletRequest request) {
+
+		Enumeration<String> headerNames = request.getHeaderNames();
+		StringBuilder string = new StringBuilder();
+
+		while (headerNames.hasMoreElements()) {
+
+			String headerName = headerNames.nextElement();
+			Enumeration<String> headers = request.getHeaders(headerName);
+			while (headers.hasMoreElements()) {
+				string.append(headerName);
+				string.append(":");
+				String headerValue = headers.nextElement();
+				string.append(headerValue);
+				string.append('\n');
+			}
+
+		}
+		return string.toString();
 	}
 
 }

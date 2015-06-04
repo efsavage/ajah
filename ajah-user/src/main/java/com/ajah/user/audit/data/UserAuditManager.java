@@ -84,14 +84,16 @@ public class UserAuditManager {
 	 *            The new value. Note that if this matches the old value no save
 	 *            will happen and method will return null.
 	 * @param type
+	 * @param headers2
+	 * @param
 	 * @return The result of the creation, which will include the new userAudit
 	 *         at {@link DataOperationResult#getEntity()}. If the values are the
 	 *         same, returns null.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<UserAudit> create(final UserId userId, final UserId staffUserId, final UserAuditField field, final String oldValue, final String newValue, final UserAuditType type)
-			throws DataOperationException {
+	public DataOperationResult<UserAudit> create(final UserId userId, final UserId staffUserId, final UserAuditField field, final String oldValue, final String newValue, final UserAuditType type,
+			String userComment, String staffComment, final String ip, final String headers) throws DataOperationException {
 		final UserAudit userAudit = new UserAudit();
 		userAudit.setUserId(userId);
 		userAudit.setStaffUserId(staffUserId);
@@ -99,6 +101,10 @@ public class UserAuditManager {
 		userAudit.setOldValue(oldValue);
 		userAudit.setNewValue(newValue);
 		userAudit.setType(type);
+		userAudit.setUserComment(userComment);
+		userAudit.setStaffComment(staffComment);
+		userAudit.setIp(ip);
+		userAudit.setHeaders(headers);
 		final DataOperationResult<UserAudit> result = save(userAudit);
 		return result;
 	}
