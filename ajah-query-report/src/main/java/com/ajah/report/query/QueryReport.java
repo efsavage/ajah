@@ -35,5 +35,7 @@ public class QueryReport implements Identifiable<QueryReportId> {
 	private QueryReportStatus status;
 	private QueryReportType type;
 	private Date created;
+	private InformationLevel personalInfoLevel;
+	private InformationLevel financialInfoLevel;
 
 }
