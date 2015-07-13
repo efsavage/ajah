@@ -16,6 +16,7 @@
 package com.ajah.http;
 
 import com.ajah.util.Identifiable;
+import com.ajah.util.IdentifiableEnum;
 
 /**
  * Enum for HTTP methods.
@@ -24,36 +25,36 @@ import com.ajah.util.Identifiable;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public enum HttpMethod implements Identifiable<String> {
+public enum HttpMethod implements IdentifiableEnum<String> {
 
 	/**
 	 * GET
 	 */
-	GET("2"),
+	GET("2", "get", "GET"),
 	/**
 	 * POST
 	 */
-	POST("5"),
+	POST("5", "post", "POST"),
 	/**
 	 * DELETE
 	 */
-	DELETE("1"),
+	DELETE("1", "delete", "DELETE"),
 	/**
 	 * HEAD
 	 */
-	HEAD("3"),
+	HEAD("3", "head", "HEAD"),
 	/**
 	 * OPTIONS
 	 */
-	OPTIONS("4"),
+	OPTIONS("4", "options", "OPTIONS"),
 	/**
 	 * PUT
 	 */
-	PUT("6"),
+	PUT("6", "put", "PUT"),
 	/**
 	 * TRACE
 	 */
-	TRACE("7");
+	TRACE("7", "trace", "TRACE");
 
 	/**
 	 * Finds a matching method and returns the proper value, or null if
@@ -72,10 +73,22 @@ public enum HttpMethod implements Identifiable<String> {
 		return null;
 	}
 
-	private String id;
+	private final String id;
+	private final String code;
+	public String getCode() {
+		return code;
+	}
 
-	private HttpMethod(final String id) {
+	public String getName() {
+		return name;
+	}
+
+	private final String name;
+
+	private HttpMethod(final String id, final String code, final String name) {
 		this.id = id;
+		this.code = code;
+		this.name = name;
 	}
 
 	/**
