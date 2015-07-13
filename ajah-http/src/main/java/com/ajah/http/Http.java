@@ -75,7 +75,10 @@ public class Http {
 	 * @throws ParseException
 	 */
 	public static String get(final URI uri) throws IOException, UnexpectedResponseCode, NotFoundException, ParseException, InternalServerError {
-		return EntityUtils.toString(internalGet(uri));
+		long start = System.currentTimeMillis();
+		String response = EntityUtils.toString(internalGet(uri));
+		log.finest((System.currentTimeMillis() - start) + "ms to fetch " + uri.toASCIIString());
+		return response;
 	}
 
 	/**
