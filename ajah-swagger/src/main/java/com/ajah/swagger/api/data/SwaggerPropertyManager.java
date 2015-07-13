@@ -46,9 +46,9 @@ public class SwaggerPropertyManager {
 	private SwaggerPropertyDao swaggerPropertyDao;
 
 	/**
-	 * Saves an {@link SwaggerProperty}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
+	 * Saves an {@link SwaggerProperty}. Assigns a new ID ({@link UUID}) and
+	 * sets the creation date if necessary. If either of these elements are set,
+	 * will perform an insert. Otherwise will perform an update.
 	 * 
 	 * @param swaggerProperty
 	 *            The swaggerProperty to save.
@@ -99,7 +99,8 @@ public class SwaggerPropertyManager {
 	}
 
 	/**
-	 * Returns a list of {@link SwaggerProperty}s that match the specified criteria.
+	 * Returns a list of {@link SwaggerProperty}s that match the specified
+	 * criteria.
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -133,16 +134,17 @@ public class SwaggerPropertyManager {
 	 *            The type of swaggerProperty, required.
 	 * @param status
 	 *            The status of the swaggerProperty, required.
-	 * @return The result of the creation, which will include the new swaggerProperty at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the creation, which will include the new
+	 *         swaggerProperty at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<SwaggerProperty> create(String name, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
+	public DataOperationResult<SwaggerProperty> create(String name, SwaggerPropertyType type, boolean required) throws DataOperationException {
 		SwaggerProperty swaggerProperty = new SwaggerProperty();
 		swaggerProperty.setName(name);
 		swaggerProperty.setType(type);
-		swaggerProperty.setStatus(status);
+		swaggerProperty.setRequired(required);
+		swaggerProperty.setStatus(SwaggerPropertyStatus.ACTIVE);
 		DataOperationResult<SwaggerProperty> result = save(swaggerProperty);
 		return result;
 	}
@@ -152,8 +154,8 @@ public class SwaggerPropertyManager {
 	 * 
 	 * @param swaggerPropertyId
 	 *            The ID of the swaggerProperty to delete.
-	 * @return The result of the deletion, will not include the new swaggerProperty at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the deletion, will not include the new
+	 *         swaggerProperty at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws SwaggerPropertyNotFoundException

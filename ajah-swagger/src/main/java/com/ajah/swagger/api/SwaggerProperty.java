@@ -29,6 +29,7 @@ public class SwaggerProperty implements Identifiable<SwaggerPropertyId> {
 	private String name;
 	private String format;
 	private String description;
+	private boolean required;
 	private SwaggerPropertyStatus status;
 	private SwaggerPropertyType type;
 	private Date created;
