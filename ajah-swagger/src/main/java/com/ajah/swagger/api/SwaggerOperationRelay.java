@@ -21,9 +21,6 @@ import java.util.List;
 import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ajah.swagger.api.SwaggerOperationId;
-import com.ajah.swagger.api.SwaggerOperationStatus;
-import com.ajah.swagger.api.SwaggerOperationType;
 
 /**
  * Simplified version of a SwaggerOperation for easier serialization/deserialization.

@@ -16,14 +16,10 @@
 package com.ajah.swagger.api;
 
 import java.util.Date;
-import java.util.List;
 
 import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ajah.swagger.api.SwaggerPropertyId;
-import com.ajah.swagger.api.SwaggerPropertyStatus;
-import com.ajah.swagger.api.SwaggerPropertyType;
 
 /**
  * Simplified version of a SwaggerProperty for easier serialization/deserialization.

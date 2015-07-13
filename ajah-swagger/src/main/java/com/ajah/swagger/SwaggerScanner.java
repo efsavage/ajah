@@ -15,36 +15,10 @@
  */
 package com.ajah.swagger;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.extern.java.Log;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.ajah.lang.ListMap;
-import com.ajah.lang.MapMap;
-import com.ajah.util.ToStringable;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Scans a class for Swagger annotations.
@@ -54,7 +28,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
  */
 @Service
 @Data
-@Log
 @AllArgsConstructor
 public class SwaggerScanner {
 

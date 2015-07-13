@@ -23,11 +23,11 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.util.StringUtils;
 import com.ajah.swagger.api.SwaggerProperty;
 import com.ajah.swagger.api.SwaggerPropertyId;
 import com.ajah.swagger.api.SwaggerPropertyStatus;
 import com.ajah.swagger.api.SwaggerPropertyType;
+import com.ajah.util.StringUtils;
 
 /**
  * MySQL-based implementation of {@link SwaggerPropertyDao}.

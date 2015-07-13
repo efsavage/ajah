@@ -16,17 +16,14 @@
 package com.ajah.swagger.api;
 
 import java.util.Date;
-import java.util.List;
 
 import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ajah.swagger.api.SwaggerDefinitionId;
-import com.ajah.swagger.api.SwaggerDefinitionStatus;
-import com.ajah.swagger.api.SwaggerDefinitionType;
 
 /**
- * Simplified version of a SwaggerDefinition for easier serialization/deserialization.
+ * Simplified version of a SwaggerDefinition for easier
+ * serialization/deserialization.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.

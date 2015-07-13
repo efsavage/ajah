@@ -141,11 +141,10 @@ public class SwaggerDefinitionManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<SwaggerDefinition> create(SwaggerApiId swaggerApiId, String name, boolean required) throws DataOperationException {
+	public DataOperationResult<SwaggerDefinition> create(SwaggerApiId swaggerApiId, String name) throws DataOperationException {
 		SwaggerDefinition swaggerDefinition = new SwaggerDefinition();
 		swaggerDefinition.setSwaggerApiId(swaggerApiId);
 		swaggerDefinition.setName(name);
-		swaggerDefinition.setRequired(required);
 		swaggerDefinition.setType(SwaggerDefinitionType.STANDARD);
 		swaggerDefinition.setStatus(SwaggerDefinitionStatus.ACTIVE);
 		DataOperationResult<SwaggerDefinition> result = save(swaggerDefinition);

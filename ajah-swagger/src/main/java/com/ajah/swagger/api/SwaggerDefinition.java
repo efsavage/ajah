@@ -28,9 +28,8 @@ public class SwaggerDefinition implements Identifiable<SwaggerDefinitionId> {
 
 	@GeneratedValue
 	private SwaggerDefinitionId id;
-	SwaggerApiId swaggerApiId;
+	private SwaggerApiId swaggerApiId;
 	private String name;
-	private boolean required;
 	private SwaggerDefinitionStatus status;
 	private SwaggerDefinitionType type;
 	private Date created;
