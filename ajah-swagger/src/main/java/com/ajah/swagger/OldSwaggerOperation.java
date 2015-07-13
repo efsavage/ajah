@@ -18,7 +18,7 @@ package com.ajah.swagger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwaggerOperation {
+public class OldSwaggerOperation {
 	public String method = "GET";
 	public String notes;
 	public String nickname;

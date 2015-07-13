@@ -1,0 +1,213 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Mondogoal.it Web API",
+        "description": "The api that secure.mondogoal.it uses.",
+        "version": "1.0.0"
+    },
+    "host": "secure-api.mondogoal.it",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/1.0",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/signup": {
+            "post": {
+                "summary": "Registers a user",
+                "description": "The signup endpoint creates a user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The signup request object",
+                        "schema": {
+                            "$ref": "#/definitions/SignupIn"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/SelfResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequestError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized Error",
+                        "schema": {
+                            "$ref": "#/definitions/UnauthorizedError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden Error",
+                        "schema": {
+                            "$ref": "#/definitions/ForbiddenError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Error",
+                        "schema": {
+                            "$ref": "#/definitions/NotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "SignupIn": {
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "The user's email address."
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The user's username."
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The user's password."
+                },
+                "month": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The user's birth month (1-12)."
+                },
+                "day": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The user's birth day (e.g. 20)."
+                },
+                "year": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The user's birth year (e.g. 1950)."
+                },
+                "country": {
+                    "type": "string",
+                    "description": "The country (ISO 2 letter code)"
+                },
+                "state": {
+                    "type": "string",
+                    "description": "The country (ISO 2 letter code)"
+                },
+                "preferredCurrency": {
+                    "type": "string",
+                    "description": "Set to \"eur\""
+                },
+                "referralSource": {
+                    "type": "string",
+                    "description": "The user's selection of where they found out about Mondogoal from."
+                },
+                "referralSourceOther": {
+                    "type": "string",
+                    "description": "The user's free-text input of where they found out about Mondogoal from if they selected \"Other\" from the select box."
+                }
+            },
+            "required": [
+                "email",
+                "password",
+                "username",
+                "month",
+                "day",
+                "year",
+                "country"
+            ]
+        },
+        "SelfResponse": {
+            "properties": {
+                "user": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "The authentication token that can be used in future requests."
+                }
+            }
+        },
+        "UnauthorizedError": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "1011 = User is Inactive, 1012 = User is Blocked, 1013 = User is Disabled Permanently"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "ForbiddenError": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "1001 = Permission Denied"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "BadRequestError": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "1000 = Missing Parameter"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "NotFoundError": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "1500 = User Not Found"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "InternalServerError": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "8000 = Unexpected Error, 8001 = Data Operation Error"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

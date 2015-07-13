@@ -16,7 +16,7 @@
 
 		<dependency>
 			<groupId>com.ajah</groupId>
-			<artifactId>ajah-util</artifactId>
+			<artifactId>ajah-rest-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -43,6 +43,7 @@
 			<artifactId>paranamer</artifactId>
 			<version>2.6</version>
 		</dependency>
+		
 	</dependencies>
 
 </project>

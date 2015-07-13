@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,20 +13,26 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.swagger;
+package com.ajah.swagger.api;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-public class SwaggerApi {
+import javax.persistence.GeneratedValue;
 
-	public String path;
-	public String description;
-	public List<SwaggerOperation> operations = new ArrayList<>();
+import lombok.Data;
 
-	public SwaggerApi(final String path, final String description) {
-		this.path = path;
-		this.description = description;
-	}
+import com.ajah.util.Identifiable;
+
+@Data
+public class SwaggerDefinition implements Identifiable<SwaggerDefinitionId> {
+
+	@GeneratedValue
+	private SwaggerDefinitionId id;
+	SwaggerApiId swaggerApiId;
+	private String name;
+	private boolean required;
+	private SwaggerDefinitionStatus status;
+	private SwaggerDefinitionType type;
+	private Date created;
 
 }

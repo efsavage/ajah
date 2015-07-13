@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,19 +13,24 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.swagger;
+package com.ajah.swagger.api;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
-public class SwaggerResponse {
+import lombok.Data;
 
-	public String apiVersion = "1.0";
-	public String swaggerVersion = "1.0";
-	public String basePath;
-	public String produces = "application/json";
-//	public List<SwaggerApi> apis;
-	public String resourcePath;
-	public Map<String, SwaggerModel> models = new HashMap<>();
+import com.ajah.util.Identifiable;
+
+@Data
+public class SwaggerProperty implements Identifiable<SwaggerPropertyId> {
+
+	private SwaggerPropertyId id;
+	private SwaggerDefinitionId swaggerDefinitionId;
+	private String name;
+	private String format;
+	private String description;
+	private SwaggerPropertyStatus status;
+	private SwaggerPropertyType type;
+	private Date created;
+
 }
