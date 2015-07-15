@@ -23,6 +23,7 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.swagger.api.SwaggerDefinitionId;
 import com.ajah.swagger.api.SwaggerProperty;
 import com.ajah.swagger.api.SwaggerPropertyId;
 import com.ajah.swagger.api.SwaggerPropertyStatus;
@@ -39,8 +40,9 @@ import com.ajah.util.StringUtils;
 public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, SwaggerProperty, SwaggerProperty> implements SwaggerPropertyDao {
 
 	@Override
-	public List<SwaggerProperty> list(String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public List<SwaggerProperty> list(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException {
+		Criteria criteria = new Criteria().eq("parent_definition_id", parentDefinitionId);
 		if (!StringUtils.isBlank(search)) {
 			final String pattern = "%" + search.replaceAll("\\*", "%") + "%";
 			criteria.like("name", pattern);
@@ -62,8 +64,8 @@ public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, S
 	 *      com.ajah.swagger.api.SwaggerPropertyStatus)
 	 */
 	@Override
-	public int count(SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int count(SwaggerDefinitionId parentDefinitionId, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria().eq("parent_definition_id", parentDefinitionId);
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -78,8 +80,8 @@ public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, S
 	 *      SwaggerPropertyType, SwaggerPropertyStatus)
 	 */
 	@Override
-	public int searchCount(String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
-		Criteria criteria = new Criteria();
+	public int searchCount(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria().eq("parent_definition_id", parentDefinitionId);
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
 		}

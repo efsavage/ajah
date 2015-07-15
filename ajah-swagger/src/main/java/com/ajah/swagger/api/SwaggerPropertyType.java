@@ -26,13 +26,53 @@ import com.ajah.util.IdentifiableEnum;
 public enum SwaggerPropertyType implements IdentifiableEnum<String> {
 
 	/**
-	 * Standard.
+	 * Special.
 	 */
-	STANDARD("0", "std", "Standard", "Standard."),
+	DEFINITION("0", "def", "Definition", "Definition."),
 	/**
 	 * Special.
 	 */
-	SPECIAL("1", "spe", "Special", "Special.");
+	INTEGER("1", "integer", "INTEGER", "INTEGER."),
+	/**
+	 * LONG.
+	 */
+	LONG("2", "long", "LONG", "LONG."),
+	/**
+	 * FLOAT.
+	 */
+	FLOAT("3", "float", "FLOAT", "FLOAT."),
+	/**
+	 * DOUBLE.
+	 */
+	DOUBLE("4", "double", "DOUBLE", "DOUBLE."),
+	/**
+	 * STRING.
+	 */
+	STRING("5", "string", "STRING", "STRING."),
+	/**
+	 * BYTE.
+	 */
+	BYTE("6", "byte", "BYTE", "BYTE."),
+	/**
+	 * BOOLEAN.
+	 */
+	BOOLEAN("7", "boolean", "BOOLEAN", "BOOLEAN."),
+	/**
+	 * DATE.
+	 */
+	DATE("8", "date", "DATE", "DATE."),
+	/**
+	 * DATE_TIME.
+	 */
+	DATE_TIME("9", "date_time", "DATE_TIME", "DATE_TIME."),
+	/**
+	 * DATE_TIME.
+	 */
+	LIST("10", "list", "List (Ordered Items)", "List."),
+	/**
+	 * DATE_TIME.
+	 */
+	SET("11", "set", "Set (Unique Items)", "Set.");
 
 	/**
 	 * Finds a SwaggerPropertyType that matches the id on id, name, or name().

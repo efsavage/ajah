@@ -21,29 +21,29 @@ import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.swagger.api.SwaggerOperationId;
-import com.ajah.swagger.api.SwaggerResponse;
-import com.ajah.swagger.api.SwaggerResponseId;
-import com.ajah.swagger.api.SwaggerResponseStatus;
-import com.ajah.swagger.api.SwaggerResponseType;
+import com.ajah.swagger.api.SwaggerParameter;
+import com.ajah.swagger.api.SwaggerParameterId;
+import com.ajah.swagger.api.SwaggerParameterStatus;
+import com.ajah.swagger.api.SwaggerParameterType;
 
 /**
- * DAO interface for {@link SwaggerResponse}.
+ * DAO interface for {@link SwaggerParameter}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public interface SwaggerResponseDao extends AjahDao<SwaggerResponseId, SwaggerResponse> {
+public interface SwaggerParameterDao extends AjahDao<SwaggerParameterId, SwaggerParameter> {
 
 	/**
-	 * Returns a list of {@link SwaggerResponse}s that match the specified
+	 * Returns a list of {@link SwaggerParameter}s that match the specified
 	 * criteria.
 	 * 
 	 * @param search
 	 *            The search field, optional.
 	 * @param type
-	 *            The SwaggerResponseType to filter on, optional.
+	 *            The SwaggerParameterType to filter on, optional.
 	 * @param status
-	 *            The SwaggerResponseStatus to filter on, optional.
+	 *            The SwaggerParameterStatus to filter on, optional.
 	 * @param sort
 	 *            The field to sort by, defaults to id, optional.
 	 * @param order
@@ -53,11 +53,11 @@ public interface SwaggerResponseDao extends AjahDao<SwaggerResponseId, SwaggerRe
 	 *            The page of results to fetch.
 	 * @param count
 	 *            The number of results per page.
-	 * @return A list of {@link SwaggerResponse}s, which may be empty.
+	 * @return A list of {@link SwaggerParameter}s, which may be empty.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<SwaggerResponse> list(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status, String sort, Order order, int page, int count)
+	List<SwaggerParameter> list(SwaggerOperationId swaggerOperationId, String search, SwaggerParameterType type, SwaggerParameterStatus status, String sort, Order order, int page, int count)
 			throws DataOperationException;
 
 	/**
@@ -66,30 +66,28 @@ public interface SwaggerResponseDao extends AjahDao<SwaggerResponseId, SwaggerRe
 	 * @param swaggerOperationId
 	 * 
 	 * @param type
-	 *            The swaggerResponse type to limit to, optional.
+	 *            The swaggerParameter type to limit to, optional.
 	 * @param status
 	 *            The status to limit to, optional.
 	 * @return The number of matching records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int count(SwaggerOperationId swaggerOperationId, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException;
+	int count(SwaggerOperationId swaggerOperationId, SwaggerParameterType type, SwaggerParameterStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
 	 * 
-	 * @param swaggerOperationId
-	 * 
 	 * @param search
 	 *            The search query.
 	 * @param type
-	 *            The SwaggerResponseType to filter on, optional.
+	 *            The SwaggerParameterType to filter on, optional.
 	 * @param status
-	 *            The SwaggerResponseStatus to filter on, optional.
+	 *            The SwaggerParameterStatus to filter on, optional.
 	 * @return The number of matching records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException;
+	int searchCount(SwaggerOperationId swaggerOperationId, String search, SwaggerParameterType type, SwaggerParameterStatus status) throws DataOperationException;
 
 }

@@ -13,30 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.ajah.swagger.api;
+package com.ajah.swagger.api.data;
 
-import java.util.Date;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.ajah.swagger.api.SwaggerParameter;
+import com.ajah.swagger.api.SwaggerParameterId;
 
 /**
- * Simplified version of a SwaggerProperty for easier serialization/deserialization.
+ * Thrown when an {@link SwaggerParameter} was expected to be found, but was not.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
-@JsonInclude(Include.NON_NULL)
-public class SwaggerPropertyRelay {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class SwaggerParameterNotFoundException extends Exception {
 
-	public String id;
-	public String name;
-	public String format;
-	public boolean required;
-	public IdentifiableEnumRelay<String> status;
-	public IdentifiableEnumRelay<String> type;
-	public Date created;
-	public SwaggerDefinitionRelay swaggerDefinition;
+	private final SwaggerParameterId id;
+
+	/**
+	 * Thrown when an {@link SwaggerParameter} could not be found by it's internal ID.
+	 * 
+	 * @param id
+	 *            The internal ID that was sought.
+	 */
+	public SwaggerParameterNotFoundException(final SwaggerParameterId id) {
+		super("ID: " + id);
+		this.id = id;
+	}
 
 }

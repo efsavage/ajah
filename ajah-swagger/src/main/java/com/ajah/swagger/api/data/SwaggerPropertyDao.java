@@ -20,6 +20,7 @@ import java.util.List;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.swagger.api.SwaggerDefinitionId;
 import com.ajah.swagger.api.SwaggerProperty;
 import com.ajah.swagger.api.SwaggerPropertyId;
 import com.ajah.swagger.api.SwaggerPropertyStatus;
@@ -34,7 +35,10 @@ import com.ajah.swagger.api.SwaggerPropertyType;
 public interface SwaggerPropertyDao extends AjahDao<SwaggerPropertyId, SwaggerProperty> {
 
 	/**
-	 * Returns a list of {@link SwaggerProperty}s that match the specified criteria.
+	 * Returns a list of {@link SwaggerProperty}s that match the specified
+	 * criteria.
+	 * 
+	 * @param parentDefinitionId
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -55,7 +59,8 @@ public interface SwaggerPropertyDao extends AjahDao<SwaggerPropertyId, SwaggerPr
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<SwaggerProperty> list(String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count) throws DataOperationException;
+	List<SwaggerProperty> list(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -68,10 +73,12 @@ public interface SwaggerPropertyDao extends AjahDao<SwaggerPropertyId, SwaggerPr
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int count(SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException;
+	int count(SwaggerDefinitionId parentDefinitionId, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param parentDefinitionId
 	 * 
 	 * @param search
 	 *            The search query.
@@ -83,6 +90,6 @@ public interface SwaggerPropertyDao extends AjahDao<SwaggerPropertyId, SwaggerPr
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException;
+	int searchCount(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException;
 
 }

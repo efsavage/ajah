@@ -103,7 +103,8 @@ public class SwaggerOperationManager {
 	/**
 	 * Returns a list of {@link SwaggerOperation}s that match the specified
 	 * criteria.
-	 * @param swaggerApiId 
+	 * 
+	 * @param swaggerApiId
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -124,8 +125,9 @@ public class SwaggerOperationManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<SwaggerOperation> list(SwaggerApiId swaggerApiId, String search, SwaggerOperationType type, SwaggerOperationStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.swaggerOperationDao.list(swaggerApiId,search, type, status, sort, order, page, count);
+	public List<SwaggerOperation> list(SwaggerApiId swaggerApiId, String search, SwaggerOperationType type, SwaggerOperationStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException {
+		return this.swaggerOperationDao.list(swaggerApiId, search, type, status, sort, order, page, count);
 	}
 
 	/**
@@ -142,7 +144,7 @@ public class SwaggerOperationManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<SwaggerOperation> create(SwaggerApiId swaggerApiId, String name, String path, HttpMethod method, String summary, String description, String consumes,
+	public DataOperationResult<SwaggerOperation> create(SwaggerApiId swaggerApiId, String name, String path, HttpMethod method, String summary, String description, String consumes, String produces,
 			String operationId, String tags) throws DataOperationException {
 		SwaggerOperation swaggerOperation = new SwaggerOperation();
 		swaggerOperation.setSwaggerApiId(swaggerApiId);
@@ -152,6 +154,7 @@ public class SwaggerOperationManager {
 		swaggerOperation.setSummary(summary);
 		swaggerOperation.setDescription(description);
 		swaggerOperation.setConsumes(consumes);
+		swaggerOperation.setProduces(produces);
 		swaggerOperation.setOperationId(operationId);
 		swaggerOperation.setTags(tags);
 		swaggerOperation.setType(SwaggerOperationType.STANDARD);

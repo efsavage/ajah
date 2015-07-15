@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.swagger.api.SwaggerDefinitionId;
 import com.ajah.swagger.api.SwaggerProperty;
 import com.ajah.swagger.api.SwaggerPropertyId;
 import com.ajah.swagger.api.SwaggerPropertyStatus;
@@ -102,6 +103,8 @@ public class SwaggerPropertyManager {
 	 * Returns a list of {@link SwaggerProperty}s that match the specified
 	 * criteria.
 	 * 
+	 * @param parentDefinitionId
+	 * 
 	 * @param search
 	 *            The search field, optional.
 	 * @param type
@@ -121,8 +124,9 @@ public class SwaggerPropertyManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<SwaggerProperty> list(String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.swaggerPropertyDao.list(search, type, status, sort, order, page, count);
+	public List<SwaggerProperty> list(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException {
+		return this.swaggerPropertyDao.list(parentDefinitionId, search, type, status, sort, order, page, count);
 	}
 
 	/**
@@ -139,11 +143,16 @@ public class SwaggerPropertyManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<SwaggerProperty> create(String name, SwaggerPropertyType type, boolean required) throws DataOperationException {
+	public DataOperationResult<SwaggerProperty> create(SwaggerDefinitionId parentDefinitionId, String name, String format, String description, boolean required, SwaggerPropertyType type,
+			SwaggerDefinitionId swaggerDefinitionId) throws DataOperationException {
 		SwaggerProperty swaggerProperty = new SwaggerProperty();
+		swaggerProperty.setParentDefinitionId(parentDefinitionId);
 		swaggerProperty.setName(name);
-		swaggerProperty.setType(type);
+		swaggerProperty.setFormat(format);
+		swaggerProperty.setDescription(description);
 		swaggerProperty.setRequired(required);
+		swaggerProperty.setType(type);
+		swaggerProperty.setSwaggerDefinitionId(swaggerDefinitionId);
 		swaggerProperty.setStatus(SwaggerPropertyStatus.ACTIVE);
 		DataOperationResult<SwaggerProperty> result = save(swaggerProperty);
 		return result;
@@ -171,16 +180,20 @@ public class SwaggerPropertyManager {
 	/**
 	 * Returns a count of all records.
 	 * 
+	 * @param parentDefinitionId
+	 * 
 	 * @return Count of all records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count() throws DataOperationException {
-		return count(null, null);
+	public int count(SwaggerDefinitionId parentDefinitionId) throws DataOperationException {
+		return count(parentDefinitionId, null, null);
 	}
 
 	/**
 	 * Counts the records available that match the criteria.
+	 * 
+	 * @param parentDefinitionId
 	 * 
 	 * @param type
 	 *            The swaggerProperty type to limit to, optional.
@@ -190,12 +203,14 @@ public class SwaggerPropertyManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count(final SwaggerPropertyType type, final SwaggerPropertyStatus status) throws DataOperationException {
-		return this.swaggerPropertyDao.count(type, status);
+	public int count(SwaggerDefinitionId parentDefinitionId, final SwaggerPropertyType type, final SwaggerPropertyStatus status) throws DataOperationException {
+		return this.swaggerPropertyDao.count(parentDefinitionId, type, status);
 	}
 
 	/**
 	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param parentDefinitionId
 	 * 
 	 * @param search
 	 *            The search query.
@@ -207,8 +222,8 @@ public class SwaggerPropertyManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
-		return this.swaggerPropertyDao.searchCount(search, type, status);
+	public int searchCount(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
+		return this.swaggerPropertyDao.searchCount(parentDefinitionId, search, type, status);
 	}
 
 }

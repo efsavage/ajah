@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.swagger.api.SwaggerDefinitionId;
+import com.ajah.swagger.api.SwaggerOperationId;
 import com.ajah.swagger.api.SwaggerResponse;
 import com.ajah.swagger.api.SwaggerResponseId;
 import com.ajah.swagger.api.SwaggerResponseStatus;
@@ -46,9 +48,9 @@ public class SwaggerResponseManager {
 	private SwaggerResponseDao swaggerResponseDao;
 
 	/**
-	 * Saves an {@link SwaggerResponse}. Assigns a new ID ({@link UUID}) and sets the
-	 * creation date if necessary. If either of these elements are set, will
-	 * perform an insert. Otherwise will perform an update.
+	 * Saves an {@link SwaggerResponse}. Assigns a new ID ({@link UUID}) and
+	 * sets the creation date if necessary. If either of these elements are set,
+	 * will perform an insert. Otherwise will perform an update.
 	 * 
 	 * @param swaggerResponse
 	 *            The swaggerResponse to save.
@@ -99,7 +101,10 @@ public class SwaggerResponseManager {
 	}
 
 	/**
-	 * Returns a list of {@link SwaggerResponse}s that match the specified criteria.
+	 * Returns a list of {@link SwaggerResponse}s that match the specified
+	 * criteria.
+	 * 
+	 * @param swaggerOperationId
 	 * 
 	 * @param search
 	 *            The search field, optional.
@@ -120,8 +125,9 @@ public class SwaggerResponseManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<SwaggerResponse> list(String search, SwaggerResponseType type, SwaggerResponseStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.swaggerResponseDao.list(search, type, status, sort, order, page, count);
+	public List<SwaggerResponse> list(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status, String sort, Order order, int page, int count)
+			throws DataOperationException {
+		return this.swaggerResponseDao.list(swaggerOperationId, search, type, status, sort, order, page, count);
 	}
 
 	/**
@@ -133,16 +139,21 @@ public class SwaggerResponseManager {
 	 *            The type of swaggerResponse, required.
 	 * @param status
 	 *            The status of the swaggerResponse, required.
-	 * @return The result of the creation, which will include the new swaggerResponse at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the creation, which will include the new
+	 *         swaggerResponse at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<SwaggerResponse> create(String name, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {
+	public DataOperationResult<SwaggerResponse> create(SwaggerOperationId swaggerOperationId, SwaggerDefinitionId swaggerDefinitionId, String name, String description, String code,
+			SwaggerResponseType type) throws DataOperationException {
 		SwaggerResponse swaggerResponse = new SwaggerResponse();
+		swaggerResponse.setSwaggerOperationId(swaggerOperationId);
+		swaggerResponse.setSwaggerDefinitionId(swaggerDefinitionId);
 		swaggerResponse.setName(name);
+		swaggerResponse.setDescription(description);
+		swaggerResponse.setCode(code);
 		swaggerResponse.setType(type);
-		swaggerResponse.setStatus(status);
+		swaggerResponse.setStatus(SwaggerResponseStatus.ACTIVE);
 		DataOperationResult<SwaggerResponse> result = save(swaggerResponse);
 		return result;
 	}
@@ -152,8 +163,8 @@ public class SwaggerResponseManager {
 	 * 
 	 * @param swaggerResponseId
 	 *            The ID of the swaggerResponse to delete.
-	 * @return The result of the deletion, will not include the new swaggerResponse at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * @return The result of the deletion, will not include the new
+	 *         swaggerResponse at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws SwaggerResponseNotFoundException
@@ -169,16 +180,20 @@ public class SwaggerResponseManager {
 	/**
 	 * Returns a count of all records.
 	 * 
+	 * @param swaggerOperationId
+	 * 
 	 * @return Count of all records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count() throws DataOperationException {
-		return count(null, null);
+	public int count(SwaggerOperationId swaggerOperationId) throws DataOperationException {
+		return count(swaggerOperationId, null, null);
 	}
 
 	/**
 	 * Counts the records available that match the criteria.
+	 * 
+	 * @param swaggerOperationId
 	 * 
 	 * @param type
 	 *            The swaggerResponse type to limit to, optional.
@@ -188,12 +203,14 @@ public class SwaggerResponseManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count(final SwaggerResponseType type, final SwaggerResponseStatus status) throws DataOperationException {
-		return this.swaggerResponseDao.count(type, status);
+	public int count(SwaggerOperationId swaggerOperationId, final SwaggerResponseType type, final SwaggerResponseStatus status) throws DataOperationException {
+		return this.swaggerResponseDao.count(swaggerOperationId, type, status);
 	}
 
 	/**
 	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param swaggerOperationId
 	 * 
 	 * @param search
 	 *            The search query.
@@ -205,8 +222,8 @@ public class SwaggerResponseManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {
-		return this.swaggerResponseDao.searchCount(search, type, status);
+	public int searchCount(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {
+		return this.swaggerResponseDao.searchCount(swaggerOperationId, search, type, status);
 	}
 
 }

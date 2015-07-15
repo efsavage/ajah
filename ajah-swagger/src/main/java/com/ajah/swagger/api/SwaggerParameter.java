@@ -25,22 +25,18 @@ import lombok.Data;
 import com.ajah.util.Identifiable;
 
 @Data
-public class SwaggerProperty implements Identifiable<SwaggerPropertyId> {
+public class SwaggerParameter implements Identifiable<SwaggerParameterId> {
 
 	@GeneratedValue
-	private SwaggerPropertyId id;
-	private SwaggerDefinitionId parentDefinitionId;
+	private SwaggerParameterId id;
+	private SwaggerOperationId swaggerOperationId;
 	private SwaggerDefinitionId swaggerDefinitionId;
 	private String name;
-	private String format;
-	private String description;
+	private String in;
 	private boolean required;
-	private SwaggerPropertyStatus status;
-	private SwaggerPropertyType type;
+	private SwaggerParameterStatus status;
+	private SwaggerParameterType type;
 	private Date created;
-
-	@Transient
-	SwaggerDefinition parentDefinition;
 
 	@Transient
 	SwaggerDefinition swaggerDefinition;

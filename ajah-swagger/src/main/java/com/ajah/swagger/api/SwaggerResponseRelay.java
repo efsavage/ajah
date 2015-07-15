@@ -16,17 +16,14 @@
 package com.ajah.swagger.api;
 
 import java.util.Date;
-import java.util.List;
 
 import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ajah.swagger.api.SwaggerResponseId;
-import com.ajah.swagger.api.SwaggerResponseStatus;
-import com.ajah.swagger.api.SwaggerResponseType;
 
 /**
- * Simplified version of a SwaggerResponse for easier serialization/deserialization.
+ * Simplified version of a SwaggerResponse for easier
+ * serialization/deserialization.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -39,5 +36,9 @@ public class SwaggerResponseRelay {
 	public IdentifiableEnumRelay<String> status;
 	public IdentifiableEnumRelay<String> type;
 	public Date created;
+	public String swaggerOperationId;
+	public SwaggerDefinitionRelay swaggerDefinition;
+	public String description;
+	public String code;
 
 }

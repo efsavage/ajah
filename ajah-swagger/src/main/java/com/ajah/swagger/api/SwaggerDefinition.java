@@ -16,8 +16,10 @@
 package com.ajah.swagger.api;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -33,5 +35,11 @@ public class SwaggerDefinition implements Identifiable<SwaggerDefinitionId> {
 	private SwaggerDefinitionStatus status;
 	private SwaggerDefinitionType type;
 	private Date created;
+
+	@Transient
+	SwaggerApi swaggerApi;
+
+	@Transient
+	List<SwaggerProperty> swaggerProperties;
 
 }

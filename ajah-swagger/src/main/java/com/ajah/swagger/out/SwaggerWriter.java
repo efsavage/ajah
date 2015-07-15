@@ -1,5 +1,6 @@
 package com.ajah.swagger.out;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -7,6 +8,10 @@ import com.ajah.http.HttpMethod;
 import com.ajah.swagger.api.SwaggerApi;
 import com.ajah.swagger.api.SwaggerDefinition;
 import com.ajah.swagger.api.SwaggerOperation;
+import com.ajah.swagger.api.SwaggerProperty;
+import com.ajah.swagger.api.SwaggerPropertyType;
+import com.ajah.swagger.api.SwaggerResponse;
+import com.ajah.swagger.api.SwaggerResponseType;
 
 public class SwaggerWriter {
 
@@ -66,20 +71,67 @@ public class SwaggerWriter {
 
 		out.definitions = new TreeMap<String, SwaggerDefinitionOut>();
 		for (SwaggerDefinition definition : definitions) {
-			SwaggerDefinitionOut defOut = new SwaggerDefinitionOut();
-			out.definitions.put(definition.getName(), defOut);
+			out.definitions.put(definition.getName(), getDefOut(definition));
 		}
 
 		return out;
 	}
 
+	private SwaggerDefinitionOut getDefOut(SwaggerDefinition definition) {
+		SwaggerDefinitionOut out = new SwaggerDefinitionOut();
+		out.properties = new HashMap<>();
+		for (SwaggerProperty property : definition.getSwaggerProperties()) {
+			out.properties.put(property.getName(), getPropertyOut(property));
+		}
+		return out;
+	}
+
+	private SwaggerPropertyOut getPropertyOut(SwaggerProperty property) {
+		SwaggerPropertyOut out = new SwaggerPropertyOut();
+		if (property.getType() == SwaggerPropertyType.DEFINITION) {
+		} else if (property.getType() == SwaggerPropertyType.LIST) {
+			out.type = "array";
+			out.items = new SwaggerItemsOut();
+			out.items.ref = "#/definitions/" + property.getSwaggerDefinition().getName();
+		} else if (property.getType() == SwaggerPropertyType.SET) {
+			out.type = "array";
+			out.uniqueItems = true;
+			out.items = new SwaggerItemsOut();
+			out.items.ref = "#/definitions/" + property.getSwaggerDefinition().getName();
+		} else {
+			out.type = property.getType().getCode();
+		}
+		out.description = property.getDescription();
+		out.format = property.getFormat();
+		return out;
+	}
+
 	private SwaggerPathMethodOut createPath(SwaggerOperation operation) {
-		SwaggerPathMethodOut path = new SwaggerPathMethodOut ();
+		SwaggerPathMethodOut path = new SwaggerPathMethodOut();
 		path.description = operation.getDescription();
-		path.consumes = new String[] {operation.getConsumes()};
+		path.consumes = new String[] { operation.getConsumes() };
+		path.produces = operation.getProduces() == null ? null : new String[] { operation.getProduces() };
 		path.operationId = operation.getOperationId();
 		path.summary = operation.getSummary();
 		path.tags = operation.getTagArray();
+		path.responses = new HashMap<>();
+		for (SwaggerResponse response : operation.getResponses()) {
+			path.responses.put(response.getCode(), getResponseOut(response));
+		}
 		return path;
+	}
+
+	private SwaggerResponseOut getResponseOut(SwaggerResponse response) {
+		SwaggerResponseOut out = new SwaggerResponseOut();
+		out.description = response.getDescription();
+		out.schema = new SwaggerSchemaOut();
+		if (response.getType() == SwaggerResponseType.DEFINITION) {
+			if (response.getSwaggerDefinition() != null) {
+				out.schema.ref = "#/definitions/" + response.getSwaggerDefinition().getName();
+			}
+		} else {
+			out.schema.type = response.getType().getCode();
+		}
+		return out;
 	}
 }

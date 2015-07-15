@@ -17,6 +17,9 @@ package com.ajah.swagger.api;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
+
 import lombok.Data;
 
 import com.ajah.util.Identifiable;
@@ -25,10 +28,18 @@ import com.ajah.util.Identifiable;
 @Data
 public class SwaggerResponse implements Identifiable<SwaggerResponseId> {
 
+	@GeneratedValue
 	private SwaggerResponseId id;
+	private SwaggerOperationId swaggerOperationId;
+	private SwaggerDefinitionId swaggerDefinitionId;
 	private String name;
+	private String description;
+	private String code;
 	private SwaggerResponseStatus status;
 	private SwaggerResponseType type;
 	private Date created;
+
+	@Transient
+	SwaggerDefinition swaggerDefinition;
 
 }

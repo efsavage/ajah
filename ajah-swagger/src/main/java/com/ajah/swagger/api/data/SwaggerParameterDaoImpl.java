@@ -24,23 +24,23 @@ import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.swagger.api.SwaggerOperationId;
-import com.ajah.swagger.api.SwaggerResponse;
-import com.ajah.swagger.api.SwaggerResponseId;
-import com.ajah.swagger.api.SwaggerResponseStatus;
-import com.ajah.swagger.api.SwaggerResponseType;
+import com.ajah.swagger.api.SwaggerParameter;
+import com.ajah.swagger.api.SwaggerParameterId;
+import com.ajah.swagger.api.SwaggerParameterStatus;
+import com.ajah.swagger.api.SwaggerParameterType;
 import com.ajah.util.StringUtils;
 
 /**
- * MySQL-based implementation of {@link SwaggerResponseDao}.
+ * MySQL-based implementation of {@link SwaggerParameterDao}.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
 @Repository
-public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, SwaggerResponse, SwaggerResponse> implements SwaggerResponseDao {
+public class SwaggerParameterDaoImpl extends AbstractAjahDao<SwaggerParameterId, SwaggerParameter, SwaggerParameter> implements SwaggerParameterDao {
 
 	@Override
-	public List<SwaggerResponse> list(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status, String sort, Order order, int page, int count)
+	public List<SwaggerParameter> list(SwaggerOperationId swaggerOperationId, String search, SwaggerParameterType type, SwaggerParameterStatus status, String sort, Order order, int page, int count)
 			throws DataOperationException {
 		Criteria criteria = new Criteria().eq(swaggerOperationId);
 		if (!StringUtils.isBlank(search)) {
@@ -60,11 +60,11 @@ public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, S
 	}
 
 	/**
-	 * @see com.ajah.swagger.api.data.SwaggerResponseDao#count(com.ajah.swagger.api.SwaggerResponseType,
-	 *      com.ajah.swagger.api.SwaggerResponseStatus)
+	 * @see com.ajah.swagger.api.data.SwaggerParameterDao#count(com.ajah.swagger.api.SwaggerParameterType,
+	 *      com.ajah.swagger.api.SwaggerParameterStatus)
 	 */
 	@Override
-	public int count(SwaggerOperationId swaggerOperationId, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {
+	public int count(SwaggerOperationId swaggerOperationId, SwaggerParameterType type, SwaggerParameterStatus status) throws DataOperationException {
 		Criteria criteria = new Criteria().eq(swaggerOperationId);
 		if (type != null) {
 			criteria.eq("type", type);
@@ -76,11 +76,11 @@ public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, S
 	}
 
 	/**
-	 * @see com.ajah.swagger.api.data.SwaggerResponseDao#searchCount(String,
-	 *      SwaggerResponseType, SwaggerResponseStatus)
+	 * @see com.ajah.swagger.api.data.SwaggerParameterDao#searchCount(String,
+	 *      SwaggerParameterType, SwaggerParameterStatus)
 	 */
 	@Override
-	public int searchCount(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {
+	public int searchCount(SwaggerOperationId swaggerOperationId, String search, SwaggerParameterType type, SwaggerParameterStatus status) throws DataOperationException {
 		Criteria criteria = new Criteria().eq(swaggerOperationId);
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");

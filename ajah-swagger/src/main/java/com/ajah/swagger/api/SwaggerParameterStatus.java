@@ -18,63 +18,39 @@ package com.ajah.swagger.api;
 import com.ajah.util.IdentifiableEnum;
 
 /**
- * Valid types of SwaggerResponse entities.
+ * Valid states of {@link SwaggerParameter} entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum SwaggerResponseType implements IdentifiableEnum<String> {
+public enum SwaggerParameterStatus implements IdentifiableEnum<String> {
 
 	/**
-	 * Special.
+	 * Inactive.
 	 */
-	DEFINITION("0", "def", "Definition", "Definition."),
+	INACTIVE("0", "ina", "Inactive", "Inactive.", false, false, false),
 	/**
-	 * Special.
+	 * Active.
 	 */
-	INTEGER("1", "integer", "INTEGER", "INTEGER."),
+	ACTIVE("1", "act", "Active", "Active.", true, false, false),
 	/**
-	 * LONG.
+	 * Error.
 	 */
-	LONG("2", "long", "LONG", "LONG."),
+	ERROR("-2", "err", "Error", "Error.", false, true, false),
 	/**
-	 * FLOAT.
+	 * Deleted.
 	 */
-	FLOAT("3", "float", "FLOAT", "FLOAT."),
-	/**
-	 * DOUBLE.
-	 */
-	DOUBLE("4", "double", "DOUBLE", "DOUBLE."),
-	/**
-	 * STRING.
-	 */
-	STRING("5", "string", "STRING", "STRING."),
-	/**
-	 * BYTE.
-	 */
-	BYTE("6", "byte", "BYTE", "BYTE."),
-	/**
-	 * BOOLEAN.
-	 */
-	BOOLEAN("7", "boolean", "BOOLEAN", "BOOLEAN."),
-	/**
-	 * DATE.
-	 */
-	DATE("8", "date", "DATE", "DATE."),
-	/**
-	 * DATE_TIME.
-	 */
-	DATE_TIME("9", "date_time", "DATE_TIME", "DATE_TIME.");
+	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
 
 	/**
-	 * Finds a SwaggerResponseType that matches the id on id, name, or name().
+	 * Finds a SwaggerParameterStatus that matches the id on id, name, or name().
 	 * 
 	 * @param string
 	 *            Value to match against id, name, or name()
-	 * @return Matching SwaggerResponseType, or null.
+	 * @return Matching SwaggerParameterStatus, or null.
 	 */
-	public static SwaggerResponseType get(final String string) {
-		for (final SwaggerResponseType type : values()) {
+	public static SwaggerParameterStatus get(final String string) {
+		for (final SwaggerParameterStatus type : values()) {
 			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
 				return type;
 			}
@@ -86,12 +62,18 @@ public enum SwaggerResponseType implements IdentifiableEnum<String> {
 	private final String code;
 	private final String name;
 	private final String description;
+	private final boolean active;
+	private final boolean error;
+	private final boolean deleted;
 
-	private SwaggerResponseType(final String id, final String code, final String name, final String description) {
+	private SwaggerParameterStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.description = description;
+		this.active = active;
+		this.error = error;
+		this.deleted = deleted;
 	}
 
 	/**
@@ -140,4 +122,30 @@ public enum SwaggerResponseType implements IdentifiableEnum<String> {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Does this status mean that the entity is active?
+	 * 
+	 * @return true if active, otherwise false
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+
+	/**
+	 * Does this status mean that the entity is in an error state?
+	 * 
+	 * @return true if in error state, otherwise false
+	 */
+	public boolean isError() {
+		return this.error;
+	}
+
+	/**
+	 * Does this status mean that the entity has been deleted?
+	 * 
+	 * @return true if deleted, otherwise false
+	 */
+	public boolean isDeleted() {
+		return this.deleted;
+	}
 }

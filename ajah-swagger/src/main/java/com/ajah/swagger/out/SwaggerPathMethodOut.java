@@ -16,4 +16,5 @@ public class SwaggerPathMethodOut {
 	public SwaggerParameterOut[] parameters;
 	public List<String> tags;
 	public Map<String,SwaggerResponseOut> responses;
+	public String[] produces;
 }

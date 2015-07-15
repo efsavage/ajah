@@ -18,63 +18,27 @@ package com.ajah.swagger.api;
 import com.ajah.util.IdentifiableEnum;
 
 /**
- * Valid types of SwaggerResponse entities.
+ * Valid types of SwaggerParameter entities.
  * 
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum SwaggerResponseType implements IdentifiableEnum<String> {
+public enum SwaggerParameterType implements IdentifiableEnum<String> {
 
 	/**
-	 * Special.
+	 * Parameter is a schema defined elsewhere.
 	 */
-	DEFINITION("0", "def", "Definition", "Definition."),
-	/**
-	 * Special.
-	 */
-	INTEGER("1", "integer", "INTEGER", "INTEGER."),
-	/**
-	 * LONG.
-	 */
-	LONG("2", "long", "LONG", "LONG."),
-	/**
-	 * FLOAT.
-	 */
-	FLOAT("3", "float", "FLOAT", "FLOAT."),
-	/**
-	 * DOUBLE.
-	 */
-	DOUBLE("4", "double", "DOUBLE", "DOUBLE."),
-	/**
-	 * STRING.
-	 */
-	STRING("5", "string", "STRING", "STRING."),
-	/**
-	 * BYTE.
-	 */
-	BYTE("6", "byte", "BYTE", "BYTE."),
-	/**
-	 * BOOLEAN.
-	 */
-	BOOLEAN("7", "boolean", "BOOLEAN", "BOOLEAN."),
-	/**
-	 * DATE.
-	 */
-	DATE("8", "date", "DATE", "DATE."),
-	/**
-	 * DATE_TIME.
-	 */
-	DATE_TIME("9", "date_time", "DATE_TIME", "DATE_TIME.");
+	DEFINITION("1", "definition", "Definition", "Definition.");
 
 	/**
-	 * Finds a SwaggerResponseType that matches the id on id, name, or name().
+	 * Finds a SwaggerParameterType that matches the id on id, name, or name().
 	 * 
 	 * @param string
 	 *            Value to match against id, name, or name()
-	 * @return Matching SwaggerResponseType, or null.
+	 * @return Matching SwaggerParameterType, or null.
 	 */
-	public static SwaggerResponseType get(final String string) {
-		for (final SwaggerResponseType type : values()) {
+	public static SwaggerParameterType get(final String string) {
+		for (final SwaggerParameterType type : values()) {
 			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
 				return type;
 			}
@@ -87,7 +51,7 @@ public enum SwaggerResponseType implements IdentifiableEnum<String> {
 	private final String name;
 	private final String description;
 
-	private SwaggerResponseType(final String id, final String code, final String name, final String description) {
+	private SwaggerParameterType(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

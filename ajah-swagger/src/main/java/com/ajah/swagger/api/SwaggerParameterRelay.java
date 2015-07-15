@@ -22,21 +22,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * Simplified version of a SwaggerProperty for easier serialization/deserialization.
+ * Simplified version of a SwaggerParameter for easier
+ * serialization/deserialization.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
-public class SwaggerPropertyRelay {
+public class SwaggerParameterRelay {
 
 	public String id;
 	public String name;
-	public String format;
-	public boolean required;
 	public IdentifiableEnumRelay<String> status;
 	public IdentifiableEnumRelay<String> type;
 	public Date created;
+	public String swaggerOperationId;
 	public SwaggerDefinitionRelay swaggerDefinition;
+	public String in;
+	public boolean required;
 
 }

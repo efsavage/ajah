@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -39,6 +40,7 @@ public class SwaggerOperation implements Identifiable<SwaggerOperationId> {
 	private String summary;
 	private String description;
 	private String consumes;
+	private String produces;
 	private String operationId;
 	private String tags;
 
@@ -52,5 +54,11 @@ public class SwaggerOperation implements Identifiable<SwaggerOperationId> {
 		}
 		return StringUtils.cleanSplit(tags, " ");
 	}
+
+	@Transient
+	List<SwaggerParameter> parameters;
+
+	@Transient
+	List<SwaggerResponse> responses;
 
 }
