@@ -9,7 +9,7 @@ public class SwaggerPropertyOut {
 	public String type;
 	public String format;
 	public String description;
-	public boolean uniqueItems;
+	public Boolean uniqueItems;
 	public SwaggerItemsOut items;
 
 }

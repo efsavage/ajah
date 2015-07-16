@@ -38,6 +38,7 @@ public class SwaggerProperty implements Identifiable<SwaggerPropertyId> {
 	private SwaggerPropertyStatus status;
 	private SwaggerPropertyType type;
 	private Date created;
+	private int sequence;
 
 	@Transient
 	SwaggerDefinition parentDefinition;

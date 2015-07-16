@@ -26,9 +26,45 @@ import com.ajah.util.IdentifiableEnum;
 public enum SwaggerParameterType implements IdentifiableEnum<String> {
 
 	/**
-	 * Parameter is a schema defined elsewhere.
+	 * Special.
 	 */
-	DEFINITION("1", "definition", "Definition", "Definition.");
+	DEFINITION("0", "def", "Definition", "Definition."),
+	/**
+	 * Special.
+	 */
+	INTEGER("1", "integer", "INTEGER", "INTEGER."),
+	/**
+	 * LONG.
+	 */
+	LONG("2", "long", "LONG", "LONG."),
+	/**
+	 * FLOAT.
+	 */
+	FLOAT("3", "float", "FLOAT", "FLOAT."),
+	/**
+	 * DOUBLE.
+	 */
+	DOUBLE("4", "double", "DOUBLE", "DOUBLE."),
+	/**
+	 * STRING.
+	 */
+	STRING("5", "string", "STRING", "STRING."),
+	/**
+	 * BYTE.
+	 */
+	BYTE("6", "byte", "BYTE", "BYTE."),
+	/**
+	 * BOOLEAN.
+	 */
+	BOOLEAN("7", "boolean", "BOOLEAN", "BOOLEAN."),
+	/**
+	 * DATE.
+	 */
+	DATE("8", "date", "DATE", "DATE."),
+	/**
+	 * DATE_TIME.
+	 */
+	DATE_TIME("9", "date_time", "DATE_TIME", "DATE_TIME.");
 
 	/**
 	 * Finds a SwaggerParameterType that matches the id on id, name, or name().

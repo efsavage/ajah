@@ -32,6 +32,7 @@ public class SwaggerParameter implements Identifiable<SwaggerParameterId> {
 	private SwaggerOperationId swaggerOperationId;
 	private SwaggerDefinitionId swaggerDefinitionId;
 	private String name;
+	private String description;
 	private String in;
 	private boolean required;
 	private SwaggerParameterStatus status;

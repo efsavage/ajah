@@ -1,13 +1,18 @@
 package com.ajah.swagger.out;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
+
+import org.springframework.util.CollectionUtils;
 
 import com.ajah.http.HttpMethod;
 import com.ajah.swagger.api.SwaggerApi;
 import com.ajah.swagger.api.SwaggerDefinition;
 import com.ajah.swagger.api.SwaggerOperation;
+import com.ajah.swagger.api.SwaggerParameter;
+import com.ajah.swagger.api.SwaggerParameterType;
 import com.ajah.swagger.api.SwaggerProperty;
 import com.ajah.swagger.api.SwaggerPropertyType;
 import com.ajah.swagger.api.SwaggerResponse;
@@ -63,9 +68,9 @@ public class SwaggerWriter {
 				out.paths.put(operation.getPath(), path);
 			}
 			if (operation.getMethod() == HttpMethod.POST) {
-				path.get = createPath(operation);
-			} else if (operation.getMethod() == HttpMethod.GET) {
 				path.post = createPath(operation);
+			} else if (operation.getMethod() == HttpMethod.GET) {
+				path.get = createPath(operation);
 			}
 		}
 
@@ -79,9 +84,17 @@ public class SwaggerWriter {
 
 	private SwaggerDefinitionOut getDefOut(SwaggerDefinition definition) {
 		SwaggerDefinitionOut out = new SwaggerDefinitionOut();
-		out.properties = new HashMap<>();
+		out.properties = new TreeMap<>();
 		for (SwaggerProperty property : definition.getSwaggerProperties()) {
 			out.properties.put(property.getName(), getPropertyOut(property));
+		}
+		out.required = new ArrayList<>();
+		if (!CollectionUtils.isEmpty(definition.getSwaggerProperties())) {
+			for (SwaggerProperty property : definition.getSwaggerProperties()) {
+				if (property.isRequired()) {
+					out.required.add(property.getName());
+				}
+			}
 		}
 		return out;
 	}
@@ -118,7 +131,30 @@ public class SwaggerWriter {
 		for (SwaggerResponse response : operation.getResponses()) {
 			path.responses.put(response.getCode(), getResponseOut(response));
 		}
+		if (!CollectionUtils.isEmpty(operation.getParameters())) {
+			path.parameters = new ArrayList<>();
+			for (SwaggerParameter parameter : operation.getParameters()) {
+				path.parameters.add(getParameterOut(parameter));
+			}
+		}
 		return path;
+	}
+
+	private SwaggerParameterOut getParameterOut(SwaggerParameter parameter) {
+		SwaggerParameterOut out = new SwaggerParameterOut();
+		out.description = parameter.getDescription();
+		out.in = parameter.getIn();
+		out.name = parameter.getName();
+		out.required = parameter.isRequired();
+		out.schema = new SwaggerSchemaOut();
+		if (parameter.getType() == SwaggerParameterType.DEFINITION) {
+			if (parameter.getSwaggerDefinition() != null) {
+				out.schema.ref = "#/definitions/" + parameter.getSwaggerDefinition().getName();
+			}
+		} else {
+			out.schema.type = parameter.getType().getCode();
+		}
+		return out;
 	}
 
 	private SwaggerResponseOut getResponseOut(SwaggerResponse response) {
