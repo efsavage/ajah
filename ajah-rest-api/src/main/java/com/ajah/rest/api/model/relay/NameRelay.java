@@ -15,6 +15,9 @@
  */
 package com.ajah.rest.api.model.relay;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * A name format with fields broken out.
  * 
@@ -22,6 +25,7 @@ package com.ajah.rest.api.model.relay;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
+@JsonInclude(Include.NON_NULL)
 public class NameRelay {
 
 	public String first;
