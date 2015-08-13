@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
 
 /**
  * This is a simple implementation of the abstract {@link ServletOutputStream}.
@@ -76,7 +75,7 @@ public class FilterServletOutputStream extends ServletOutputStream {
 	 * 
 	 * @return Always returns true.
 	 */
-	@Override
+//	@Override
 	public boolean isReady() {
 		return true;
 	}
@@ -87,9 +86,9 @@ public class FilterServletOutputStream extends ServletOutputStream {
 	 * @param writeListener
 	 *            Ignored.
 	 */
-	@Override
-	public void setWriteListener(WriteListener writeListener) {
+//	@Override
+//	public void setWriteListener(WriteListener writeListener) {
 		// Empty
-	}
+//	}
 
 }
