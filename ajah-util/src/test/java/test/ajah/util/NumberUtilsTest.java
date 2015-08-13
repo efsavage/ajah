@@ -40,6 +40,7 @@ public class NumberUtilsTest {
 
 	@Test
 	public void safeInt() {
-		Assert.assertEquals(200000, NumberUtils.safeInt("200000.00", 1));
+		Assert.assertEquals(1, NumberUtils.safeInt("200000.00", 1));
+		Assert.assertEquals(200000, NumberUtils.safeInt("200000", 200000));
 	}
 }

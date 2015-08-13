@@ -107,4 +107,14 @@ public class NumberUtils {
 	public static int round(int value, int step) {
 		return Math.round(value / step) * step;
 	}
+
+	public static int safeInt(int value, int min, int max) {
+		if (value <= min) {
+			return min;
+		}
+		if (value >= max) {
+			return max;
+		}
+		return value;
+	}
 }
