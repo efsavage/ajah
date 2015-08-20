@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * Base API response class.
+ * Base API response class. Includes random response ID, errors and alerts.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
@@ -37,9 +37,14 @@ public class SimpleApiResponse implements ApiResponse {
 	public String id = UUID.randomUUID().toString();
 
 	/**
-	 * The errors that occured during this request.
+	 * The errors that occurred during this request.
 	 */
 	public List<ApiResponseError> errors;
+
+	/**
+	 * The errors that occurred during this request.
+	 */
+	public List<ApiResponseAlert> alerts;
 
 	/**
 	 * Adds an error to this response.
@@ -54,6 +59,21 @@ public class SimpleApiResponse implements ApiResponse {
 			this.errors = new ArrayList<>();
 		}
 		this.errors.add(new ApiResponseError(code, message));
+	}
+
+	/**
+	 * Adds an error to this response.
+	 * 
+	 * @param string
+	 *            The numeric code of the error.
+	 * @param message
+	 *            The message explaining the error.
+	 */
+	public void addAlert(final String code, final String message, ApiResponseAlertLevel level, final String[] tags) {
+		if (this.alerts == null) {
+			this.alerts = new ArrayList<>();
+		}
+		this.alerts.add(new ApiResponseAlert(code, message, level.getCode(), tags));
 	}
 
 }
