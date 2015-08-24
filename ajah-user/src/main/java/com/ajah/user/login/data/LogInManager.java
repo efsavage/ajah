@@ -367,4 +367,11 @@ public class LogInManager {
 		save(logIn);
 	}
 
+	public String getUsernameByToken(String token) throws CryptoException {
+		final String decrypted = Crypto.fromAES(token);
+		log.fine("token contents: " + decrypted);
+		final String username = decrypted.split("\\|")[0];
+		return username;
+	}
+
 }
