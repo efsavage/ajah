@@ -16,6 +16,7 @@
 package com.ajah.rest.api.model;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
+@NoArgsConstructor
 @AllArgsConstructor
 public class ApiResponseError {
 
