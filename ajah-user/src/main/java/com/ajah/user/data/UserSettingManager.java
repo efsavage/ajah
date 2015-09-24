@@ -193,6 +193,10 @@ public class UserSettingManager {
 		set(userId, key.getName(), String.valueOf(value));
 	}
 
+	public void set(final UserId userId, final UserSettingKey key, final String value) throws DataOperationException {
+		set(userId, key.getName(), value);
+	}
+
 	public void set(final UserId userId, final String name, final Boolean value) throws DataOperationException {
 		set(userId, name, value == null ? null : String.valueOf(value));
 	}
