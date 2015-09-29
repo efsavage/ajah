@@ -15,6 +15,11 @@
  */
 package com.ajah.html.element;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import com.ajah.util.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,6 +53,13 @@ public class Span extends AbstractNestableHtmlCoreElement<Span> {
 	@Override
 	public Span getThis() {
 		return this;
+	}
+
+	@Override
+	protected void renderBeforeChildren(final Writer out, final int depth) throws IOException {
+		if (!StringUtils.isBlank(this.text)) {
+			out.write(this.text);
+		}
 	}
 
 	/**
