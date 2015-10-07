@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2015 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.UserSetting;
 import com.ajah.user.UserSettingId;
+import com.ajah.user.UserSettingKey;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
 
@@ -65,6 +66,30 @@ public interface UserSettingDao extends AjahDao<UserSettingId, UserSetting> {
 	 */
 	long count(final UserSettingType type, final UserSettingStatus status) throws DataOperationException;
 
+	/**
+	 * Finds a {@link UserSetting} for a specific user/key combination.
+	 * 
+	 * @param userId
+	 *            The user to look up.
+	 * @param name
+	 *            The name of the setting to look up.
+	 * @return The setting, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
 	UserSetting find(final UserId userId, final String name) throws DataOperationException;
+
+	/**
+	 * Finds any settings for a specific name/value combination.
+	 * 
+	 * @param key
+	 *            The key to look up.
+	 * @param value
+	 *            The value to match on.
+	 * @return A list of user settings, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	List<UserSetting> list(UserSettingKey key, String value) throws DataOperationException;
 
 }

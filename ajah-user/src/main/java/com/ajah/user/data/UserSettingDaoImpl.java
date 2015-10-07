@@ -26,6 +26,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.UserSetting;
 import com.ajah.user.UserSettingId;
+import com.ajah.user.UserSettingKey;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
 
@@ -62,6 +63,10 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 		return super.find(new Criteria().eq(userId).eq("name", name));
 	}
 
+	/**
+	 * @see com.ajah.user.data.UserSettingDao#list(UserId, UserSettingType,
+	 *      UserSettingStatus, long, long)
+	 */
 	@Override
 	public List<UserSetting> list(final UserId userId, final UserSettingType type, final UserSettingStatus status, final long page, final long count) throws DataOperationException {
 		final Criteria criteria = new Criteria().eq(userId);
@@ -74,4 +79,11 @@ public class UserSettingDaoImpl extends AbstractAjahDao<UserSettingId, UserSetti
 		return super.list(criteria.offset(page * count).rows(count).orderBy("name", Order.ASC));
 	}
 
+	/**
+	 * @see com.ajah.user.data.UserSettingDao#list(UserSettingKey, String)
+	 */
+	@Override
+	public List<UserSetting> list(UserSettingKey key, String value) throws DataOperationException {
+		return super.list(new Criteria().eq("name", key.getName()).eq("value", value));
+	}
 }

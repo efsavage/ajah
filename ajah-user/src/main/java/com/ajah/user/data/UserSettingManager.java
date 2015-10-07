@@ -218,8 +218,34 @@ public class UserSettingManager {
 		return userSetting;
 	}
 
+	/**
+	 * Finds a {@link UserSetting} for a specific user/key combination.
+	 * 
+	 * @param userId
+	 *            The user to look up.
+	 * @param name
+	 *            The name of the setting to look up.
+	 * @return The setting, if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
 	public UserSetting find(UserId userId, UserSettingKey key) throws DataOperationException {
 		return find(userId, key.getName());
+	}
+
+	/**
+	 * Finds any settings for a specific name/value combination.
+	 * 
+	 * @param key
+	 *            The key to look up.
+	 * @param value
+	 *            The value to match on.
+	 * @return A list of user settings, which may be empty.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public List<UserSetting> list(UserSettingKey key, String value) throws DataOperationException {
+		return this.userSettingDao.list(key, value);
 	}
 
 }
