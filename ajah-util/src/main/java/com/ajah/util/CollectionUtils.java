@@ -32,6 +32,7 @@ package com.ajah.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -138,6 +139,21 @@ public class CollectionUtils {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * Returns an empty list if the supplied list is null. Useful for avoiding
+	 * NPEs in for loops.
+	 * 
+	 * @param collection
+	 *            The collection to test.
+	 * @return The collection or an empty list.
+	 */
+	public static <T> List<T> emptyIfNull(List<T> collection) {
+		if (collection == null) {
+			return Collections.emptyList();
+		}
+		return collection;
 	}
 
 }
