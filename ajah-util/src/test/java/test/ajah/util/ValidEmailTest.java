@@ -132,4 +132,12 @@ public class ValidEmailTest {
 		Assert.assertTrue(Validate.isEmail("user@sub.domain.com"));
 	}
 
+	/**
+	 * Test subdomain email with a dash in the domain.
+	 */
+	@Test
+	public void subdomainWithDash() {
+		Assert.assertTrue(Validate.isEmail("user@sub.domain-word.com"));
+	}
+
 }
