@@ -57,7 +57,7 @@ public class ValidEmailTest {
 	 */
 	@Test
 	public void longTLD() {
-		Assert.assertFalse(Validate.isEmail("user@domain.combo"));
+		Assert.assertTrue(Validate.isEmail("user@domain.combo"));
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class Validate {
 	 * @return true if email is valid
 	 */
 	public static boolean isEmail(final String email) {
-		return StringUtils.safeLength(email) > 5 && email.matches("[A-Za-z0-9._%+-]+@([-a-zA-Z0-9]+\\.)+[a-zA-Z]{2,4}");
+		return StringUtils.safeLength(email) > 5 && email.matches("[A-Za-z0-9._%+-]+@([-a-zA-Z0-9]+\\.)+[a-zA-Z]{2,24}");
 	}
 
 }
