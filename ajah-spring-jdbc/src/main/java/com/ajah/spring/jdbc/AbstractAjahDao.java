@@ -1345,13 +1345,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	}
 
-	protected int maxInt(final String field, final Criteria criteria) throws DataOperationException {
+	protected Integer maxInt(final String field, final Criteria criteria) throws DataOperationException {
 		try {
 			final String sql = "SELECT MAX(" + field + ") FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
-			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class).intValue();
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class);
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
