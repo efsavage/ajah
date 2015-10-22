@@ -71,25 +71,25 @@ public class SimplePost {
 	/**
 	 * Sets the host.
 	 * 
-	 * @param host
+	 * @param _host
 	 *            The host, required.
 	 * @return This instance.
 	 */
-	public SimplePost host(String host) {
-		AjahUtils.requireParam(host, "host");
-		this.host = host;
+	public SimplePost host(String _host) {
+		AjahUtils.requireParam(_host, "host");
+		this.host = _host;
 		return this;
 	}
 
 	/**
 	 * Sets the path.
 	 * 
-	 * @param path
+	 * @param _path
 	 *            The URL path, not required.
 	 * @return This instance.
 	 */
-	public SimplePost path(String path) {
-		this.path = path;
+	public SimplePost path(String _path) {
+		this.path = _path;
 		return this;
 	}
 

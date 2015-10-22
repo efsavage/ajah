@@ -64,7 +64,6 @@ public class SimpleApiResponse implements ApiResponse {
 	/**
 	 * Adds an error to this response.
 	 * 
-	 * @param string
 	 *            The numeric code of the error.
 	 * @param message
 	 *            The message explaining the error.

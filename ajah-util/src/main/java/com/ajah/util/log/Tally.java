@@ -174,7 +174,6 @@ public class Tally<T> {
 	 *            The object to tally by.
 	 * @param increment
 	 *            The number to increment the tally by.
-	 * @return
 	 */
 	public long tally(final T tallyObject, final long increment) {
 		final Long oldValue = this.map.get(tallyObject);
