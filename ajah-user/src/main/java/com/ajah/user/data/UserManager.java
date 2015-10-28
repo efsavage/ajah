@@ -51,6 +51,7 @@ import com.ajah.user.info.UserInfoImpl;
 import com.ajah.user.info.UserSourceId;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.Validate;
+import com.ajah.util.data.Month;
 import com.ajah.util.data.format.EmailAddress;
 
 /**
@@ -510,6 +511,10 @@ public class UserManager {
 
 	public List<UserInfo> listBySource(String source, int page, int count) throws DataOperationException {
 		return this.userInfoDao.listBySource(source, page, count);
+	}
+
+	public List<UserInfo> list(String firstName, String lastName, Integer birthYear, Month birthMonth, Integer birthDay) throws DataOperationException {
+		return this.userInfoDao.list(firstName, lastName, birthYear, birthMonth, birthDay);
 	}
 
 }

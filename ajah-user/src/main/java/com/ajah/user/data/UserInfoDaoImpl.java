@@ -32,6 +32,7 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserInfoImpl;
+import com.ajah.util.data.Month;
 
 /**
  * Data operations on the "user_info" table.
@@ -64,5 +65,11 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 	@Override
 	public List<UserInfo> listBySource(String source, int page, int count) throws DataOperationException {
 		return super.list(new Criteria().eq("source", source).offset(page * count).rows(count).orderBy("created_date", Order.ASC));
+	}
+
+	@Override
+	public List<UserInfo> list(String firstName, String lastName, Integer birthYear, Month birthMonth, Integer birthDay) throws DataOperationException {
+		return super.list(new Criteria().eq("first_name", firstName).eq("last_name", lastName).eq("birth_year", birthYear).eq("birth_month", birthMonth).eq("birth_day", birthDay)
+				.orderBy("created_date", Order.ASC));
 	}
 }

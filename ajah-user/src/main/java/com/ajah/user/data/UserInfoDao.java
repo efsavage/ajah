@@ -24,6 +24,7 @@ import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
+import com.ajah.util.data.Month;
 
 /**
  * Data operations on the "user" table.
@@ -36,5 +37,7 @@ public interface UserInfoDao extends AjahDao<UserId, UserInfo> {
 	MapMap<LocalDate, String, Integer> getSourceCounts();
 
 	List<UserInfo> listBySource(String source, int page, int count) throws DataOperationException;
+
+	List<UserInfo> list(String firstName, String lastName, Integer birthYear, Month birthMonth, Integer birthDay) throws DataOperationException;
 
 }
