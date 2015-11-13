@@ -103,32 +103,29 @@ public class FeedEntryManager {
 	/**
 	 * This will attempt to match an Entry to avoid duplicates.
 	 * 
-	 * @param entry
+	 * @param candidate
 	 *            The entry to try and match.
 	 * @return The entry or the matched replacement.
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 */
-	public FeedEntry matchAndSave(final FeedEntry entry) throws DataOperationException {
-		FeedEntry match = this.entryDao.findMatch(entry.getFeedSourceId(), entry.getHtmlUrlSha1(), entry.getContentSha1());
-		if (match != null) {
-			log.finest("Exact match found replacing");
-			return match;
+	public FeedEntry matchAndSave(final FeedEntry candidate) throws DataOperationException {
+		FeedEntry entry = this.entryDao.findMatch(candidate.getFeedSourceId(), candidate.getHtmlUrlSha1(), candidate.getContentSha1());
+		if (entry == null) {
+			entry = this.entryDao.findByHtmlUrlSha1(candidate.getFeedSourceId(), candidate.getHtmlUrlSha1());
 		}
-		// Lets see if this is an update
-		match = this.entryDao.findByHtmlUrlSha1(entry.getFeedSourceId(), entry.getHtmlUrlSha1());
-		if (match != null) {
-			match.setContent(entry.getContent());
-			match.setDescription(entry.getDescription());
-			match.setCategories(entry.getCategories());
-			match.setContentSha1(HashUtils.sha1Hex(entry.getContent() + entry.getDescription() + entry.getCategories()));
-			match.setFeedId(entry.getFeedId());
-			log.finest("Match found updating and replacing");
-			save(match);
-			return match;
+		if (entry == null) {
+			entry = new FeedEntry();
 		}
-		// TODO match on title or other fields?
-		log.finest("Appears to be a new post");
+		int hash = entry.hashCode();
+		entry.setContent(candidate.getContent());
+		entry.setDescription(candidate.getDescription());
+		entry.setCategories(candidate.getCategories());
+		entry.setContentSha1(HashUtils.sha1Hex(candidate.getContent() + candidate.getDescription() + candidate.getCategories()));
+		entry.setFeedId(candidate.getFeedId());
+		if (entry.hashCode() != hash) {
+			save(entry);
+		}
 		save(entry);
 		return entry;
 	}
