@@ -39,6 +39,7 @@ import com.ajah.user.signup.SignUp;
 import com.ajah.user.signup.SignUpId;
 import com.ajah.user.signup.SignUpStatus;
 import com.ajah.user.signup.SignUpType;
+import com.ajah.util.StringUtils;
 import com.ajah.util.data.Month;
 import com.ajah.util.data.format.EmailAddress;
 
@@ -243,8 +244,8 @@ public class SignUpManager {
 		signUp.setSource(source);
 		signUp.setStatus(SignUpStatus.SUCCESS);
 		signUp.setPromoCode(promoCode);
-		signUp.setReferralSource(referralSource);
-		signUp.setReferralSourceOther(referralSourceOther);
+		signUp.setReferralSource(StringUtils.safeLeft(referralSource, 100));
+		signUp.setReferralSourceOther(StringUtils.safeLeft(referralSourceOther, 200));
 
 		signUp.setBirthDay(birthDay);
 		signUp.setBirthMonth(birthMonth);
