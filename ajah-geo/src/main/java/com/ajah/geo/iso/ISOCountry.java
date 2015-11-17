@@ -18,11 +18,13 @@ package com.ajah.geo.iso;
 import com.ajah.geo.Country;
 import com.ajah.util.IdentifiableEnum;
 
+import lombok.Getter;
+
 /**
- * This is the <a
- * href="http://www.iso.org/iso/english_country_names_and_code_elements"
- * >ISO-3166</a> implementation of the Country interface, which should be enough
- * for most uses of Country.
+ * This is the
+ * <a href="http://www.iso.org/iso/english_country_names_and_code_elements" >ISO
+ * -3166</a> implementation of the Country interface, which should be enough for
+ * most uses of Country.
  * 
  * It is true that this does duplicate data that already exists in Java's Locale
  * mechanisms, but I don't like the idea of a country being added or removed in
@@ -31,7 +33,7 @@ import com.ajah.util.IdentifiableEnum;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum ISOCountry implements Country, IdentifiableEnum<String> {
+public enum ISOCountry implements Country,IdentifiableEnum<String> {
 
 	/** Andorra */
 	AD("ad", "AND", "Andorra"),
@@ -175,7 +177,7 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	 * European Union
 	 * 
 	 * <strong>NOT STANDARD</strong>
-	 * */
+	 */
 	EU("eu", "EUR", "European Union"),
 	/** Finland */
 	FI("fi", "FIN", "Finland"),
@@ -528,7 +530,7 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	/** U.S. Virgin Islands */
 	VI("vi", "VIR", "U.S. Virgin Islands"),
 	/** Vietnam */
-	VN("vn", "VNM", "Vietnam"),
+	VN("vn", "VNM", "Vietnam", "Viet Nam", "Socialist Republic of Vietnam", "SRV"),
 	/** Vanuatu */
 	VU("vu", "VUT", "Vanuatu"),
 	/** Wallis And Futuna */
@@ -554,9 +556,16 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 	 * @return Matching PlayerType, or null.
 	 */
 	public static ISOCountry get(final String string) {
-		for (final ISOCountry type : values()) {
-			if (type.getId().equals(string) || type.getCode().equals(string) || type.name().equals(string) || type.getName().equals(string)) {
-				return type;
+		for (final ISOCountry country : values()) {
+			if (country.getId().equals(string) || country.getCode().equals(string) || country.name().equals(string) || country.getName().equals(string)) {
+				return country;
+			}
+			if (country.aliases != null) {
+				for (String alias : country.aliases) {
+					if (alias.equals(string)) {
+						return country;
+					}
+				}
 			}
 		}
 		return null;
@@ -572,12 +581,16 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 
 	private final ISOCountry parent;
 
-	private ISOCountry(final String id, final String abbr3, final String name) {
+	@Getter
+	private final String[] aliases;
+
+	private ISOCountry(final String id, final String abbr3, final String name, final String... aliases) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;
 		this.name = name;
 		this.parent = null;
+		this.aliases = aliases;
 	}
 
 	private ISOCountry(final String id, final String abbr3, final String name, final ISOCountry parent) {
@@ -586,6 +599,7 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 		this.abbr3 = abbr3;
 		this.name = name;
 		this.parent = parent;
+		this.aliases = null;
 	}
 
 	/**
