@@ -264,9 +264,6 @@ public class UserManager {
 	 *            The user to disable.
 	 * @param statusReason
 	 *            The reason for disabling.
-	 * @param type
-	 * @param string2
-	 * @param string
 	 * @throws DataOperationException
 	 *             If a query could not be executed.
 	 * @throws UserNotFoundException

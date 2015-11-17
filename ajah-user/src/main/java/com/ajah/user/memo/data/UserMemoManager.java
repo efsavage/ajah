@@ -130,11 +130,6 @@ public class UserMemoManager {
 	 * 
 	 * @param name
 	 *            The name of the userMemo, required.
-	 * @param type
-	 *            The type of userMemo, required.
-	 * @param status
-	 *            The status of the userMemo, required.
-	 * @return
 	 * @return The result of the creation, which will include the new userMemo
 	 *         at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException

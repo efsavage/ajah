@@ -83,9 +83,6 @@ public class UserAuditManager {
 	 * @param newValue
 	 *            The new value. Note that if this matches the old value no save
 	 *            will happen and method will return null.
-	 * @param type
-	 * @param headers2
-	 * @param
 	 * @return The result of the creation, which will include the new userAudit
 	 *         at {@link DataOperationResult#getEntity()}. If the values are the
 	 *         same, returns null.

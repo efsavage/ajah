@@ -223,7 +223,7 @@ public class UserSettingManager {
 	 * 
 	 * @param userId
 	 *            The user to look up.
-	 * @param name
+	 * @param key
 	 *            The name of the setting to look up.
 	 * @return The setting, if found, otherwise null.
 	 * @throws DataOperationException
