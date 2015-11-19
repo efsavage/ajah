@@ -21,8 +21,8 @@ import com.ajah.util.IdentifiableEnum;
 import lombok.Getter;
 
 /**
- * This is the
- * <a href="http://www.iso.org/iso/english_country_names_and_code_elements" >ISO
+ * This is the <a
+ * href="http://www.iso.org/iso/english_country_names_and_code_elements" >ISO
  * -3166</a> implementation of the Country interface, which should be enough for
  * most uses of Country.
  * 
@@ -33,7 +33,7 @@ import lombok.Getter;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-public enum ISOCountry implements Country,IdentifiableEnum<String> {
+public enum ISOCountry implements Country, IdentifiableEnum<String> {
 
 	/** Andorra */
 	AD("ad", "AND", "Andorra"),
@@ -434,7 +434,7 @@ public enum ISOCountry implements Country,IdentifiableEnum<String> {
 	/** Serbia */
 	RS("rs", "SRB", "Serbia"),
 	/** Russia */
-	RU("ru", "RUS", "Russia"),
+	RU("ru", "RUS", "Russia", "Russian Federation"),
 	/** Rwanda */
 	RW("rw", "RWA", "Rwanda"),
 	/** Saudi Arabia */
