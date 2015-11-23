@@ -13,25 +13,45 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.efsavage.amazon.s3;
+package com.ajah.amazon.s3;
+
+import lombok.Data;
+
+import com.ajah.util.AjahUtils;
+import com.ajah.util.FromStringable;
+import com.ajah.util.ToStringable;
 
 /**
+ * An S3 Bucket.
+ * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public class S3Exception extends Exception {
+@Data
+public class Bucket implements ToStringable, FromStringable {
+
+	private final String name;
 
 	/**
 	 * Public constructor.
 	 * 
-	 * @see Exception#Exception(Throwable)
-	 * 
-	 * @param t
-	 *            The cause of this exception.
+	 * @param name
+	 *            The name of the bucket, required.
 	 */
-	public S3Exception(final Throwable t) {
-		super(t);
+	public Bucket(final String name) {
+		AjahUtils.requireParam(name, "name");
+		this.name = name;
+	}
+
+	/**
+	 * Returns the name of the bucket.
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.name;
 	}
 
 }

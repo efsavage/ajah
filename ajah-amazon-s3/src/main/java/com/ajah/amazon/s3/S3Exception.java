@@ -13,35 +13,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.efsavage.amazon.s3;
+package com.ajah.amazon.s3;
 
 /**
- * Class to streamline S3 operations.
- * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-public class S3 {
-
-	private static S3Client defaultClient = S3Client.getDefaultClient();
+public class S3Exception extends Exception {
 
 	/**
-	 * Puts an object using the default client.
+	 * Public constructor.
 	 * 
-	 * @see S3Client#getDefaultClient()
+	 * @see Exception#Exception(Throwable)
 	 * 
-	 * @param bucket
-	 *            The bucket to put the object into, required.
-	 * @param name
-	 *            The name to store the object as, required.
-	 * @param data
-	 *            The data of the object.
-	 * @throws S3Exception
-	 *             If an error occurs storing the object.
+	 * @param t
+	 *            The cause of this exception.
 	 */
-	public static void put(final Bucket bucket, final String name, final String data) throws S3Exception {
-		defaultClient.put(bucket, name, data);
+	public S3Exception(final Throwable t) {
+		super(t);
 	}
 
 }

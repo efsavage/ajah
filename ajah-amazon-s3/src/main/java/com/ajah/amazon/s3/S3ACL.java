@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.efsavage.amazon.s3;
+package com.ajah.amazon.s3;
 
 import org.jets3t.service.acl.AccessControlList;
 

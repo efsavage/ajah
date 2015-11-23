@@ -13,45 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.efsavage.amazon.s3;
-
-import lombok.Data;
-
-import com.ajah.util.AjahUtils;
-import com.ajah.util.FromStringable;
-import com.ajah.util.ToStringable;
+package com.ajah.amazon.s3;
 
 /**
- * An S3 Bucket.
+ * Class to streamline S3 operations.
  * 
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
-@Data
-public class Bucket implements ToStringable, FromStringable {
+public class S3 {
 
-	private final String name;
+	private static S3Client defaultClient = S3Client.getDefaultClient();
 
 	/**
-	 * Public constructor.
+	 * Puts an object using the default client.
 	 * 
+	 * @see S3Client#getDefaultClient()
+	 * 
+	 * @param bucket
+	 *            The bucket to put the object into, required.
 	 * @param name
-	 *            The name of the bucket, required.
+	 *            The name to store the object as, required.
+	 * @param data
+	 *            The data of the object.
+	 * @throws S3Exception
+	 *             If an error occurs storing the object.
 	 */
-	public Bucket(final String name) {
-		AjahUtils.requireParam(name, "name");
-		this.name = name;
-	}
-
-	/**
-	 * Returns the name of the bucket.
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return this.name;
+	public static void put(final Bucket bucket, final String name, final String data) throws S3Exception {
+		defaultClient.put(bucket, name, data);
 	}
 
 }
