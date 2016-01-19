@@ -305,6 +305,7 @@ public class LogInManager {
 			logIn.setToken(token);
 			return logIn;
 		} catch (final CryptoException e) {
+			log.log(Level.SEVERE, e.getMessage(), e);
 			final LogIn login = new LogIn();
 			login.setIp(ip);
 			login.setCreated(new Date());
