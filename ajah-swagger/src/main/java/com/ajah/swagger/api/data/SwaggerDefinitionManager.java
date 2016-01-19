@@ -132,10 +132,6 @@ public class SwaggerDefinitionManager {
 	 * 
 	 * @param name
 	 *            The name of the swaggerDefinition, required.
-	 * @param type
-	 *            The type of swaggerDefinition, required.
-	 * @param status
-	 *            The status of the swaggerDefinition, required.
 	 * @return The result of the creation, which will include the new
 	 *         swaggerDefinition at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException

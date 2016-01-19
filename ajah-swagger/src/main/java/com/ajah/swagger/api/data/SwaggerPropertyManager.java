@@ -136,8 +136,6 @@ public class SwaggerPropertyManager {
 	 *            The name of the swaggerProperty, required.
 	 * @param type
 	 *            The type of swaggerProperty, required.
-	 * @param status
-	 *            The status of the swaggerProperty, required.
 	 * @return The result of the creation, which will include the new
 	 *         swaggerProperty at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
