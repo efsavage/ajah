@@ -30,7 +30,7 @@ public enum AjahMimeType implements Identifiable<String> {
 	/**
 	 * text/plain
 	 */
-	TEXT_PLAIN("text", "plain", true),
+	TEXT_PLAIN("text", "plain", true, "txt"),
 	/**
 	 * multipart/alternative
 	 */
@@ -38,11 +38,11 @@ public enum AjahMimeType implements Identifiable<String> {
 	/**
 	 * application/javascript
 	 */
-	APPLICATION_JAVASCRIPT("application", "javascript", true),
+	APPLICATION_JAVASCRIPT("application", "javascript", true, "js"),
 	/**
 	 * application/json
 	 */
-	APPLICATION_JSON("application", "json", true),
+	APPLICATION_JSON("application", "json", true, "json", "map"),
 	/**
 	 * application/xhtml+xml (XHTML)
 	 */
@@ -50,7 +50,15 @@ public enum AjahMimeType implements Identifiable<String> {
 	/**
 	 * application/xml
 	 */
-	APPLICATION_XML("application", "xml", true),
+	APPLICATION_XML("application", "xml", true, "xml"),
+	/**
+	 * application/postscript
+	 */
+	APPLICATION_POSTSCRIPT("application", "postscript", false, "eps"),
+	/**
+	 * application/vnd.ms-fontobject
+	 */
+	APPLICATION_VND_MS_FONTOBJECT("application", "vnd.ms-fontobject", false, "eot"),
 	/**
 	 * multipart/signed
 	 */
@@ -70,39 +78,60 @@ public enum AjahMimeType implements Identifiable<String> {
 	/**
 	 * image/png
 	 */
-	IMAGE_PNG("image", "png"),
+	IMAGE_PNG("image", "png", false, "png"),
 	/**
 	 * image/gif
 	 */
-	IMAGE_GIF("image", "gif"),
+	IMAGE_GIF("image", "gif", false, "gif"),
 	/**
 	 * image/png
 	 */
-	IMAGE_JPG("image", "jpeg"),
+	IMAGE_JPG("image", "jpeg", false, "jpeg", "jpg"),
 	/**
 	 * image/svg+xml
 	 */
-	IMAGE_SVG("image", "svg+xml"),
+	IMAGE_SVG("image", "svg+xml", false, "svg"),
 	/**
 	 * text/html
 	 */
-	TEXT_HTML("text", "html", true),
+	TEXT_HTML("text", "html", true, "html"),
 	/**
 	 * text/css
 	 */
-	TEXT_CSS("text", "css", true),
+	TEXT_CSS("text", "css", true, "css"),
 	/**
 	 * text/csv
 	 */
-	TEXT_CSV("text", "csv", true),
+	TEXT_CSV("text", "csv", true, "csv"),
 	/**
 	 * text/xml
 	 */
 	TEXT_XML("text", "xml", true),
 	/**
+	 * text/x-markdown
+	 */
+	TEXT_MARKDOWN("text", "x-markdown", true, "md", "markdown"),
+	/**
+	 * application/x-font-opentype
+	 */
+	APPLICATION_FONT_OPENTYPE("application", "x-font-opentype", false, "otf"),
+	/**
+	 * application/font-woff
+	 */
+	APPLICATION_WOFF("application", "font-woff", false, "woff"),
+	/**
+	 * text/x-font-woff2
+	 */
+	APPLICATION_WOFF2("application", "x-font-woff2", false, "woff2"),
+	/**
+	 * application/font-sfnt
+	 */
+	APPLICATION_TTF("application", "font-sfnt", false, "ttf"),
+
+	/**
 	 * Unknown
 	 */
-	UNKNOWN("unknown", "unknown"); 
+	UNKNOWN("unknown", "unknown");
 
 	/**
 	 * Matches a contentType to a known Mime type.
@@ -144,26 +173,51 @@ public enum AjahMimeType implements Identifiable<String> {
 		}
 	}
 
+	/**
+	 * Find a content type based on a file extension. E.G. stylesheet.css would
+	 * return CSS.
+	 * 
+	 * @param toMatch
+	 *            The file extension to match on.
+	 * @return The matching type, or UNKNOWN.
+	 */
+	public static AjahMimeType getByFileExtension(final String toMatch) {
+		for (AjahMimeType ajahMimeType : values()) {
+			if (ajahMimeType.fileExtensions != null) {
+				for (String fileExtension : ajahMimeType.fileExtensions) {
+					if (toMatch.equalsIgnoreCase(fileExtension)) {
+						return ajahMimeType;
+					}
+				}
+			}
+		}
+		return UNKNOWN;
+	}
+
 	private final String primaryType;
 
 	private final String subType;
 
 	private final String baseType;
 
-	private boolean text;
+	private final boolean text;
+
+	private final String[] fileExtensions;
 
 	private AjahMimeType(final String primaryType, final String subType) {
 		this.primaryType = primaryType;
 		this.subType = subType;
+		this.fileExtensions = null;
 		this.baseType = primaryType + "/" + subType;
 		this.text = false;
 	}
 
-	private AjahMimeType(final String primaryType, final String subType, final boolean text) {
+	private AjahMimeType(final String primaryType, final String subType, final boolean text, final String... fileExtensions) {
 		this.primaryType = primaryType;
 		this.subType = subType;
 		this.baseType = primaryType + "/" + subType;
 		this.text = text;
+		this.fileExtensions = fileExtensions;
 	}
 
 	/**
