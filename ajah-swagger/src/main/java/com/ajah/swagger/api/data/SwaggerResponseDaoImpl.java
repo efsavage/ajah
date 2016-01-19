@@ -37,7 +37,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Repository
-public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, SwaggerResponse, SwaggerResponse> implements SwaggerResponseDao {
+public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, SwaggerResponse, SwaggerResponse>implements SwaggerResponseDao {
 
 	@Override
 	public List<SwaggerResponse> list(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status, String sort, Order order, int page, int count)
@@ -60,8 +60,8 @@ public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, S
 	}
 
 	/**
-	 * @see com.ajah.swagger.api.data.SwaggerResponseDao#count(com.ajah.swagger.api.SwaggerResponseType,
-	 *      com.ajah.swagger.api.SwaggerResponseStatus)
+	 * @see com.ajah.swagger.api.data.SwaggerResponseDao#count(SwaggerOperationId,
+	 *      SwaggerResponseType, SwaggerResponseStatus)
 	 */
 	@Override
 	public int count(SwaggerOperationId swaggerOperationId, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {
@@ -76,8 +76,8 @@ public class SwaggerResponseDaoImpl extends AbstractAjahDao<SwaggerResponseId, S
 	}
 
 	/**
-	 * @see com.ajah.swagger.api.data.SwaggerResponseDao#searchCount(String,
-	 *      SwaggerResponseType, SwaggerResponseStatus)
+	 * @see com.ajah.swagger.api.data.SwaggerResponseDao#searchCount(SwaggerOperationId,
+	 *      String, SwaggerResponseType, SwaggerResponseStatus)
 	 */
 	@Override
 	public int searchCount(SwaggerOperationId swaggerOperationId, String search, SwaggerResponseType type, SwaggerResponseStatus status) throws DataOperationException {

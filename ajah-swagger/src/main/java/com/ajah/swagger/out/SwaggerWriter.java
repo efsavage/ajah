@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.springframework.util.CollectionUtils;
-
 import com.ajah.http.HttpMethod;
 import com.ajah.swagger.api.SwaggerApi;
 import com.ajah.swagger.api.SwaggerDefinition;
@@ -17,7 +15,11 @@ import com.ajah.swagger.api.SwaggerProperty;
 import com.ajah.swagger.api.SwaggerPropertyType;
 import com.ajah.swagger.api.SwaggerResponse;
 import com.ajah.swagger.api.SwaggerResponseType;
+import com.ajah.util.CollectionUtils;
 
+import lombok.extern.java.Log;
+
+@Log
 public class SwaggerWriter {
 
 	public SwaggerOut write(SwaggerApi api, List<SwaggerOperation> operations, List<SwaggerDefinition> definitions) {
@@ -76,6 +78,9 @@ public class SwaggerWriter {
 
 		out.definitions = new TreeMap<String, SwaggerDefinitionOut>();
 		for (SwaggerDefinition definition : definitions) {
+			if (CollectionUtils.isEmpty(definition.getSwaggerProperties())) {
+				log.warning("No properties defined for " + definition.getName());
+			}
 			out.definitions.put(definition.getName(), getDefOut(definition));
 		}
 
@@ -84,14 +89,18 @@ public class SwaggerWriter {
 
 	private SwaggerDefinitionOut getDefOut(SwaggerDefinition definition) {
 		SwaggerDefinitionOut out = new SwaggerDefinitionOut();
-		out.properties = new TreeMap<>();
 		for (SwaggerProperty property : definition.getSwaggerProperties()) {
+			if (out.properties == null) {
+				out.properties = new TreeMap<>();
+			}
 			out.properties.put(property.getName(), getPropertyOut(property));
 		}
-		out.required = new ArrayList<>();
 		if (!CollectionUtils.isEmpty(definition.getSwaggerProperties())) {
 			for (SwaggerProperty property : definition.getSwaggerProperties()) {
 				if (property.isRequired()) {
+					if (out.required == null) {
+						out.required = new ArrayList<>();
+					}
 					out.required.add(property.getName());
 				}
 			}
@@ -120,6 +129,10 @@ public class SwaggerWriter {
 	}
 
 	private SwaggerPathMethodOut createPath(SwaggerOperation operation) {
+		if (CollectionUtils.isEmpty(operation.getResponses())) {
+			log.warning("No responses configured for " + operation.getName());
+			// return null;
+		}
 		SwaggerPathMethodOut path = new SwaggerPathMethodOut();
 		path.description = operation.getDescription();
 		path.consumes = new String[] { operation.getConsumes() };

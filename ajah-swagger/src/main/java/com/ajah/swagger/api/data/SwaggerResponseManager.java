@@ -137,8 +137,6 @@ public class SwaggerResponseManager {
 	 *            The name of the swaggerResponse, required.
 	 * @param type
 	 *            The type of swaggerResponse, required.
-	 * @param status
-	 *            The status of the swaggerResponse, required.
 	 * @return The result of the creation, which will include the new
 	 *         swaggerResponse at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException

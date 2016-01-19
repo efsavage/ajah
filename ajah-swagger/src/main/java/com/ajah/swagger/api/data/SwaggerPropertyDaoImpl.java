@@ -37,7 +37,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Repository
-public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, SwaggerProperty, SwaggerProperty> implements SwaggerPropertyDao {
+public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, SwaggerProperty, SwaggerProperty>implements SwaggerPropertyDao {
 
 	@Override
 	public List<SwaggerProperty> list(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status, String sort, Order order, int page, int count)
@@ -60,8 +60,8 @@ public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, S
 	}
 
 	/**
-	 * @see com.ajah.swagger.api.data.SwaggerPropertyDao#count(com.ajah.swagger.api.SwaggerPropertyType,
-	 *      com.ajah.swagger.api.SwaggerPropertyStatus)
+	 * @see com.ajah.swagger.api.data.SwaggerPropertyDao#count(SwaggerDefinitionId,
+	 *      SwaggerPropertyType, SwaggerPropertyStatus)
 	 */
 	@Override
 	public int count(SwaggerDefinitionId parentDefinitionId, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {
@@ -76,8 +76,8 @@ public class SwaggerPropertyDaoImpl extends AbstractAjahDao<SwaggerPropertyId, S
 	}
 
 	/**
-	 * @see com.ajah.swagger.api.data.SwaggerPropertyDao#searchCount(String,
-	 *      SwaggerPropertyType, SwaggerPropertyStatus)
+	 * @see com.ajah.swagger.api.data.SwaggerPropertyDao#searchCount(SwaggerDefinitionId,
+	 *      String, SwaggerPropertyType, SwaggerPropertyStatus)
 	 */
 	@Override
 	public int searchCount(SwaggerDefinitionId parentDefinitionId, String search, SwaggerPropertyType type, SwaggerPropertyStatus status) throws DataOperationException {

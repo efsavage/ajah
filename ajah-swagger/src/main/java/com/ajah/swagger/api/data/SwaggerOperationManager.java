@@ -135,10 +135,6 @@ public class SwaggerOperationManager {
 	 * 
 	 * @param name
 	 *            The name of the swaggerOperation, required.
-	 * @param type
-	 *            The type of swaggerOperation, required.
-	 * @param status
-	 *            The status of the swaggerOperation, required.
 	 * @return The result of the creation, which will include the new
 	 *         swaggerOperation at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
