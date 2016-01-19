@@ -135,6 +135,7 @@ public class SwaggerParameterManager {
 	 *            The name of the swaggerParameter, required.
 	 * @param type
 	 *            The type of swaggerParameter, required.
+	 * @param description 
 	 * @param status
 	 *            The status of the swaggerParameter, required.
 	 * @return The result of the creation, which will include the new
@@ -143,7 +144,7 @@ public class SwaggerParameterManager {
 	 *             If the query could not be executed.
 	 */
 	public DataOperationResult<SwaggerParameter> create(SwaggerOperationId swaggerOperationId, SwaggerDefinitionId swaggerDefinitionId, String name, String in, boolean required,
-			SwaggerParameterType type) throws DataOperationException {
+			SwaggerParameterType type, String description) throws DataOperationException {
 		SwaggerParameter swaggerParameter = new SwaggerParameter();
 		swaggerParameter.setSwaggerOperationId(swaggerOperationId);
 		swaggerParameter.setSwaggerDefinitionId(swaggerDefinitionId);
@@ -152,6 +153,7 @@ public class SwaggerParameterManager {
 		swaggerParameter.setRequired(required);
 		swaggerParameter.setType(type);
 		swaggerParameter.setStatus(SwaggerParameterStatus.ACTIVE);
+		swaggerParameter.setDescription(description);
 		DataOperationResult<SwaggerParameter> result = save(swaggerParameter);
 		return result;
 	}

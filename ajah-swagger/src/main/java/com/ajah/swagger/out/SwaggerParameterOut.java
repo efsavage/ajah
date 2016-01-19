@@ -11,5 +11,6 @@ public class SwaggerParameterOut {
 	public String description;
 	public SwaggerSchemaOut schema;
 	public boolean required;
+	public String type;
 
 }

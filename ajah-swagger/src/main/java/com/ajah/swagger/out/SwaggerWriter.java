@@ -146,13 +146,13 @@ public class SwaggerWriter {
 		out.in = parameter.getIn();
 		out.name = parameter.getName();
 		out.required = parameter.isRequired();
-		out.schema = new SwaggerSchemaOut();
 		if (parameter.getType() == SwaggerParameterType.DEFINITION) {
+			out.schema = new SwaggerSchemaOut();
 			if (parameter.getSwaggerDefinition() != null) {
 				out.schema.ref = "#/definitions/" + parameter.getSwaggerDefinition().getName();
 			}
 		} else {
-			out.schema.type = parameter.getType().getCode();
+			out.type = parameter.getType().getCode();
 		}
 		return out;
 	}
