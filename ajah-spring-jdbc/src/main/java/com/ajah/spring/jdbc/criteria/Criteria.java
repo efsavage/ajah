@@ -33,8 +33,8 @@ import com.ajah.util.lang.NameValuePair;
 /**
  * Object-oriented way to construct a WHERE statement.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Log
@@ -177,6 +177,26 @@ public class Criteria extends AbstractCriteria<Criteria> {
 				} else {
 					where.append("=?");
 					values.add(eq.getValue());
+				}
+			}
+		}
+		if (!CollectionUtils.isEmpty(this.neqs)) {
+			for (final NameValuePair<String> neq : this.neqs) {
+				if (first) {
+					first = false;
+				} else {
+					where.append(" AND ");
+				}
+
+				where.append(tablePrefix);
+				where.append("`");
+				where.append(neq.getName());
+				where.append("`");
+				if (neq.getValue() == null) {
+					where.append(" IS NOT NULL");
+				} else {
+					where.append("<>?");
+					values.add(neq.getValue());
 				}
 			}
 		}

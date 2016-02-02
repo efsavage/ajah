@@ -135,8 +135,6 @@ public class SwaggerParameterManager {
 	 *            The name of the swaggerParameter, required.
 	 * @param type
 	 *            The type of swaggerParameter, required.
-	 * @param status
-	 *            The status of the swaggerParameter, required.
 	 * @return The result of the creation, which will include the new
 	 *         swaggerParameter at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException

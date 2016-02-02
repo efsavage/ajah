@@ -28,8 +28,8 @@ import com.ajah.util.lang.NameValuePair;
 /**
  * Base class for {@link Criteria}.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <C>
  *            The implemented type, for method chaining.
  * 
@@ -37,6 +37,7 @@ import com.ajah.util.lang.NameValuePair;
 public abstract class AbstractCriteria<C> {
 
 	protected List<NameValuePair<String>> eqs = null;
+	protected List<NameValuePair<String>> neqs = null;
 
 	/**
 	 * A field match.
@@ -106,6 +107,24 @@ public abstract class AbstractCriteria<C> {
 	}
 
 	/**
+	 * A field negative match. Supports nulls (as "IS NOT NULL").
+	 * 
+	 * @param field
+	 *            The field to negatively match
+	 * @param value
+	 *            The value the field must not be.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public C neq(final String field, final String value) {
+		AjahUtils.requireParam(field, "field");
+		if (this.neqs == null) {
+			this.neqs = new ArrayList<>();
+		}
+		this.neqs.add(new NameValuePair<>(field, value));
+		return getThis();
+	}
+
+	/**
 	 * A field match. Supports nulls (as "IS NULL").
 	 * 
 	 * @param field
@@ -146,6 +165,18 @@ public abstract class AbstractCriteria<C> {
 	public C isNull(final String field) {
 		AjahUtils.requireParam(field, "field");
 		return eq(field, (String) null);
+	}
+
+	/**
+	 * A field that must not be NULL.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public C isNotNull(final String field) {
+		AjahUtils.requireParam(field, "field");
+		return neq(field, (String) null);
 	}
 
 	protected abstract C getThis();
