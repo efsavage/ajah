@@ -89,7 +89,7 @@ public class SwaggerPropertyManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws SwaggerPropertyNotFoundException
-	 *             If the ID specified did not match any swaggerPropertys.
+	 *             If the ID specified did not match any swaggerProperties.
 	 */
 	public SwaggerProperty load(SwaggerPropertyId swaggerPropertyId) throws DataOperationException, SwaggerPropertyNotFoundException {
 		SwaggerProperty swaggerProperty = this.swaggerPropertyDao.load(swaggerPropertyId);
@@ -166,7 +166,7 @@ public class SwaggerPropertyManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws SwaggerPropertyNotFoundException
-	 *             If the ID specified did not match any swaggerPropertys.
+	 *             If the ID specified did not match any swaggerProperties.
 	 */
 	public DataOperationResult<SwaggerProperty> delete(SwaggerPropertyId swaggerPropertyId) throws DataOperationException, SwaggerPropertyNotFoundException {
 		SwaggerProperty swaggerProperty = load(swaggerPropertyId);
