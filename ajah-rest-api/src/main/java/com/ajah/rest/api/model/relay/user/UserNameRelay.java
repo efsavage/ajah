@@ -19,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
 public class UserNameRelay {
@@ -30,9 +30,13 @@ public class UserNameRelay {
 	public String last;
 	public String suffix;
 	public String display;
+	@Deprecated
 	public String firstName;
+	@Deprecated
 	public String middleName;
+	@Deprecated
 	public String lastName;
+	@Deprecated
 	public String displayName;
 
 }
