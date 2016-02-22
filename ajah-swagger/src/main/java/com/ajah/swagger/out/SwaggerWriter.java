@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import lombok.extern.java.Log;
+
 import com.ajah.http.HttpMethod;
 import com.ajah.swagger.api.SwaggerApi;
 import com.ajah.swagger.api.SwaggerDefinition;
@@ -16,8 +18,7 @@ import com.ajah.swagger.api.SwaggerPropertyType;
 import com.ajah.swagger.api.SwaggerResponse;
 import com.ajah.swagger.api.SwaggerResponseType;
 import com.ajah.util.CollectionUtils;
-
-import lombok.extern.java.Log;
+import com.ajah.util.StringUtils;
 
 @Log
 public class SwaggerWriter {
@@ -111,6 +112,25 @@ public class SwaggerWriter {
 	private SwaggerPropertyOut getPropertyOut(SwaggerProperty property) {
 		SwaggerPropertyOut out = new SwaggerPropertyOut();
 		if (property.getType() == SwaggerPropertyType.DEFINITION) {
+			out.ref = "#/definitions/" + property.getSwaggerDefinition().getName();
+		} else if (property.getType() == SwaggerPropertyType.DOUBLE) {
+			out.type = "number";
+			out.format = "double";
+		} else if (property.getType() == SwaggerPropertyType.DATE_TIME) {
+			out.type = "string";
+			out.format = "date-time";
+		} else if (property.getType() == SwaggerPropertyType.DATE) {
+			out.type = "string";
+			out.format = "date";
+		} else if (property.getType() == SwaggerPropertyType.INTEGER) {
+			out.type = "integer";
+			out.format = "int32";
+		} else if (property.getType() == SwaggerPropertyType.LONG) {
+			out.type = "integer";
+			out.format = "int64";
+		} else if (property.getType() == SwaggerPropertyType.FLOAT) {
+			out.type = "number";
+			out.format = "float";
 		} else if (property.getType() == SwaggerPropertyType.LIST) {
 			out.type = "array";
 			out.items = new SwaggerItemsOut();
@@ -124,7 +144,9 @@ public class SwaggerWriter {
 			out.type = property.getType().getCode();
 		}
 		out.description = property.getDescription();
-		out.format = property.getFormat();
+		if (!StringUtils.isBlank(property.getFormat())) {
+			out.format = property.getFormat();
+		}
 		return out;
 	}
 

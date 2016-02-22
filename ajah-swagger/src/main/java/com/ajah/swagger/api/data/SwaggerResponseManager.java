@@ -33,6 +33,7 @@ import com.ajah.swagger.api.SwaggerResponse;
 import com.ajah.swagger.api.SwaggerResponseId;
 import com.ajah.swagger.api.SwaggerResponseStatus;
 import com.ajah.swagger.api.SwaggerResponseType;
+import com.ajah.util.AjahUtils;
 
 /**
  * Manages data operations for {@link SwaggerResponse}.
@@ -144,6 +145,11 @@ public class SwaggerResponseManager {
 	 */
 	public DataOperationResult<SwaggerResponse> create(SwaggerOperationId swaggerOperationId, SwaggerDefinitionId swaggerDefinitionId, String name, String description, String code,
 			SwaggerResponseType type) throws DataOperationException {
+		AjahUtils.requireParam(swaggerOperationId, "swaggerOperationId");
+		AjahUtils.requireParam(type, "type");
+		if (type == SwaggerResponseType.DEFINITION) {
+			AjahUtils.requireParam(swaggerDefinitionId, "swaggerDefinitionId");
+		}
 		SwaggerResponse swaggerResponse = new SwaggerResponse();
 		swaggerResponse.setSwaggerOperationId(swaggerOperationId);
 		swaggerResponse.setSwaggerDefinitionId(swaggerDefinitionId);
