@@ -34,6 +34,7 @@ public class ResetPasswordRequest implements Identifiable<ResetPasswordRequestId
 	private ResetPasswordRequestId id;
 	private UserId userId;
 	private ResetPasswordRequestStatus status;
+	private ResetPasswordRequestChannel channel;
 	private Date created;
 	private Date redeemed;
 	private long code;
