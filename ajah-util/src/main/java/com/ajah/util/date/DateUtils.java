@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.ajah.util.AjahUtils;
+
 /**
  * Utilities for dealing with Dates, times, intervals, etc.
  * 
@@ -379,6 +381,23 @@ public class DateUtils {
 	 */
 	public static String veryShortFormatRelative(final Date date) {
 		return formatInterval(Math.abs(System.currentTimeMillis() - date.getTime()), true);
+	}
+
+	/**
+	 * Determines if the date is a certain number of days old.
+	 * 
+	 * @param date
+	 *            The date to check.
+	 * @param days
+	 *            The number of days, must be greater than zero.
+	 * @return True if older, otherwise false.
+	 */
+	public static boolean isDaysOld(Date date, int days) {
+		AjahUtils.requireParam(date, "date");
+		if (days <= 0) {
+			throw new IllegalArgumentException("days parameter must be greater than zero");
+		}
+		return (System.currentTimeMillis() - date.getTime() < (86400000 * days));
 	}
 
 }
