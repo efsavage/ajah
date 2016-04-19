@@ -20,8 +20,8 @@ import lombok.extern.java.Log;
 /**
  * Utilities for dealing with numbers.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Log
@@ -117,4 +117,19 @@ public class NumberUtils {
 		}
 		return value;
 	}
+
+	/**
+	 * Returns a value as an Integer, unless it is zero, which returns null.
+	 * 
+	 * @param value
+	 *            The value to check.
+	 * @return Integer version of the value, or null if the value is zero.
+	 */
+	public static Integer nullIfZero(int value) {
+		if (value == 0) {
+			return null;
+		}
+		return new Integer(value);
+	}
+
 }
