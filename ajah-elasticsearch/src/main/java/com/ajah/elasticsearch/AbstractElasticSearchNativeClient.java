@@ -18,9 +18,6 @@ package com.ajah.elasticsearch;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
-import lombok.Getter;
-import lombok.extern.java.Log;
-
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -31,10 +28,9 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortBuilder;
 
@@ -43,12 +39,15 @@ import com.ajah.util.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.Getter;
+import lombok.extern.java.Log;
+
 /**
  * A base client that allows for easily indexing and searching documents. Does
  * not support cross-index, multi-type searches.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
  *            The primary key field.
  * @param <T>
@@ -147,19 +146,19 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 	 * @return The results of the search.
 	 */
 	@Override
-	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException {
+	public SearchList<C> search(final QueryBuilder queryBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException {
 		final SearchList<C> results = new SearchList<>();
 		final long start = System.currentTimeMillis();
 		try {
-			final SearchRequestBuilder requestBuilder = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setFrom(page * count).setSize(count)
-					.setQuery(queryBuilder);
+			final SearchRequestBuilder requestBuilder = this.client.prepareSearch(this.index).setTypes(this.type).setSearchType(SearchType.DEFAULT).setFrom(page * count).setSize(count).setQuery(
+					queryBuilder);
 			if (sortBuilders != null) {
 				for (final SortBuilder sortBuilder : sortBuilders) {
 					requestBuilder.addSort(sortBuilder);
 				}
 			}
-			if (filterBuilder != null) {
-				requestBuilder.setPostFilter(filterBuilder);
+			if (queryBuilder != null) {
+				requestBuilder.setPostFilter(queryBuilder);
 			}
 			if (getDefaultSort() != null) {
 				requestBuilder.addSort(getDefaultSort());
@@ -172,7 +171,7 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (final IndexMissingException | IOException e) {
+		} catch (final IndexNotFoundException | IOException e) {
 			log.warning(e.getMessage());
 			throw new ElasticSearchException(e);
 		}
@@ -199,7 +198,7 @@ public abstract class AbstractElasticSearchNativeClient<K extends Comparable<K>,
 				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (final IndexMissingException | IOException e) {
+		} catch (final IndexNotFoundException | IOException e) {
 			log.warning(e.getMessage());
 			throw new ElasticSearchException(e);
 		}

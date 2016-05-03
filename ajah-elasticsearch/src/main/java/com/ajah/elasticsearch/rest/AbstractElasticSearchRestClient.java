@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,10 +18,6 @@ package com.ajah.elasticsearch.rest;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -31,10 +27,9 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
@@ -45,12 +40,16 @@ import com.ajah.elasticsearch.SearchList;
 import com.ajah.util.Identifiable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
+
 /**
  * A base client that allows for easily indexing and searching documents. Does
  * not support cross-index, multi-type searches.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
  *            The primary key field.
  * @param <T>
@@ -123,7 +122,7 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 	 * @return The results of the search.
 	 */
 	@Override
-	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException {
+	public SearchList<C> search(final QueryBuilder queryBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException {
 		final SearchList<C> results = new SearchList<>();
 		final long start = System.currentTimeMillis();
 		try {
@@ -134,8 +133,8 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 					sourceBuilder.sort(sortBuilder);
 				}
 			}
-			if (filterBuilder != null) {
-				sourceBuilder.postFilter(filterBuilder);
+			if (queryBuilder != null) {
+				sourceBuilder.postFilter(queryBuilder);
 			}
 			if (getDefaultSort() != null) {
 				sourceBuilder.sort(getDefaultSort());
@@ -154,7 +153,7 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 			// getTargetClass());
 			// results.add(result);
 			// }
-		} catch (final IndexMissingException e) {
+		} catch (final IndexNotFoundException e) {
 			log.warning(e.getMessage());
 		}
 		results.setTime(System.currentTimeMillis() - start);
@@ -180,7 +179,7 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 				final C result = this.mapper.readValue(hit.getSourceAsString(), getTargetClass());
 				results.add(result);
 			}
-		} catch (final IndexMissingException | IOException e) {
+		} catch (final IndexNotFoundException | IOException e) {
 			log.warning(e.getMessage());
 			throw new ElasticSearchException(e);
 		}
@@ -202,7 +201,7 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 			// results.add(result);
 			// }
 
-			return ((RestGetResponse<C>) mapper.readValue(entity.getContent(), clazz)).source;
+			return ((RestGetResponse<C>) this.mapper.readValue(entity.getContent(), this.clazz)).source;
 		} catch (IOException e) {
 			throw new ElasticSearchException(e);
 		}

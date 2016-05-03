@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.1.0-SNAPSHOT</version>
+		<version>1.2.0-SNAPSHOT</version>
 		<relativePath>../ajah-base/pom.xml</relativePath>
 	</parent>
 
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
+			<version>${jpa.version}</version>
 		</dependency>
 
 		<!-- We're including Joda time for now, but this may be able to be removed 

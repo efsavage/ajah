@@ -15,13 +15,13 @@
  */
 package com.ajah.elasticsearch;
 
-import lombok.extern.java.Log;
-
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
+
+import lombok.extern.java.Log;
 
 /**
  * A base client that allows for easily indexing and searching documents. Does
@@ -107,7 +107,6 @@ public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends
 	 */
 	@Override
 	public void close() {
-		this.node.stop();
 		this.node.close();
 		super.close();
 	}

@@ -1,7 +1,5 @@
 package com.ajah.elasticsearch.rest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class RestSearchResponse<C> {
 
 //	@JsonProperty("_index")

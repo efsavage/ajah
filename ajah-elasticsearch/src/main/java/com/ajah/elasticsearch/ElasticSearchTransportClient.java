@@ -15,22 +15,23 @@
  */
 package com.ajah.elasticsearch;
 
-import lombok.extern.java.Log;
+import java.net.InetSocketAddress;
 
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
 
+import lombok.extern.java.Log;
+
 /**
  * A base client that allows for easily indexing and searching documents. Does
  * not support cross-index, multi-type searches.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
  *            The primary key field.
  * @param <T>
@@ -88,8 +89,8 @@ public abstract class ElasticSearchTransportClient<K extends Comparable<K>, T ex
 			this.clusterName = clusterName;
 		}
 		log.fine("Cluster name is: " + this.clusterName);
-		final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clusterName).build();
-		this.client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(this.hostname, 9300));
+		final Settings settings = Settings.settingsBuilder().put("cluster.name", this.clusterName).build();
+		this.client = TransportClient.builder().settings(settings).build().addTransportAddress(new InetSocketTransportAddress(new InetSocketAddress(this.hostname, 9300)));
 		log.fine("Waiting for green status");
 		this.client.admin().cluster().prepareHealth().setWaitForGreenStatus().execute().actionGet();
 		log.fine("Green status achieved");

@@ -5,12 +5,12 @@
 	<url>http://efsavage.github.com/ajah/user/</url>
 
 
-	<description>The Ajah Utils Library provides a place for the most basic and common utilities.  This code uses very few dependencies and should be suitable for inclusion in any other projects.</description>
+	<description>The Ajah Utils Library provides a place for the most basic and common utilities.  This code uses very few dependencies and should be suitable for inclusion in most other projects.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
 		<artifactId>ajah-base</artifactId>
-		<version>1.1.0-SNAPSHOT</version>
+		<version>1.2.0-SNAPSHOT</version>
 		<relativePath>../ajah-base/pom.xml</relativePath>
 	</parent>
 

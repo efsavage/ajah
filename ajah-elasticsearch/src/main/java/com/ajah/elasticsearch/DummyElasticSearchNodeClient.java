@@ -17,14 +17,14 @@ package com.ajah.elasticsearch;
 
 import java.lang.reflect.ParameterizedType;
 
-import lombok.extern.java.Log;
-
 import org.elasticsearch.action.index.IndexResponse;
 
 import com.ajah.util.Identifiable;
 import com.ajah.util.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.java.Log;
 
 /**
  * A base client that allows for easily indexing and searching documents. Does

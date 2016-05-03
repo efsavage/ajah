@@ -20,12 +20,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 /**
  * This is a simple implementation of the abstract {@link ServletOutputStream}.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class FilterServletOutputStream extends ServletOutputStream {
 
@@ -75,7 +76,7 @@ public class FilterServletOutputStream extends ServletOutputStream {
 	 * 
 	 * @return Always returns true.
 	 */
-//	@Override
+	// @Override
 	public boolean isReady() {
 		return true;
 	}
@@ -86,9 +87,9 @@ public class FilterServletOutputStream extends ServletOutputStream {
 	 * @param writeListener
 	 *            Ignored.
 	 */
-//	@Override
-//	public void setWriteListener(WriteListener writeListener) {
+	@Override
+	public void setWriteListener(WriteListener writeListener) {
 		// Empty
-//	}
+	}
 
 }

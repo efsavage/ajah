@@ -1,10 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ajah-rfcmail-fetch</artifactId>
-	<name>Ajah Mail Fetch Library</name>
-	<description>Library for fetching email from various sources and a simple framework for acting on the results.</description>
-	<url>http://efsavage.github.com/ajah/mail-fetch/</url>
+	<artifactId>ajah-scrape</artifactId>
+	<name>Ajah Web Page Scraping Library</name>
+	<description>The Ajah Web Page Scraping Library serves offers some clients and classes that making parsing data out of webpages easier.</description>
 
 	<parent>
 		<groupId>com.ajah</groupId>
@@ -14,22 +13,25 @@
 	</parent>
 
 	<dependencies>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>${javamail.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.ajah</groupId>
 			<artifactId>ajah-util</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
 		<dependency>
-			<!-- jsoup HTML parser library @ http://jsoup.org/ -->
+			<groupId>com.ajah</groupId>
+			<artifactId>ajah-http</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.6.1</version>
+			<version>1.7.1</version>
 		</dependency>
+
 	</dependencies>
 
 </project>

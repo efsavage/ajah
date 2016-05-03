@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package com.ajah.elasticsearch;
 
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
@@ -25,8 +24,8 @@ import com.ajah.util.Identifiable;
 /**
  * Interface for Elastic Search Clients.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
  *            The type of key/ID.
  * @param <T>
@@ -75,8 +74,6 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * 
 	 * @param queryBuilder
 	 *            The query builder, may be null or empty.
-	 * @param filterBuilder
-	 *            The filter builder, may be null or empty.
 	 * @param sortBuilders
 	 *            The sort builder, may be null or empty.
 	 * @param page
@@ -87,7 +84,7 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * @throws ElasticSearchException
 	 *             If the search could not be executed.
 	 */
-	public SearchList<C> search(final QueryBuilder queryBuilder, final FilterBuilder filterBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException;
+	public SearchList<C> search(final QueryBuilder queryBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException;
 
 	/**
 	 * Closes the client.

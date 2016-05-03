@@ -5,8 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import lombok.extern.java.Log;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,6 +15,8 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 
 import com.ajah.elasticsearch.ElasticSearchException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.java.Log;
 
 @Log
 public class RestClient<C> implements AutoCloseable {
