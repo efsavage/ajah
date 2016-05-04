@@ -25,8 +25,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * Base API response class. Includes random response ID, errors and alerts.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
  */
 @JsonInclude(Include.NON_NULL)
 public class SimpleApiResponse implements ApiResponse {
@@ -64,9 +65,14 @@ public class SimpleApiResponse implements ApiResponse {
 	/**
 	 * Adds an error to this response.
 	 * 
+	 * @param code
 	 *            The numeric code of the error.
 	 * @param message
 	 *            The message explaining the error.
+	 * @param level
+	 *            The severity of the alert.
+	 * @param tags
+	 *            Arbitrary Tags to associate with the alert.
 	 */
 	public void addAlert(final String code, final String message, ApiResponseAlertLevel level, final String[] tags) {
 		if (this.alerts == null) {
