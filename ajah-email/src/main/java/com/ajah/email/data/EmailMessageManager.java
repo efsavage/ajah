@@ -32,7 +32,6 @@ import com.ajah.email.EmailMessage;
  * 
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class EmailMessageManager {
 
 	@Autowired

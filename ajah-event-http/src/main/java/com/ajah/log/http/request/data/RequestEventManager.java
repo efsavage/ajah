@@ -32,7 +32,6 @@ import com.ajah.spring.jdbc.err.DataOperationException;
  * 
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 @Log
 public class RequestEventManager {
 

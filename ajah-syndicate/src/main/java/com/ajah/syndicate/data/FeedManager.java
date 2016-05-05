@@ -37,7 +37,6 @@ import com.ajah.syndicate.FeedSource;
  * 
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class FeedManager {
 
 	@Autowired

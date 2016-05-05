@@ -40,7 +40,6 @@ import com.ajah.util.data.HashUtils;
  * 
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 @Log
 public class FeedEntryManager {
 

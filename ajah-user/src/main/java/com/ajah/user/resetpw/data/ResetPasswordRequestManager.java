@@ -38,7 +38,6 @@ import com.ajah.util.RandomUtils;
  * 
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class ResetPasswordRequestManager {
 
 	@Autowired
