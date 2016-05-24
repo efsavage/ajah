@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.extern.java.Log;
-
 import com.ajah.servlet.util.ResponseHeader;
 import com.ajah.util.StringUtils;
 import com.ajah.util.config.Config;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.extern.java.Log;
 
 /**
  * Sets a Access-Control-Allow-Origin based on the "ajah.header.cors" property.
@@ -38,8 +38,8 @@ import com.ajah.util.config.Config;
  * "ajah.header.cors-headers", defaults to
  * "Origin, X-Requested-With, Content-Type, Accept".
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
 @Log
@@ -53,6 +53,12 @@ public class CorsFilter extends BaseFilter {
 	}
 
 	protected void doFilter(String value, final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+		if (StringUtils.isBlank(value)) {
+			log.fine("Value is blank, not applying any headers");
+			super.doFilter(request, response, chain);
+			return;
+		}
+
 		if (value.contains(",")) {
 			final HttpServletRequest servletRequest = (HttpServletRequest) request;
 			String origin = servletRequest.getHeader("Origin");
@@ -80,17 +86,15 @@ public class CorsFilter extends BaseFilter {
 			}
 			value = newValue;
 		}
+
 		((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_ORIGIN.getHeader(), value);
 		((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_CREDENTIALS.getHeader(), "true");
 
-		if (!StringUtils.isBlank(value)) {
-			final String headers = Config.i.get("ajah.header.cors-headers", "Origin, X-Requested-With, Content-Type, Accept");
-			((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_HEADERS.getHeader(), headers);
-		}
-		if (!StringUtils.isBlank(value)) {
-			final String headers = Config.i.get("ajah.header.cors-methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
-			((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_METHODS.getHeader(), headers);
-		}
+		final String headers = Config.i.get("ajah.header.cors-headers", "Origin, X-Requested-With, Content-Type, Accept");
+		((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_HEADERS.getHeader(), headers);
+
+		final String methods = Config.i.get("ajah.header.cors-methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
+		((HttpServletResponse) response).addHeader(ResponseHeader.ACCESS_CONTROL_ALLOW_METHODS.getHeader(), methods);
 
 		super.doFilter(request, response, chain);
 	}
