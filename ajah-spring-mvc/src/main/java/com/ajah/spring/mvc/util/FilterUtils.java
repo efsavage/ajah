@@ -26,13 +26,14 @@ import javax.servlet.ServletContext;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
  * Utilities for dealing with Filters. Currently just provides easier ways to
  * add filters to a context from within a {@link WebApplicationInitializer}.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class FilterUtils {
@@ -114,13 +115,37 @@ public class FilterUtils {
 	 * @param filterClass
 	 *            The class of Filter to instantiate, required.
 	 * @param servletContext
-	 *            The servlet context ofthe application, required.
+	 *            The servlet context of the application, required.
 	 * @param urlPattern
 	 *            The pattern of the URL this filter should be applied to.
 	 */
 	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext, final String urlPattern) {
 		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
 		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPattern);
+	}
+
+	/**
+	 * Convenience method for adding a filter to certain requests. This version
+	 * will attempt to find a pre-existing bean for the specified class.
+	 * 
+	 * @see ServletContext#addFilter(String, Class)
+	 * @param appContest
+	 *            The application contest to look for the filter bean in.
+	 * @param filterClass
+	 *            The class of Filter to instantiate, required.
+	 * @param servletContext
+	 *            The servlet context of the application, required.
+	 * @param urlPattern
+	 *            The pattern of the URL this filter should be applied to.
+	 */
+	public static void add(AnnotationConfigWebApplicationContext appContext, Class<? extends Filter> filterClass, ServletContext servletContext, String urlPattern) {
+		Filter filter = appContext.getBean(filterClass);
+		if (filter != null) {
+			final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filter);
+			reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPattern);
+		} else {
+			add(filterClass, servletContext, urlPattern);
+		}
 	}
 
 }
