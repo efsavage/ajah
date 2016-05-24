@@ -25,14 +25,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
-public class SuccessResponse extends SimpleApiResponse {
+public class SimpleSuccessResponse extends SimpleApiResponse {
 
 	public final boolean success;
 
 	/**
 	 * Public constructor where success is true.
 	 */
-	public SuccessResponse() {
+	public SimpleSuccessResponse() {
 		this.success = true;
 	}
 
@@ -42,7 +42,7 @@ public class SuccessResponse extends SimpleApiResponse {
 	 * @param success
 	 *            The success state.
 	 */
-	public SuccessResponse(final boolean success) {
+	public SimpleSuccessResponse(final boolean success) {
 		this.success = success;
 	}
 
