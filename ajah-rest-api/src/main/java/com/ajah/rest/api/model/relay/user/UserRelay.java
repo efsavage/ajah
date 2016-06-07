@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 package com.ajah.rest.api.model.relay.user;
 
 import com.ajah.rest.api.model.relay.IdentifiableEnumRelay;
+import com.ajah.user.User;
+import com.ajah.user.info.UserInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * A simplified, serialized version of {@link User} and {@link UserInfo}.
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
 public class UserRelay {
@@ -32,5 +36,6 @@ public class UserRelay {
 	public IdentifiableEnumRelay<String> type;
 	public UserNameRelay name;
 	public String avatar;
+	public String source;
 
 }
