@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,9 +17,10 @@ package com.ajah.user;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.util.Identifiable;
+import com.ajah.util.StringUtils;
+
+import lombok.Data;
 
 @Data
 public class UserSetting implements Identifiable<UserSettingId> {
@@ -45,4 +46,12 @@ public class UserSetting implements Identifiable<UserSettingId> {
 		return defaultValue;
 	}
 
+	/**
+	 * Returns whether the value is empty (null or empty string) or not.
+	 * 
+	 * @return true if the value is null or an empty string, otherwise false.
+	 */
+	public boolean isEmpty() {
+		return StringUtils.isBlank(this.value);
+	}
 }
