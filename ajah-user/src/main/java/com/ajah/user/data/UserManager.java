@@ -219,7 +219,7 @@ public class UserManager {
 		user.setId(new UserId(UUID.randomUUID().toString()));
 		user.setUsername(username);
 		user.setStatus(UserStatus.NEW);
-		user.setType(UserType.NORMAL);
+		user.setType(type);
 		this.userDao.insert(user, password);
 
 		final Email email = this.emailManager.create(user.getId(), emailAddress.toString(), EmailType.STANDARD, EmailStatus.ACTIVE).getEntity();
