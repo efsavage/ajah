@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ import com.ajah.user.group.GroupUserType;
 /**
  * Manages data operations for {@link GroupUser}.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Service
@@ -208,6 +210,10 @@ public class GroupUserManager {
 	 */
 	public int searchCount(String search, GroupUserType type, GroupUserStatus status) throws DataOperationException {
 		return this.groupUserDao.searchCount(search, type, status);
+	}
+
+	public List<GroupUser> list(UserId userId, GroupUserStatus status) throws DataOperationException {
+		return this.groupUserDao.list(userId, status);
 	}
 
 }

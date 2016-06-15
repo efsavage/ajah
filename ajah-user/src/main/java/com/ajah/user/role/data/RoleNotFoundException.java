@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,17 +15,18 @@
  */
 package com.ajah.user.role.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.role.Role;
 import com.ajah.user.role.RoleId;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
- * Thrown when an {@link Role} was expected to be found, but was not.
+ * Thrown when an operation requires a role but that is not available to the
+ * current user.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

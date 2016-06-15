@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -23,16 +23,19 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.util.StringUtils;
+import com.ajah.user.group.GroupId;
 import com.ajah.user.role.GroupRole;
 import com.ajah.user.role.GroupRoleId;
 import com.ajah.user.role.GroupRoleStatus;
 import com.ajah.user.role.GroupRoleType;
+import com.ajah.util.StringUtils;
 
 /**
  * MySQL-based implementation of {@link GroupRoleDao}.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Repository
@@ -90,6 +93,19 @@ public class GroupRoleDaoImpl extends AbstractAjahDao<GroupRoleId, GroupRole, Gr
 			criteria.eq("status", status);
 		}
 		return super.count(criteria);
+	}
+
+	@Override
+	public List<GroupRole> list(GroupId groupId, GroupRoleStatus status) throws DataOperationException {
+		Criteria criteria = new Criteria();
+
+		criteria.eq(groupId);
+
+		if (status != null) {
+			criteria.eq("status", status);
+		}
+
+		return super.list(criteria);
 	}
 
 }

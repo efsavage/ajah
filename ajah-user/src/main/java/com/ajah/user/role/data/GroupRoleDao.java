@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.util.List;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.group.GroupId;
 import com.ajah.user.role.GroupRole;
 import com.ajah.user.role.GroupRoleId;
 import com.ajah.user.role.GroupRoleStatus;
@@ -28,7 +29,9 @@ import com.ajah.user.role.GroupRoleType;
 /**
  * DAO interface for {@link GroupRole}.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public interface GroupRoleDao extends AjahDao<GroupRoleId, GroupRole> {
@@ -84,5 +87,7 @@ public interface GroupRoleDao extends AjahDao<GroupRoleId, GroupRole> {
 	 *             If the query could not be executed.
 	 */
 	int searchCount(String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException;
+
+	List<GroupRole> list(GroupId groupId, GroupRoleStatus status) throws DataOperationException;
 
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +32,14 @@ import com.ajah.user.role.GroupRoleStatus;
 import com.ajah.user.role.GroupRoleType;
 import com.ajah.user.role.RoleId;
 
+import lombok.extern.java.Log;
+
 /**
  * Manages data operations for {@link GroupRole}.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 @Service
@@ -208,6 +210,10 @@ public class GroupRoleManager {
 	 */
 	public int searchCount(String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
 		return this.groupRoleDao.searchCount(search, type, status);
+	}
+
+	public List<GroupRole> list(GroupId groupId, GroupRoleStatus status) throws DataOperationException {
+		return this.groupRoleDao.list(groupId, status);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -20,19 +20,21 @@ import com.ajah.util.IdentifiableEnum;
 /**
  * Valid types of Group entities.
  * 
- * @author Eric F. Savage <code@efsavage.com>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum GroupType implements IdentifiableEnum<String> {
 
 	/**
-	 * Standard.
+	 * Permissions.
 	 */
-	STANDARD("0", "std", "Standard", "Standard."),
+	PERMISSION("1", "permission", "Permission", "A group for assigning permissions via Roles."),
 	/**
-	 * Special.
+	 * Reports.
 	 */
-	SPECIAL("1", "spe", "Special", "Special.");
+	REPORT("2", "report", "Report", "A group for allowing access to ReportGroups.");
 
 	/**
 	 * Finds a GroupType that matches the id on id, name, or name().

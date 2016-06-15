@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,11 +17,17 @@ package com.ajah.user.group;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.util.Identifiable;
 
+import lombok.Data;
 
+/**
+ * A Group of Users. A user can belong to any number of groups.
+ * 
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="https://github.com/efsavage">github.com/efsavage</a>.
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ */
 @Data
 public class Group implements Identifiable<GroupId> {
 

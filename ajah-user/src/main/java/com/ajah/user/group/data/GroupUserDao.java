@@ -20,6 +20,7 @@ import java.util.List;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
+import com.ajah.user.UserId;
 import com.ajah.user.group.GroupUser;
 import com.ajah.user.group.GroupUserId;
 import com.ajah.user.group.GroupUserStatus;
@@ -84,5 +85,7 @@ public interface GroupUserDao extends AjahDao<GroupUserId, GroupUser> {
 	 *             If the query could not be executed.
 	 */
 	int searchCount(String search, GroupUserType type, GroupUserStatus status) throws DataOperationException;
+
+	List<GroupUser> list(UserId userId, GroupUserStatus status) throws DataOperationException;
 
 }
