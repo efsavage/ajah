@@ -21,8 +21,8 @@ import com.ajah.util.StringUtils;
 /**
  * An enum for known Mime types.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public enum AjahMimeType implements Identifiable<String> {
@@ -127,7 +127,10 @@ public enum AjahMimeType implements Identifiable<String> {
 	 * application/font-sfnt
 	 */
 	APPLICATION_TTF("application", "font-sfnt", false, "ttf"),
-
+	/**
+	 * Excel (XML)
+	 */
+	APPLICATION_XSLX("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet", false),
 	/**
 	 * Unknown
 	 */
