@@ -17,12 +17,15 @@ package com.ajah.user.role;
 
 import java.util.Date;
 
+import javax.persistence.Table;
+
 import lombok.Data;
 
 import com.ajah.user.group.GroupId;
 import com.ajah.util.Identifiable;
 
 @Data
+@Table(name = "group__role")
 public class GroupRole implements Identifiable<GroupRoleId> {
 
 	private GroupRoleId id;
