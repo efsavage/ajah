@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.ajah.user.audit;
 
+import com.ajah.user.UserSetting;
 import com.ajah.util.IdentifiableEnum;
 
 /**
@@ -40,7 +41,11 @@ public enum UserAuditField implements IdentifiableEnum<String> {
 	/**
 	 * Type.
 	 */
-	TYPE("3", "type", "Type", "Type.");
+	TYPE("3", "type", "Type", "Type."),
+	/**
+	 * A {@link UserSetting}.
+	 */
+	USER_SETTING("4", "user-setting", "User Setting", "User Setting.");
 
 	/**
 	 * Finds a UserAuditStatus that matches the id on id, name, or name().

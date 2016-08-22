@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2013-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -30,6 +30,9 @@ import com.ajah.user.UserSettingId;
 import com.ajah.user.UserSettingKey;
 import com.ajah.user.UserSettingStatus;
 import com.ajah.user.UserSettingType;
+import com.ajah.user.audit.UserAuditField;
+import com.ajah.user.audit.UserAuditType;
+import com.ajah.user.audit.data.UserAuditManager;
 import com.ajah.util.compare.CompareUtils;
 
 /**
@@ -43,6 +46,9 @@ public class UserSettingManager {
 
 	@Autowired
 	private UserSettingDao userSettingDao;
+
+	@Autowired
+	private UserAuditManager userAuditManager;
 
 	/**
 	 * Returns a count of all records.
@@ -185,23 +191,33 @@ public class UserSettingManager {
 		return result;
 	}
 
-	public void set(final UserId userId, final String name, final boolean value) throws DataOperationException {
-		set(userId, name, String.valueOf(value));
+	public void set(final UserId userId, final String name, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
+		set(userId, name, value, staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final UserSettingKey key, final boolean value) throws DataOperationException {
-		set(userId, key.getName(), String.valueOf(value));
+	public void set(final UserId userId, final UserSettingKey key, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
+		set(userId, key.getName(), String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final UserSettingKey key, final String value) throws DataOperationException {
-		set(userId, key.getName(), value);
+	public void set(final UserId userId, final UserSettingKey key, final String value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
+		set(userId, key.getName(), value, staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final String name, final Boolean value) throws DataOperationException {
-		set(userId, name, value == null ? null : String.valueOf(value));
+	public void set(final UserId userId, final String name, final Boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
+		set(userId, name, value == null ? null : String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public UserSetting set(final UserId userId, final String name, final String value) throws DataOperationException {
+	public void set(final UserId userId, final String name, final long value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
+		set(userId, name, String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
+	}
+
+	public UserSetting set(final UserId userId, final String name, final String value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+			throws DataOperationException {
 		UserSetting userSetting = find(userId, name);
 		if (userSetting == null) {
 			userSetting = new UserSetting();
@@ -213,8 +229,11 @@ public class UserSettingManager {
 		if (CompareUtils.compare(value, userSetting.getValue(), true) == 0) {
 			return userSetting;
 		}
+		String oldValue = userSetting.getValue();
 		userSetting.setValue(value);
 		save(userSetting);
+		this.userAuditManager.create(userId, staffUserId, UserAuditField.USER_SETTING, oldValue, value, staffUserId == null ? UserAuditType.USER : UserAuditType.ADMIN, userComment, staffComment, ip,
+				headers);
 		return userSetting;
 	}
 
