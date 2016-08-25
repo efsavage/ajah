@@ -191,29 +191,29 @@ public class UserSettingManager {
 		return result;
 	}
 
-	public void set(final UserId userId, final String name, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+	public UserSetting set(final UserId userId, final String name, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		set(userId, name, value, staffUserId, userComment, staffComment, ip, headers);
+		return set(userId, name, value, staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final UserSettingKey key, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+	public UserSetting set(final UserId userId, final UserSettingKey key, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		set(userId, key.getName(), String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
+		return set(userId, key.getName(), String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final UserSettingKey key, final String value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+	public UserSetting set(final UserId userId, final UserSettingKey key, final String value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		set(userId, key.getName(), value, staffUserId, userComment, staffComment, ip, headers);
+		return set(userId, key.getName(), value, staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final String name, final Boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+	public UserSetting set(final UserId userId, final String name, final Boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		set(userId, name, value == null ? null : String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
+		return set(userId, name, value == null ? null : String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
-	public void set(final UserId userId, final String name, final long value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
+	public UserSetting set(final UserId userId, final String name, final long value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		set(userId, name, String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
+		return 	set(userId, name, String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
 	public UserSetting set(final UserId userId, final String name, final String value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
