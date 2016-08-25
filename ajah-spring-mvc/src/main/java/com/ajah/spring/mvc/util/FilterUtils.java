@@ -16,6 +16,7 @@
 package com.ajah.spring.mvc.util;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -121,6 +122,25 @@ public class FilterUtils {
 	 */
 	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext, final String urlPattern) {
 		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
+		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPattern);
+	}
+
+	/**
+	 * Convenience method for adding a filter to certain requests.
+	 * 
+	 * @see ServletContext#addFilter(String, Class)
+	 * @param filterClass
+	 *            The class of Filter to instantiate, required.
+	 * @param servletContext
+	 *            The servlet context of the application, required.
+	 * @param urlPattern
+	 *            The pattern of the URL this filter should be applied to.
+	 */
+	public static void add(final Class<? extends Filter> filterClass, final ServletContext servletContext, final String urlPattern, final Map<String, String> initParameters) {
+		final FilterRegistration.Dynamic reg = servletContext.addFilter(filterClass.getName(), filterClass);
+		if (initParameters != null && initParameters.size() > 0) {
+			reg.setInitParameters(initParameters);
+		}
 		reg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPattern);
 	}
 
