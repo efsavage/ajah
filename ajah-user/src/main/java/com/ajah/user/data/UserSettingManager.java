@@ -193,7 +193,7 @@ public class UserSettingManager {
 
 	public UserSetting set(final UserId userId, final String name, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		return set(userId, name, value, staffUserId, userComment, staffComment, ip, headers);
+		return set(userId, name, String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
 	public UserSetting set(final UserId userId, final UserSettingKey key, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
