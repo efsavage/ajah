@@ -44,7 +44,15 @@ public enum LogInType implements IdentifiableEnum<String> {
 	/**
 	 * API Token.
 	 */
-	API_TOKEN("5", "apitoken", "API Token", "Login was done by API token.");
+	API_TOKEN("5", "apitoken", "API Token", "Login was done by API token."),
+	/**
+	 * HTTP.
+	 */
+	HTTP("6", "http", "HTTP", "Login was done by HTTP authentication header."),
+	/**
+	 * Bypass.
+	 */
+	BYPASS("7", "bypass", "Bypass", "Login was bypassed by some application-specific mechanism.");
 
 	/**
 	 * Finds a LogInType that matches the id on id, name, or name().
