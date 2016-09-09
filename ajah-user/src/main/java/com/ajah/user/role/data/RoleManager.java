@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +29,8 @@ import com.ajah.user.role.Role;
 import com.ajah.user.role.RoleId;
 import com.ajah.user.role.RoleStatus;
 import com.ajah.user.role.RoleType;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link Role}.
@@ -138,9 +138,10 @@ public class RoleManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<Role> create(String name, RoleType type, RoleStatus status) throws DataOperationException {
+	public DataOperationResult<Role> create(String id, String name, String description, RoleType type, RoleStatus status) throws DataOperationException {
 		Role role = new Role();
 		role.setName(name);
+		role.setDescription(description);
 		role.setType(type);
 		role.setStatus(status);
 		DataOperationResult<Role> result = save(role);
