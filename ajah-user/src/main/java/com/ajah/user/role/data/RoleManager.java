@@ -149,20 +149,39 @@ public class RoleManager {
 	}
 
 	/**
-	 * Marks the entity as {@link RoleStatus#DELETED}.
+	 * Marks the entity as {@link RoleStatus#INACTIVE}.
 	 * 
 	 * @param roleId
-	 *            The ID of the role to delete.
-	 * @return The result of the deletion, will not include the new role at
+	 *            The ID of the role to deactivate.
+	 * @return The result of the operation , will not include the new role at
 	 *         {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 * @throws RoleNotFoundException
 	 *             If the ID specified did not match any roles.
 	 */
-	public DataOperationResult<Role> delete(RoleId roleId) throws DataOperationException, RoleNotFoundException {
+	public DataOperationResult<Role> deactivate(RoleId roleId) throws DataOperationException, RoleNotFoundException {
 		Role role = load(roleId);
-		role.setStatus(RoleStatus.DELETED);
+		role.setStatus(RoleStatus.INACTIVE);
+		DataOperationResult<Role> result = save(role);
+		return result;
+	}
+
+	/**
+	 * Marks the entity as {@link RoleStatus#ACTIVE}.
+	 * 
+	 * @param roleId
+	 *            The ID of the role to activate.
+	 * @return The result of the operation , will not include the new role at
+	 *         {@link DataOperationResult#getEntity()}.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 * @throws RoleNotFoundException
+	 *             If the ID specified did not match any roles.
+	 */
+	public DataOperationResult<Role> activate(RoleId roleId) throws DataOperationException, RoleNotFoundException {
+		Role role = load(roleId);
+		role.setStatus(RoleStatus.INACTIVE);
 		DataOperationResult<Role> result = save(role);
 		return result;
 	}

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -26,21 +26,20 @@ import com.ajah.util.IdentifiableEnum;
 public enum RoleStatus implements IdentifiableEnum<String> {
 
 	/**
-	 * Inactive.
+	 * Inactive. This effectively disables the role for all users/groups, even
+	 * those to whom it is assigned. This can work as a feature flag to turn
+	 * features on or off without redoing permission assignments.
 	 */
 	INACTIVE("0", "ina", "Inactive", "Inactive.", false, false, false),
 	/**
-	 * Active.
+	 * Active. The role is in use.
 	 */
 	ACTIVE("1", "act", "Active", "Active.", true, false, false),
 	/**
-	 * Error.
+	 * Unused. The role is defined but not used in the current configuration.
+	 * Mark roles as this status to hide them.
 	 */
-	ERROR("-2", "err", "Error", "Error.", false, true, false),
-	/**
-	 * Deleted.
-	 */
-	DELETED("-1", "del", "Deleted", "Deleted.", false, false, true);
+	UNUSED("-1", "unused", "Unused", "Unused.", true, false, false);
 
 	/**
 	 * Finds a RoleStatus that matches the id on id, name, or name().
