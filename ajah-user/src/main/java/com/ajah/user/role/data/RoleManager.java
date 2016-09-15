@@ -127,6 +127,8 @@ public class RoleManager {
 	/**
 	 * Creates a new {@link Role} with the given properties.
 	 * 
+	 * @param id
+	 *            The unique ID of the role, required.
 	 * @param name
 	 *            The name of the role, required.
 	 * @param type
@@ -140,6 +142,7 @@ public class RoleManager {
 	 */
 	public DataOperationResult<Role> create(String id, String name, String description, RoleType type, RoleStatus status) throws DataOperationException {
 		Role role = new Role();
+		role.setId(new RoleId(id));
 		role.setName(name);
 		role.setDescription(description);
 		role.setType(type);
@@ -227,6 +230,19 @@ public class RoleManager {
 	 */
 	public int searchCount(String search, RoleType type, RoleStatus status) throws DataOperationException {
 		return this.roleDao.searchCount(search, type, status);
+	}
+
+	/**
+	 * Finds an {@link Role} by it's ID, returning null if it does not exist.
+	 * 
+	 * @param roleId
+	 *            The ID to load, required.
+	 * @return The matching role, if found. May return null.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public Role find(RoleId roleId) throws DataOperationException {
+		return this.roleDao.load(roleId);
 	}
 
 }
