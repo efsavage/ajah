@@ -24,6 +24,7 @@ import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
+import com.ajah.user.group.GroupId;
 import com.ajah.user.group.GroupUser;
 import com.ajah.user.group.GroupUserId;
 import com.ajah.user.group.GroupUserStatus;
@@ -42,8 +43,11 @@ import com.ajah.util.StringUtils;
 public class GroupUserDaoImpl extends AbstractAjahDao<GroupUserId, GroupUser, GroupUser> implements GroupUserDao {
 
 	@Override
-	public List<GroupUser> list(String search, GroupUserType type, GroupUserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
+	public List<GroupUser> list(GroupId groupId, String search, GroupUserType type, GroupUserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (groupId != null) {
+			criteria.eq(groupId);
+		}
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -61,8 +65,11 @@ public class GroupUserDaoImpl extends AbstractAjahDao<GroupUserId, GroupUser, Gr
 	 *      com.ajah.user.group.GroupUserStatus)
 	 */
 	@Override
-	public int count(GroupUserType type, GroupUserStatus status) throws DataOperationException {
+	public int count(GroupId groupId, GroupUserType type, GroupUserStatus status) throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (groupId != null) {
+			criteria.eq(groupId);
+		}
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -77,8 +84,11 @@ public class GroupUserDaoImpl extends AbstractAjahDao<GroupUserId, GroupUser, Gr
 	 *      GroupUserType, GroupUserStatus)
 	 */
 	@Override
-	public int searchCount(String search, GroupUserType type, GroupUserStatus status) throws DataOperationException {
+	public int searchCount(GroupId groupId, String search, GroupUserType type, GroupUserStatus status) throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (groupId != null) {
+			criteria.eq(groupId);
+		}
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
 		}

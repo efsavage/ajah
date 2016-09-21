@@ -105,6 +105,8 @@ public class GroupUserManager {
 	/**
 	 * Returns a list of {@link GroupUser}s that match the specified criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search field, optional.
 	 * @param type
@@ -124,8 +126,8 @@ public class GroupUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<GroupUser> list(String search, GroupUserType type, GroupUserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.groupUserDao.list(search, type, status, sort, order, page, count);
+	public List<GroupUser> list(GroupId groupId, String search, GroupUserType type, GroupUserStatus status, String sort, Order order, int page, int count) throws DataOperationException {
+		return this.groupUserDao.list(groupId, search, type, status, sort, order, page, count);
 	}
 
 	/**
@@ -172,16 +174,20 @@ public class GroupUserManager {
 	/**
 	 * Returns a count of all records.
 	 * 
+	 * @param groupId
+	 * 
 	 * @return Count of all records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count() throws DataOperationException {
-		return count(null, null);
+	public int count(GroupId groupId) throws DataOperationException {
+		return count(groupId, null, null);
 	}
 
 	/**
 	 * Counts the records available that match the criteria.
+	 * 
+	 * @param groupId
 	 * 
 	 * @param type
 	 *            The groupUser type to limit to, optional.
@@ -191,12 +197,14 @@ public class GroupUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count(final GroupUserType type, final GroupUserStatus status) throws DataOperationException {
-		return this.groupUserDao.count(type, status);
+	public int count(GroupId groupId, final GroupUserType type, final GroupUserStatus status) throws DataOperationException {
+		return this.groupUserDao.count(groupId, type, status);
 	}
 
 	/**
 	 * Counts the records available that match the search criteria.
+	 * 
+	 * @param groupId
 	 * 
 	 * @param search
 	 *            The search query.
@@ -208,8 +216,8 @@ public class GroupUserManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search, GroupUserType type, GroupUserStatus status) throws DataOperationException {
-		return this.groupUserDao.searchCount(search, type, status);
+	public int searchCount(GroupId groupId, String search, GroupUserType type, GroupUserStatus status) throws DataOperationException {
+		return this.groupUserDao.searchCount(groupId, search, type, status);
 	}
 
 	public List<GroupUser> list(UserId userId, GroupUserStatus status) throws DataOperationException {

@@ -39,6 +39,8 @@ public interface GroupRoleDao extends AjahDao<GroupRoleId, GroupRole> {
 	/**
 	 * Returns a list of {@link GroupRole}s that match the specified criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search field, optional.
 	 * @param type
@@ -58,11 +60,13 @@ public interface GroupRoleDao extends AjahDao<GroupRoleId, GroupRole> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<GroupRole> list(String search, GroupRoleType type, GroupRoleStatus status, String sort, Order order, int page, int count) throws DataOperationException;
+	List<GroupRole> list(GroupId groupId, String search, GroupRoleType type, GroupRoleStatus status, String sort, Order order, int page, int count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param type
 	 *            The groupRole type to limit to, optional.
 	 * @param status
@@ -71,11 +75,13 @@ public interface GroupRoleDao extends AjahDao<GroupRoleId, GroupRole> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int count(GroupRoleType type, GroupRoleStatus status) throws DataOperationException;
+	int count(GroupId groupId, GroupRoleType type, GroupRoleStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search query.
 	 * @param type
@@ -86,7 +92,7 @@ public interface GroupRoleDao extends AjahDao<GroupRoleId, GroupRole> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException;
+	int searchCount(GroupId groupId, String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException;
 
 	List<GroupRole> list(GroupId groupId, GroupRoleStatus status) throws DataOperationException;
 

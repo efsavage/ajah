@@ -42,8 +42,11 @@ import com.ajah.util.StringUtils;
 public class GroupRoleDaoImpl extends AbstractAjahDao<GroupRoleId, GroupRole, GroupRole> implements GroupRoleDao {
 
 	@Override
-	public List<GroupRole> list(String search, GroupRoleType type, GroupRoleStatus status, String sort, Order order, int page, int count) throws DataOperationException {
+	public List<GroupRole> list(GroupId groupId, String search, GroupRoleType type, GroupRoleStatus status, String sort, Order order, int page, int count) throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (groupId != null) {
+			criteria.eq(groupId);
+		}
 		if (!StringUtils.isBlank(search)) {
 			final String pattern = "%" + search.replaceAll("\\*", "%") + "%";
 			criteria.like("name", pattern);
@@ -65,8 +68,11 @@ public class GroupRoleDaoImpl extends AbstractAjahDao<GroupRoleId, GroupRole, Gr
 	 *      com.ajah.user.role.GroupRoleStatus)
 	 */
 	@Override
-	public int count(GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
+	public int count(GroupId groupId, GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (groupId != null) {
+			criteria.eq(groupId);
+		}
 		if (type != null) {
 			criteria.eq("type", type);
 		}
@@ -81,8 +87,11 @@ public class GroupRoleDaoImpl extends AbstractAjahDao<GroupRoleId, GroupRole, Gr
 	 *      GroupRoleType, GroupRoleStatus)
 	 */
 	@Override
-	public int searchCount(String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
+	public int searchCount(GroupId groupId, String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
 		Criteria criteria = new Criteria();
+		if (groupId != null) {
+			criteria.eq(groupId);
+		}
 		if (!StringUtils.isBlank(search)) {
 			criteria.like("name", "%" + search.replaceAll("\\*", "%") + "%");
 		}

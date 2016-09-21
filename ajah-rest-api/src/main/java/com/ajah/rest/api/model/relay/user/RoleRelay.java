@@ -35,5 +35,6 @@ public class RoleRelay {
 	public IdentifiableEnumRelay<String> status;
 	public IdentifiableEnumRelay<String> type;
 	public Date created;
+	public String description;
 
 }

@@ -18,11 +18,12 @@ package com.ajah.user.role;
 import java.util.Date;
 
 import javax.persistence.Table;
-
-import lombok.Data;
+import javax.persistence.Transient;
 
 import com.ajah.user.group.GroupId;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 @Data
 @Table(name = "group__role")
@@ -35,4 +36,7 @@ public class GroupRole implements Identifiable<GroupRoleId> {
 	private GroupRoleType type;
 	private Date created;
 
+	@Transient
+	private Role role;
+	
 }

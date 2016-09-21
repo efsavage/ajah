@@ -21,6 +21,7 @@ import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.UserId;
+import com.ajah.user.group.GroupId;
 import com.ajah.user.group.GroupUser;
 import com.ajah.user.group.GroupUserId;
 import com.ajah.user.group.GroupUserStatus;
@@ -37,6 +38,8 @@ public interface GroupUserDao extends AjahDao<GroupUserId, GroupUser> {
 	/**
 	 * Returns a list of {@link GroupUser}s that match the specified criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search field, optional.
 	 * @param type
@@ -56,11 +59,13 @@ public interface GroupUserDao extends AjahDao<GroupUserId, GroupUser> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	List<GroupUser> list(String search, GroupUserType type, GroupUserStatus status, String sort, Order order, int page, int count) throws DataOperationException;
+	List<GroupUser> list(GroupId groupId, String search, GroupUserType type, GroupUserStatus status, String sort, Order order, int page, int count) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param type
 	 *            The groupUser type to limit to, optional.
 	 * @param status
@@ -69,11 +74,13 @@ public interface GroupUserDao extends AjahDao<GroupUserId, GroupUser> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int count(GroupUserType type, GroupUserStatus status) throws DataOperationException;
+	int count(GroupId groupId, GroupUserType type, GroupUserStatus status) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the search criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search query.
 	 * @param type
@@ -84,7 +91,7 @@ public interface GroupUserDao extends AjahDao<GroupUserId, GroupUser> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	int searchCount(String search, GroupUserType type, GroupUserStatus status) throws DataOperationException;
+	int searchCount(GroupId groupId, String search, GroupUserType type, GroupUserStatus status) throws DataOperationException;
 
 	List<GroupUser> list(UserId userId, GroupUserStatus status) throws DataOperationException;
 

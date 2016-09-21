@@ -105,6 +105,8 @@ public class GroupRoleManager {
 	/**
 	 * Returns a list of {@link GroupRole}s that match the specified criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search field, optional.
 	 * @param type
@@ -124,8 +126,8 @@ public class GroupRoleManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public List<GroupRole> list(String search, GroupRoleType type, GroupRoleStatus status, String sort, Order order, int page, int count) throws DataOperationException {
-		return this.groupRoleDao.list(search, type, status, sort, order, page, count);
+	public List<GroupRole> list(GroupId groupId, String search, GroupRoleType type, GroupRoleStatus status, String sort, Order order, int page, int count) throws DataOperationException {
+		return this.groupRoleDao.list(groupId, search, type, status, sort, order, page, count);
 	}
 
 	/**
@@ -171,18 +173,20 @@ public class GroupRoleManager {
 
 	/**
 	 * Returns a count of all records.
+	 * @param groupId 
 	 * 
 	 * @return Count of all records.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count() throws DataOperationException {
-		return count(null, null);
+	public int count(GroupId groupId) throws DataOperationException {
+		return count(groupId,null, null);
 	}
 
 	/**
 	 * Counts the records available that match the criteria.
-	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param type
 	 *            The groupRole type to limit to, optional.
 	 * @param status
@@ -191,13 +195,15 @@ public class GroupRoleManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int count(final GroupRoleType type, final GroupRoleStatus status) throws DataOperationException {
-		return this.groupRoleDao.count(type, status);
+	public int count(GroupId groupId, final GroupRoleType type, final GroupRoleStatus status) throws DataOperationException {
+		return this.groupRoleDao.count(groupId,type, status);
 	}
 
 	/**
 	 * Counts the records available that match the search criteria.
 	 * 
+	 * @param groupId
+	 *            The group to filter on, optional.
 	 * @param search
 	 *            The search query.
 	 * @param type
@@ -208,8 +214,8 @@ public class GroupRoleManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public int searchCount(String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
-		return this.groupRoleDao.searchCount(search, type, status);
+	public int searchCount(GroupId groupId, String search, GroupRoleType type, GroupRoleStatus status) throws DataOperationException {
+		return this.groupRoleDao.searchCount(groupId, search, type, status);
 	}
 
 	public List<GroupRole> list(GroupId groupId, GroupRoleStatus status) throws DataOperationException {

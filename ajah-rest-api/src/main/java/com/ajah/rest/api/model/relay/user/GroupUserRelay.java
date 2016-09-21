@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * Simplified version of a GroupUser for easier serialization/deserialization.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @JsonInclude(Include.NON_NULL)
 public class GroupUserRelay {
@@ -35,5 +35,6 @@ public class GroupUserRelay {
 	public IdentifiableEnumRelay<String> status;
 	public IdentifiableEnumRelay<String> type;
 	public Date created;
+	public UserRelay user;
 
 }
