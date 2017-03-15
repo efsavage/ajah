@@ -40,10 +40,10 @@ public class UserSetting implements Identifiable<UserSettingId> {
 	 * @return The value as a boolean, or the defaultValue.
 	 */
 	public boolean getBoolean(final boolean defaultValue) {
-		if ("true".equals(this.value)) {
-			return true;
+		if(StringUtils.isBlank(this.value)){
+			return defaultValue;
 		}
-		return defaultValue;
+		return "true".equals(this.value);
 	}
 
 	/**
