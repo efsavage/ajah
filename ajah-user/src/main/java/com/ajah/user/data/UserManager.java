@@ -95,7 +95,7 @@ public class UserManager {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.ACTIVE);
 		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.ACTIVE.getId(), type, userComment, staffComment, ip, headers);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, null, oldStatus.getId(), UserStatus.ACTIVE.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -119,7 +119,7 @@ public class UserManager {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.BLOCKED);
 		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.BLOCKED.getId(), type, userComment, staffComment, ip, headers);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, null, oldStatus.getId(), UserStatus.BLOCKED.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -143,7 +143,8 @@ public class UserManager {
 			throws DataOperationException, CryptoException {
 		final Password oldPassword = this.userDao.getPassword(userId);
 		this.userDao.updatePassword(userId, password);
-		this.userAuditManager.create(userId, staffUserId, UserAuditField.PASSWORD, oldPassword.toString(), password.toString(), type, userComment, staffComment, ip, headers);
+		this.userAuditManager.create(userId, staffUserId, UserAuditField.PASSWORD, password.getClass().getSimpleName(), oldPassword.toString(), password.toString(), type, userComment, staffComment,
+				ip, headers);
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class UserManager {
 			throws DataOperationException {
 		final String oldUsername = this.userDao.getUsername(userId);
 		this.userDao.updateUsername(userId, username);
-		this.userAuditManager.create(userId, staffUserId, UserAuditField.USERNAME, oldUsername, username, type, userComment, staffComment, ip, headers);
+		this.userAuditManager.create(userId, staffUserId, UserAuditField.USERNAME, null, oldUsername, username, type, userComment, staffComment, ip, headers);
 	}
 
 	/**
@@ -251,7 +252,7 @@ public class UserManager {
 		user.setStatusReason(statusReason);
 		this.userDao.update(user);
 		log.info("User " + user.getUsername() + " is now status " + user.getStatus() + " (" + user.getStatusReason() + ")");
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.INACTIVE.getId(), type, userComment, staffComment, ip, headers);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, null, oldStatus.getId(), UserStatus.INACTIVE.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -272,7 +273,7 @@ public class UserManager {
 		final UserStatus oldStatus = this.userDao.getStatus(user.getId());
 		user.setStatus(UserStatus.DISABLED);
 		user.setStatusReason(statusReason);
-		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, oldStatus.getId(), UserStatus.DISABLED.getId(), type, userComment, staffComment, ip, headers);
+		this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.STATUS, null, oldStatus.getId(), UserStatus.DISABLED.getId(), type, userComment, staffComment, ip, headers);
 		this.userDao.update(user);
 	}
 
@@ -498,7 +499,7 @@ public class UserManager {
 	 */
 	public void convertToTest(User user, final UserId staffUserId, UserAuditType type, String userComment, String staffComment, String ip, String headers) throws DataOperationException {
 		if (user.getType() == UserType.NORMAL) {
-			this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.TYPE, user.getType().getId(), UserType.TEST.getId(), type, userComment, staffComment, ip, headers);
+			this.userAuditManager.create(user.getId(), staffUserId, UserAuditField.TYPE, null, user.getType().getId(), UserType.TEST.getId(), type, userComment, staffComment, ip, headers);
 			user.setType(UserType.TEST);
 			this.userDao.update(user);
 		}

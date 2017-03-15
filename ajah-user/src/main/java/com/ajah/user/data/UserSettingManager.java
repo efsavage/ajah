@@ -213,7 +213,7 @@ public class UserSettingManager {
 
 	public UserSetting set(final UserId userId, final String name, final long value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
 			throws DataOperationException {
-		return 	set(userId, name, String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
+		return set(userId, name, String.valueOf(value), staffUserId, userComment, staffComment, ip, headers);
 	}
 
 	public UserSetting set(final UserId userId, final String name, final String value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)
@@ -232,8 +232,8 @@ public class UserSettingManager {
 		String oldValue = userSetting.getValue();
 		userSetting.setValue(value);
 		save(userSetting);
-		this.userAuditManager.create(userId, staffUserId, UserAuditField.USER_SETTING, oldValue, value, staffUserId == null ? UserAuditType.USER : UserAuditType.ADMIN, userComment, staffComment, ip,
-				headers);
+		this.userAuditManager.create(userId, staffUserId, UserAuditField.USER_SETTING, name, oldValue, value, staffUserId == null ? UserAuditType.USER : UserAuditType.ADMIN, userComment, staffComment,
+				ip, headers);
 		return userSetting;
 	}
 
@@ -265,6 +265,24 @@ public class UserSettingManager {
 	 */
 	public List<UserSetting> list(UserSettingKey key, String value) throws DataOperationException {
 		return this.userSettingDao.list(key, value);
+	}
+
+	/**
+	 * Simple signature that contains no provenance, intended for use only by
+	 * internal/automatic mechanisms.
+	 * 
+	 * @param userId
+	 *            The ID of the user to store the value for, required.
+	 * @param key
+	 *            The key of the user setting, required.
+	 * @param value
+	 *            The value of the user setting, optional.
+	 * @return The new or updated user setting.
+	 * @throws DataOperationException
+	 *             If the query could not be executed.
+	 */
+	public UserSetting set(UserId userId, UserSettingKey key, String value) throws DataOperationException {
+		return set(userId, key, value, null, null, null, null, null);
 	}
 
 }

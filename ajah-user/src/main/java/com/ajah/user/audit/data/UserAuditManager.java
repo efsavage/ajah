@@ -78,6 +78,9 @@ public class UserAuditManager {
 	 *            The ID of the user to create an audit for.
 	 * @param field
 	 *            The name of the userAudit, required.
+	 * @param fieldInfo
+	 *            Any additional information about the field being set, such as
+	 *            a password algorithm or a user setting key.
 	 * @param oldValue
 	 *            The old value.
 	 * @param newValue
@@ -89,12 +92,13 @@ public class UserAuditManager {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public DataOperationResult<UserAudit> create(final UserId userId, final UserId staffUserId, final UserAuditField field, final String oldValue, final String newValue, final UserAuditType type,
-			String userComment, String staffComment, final String ip, final String headers) throws DataOperationException {
+	public DataOperationResult<UserAudit> create(final UserId userId, final UserId staffUserId, final UserAuditField field, final String fieldInfo, final String oldValue, final String newValue,
+			final UserAuditType type, String userComment, String staffComment, final String ip, final String headers) throws DataOperationException {
 		final UserAudit userAudit = new UserAudit();
 		userAudit.setUserId(userId);
 		userAudit.setStaffUserId(staffUserId);
 		userAudit.setField(field);
+		userAudit.setFieldInfo(fieldInfo);
 		userAudit.setOldValue(oldValue);
 		userAudit.setNewValue(newValue);
 		userAudit.setType(type);

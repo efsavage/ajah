@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2014-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ import java.util.Date;
 
 import javax.persistence.Transient;
 
-import lombok.Data;
-
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 @Data
 public class UserAudit implements Identifiable<UserAuditId> {
@@ -39,6 +39,7 @@ public class UserAudit implements Identifiable<UserAuditId> {
 	 */
 	private UserId staffUserId;
 	private UserAuditField field;
+	private String fieldInfo;
 	private String oldValue;
 	private String newValue;
 	private UserAuditType type;
