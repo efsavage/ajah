@@ -17,6 +17,7 @@ package com.ajah.user.group;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -30,6 +31,7 @@ import lombok.Data;
 @Table(name = "group__user")
 public class GroupUser implements Identifiable<GroupUserId> {
 
+	@GeneratedValue
 	private GroupUserId id;
 	private GroupId groupId;
 	private UserId userId;
@@ -39,5 +41,5 @@ public class GroupUser implements Identifiable<GroupUserId> {
 
 	@Transient
 	private User user;
-	
+
 }
