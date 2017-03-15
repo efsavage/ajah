@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015 Eric F. Savage, code@efsavage.com
+ *  Copyright 2015-2016 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import lombok.Getter;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -32,9 +30,17 @@ import org.apache.http.util.EntityUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.ToStringable;
 
+import lombok.Getter;
+
 public class SimplePost {
 
 	private CloseableHttpClient client;
+
+	@Getter
+	private int statusCode;
+
+	@Getter
+	private String statusReason;
 
 	@Getter
 	private String host;
@@ -44,6 +50,11 @@ public class SimplePost {
 
 	@Getter
 	private ArrayList<NameValuePair> params;
+
+	@Getter
+	private ArrayList<NameValuePair> headers;
+
+	private String responseAsString = null;
 
 	public SimplePost(CloseableHttpClient client) {
 		this.client = client;
@@ -57,15 +68,26 @@ public class SimplePost {
 	}
 
 	public String getResponseAsString() throws IOException {
+		if (responseAsString != null) {
+			return responseAsString;
+		}
 		HttpPost post = new HttpPost(this.host + this.path);
 		if (this.params != null) {
 			post.setEntity(new UrlEncodedFormEntity(this.params));
 		}
+		if (this.headers != null) {
+			for (NameValuePair header : headers) {
+				post.setHeader(header.getName(), header.getValue());
+			}
+		}
 		try (final CloseableHttpResponse response = this.client.execute(post)) {
+			statusCode = response.getStatusLine().getStatusCode();
+			statusReason = response.getStatusLine().getReasonPhrase();
 			final String string = EntityUtils.toString(response.getEntity());
 			EntityUtils.consumeQuietly(response.getEntity());
-			return string;
+			responseAsString = string;
 		}
+		return responseAsString;
 	}
 
 	/**
@@ -111,6 +133,13 @@ public class SimplePost {
 		} else {
 			addParam(name, (String) null);
 		}
+	}
+
+	public void addHeader(String name, String value) {
+		if (this.headers == null) {
+			this.headers = new ArrayList<>();
+		}
+		this.headers.add(new BasicNameValuePair(name, value));
 	}
 
 }
