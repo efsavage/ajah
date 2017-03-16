@@ -39,8 +39,8 @@ import com.ajah.util.AjahUtils;
 /**
  * Utilities for basic file operations.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class FileUtils {
 
@@ -373,7 +373,9 @@ public class FileUtils {
 			log.fine(file.getAbsolutePath() + " exists and overwrite is false, aborting");
 			return 0;
 		}
-		file.getParentFile().mkdirs();
+		if (file.getParentFile() != null) {
+			file.getParentFile().mkdirs();
+		}
 		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
 			out.write(string.getBytes(UTF8));
 			log.fine("Wrote " + string.length() + " bytes");
