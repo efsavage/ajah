@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Eric F. Savage, code@efsavage.com
+ *  Copyright 2011-2017 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,16 +15,24 @@
  */
 package com.ajah.html.element.head;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ajah.css.CssRule;
+import com.ajah.html.element.AbstractNestableHtmlCoreElement;
+import com.ajah.html.element.Style;
+import com.ajah.util.CollectionUtils;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import com.ajah.html.element.AbstractNestableHtmlCoreElement;
 
 /**
  * head element
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 
@@ -33,6 +41,8 @@ import com.ajah.html.element.AbstractNestableHtmlCoreElement;
 public class Head extends AbstractNestableHtmlCoreElement<Head> {
 
 	private String titleTag;
+	private List<CssRule> cssRules = null;
+	private Style styleChild = null;
 
 	/**
 	 * Returns "head"
@@ -47,6 +57,41 @@ public class Head extends AbstractNestableHtmlCoreElement<Head> {
 	@Override
 	public Head getThis() {
 		return this;
+	}
+
+	@Override
+	protected void renderChildren(final Writer out, final int depth) throws IOException {
+		if (!CollectionUtils.isEmpty(cssRules)) {
+			if (styleChild == null) {
+				StringBuilder styleBody = new StringBuilder();
+				for (CssRule cssRule : cssRules) {
+					styleBody.append(cssRule.getRaw());
+					styleBody.append("\r\n");
+				}
+				styleChild = new Style();
+				styleChild.setText(styleBody.toString());
+				add(styleChild);
+			}
+		}
+		super.renderChildren(out, depth);
+	}
+
+	/**
+	 * Adds a new CSS declaration to the page.
+	 * 
+	 * @param selector
+	 *            The selector to add a style for.
+	 * @param property
+	 *            The CSS property to to add/set.
+	 * @param value
+	 *            The value of the CSS property to to add/set.
+	 */
+	public void css(String selector, String property, String value) {
+		if (this.cssRules == null) {
+			this.cssRules = new ArrayList<>();
+		}
+		CssRule cssRule = new CssRule(selector + " { " + property + ": " + value + "}", null);
+		this.cssRules.add(cssRule);
 	}
 
 }

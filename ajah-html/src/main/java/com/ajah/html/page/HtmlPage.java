@@ -1,5 +1,5 @@
 /*
- *  Copyright 2012-2014 Eric F. Savage, code@efsavage.com
+ *  Copyright 2012-2017 Eric F. Savage, code@efsavage.com
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ import com.ajah.util.AjahUtils;
  * This is a helper object that adds convenience methods for constructing an
  * &lt;html> element.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class HtmlPage {
@@ -159,6 +159,20 @@ public class HtmlPage {
 	public HtmlPage title(final String title) {
 		this.head.add(new Title(title));
 		return this;
+	}
+
+	/**
+	 * Adds a new CSS declaration to the page.
+	 * 
+	 * @param selector
+	 *            The selector to add a style for.
+	 * @param property
+	 *            The CSS property to to add/set.
+	 * @param value
+	 *            The value of the CSS property to to add/set.
+	 */
+	public void css(String selector, String property, String value) {
+		this.head.css(selector, property, value);
 	}
 
 }
