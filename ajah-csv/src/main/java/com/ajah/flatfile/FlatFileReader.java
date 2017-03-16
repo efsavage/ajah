@@ -39,8 +39,8 @@ import com.ajah.util.StringUtils;
 /**
  * Reads a flat data file into a structured iterator.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterator<FlatFileRow> {
@@ -48,6 +48,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	private final BufferedReader reader;
 	@Getter
 	private final List<FlatFileColumn> columns = new ArrayList<>();
+	private int columnCount = 0;
 	private final Map<String, FlatFileColumn> map = new HashMap<>();
 	private FlatFileRow row = null;
 	@Getter
@@ -124,6 +125,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		final FlatFileColumn column = new FlatFileColumn(name, null, false);
 		this.columns.add(column);
 		this.map.put(column.getName().trim(), column);
+		this.columnCount = this.columns.size();
 		log.fine("Created column \"" + name + "\"");
 	}
 
@@ -136,12 +138,13 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 		log.fine("Adding columns");
 		switch (this.format) {
 		case CSV: {
-			if (header.contains("\"")) {
-				throw new UnsupportedOperationException("Header contains double quote: " + header);
-			}
-			final String[] names = header.split(",");
+			final String[] names = header.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 			for (final String name : names) {
-				addColumn(name);
+				if (name.matches("\".*\"")) {
+					addColumn(name.substring(1, name.length() - 1));
+				} else {
+					addColumn(name);
+				}
 			}
 			break;
 		}
@@ -214,7 +217,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 				throw new UnsupportedOperationException("Line contains double quote: " + line);
 			}
 			final String[] values = line.split(",");
-			for (int i = 0; i < values.length; i++) {
+			for (int i = 0; i < values.length && i < columnCount; i++) {
 				if (StringUtils.isBlank(values[i])) {
 					this.row.set(this.columns.get(i).getName(), "");
 				} else if (values[i].charAt(0) == '"' && values[i].charAt(values[i].length() - 1) == '"') {
@@ -254,7 +257,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 * @throws MissingColumnException
 	 *             Thrown if columns are missing.
 	 */
-	public void require(final String[] requiredColumns) throws MissingColumnException {
+	public void require(final String... requiredColumns) throws MissingColumnException {
 		if (requiredColumns == null || requiredColumns.length < 1) {
 			return;
 		}
