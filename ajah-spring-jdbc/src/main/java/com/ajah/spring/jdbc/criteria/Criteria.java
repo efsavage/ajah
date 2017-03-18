@@ -169,9 +169,13 @@ public class Criteria extends AbstractCriteria<Criteria> {
 				}
 
 				where.append(tablePrefix);
-				where.append("`");
-				where.append(eq.getName());
-				where.append("`");
+				if (eq.getName().contains("`") || eq.getName().contains(".")) {
+					where.append(eq.getName());
+				} else {
+					where.append("`");
+					where.append(eq.getName());
+					where.append("`");
+				}
 				if (eq.getValue() == null) {
 					where.append(" IS NULL");
 				} else {

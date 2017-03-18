@@ -80,8 +80,8 @@ import com.ajah.util.reflect.ReflectionUtils;
 /**
  * This is a basic DAO object.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
  *            The primary key class. Note that {@link Object#toString()} will be
  *            invoked on this object.
@@ -942,14 +942,45 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * @since 1.0.1
 	 */
 	public List<T> list(final Criteria criteria) throws DataOperationException {
+		return list(criteria, null, null);
+	}
+
+	/**
+	 * Find a list of entities by non-unique match.
+	 * 
+	 * @param criteria
+	 *            The criteria object to use to build the query.
+	 * @return Entity if found, otherwise null.
+	 * @throws DataOperationException
+	 *             If an error occurs executing the query.
+	 * @since 1.0.1
+	 */
+	public List<T> list(final Criteria criteria, String[] additionalFields, String[] additionalTables) throws DataOperationException {
 		AjahUtils.requireParam(criteria, "criteria");
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + criteria.getWhere().getSql() + criteria.getOrderBySql() + criteria.getLimit().getSql();
+			final StringBuilder sql = new StringBuilder();
+			boolean tablePrefix = (additionalFields != null && additionalFields.length > 0) || (additionalTables != null && additionalTables.length > 0);
+			sql.append("SELECT " + getSelectFields(tablePrefix));
+
+			if (additionalFields != null && additionalFields.length > 0) {
+				sql.append(", " + StringUtils.join(additionalFields));
+			}
+
+			sql.append(" FROM `" + getTableName() + "`");
+
+			if (additionalTables != null && additionalTables.length > 0) {
+				sql.append(", " + StringUtils.join(additionalTables));
+			}
+
+			sql.append(criteria.getWhere().getSql());
+			sql.append(criteria.getOrderBySql());
+			sql.append(criteria.getLimit().getSql());
+
 			if (sqlLog.isLoggable(Level.FINEST)) {
-				sqlLog.finest(sql);
+				sqlLog.finest(sql.toString());
 				log.finest(criteria.getWhere().getValues().toString());
 			}
-			return getJdbcTemplate().query(sql, criteria.getWhere().getValues().toArray(), getRowMapper());
+			return getJdbcTemplate().query(sql.toString(), criteria.getWhere().getValues().toArray(), getRowMapper());
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return Collections.emptyList();
