@@ -269,9 +269,13 @@ public class Criteria extends AbstractCriteria<Criteria> {
 					where.append(" AND ");
 				}
 				where.append(tablePrefix);
-				where.append("`");
-				where.append(like.getName());
-				where.append("`");
+				if (like.getName().contains("`") || like.getName().contains(".")) {
+					where.append(like.getName());
+				} else {
+					where.append("`");
+					where.append(like.getName());
+					where.append("`");
+				}
 				where.append(" LIKE '");
 				where.append(like.getValue().replaceAll("'", "\\'"));
 				where.append("'");
