@@ -25,8 +25,8 @@ import javax.xml.bind.DatatypeConverter;
 import com.ajah.util.AjahUtils;
 
 /**
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * 
  */
 public class HashUtils {
@@ -135,6 +135,25 @@ public class HashUtils {
 		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
 		} catch (final UnsupportedEncodingException e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	/**
+	 * Creates an MD5 digest of string and returns it as a hexadecimal number.
+	 * 
+	 * @param string
+	 *            The string to digest.
+	 * @return The hexadecimal result of the digest.
+	 */
+	public static String md5Hex(final byte[] data) {
+		AjahUtils.requireParam(data, "data");
+		try {
+			final MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(data, 0, data.length);
+			final byte[] bytes = md.digest();
+			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
+		} catch (final NoSuchAlgorithmException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
