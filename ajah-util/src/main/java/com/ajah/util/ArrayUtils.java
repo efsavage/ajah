@@ -24,8 +24,8 @@ import lombok.extern.java.Log;
 /**
  * Utility methods for arrays.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 public class ArrayUtils {
@@ -346,6 +346,21 @@ public class ArrayUtils {
 			ints[i] = integers[i].intValue();
 		}
 		return ints;
+	}
+
+	/**
+	 * A shortcut to do sorting inline since the {@link Arrays#sort(Object[]))}
+	 * method returns void. Also requires a comparable object, which the Arrays
+	 * method does not.
+	 * 
+	 * @See {@link Arrays#sort(Object[]))}
+	 * @param array
+	 *            The array to sort.
+	 * @return The sorted array.
+	 */
+	public static <T extends Comparable<? super T>> T[] sort(T[] array) {
+		Arrays.sort(array);
+		return array;
 	}
 
 }
