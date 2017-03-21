@@ -46,8 +46,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
-import lombok.extern.java.Log;
-
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -76,6 +74,8 @@ import com.ajah.util.ToStringable;
 import com.ajah.util.data.Audited;
 import com.ajah.util.reflect.IntrospectionUtils;
 import com.ajah.util.reflect.ReflectionUtils;
+
+import lombok.extern.java.Log;
 
 /**
  * This is a basic DAO object.
@@ -223,8 +223,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (final PropertyDescriptor prop : props) {
-				log.finest("PropertyDescriptor: " + prop.getName() + ", Setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()) + " Getter: "
-						+ (prop.getReadMethod() == null ? null : prop.getReadMethod().getName()));
+				log.finest("PropertyDescriptor: " + prop.getName() + ", Setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()) + " Getter: " + (prop
+						.getReadMethod() == null ? null : prop.getReadMethod().getName()));
 			}
 			for (final String column : getColumns()) {
 				final Field field = this.colMap.get(column);
@@ -287,10 +287,25 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	}
 
 	protected int count(final Criteria criteria) throws DataOperationException {
+		return count(criteria, null);
+	}
+
+	protected int count(final Criteria criteria, final String[] additionalTables) throws DataOperationException {
 		try {
-			final String sql = "SELECT COUNT(*) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
-			sqlLog.finest(sql);
-			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class).intValue();
+			
+			boolean tablePrefix = (additionalTables != null && additionalTables.length > 0);
+			final StringBuilder sql = new StringBuilder();
+
+			sql.append("SELECT COUNT(*)");
+			sql.append(" FROM `" + getTableName() + "`");
+
+			if (additionalTables != null && additionalTables.length > 0) {
+				sql.append(", " + StringUtils.join(additionalTables));
+			}
+
+			sql.append(criteria.getWhere().getSql());
+			sqlLog.finest(sql.toString());
+			return getJdbcTemplate().queryForObject(sql.toString(), criteria.getWhere().getValues().toArray(), Integer.class).intValue();
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return 0;
@@ -452,8 +467,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			throw new IllegalArgumentException("Cannot use singular find method with a limit greater than 1 (" + limit.getCount() + ")");
 		}
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + where.getSql() + (StringUtils.isBlank(orderBySql) ? "" : orderBySql)
-					+ (limit == null ? " LIMIT 1" : " " + limit.getSql());
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + where.getSql() + (StringUtils.isBlank(orderBySql) ? "" : orderBySql) + (limit == null ? " LIMIT 1"
+					: " " + limit.getSql());
 			final Object[] values = where.getValues().toArray();
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
@@ -1073,8 +1088,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					orderBySql += " " + order.name();
 				}
 			}
-			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(additionalTables) + " WHERE " + where + orderBySql
-					+ (limit == null ? "" : limit.getSql());
+			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(additionalTables) + " WHERE " + where + orderBySql + (limit == null ? ""
+					: limit.getSql());
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
