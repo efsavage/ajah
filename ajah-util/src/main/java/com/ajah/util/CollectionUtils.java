@@ -39,8 +39,8 @@ import java.util.Map;
 /**
  * Utilities for dealing with members of the Collections API.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class CollectionUtils {
 
@@ -153,6 +153,20 @@ public class CollectionUtils {
 		if (collection == null) {
 			return Collections.emptyList();
 		}
+		return collection;
+	}
+
+	/**
+	 * A shortcut to do sorting inline since the {@link Collections#sort(List)}
+	 * and {@link List#sort(java.util.Comparator)} methods returns void.
+	 * 
+	 * @See {@link Collections#sort(List)}
+	 * @param collection
+	 *            The collection to sort.
+	 * @return The sorted collection.
+	 */
+	public static <T extends Comparable<? super T>> List<T> sort(List<T> collection) {
+		Collections.sort(collection);
 		return collection;
 	}
 
