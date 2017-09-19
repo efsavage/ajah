@@ -132,4 +132,18 @@ public class NumberUtils {
 		return new Integer(value);
 	}
 
+	/**
+	 * Unboxes an Integer, returning 0 if it is null
+	 * 
+	 * @param integer
+	 *            The integer object to unbox, can be null.
+	 * @return The unboxed primitive int.
+	 */
+	public static int safeUnbox(Integer integer) {
+		if (integer == null) {
+			return 0;
+		}
+		return integer.intValue();
+	}
+
 }
