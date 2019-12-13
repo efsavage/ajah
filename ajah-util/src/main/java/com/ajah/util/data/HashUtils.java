@@ -15,14 +15,13 @@
  */
 package com.ajah.util.data;
 
+import com.ajah.util.AjahUtils;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import javax.xml.bind.DatatypeConverter;
-
-import com.ajah.util.AjahUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>,

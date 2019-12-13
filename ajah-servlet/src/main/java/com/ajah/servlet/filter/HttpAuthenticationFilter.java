@@ -15,7 +15,11 @@
  */
 package com.ajah.servlet.filter;
 
-import java.io.IOException;
+import com.ajah.util.StringUtils;
+import com.ajah.util.config.Config;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.extern.java.Log;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,13 +27,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.extern.java.Log;
-
-import com.ajah.util.StringUtils;
-import com.ajah.util.config.Config;
+import java.io.IOException;
+import java.util.Base64;
 
 /**
  * A filter for easily adding HTTP authentication to a webapp (in addition to
@@ -55,8 +54,8 @@ public class HttpAuthenticationFilter extends BaseFilter {
 		// Get encoded user and password, comes after "BASIC "
 		final String userpassEncoded = auth.substring(6);
 		// Decode it, using any base 64 decoder
-		final sun.misc.BASE64Decoder dec = new sun.misc.BASE64Decoder();
-		final String userpassDecoded = new String(dec.decodeBuffer(userpassEncoded));
+		final Base64.Decoder dec = Base64.getDecoder();
+		final String userpassDecoded = new String(dec.decode(userpassEncoded));
 		return (username + ":" + password).equals(userpassDecoded);
 	}
 
