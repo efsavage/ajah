@@ -8,6 +8,9 @@ These libraries contain a mix of new and old ideas.  For example, you might find
 
 The functionality contained here is simply a reflection of things I have needed for a wide variety of projects.  Some is very general and likely to be found in some form in other libraries, some is very specific and unique.  Some is simply a different way of solving the same task, perhaps with fewer lines of code or more sensible defaults or more configuration options.
 
+## Java Requirements ##
+The code here generally targets the current Long Term Support version of Java but there may be exceptions.
+
 ##  Building ##
 This repository is set up as a suite of Maven projects.  The dependencies they use vary from few to many, so you may want to import them into your IDE on an as-needed basis.
 
@@ -19,4 +22,11 @@ This project has not adopted any versioning strategy.  If you plan to use this c
 
 The libraries are intended to be used at a consistent version level, for example there is no guarantee that 1.0.2 of one library will operate correctly with 1.0.1 of another.
 
-For more detailed information, see the README in each project.
+## Copyright Notice ##
+
+Unless otherwise stated in the file:
+* All files created and modifications through September 2019 (up to and including version 1.2.0) are Copyright Eric Savage.
+* All files created and modifications from October 2019 (version 2.0.0 onwards) are Copyright Google.
+
+## More Information ##
+See the README in each project folder..
