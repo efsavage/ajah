@@ -16,19 +16,18 @@
 package com.ajah.spring.jdbc.criteria;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
-import lombok.extern.java.Log;
-
-import org.joda.time.LocalDate;
-
 import com.ajah.util.AjahUtils;
 import com.ajah.util.CollectionUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.lang.NameValuePair;
+
+import lombok.extern.java.Log;
 
 /**
  * Object-oriented way to construct a WHERE statement.
@@ -471,7 +470,7 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	}
 
 	/**
-	 * A greater-than or equal to match.
+	 * A less-than or equal to match.
 	 * 
 	 * @param field
 	 *            The field to match
@@ -482,6 +481,20 @@ public class Criteria extends AbstractCriteria<Criteria> {
 	public Criteria lte(final String field, final long value) {
 		AjahUtils.requireParam(field, "field");
 		return lte(field, String.valueOf(value));
+	}
+
+	/**
+	 * A less-than or equal to match.
+	 * 
+	 * @param field
+	 *            The field to match
+	 * @param value
+	 *            The value the field must be greater than or equal to.
+	 * @return Criteria instance the method was invoked on (for chaining).
+	 */
+	public Criteria lte(final String field, final Date value) {
+		AjahUtils.requireParam(field, "field");
+		return lte(field, String.valueOf(value.getTime()));
 	}
 
 	/**
