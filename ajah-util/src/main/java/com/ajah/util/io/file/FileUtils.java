@@ -188,6 +188,10 @@ public class FileUtils {
 			throw new IllegalArgumentException("Filename may not be null or empty");
 		}
 		final File file = new File(fileName);
+		return readFileAsLines(file);
+	}
+
+	public static List<String> readFileAsLines(final File file) throws FileNotFoundException {
 		if (!file.exists()) {
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
