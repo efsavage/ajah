@@ -51,14 +51,6 @@
 			<version>${jpa.version}</version>
 		</dependency>
 
-		<!-- We're including Joda time for now, but this may be able to be removed 
-			with the new Date/Time capabilities in JDK8 (JSR-310) -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${joda.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>de.danielbechler</groupId>
 			<artifactId>java-object-diff</artifactId>

@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ajah</groupId>
 	<artifactId>ajah-base</artifactId>
@@ -9,24 +8,23 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Versions of things commonly used in child projects, but not listed 
+		<!-- Versions of things commonly used in child projects, but not listed
 			as a dependency here. -->
-		<ch.qos.logback.version>1.1.7</ch.qos.logback.version>
+		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 		<elasticsearch.version>2.3.2</elasticsearch.version>
-		<httpclient.version>4.5.2</httpclient.version>
-		<jackson.version>2.7.4</jackson.version>
+		<httpclient.version>4.5.10</httpclient.version>
+		<jackson.version>2.10.0</jackson.version>
 		<javamail.version>1.5.5</javamail.version>
 		<jets3t.version>0.9.4</jets3t.version>
-		<joda.version>2.9.3</joda.version>
 		<jpa.version>1.0</jpa.version>
-		<jsp.version>2.2</jsp.version>
+		<jsp.version>2.3.3</jsp.version>
 		<junit.version>4.12</junit.version>
 		<lombok.version>1.18.10</lombok.version>
-		<mysql.connector.version>5.1.38</mysql.connector.version>
-		<org.slf4j.version>1.7.21</org.slf4j.version>
+		<mysql.connector.version>8.0.19</mysql.connector.version>
+		<org.slf4j.version>1.7.29</org.slf4j.version>
 		<rome.version>1.0</rome.version>
-		<servlet.version>3.1.0</servlet.version>
-		<spring.version>4.2.5.RELEASE</spring.version>
+		<servlet.version>4.0.1</servlet.version>
+		<spring.version>5.2.2.RELEASE</spring.version>
 	</properties>
 
 	<organization>
@@ -36,7 +34,7 @@
 
 	<scm>
 		<connection>scm:git:git://github.com/efsavage/ajah.git</connection>
-		<url>scm:git:git://github.com/efsavage/ajah.git</url>
+		<url>https://github.com/efsavage/ajah</url>
 		<developerConnection>scm:git:git://github.com/efsavage/ajah.git</developerConnection>
 	</scm>
 
@@ -139,9 +137,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<pushChanges>false</pushChanges>
-				</configuration>
+				<version>2.4.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -151,7 +154,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -259,9 +262,9 @@
 			<url>s3://repo.efsavage.com/snapshot</url>
 		</snapshotRepository>
 		<repository>
-			<id>efsavage-s3-repo</id>
-			<name>efsavage public s3 repository</name>
-			<url>s3://repo.efsavage.com/release</url>
+			<id>github</id>
+			<name>GitHub Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/efsavage/ajah</url>
 		</repository>
 	</distributionManagement>
 
