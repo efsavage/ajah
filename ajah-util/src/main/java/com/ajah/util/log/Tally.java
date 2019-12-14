@@ -137,6 +137,22 @@ public class Tally<T> {
 	}
 
 	/**
+	 * Builds a simple report with a line for each keys/count.
+	 *
+ 	 * @return A multi-line string with keys and current counts.
+	 */
+	public String getReport() {
+		StringBuilder builder = new StringBuilder();
+		for (final T t : this.map.keySet()) {
+			if (builder.length() > 0) {
+				builder.append("\n");
+			}
+			builder.append(t.toString() + ": " + this.map.get(t));
+		}
+		return builder.toString();
+	}
+
+	/**
 	 * Increment the success count.
 	 */
 	public void success() {
@@ -184,6 +200,29 @@ public class Tally<T> {
 			this.map.replace(tallyObject, oldValue, newValue);
 		}
 		return this.map.get(tallyObject).longValue();
+	}
+
+	/**
+	 * Returns a simple report of keys/values up to {number} lines long.
+	 *
+	 * @param number
+	 * 		The maximum number of lines to return.
+	 * @return A multi-line string with keys and current counts.
+	 */
+	public String getReport(int number) {
+		StringBuilder builder = new StringBuilder();
+		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
+		Collections.sort(top, new EntryValueComparator<T, Long>());
+		if (top.size() > number) {
+			top = top.subList(0, number);
+		}
+		for (final Entry<T, Long> entry : top) {
+			if (builder.length() > 0) {
+				builder.append("\n");
+			}
+			builder.append(entry.getKey() + ": " + entry.getValue());
+		}
+		return builder.toString();
 	}
 
 }
