@@ -31,7 +31,7 @@ import com.ajah.util.date.DateUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 public class ReflectionUtils {
@@ -39,11 +39,11 @@ public class ReflectionUtils {
 	/**
 	 * Finds the enum where the getId() value matches the value of the field for
 	 * this particular object.
-	 * 
+	 *
 	 * @param field
-	 *            The field to get the value of.
+	 * 		The field to get the value of.
 	 * @param value
-	 *            The value of the field.
+	 * 		The value of the field.
 	 * @return The value, null if the field value is null, also null on error.
 	 */
 	public static Object findEnumById(final Field field, final Object value) {
@@ -72,13 +72,13 @@ public class ReflectionUtils {
 	 * Executes the read method for a property descriptor, and returns as a
 	 * {@link Date}. If any errors occur they are logged, and will result in
 	 * null return value.
-	 * 
+	 *
 	 * @param instance
-	 *            The instance on which the Property Descriptor is.
+	 * 		The instance on which the Property Descriptor is.
 	 * @param propertyDescriptor
-	 *            The property descriptor for the property sought.
+	 * 		The property descriptor for the property sought.
 	 * @return The value of the objects read method for the property specified
-	 *         (which may be null), or null if an error occurs.
+	 * (which may be null), or null if an error occurs.
 	 */
 	public static Date propGetDateSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
 		final Object value = ReflectionUtils.propGetSafe(instance, propertyDescriptor);
@@ -91,11 +91,11 @@ public class ReflectionUtils {
 	/**
 	 * Executes the read method for a property descriptor. If any errors occur
 	 * they are logged, and will result in null return value.
-	 * 
+	 *
 	 * @param instance
 	 * @param propertyDescriptor
 	 * @return The value of the objects read method for the property specified
-	 *         (which may be null), or null if an error occurs.
+	 * (which may be null), or null if an error occurs.
 	 */
 	public static Object propGetSafe(final Object instance, final PropertyDescriptor propertyDescriptor) {
 		AjahUtils.requireParam(instance, "instance");
@@ -118,14 +118,14 @@ public class ReflectionUtils {
 
 	/**
 	 * Returns the value of a property descriptor, or null if an error occurs.
-	 * 
+	 *
 	 * @param object
-	 *            The object instance to invoke the property descriptor on
+	 * 		The object instance to invoke the property descriptor on
 	 * @param field
-	 *            The field of the class of the object that corresponds with the
-	 *            property descriptor.
+	 * 		The field of the class of the object that corresponds with the
+	 * 		property descriptor.
 	 * @param propertyDescriptor
-	 *            The property descriptor to invoke on the object.
+	 * 		The property descriptor to invoke on the object.
 	 * @return The value of a property descriptor, or null if an error occurs.
 	 */
 	public static Object propGetSafeAuto(final Object object, final Field field, final PropertyDescriptor propertyDescriptor) {
@@ -159,6 +159,9 @@ public class ReflectionUtils {
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else if (IntrospectionUtils.isBigDecimal(field)) {
 			// It's a BigDecimal
+			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
+		} else if (IntrospectionUtils.isByteArray(field)) {
+			// It's a byte array
 			return ReflectionUtils.propGetSafe(object, propertyDescriptor);
 		} else {
 			log.warning("Can't handle property getting of type " + field.getType() + " for field " + field.getName());
