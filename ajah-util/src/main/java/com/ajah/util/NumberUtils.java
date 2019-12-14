@@ -15,6 +15,8 @@
  */
 package com.ajah.util;
 
+import java.text.NumberFormat;
+
 import lombok.extern.java.Log;
 
 /**
@@ -26,6 +28,15 @@ import lombok.extern.java.Log;
  */
 @Log
 public class NumberUtils {
+
+	public static final Integer INTEGER_ZERO = new Integer(0);
+	public static final NumberFormat N_NNN;
+
+	static {
+		N_NNN = NumberFormat.getInstance();
+		N_NNN.setMinimumFractionDigits(3);
+		N_NNN.setMaximumFractionDigits(3);
+	}
 
 	/**
 	 * Parses an array of Strings into an array of ints.
