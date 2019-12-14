@@ -17,9 +17,9 @@ package com.ajah.user.account.info;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.user.account.AccountId;
+
+import lombok.Data;
 
 /**
  * AccountInfo is information about an account that is not important for most

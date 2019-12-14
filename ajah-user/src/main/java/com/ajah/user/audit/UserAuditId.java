@@ -17,10 +17,10 @@ package com.ajah.user.audit;
 
 import java.io.Serializable;
 
-import lombok.Data;
-
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
+
+import lombok.Data;
 
 /**
  * A wrapper around a String for typesafe {@link UserAudit} IDs.

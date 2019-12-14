@@ -17,10 +17,10 @@ package com.ajah.user.email;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 @Data
 public class Email implements Identifiable<EmailId> {

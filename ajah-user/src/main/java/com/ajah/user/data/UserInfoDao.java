@@ -15,9 +15,8 @@
  */
 package com.ajah.user.data;
 
+import java.time.LocalDate;
 import java.util.List;
-
-import org.joda.time.LocalDate;
 
 import com.ajah.lang.MapMap;
 import com.ajah.spring.jdbc.AjahDao;

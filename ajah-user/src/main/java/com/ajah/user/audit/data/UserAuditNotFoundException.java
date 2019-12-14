@@ -15,11 +15,11 @@
  */
 package com.ajah.user.audit.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.audit.UserAudit;
 import com.ajah.user.audit.UserAuditId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link UserAudit} was expected to be found, but was not.

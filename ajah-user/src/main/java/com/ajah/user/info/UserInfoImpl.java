@@ -17,8 +17,6 @@ package com.ajah.user.info;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.geo.iso.ISOCountry;
 import com.ajah.user.UserId;
 import com.ajah.user.email.EmailId;
@@ -26,6 +24,8 @@ import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.Gender;
 import com.ajah.util.data.Month;
+
+import lombok.Data;
 
 /**
  * UserInfo is information about a user that is not important for most

@@ -16,13 +16,13 @@
 package com.ajah.spring.jdbc.util;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Table;
 
-import org.joda.time.LocalDate;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import com.ajah.util.Identifiable;

@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +31,8 @@ import com.ajah.user.group.GroupUser;
 import com.ajah.user.group.GroupUserId;
 import com.ajah.user.group.GroupUserStatus;
 import com.ajah.user.group.GroupUserType;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link GroupUser}.

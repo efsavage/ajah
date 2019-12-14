@@ -15,11 +15,11 @@
  */
 package com.ajah.user.invitation.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.invitation.Invitation;
 import com.ajah.user.invitation.InvitationId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link Invitation} was expected to be found, but was not.

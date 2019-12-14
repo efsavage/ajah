@@ -17,9 +17,9 @@ package com.ajah.user;
 
 import javax.persistence.Transient;
 
-import lombok.Data;
-
 import com.ajah.user.info.UserInfo;
+
+import lombok.Data;
 
 /**
  * Basic implmentation of User interface.

@@ -17,9 +17,9 @@ package com.ajah.user.role;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 
 @Data

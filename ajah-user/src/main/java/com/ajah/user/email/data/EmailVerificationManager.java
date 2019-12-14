@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +33,8 @@ import com.ajah.user.email.EmailVerificationId;
 import com.ajah.user.email.EmailVerificationStatus;
 import com.ajah.user.email.EmailVerificationType;
 import com.ajah.util.data.HashUtils;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link EmailVerification}.

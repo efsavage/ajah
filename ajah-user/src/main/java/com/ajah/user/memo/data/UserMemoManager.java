@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,8 @@ import com.ajah.user.memo.UserMemo;
 import com.ajah.user.memo.UserMemoId;
 import com.ajah.user.memo.UserMemoStatus;
 import com.ajah.user.memo.UserMemoType;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link UserMemo}.

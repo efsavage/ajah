@@ -15,10 +15,10 @@
  */
 package com.ajah.user;
 
+import com.ajah.util.data.format.EmailAddress;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Thrown when a user is requested that does not exist.

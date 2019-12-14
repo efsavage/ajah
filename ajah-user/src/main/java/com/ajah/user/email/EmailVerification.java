@@ -17,9 +17,9 @@ package com.ajah.user.email;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 /**
  * Generated for an {@link Email} and (the code is) sent to that email for

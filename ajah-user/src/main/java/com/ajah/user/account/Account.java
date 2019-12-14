@@ -17,10 +17,10 @@ package com.ajah.user.account;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.user.User;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 /**
  * An Account corresponds to a billing or non-person entity. Accounts have

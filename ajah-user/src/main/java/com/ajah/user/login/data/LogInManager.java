@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +41,8 @@ import com.ajah.user.login.LogInId;
 import com.ajah.user.login.LogInSource;
 import com.ajah.user.login.LogInStatus;
 import com.ajah.user.login.LogInType;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link LogIn}.

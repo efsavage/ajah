@@ -15,11 +15,11 @@
  */
 package com.ajah.user.signup.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.signup.SignUp;
 import com.ajah.user.signup.SignUpId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link SignUp} was expected to be found, but was not.

@@ -18,9 +18,9 @@ package com.ajah.user.message;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Data;
-
 import com.ajah.user.UserId;
+
+import lombok.Data;
 
 /**
  * Basic implementation of UserMessage interface.

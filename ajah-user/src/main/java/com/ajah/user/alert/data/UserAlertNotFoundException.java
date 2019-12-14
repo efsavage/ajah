@@ -15,11 +15,11 @@
  */
 package com.ajah.user.alert.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.alert.UserAlert;
 import com.ajah.user.alert.UserAlertId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link UserAlert} was expected to be found, but was not.

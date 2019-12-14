@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +29,8 @@ import com.ajah.user.audit.UserAudit;
 import com.ajah.user.audit.UserAuditField;
 import com.ajah.user.audit.UserAuditId;
 import com.ajah.user.audit.UserAuditType;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link UserAudit}.

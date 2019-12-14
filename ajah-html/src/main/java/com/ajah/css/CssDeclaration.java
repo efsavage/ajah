@@ -21,10 +21,9 @@ import com.ajah.util.compare.CompareUtils;
 
 /**
  * Represents a CSS declaration (property/value within a rule).
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
 public class CssDeclaration implements Comparable<CssDeclaration> {
@@ -35,13 +34,13 @@ public class CssDeclaration implements Comparable<CssDeclaration> {
 
 	/**
 	 * Public constructor.
-	 * 
+	 *
 	 * @param rule
-	 *            The rule this declaration belongs to, required.
+	 * 		The rule this declaration belongs to, required.
 	 * @param property
-	 *            The property this declaration represents, required.
+	 * 		The property this declaration represents, required.
 	 * @param value
-	 *            The value of the property.
+	 * 		The value of the property.
 	 */
 	public CssDeclaration(final CssRule rule, final CssProperty property, final String value) {
 		this.rule = rule;
@@ -61,7 +60,7 @@ public class CssDeclaration implements Comparable<CssDeclaration> {
 
 	/**
 	 * Returns the valid, usable version of this declaration.
-	 * 
+	 *
 	 * @return The valid, usable version of this document
 	 */
 	@Override
@@ -71,9 +70,9 @@ public class CssDeclaration implements Comparable<CssDeclaration> {
 
 	/**
 	 * Returns the valid, usable version of this declaration.
-	 * 
+	 *
 	 * @param semicolon
-	 *            Append a semicolon at the end?
+	 * 		Append a semicolon at the end?
 	 * @return The valid, usable version of this document
 	 */
 	public String toString(final boolean semicolon) {

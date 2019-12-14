@@ -17,10 +17,10 @@ package com.ajah.user.invitation;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 /**
  * An invitation sent by a user to another person.

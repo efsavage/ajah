@@ -17,10 +17,10 @@ package com.ajah.user.resetpw;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 /**
  * Represents a password reset request record.

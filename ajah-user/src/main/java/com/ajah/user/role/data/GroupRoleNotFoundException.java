@@ -15,11 +15,11 @@
  */
 package com.ajah.user.role.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.role.GroupRole;
 import com.ajah.user.role.GroupRoleId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link GroupRole} was expected to be found, but was not.

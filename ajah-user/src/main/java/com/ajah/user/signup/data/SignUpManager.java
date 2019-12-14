@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +40,8 @@ import com.ajah.user.signup.SignUpType;
 import com.ajah.util.StringUtils;
 import com.ajah.util.data.Month;
 import com.ajah.util.data.format.EmailAddress;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link SignUp}.

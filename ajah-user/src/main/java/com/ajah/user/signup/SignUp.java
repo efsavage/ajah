@@ -19,8 +19,6 @@ import java.util.Date;
 
 import javax.persistence.Transient;
 
-import lombok.Data;
-
 import com.ajah.geo.iso.ISOCountry;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
@@ -28,6 +26,8 @@ import com.ajah.user.info.UserInfo;
 import com.ajah.user.info.UserSourceId;
 import com.ajah.util.Identifiable;
 import com.ajah.util.data.Month;
+
+import lombok.Data;
 
 /**
  * A signup is a registration, tracking information that doesn't necessarily

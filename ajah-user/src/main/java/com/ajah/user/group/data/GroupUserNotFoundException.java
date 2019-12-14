@@ -15,11 +15,11 @@
  */
 package com.ajah.user.group.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.group.GroupUser;
 import com.ajah.user.group.GroupUserId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link GroupUser} was expected to be found, but was not.

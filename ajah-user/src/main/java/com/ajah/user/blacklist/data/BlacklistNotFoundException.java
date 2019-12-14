@@ -15,11 +15,11 @@
  */
 package com.ajah.user.blacklist.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.blacklist.Blacklist;
 import com.ajah.user.blacklist.BlacklistId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link Blacklist} was expected to be found, but was not.

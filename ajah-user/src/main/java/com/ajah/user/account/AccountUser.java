@@ -17,10 +17,10 @@ package com.ajah.user.account;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.user.UserId;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 /**
  * An account-user is a relationship between a user and an account, such as an

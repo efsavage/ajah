@@ -17,16 +17,14 @@ package com.ajah.user;
 
 import java.io.Serializable;
 
-import lombok.Data;
-
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
+import lombok.Data;
 
 /**
  * A wrapper around a String for typesafe user IDs.
- * 
+ *
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 @Data
 public class UserId implements Serializable, ToStringable, FromStringable, Comparable<UserId> {
@@ -35,9 +33,9 @@ public class UserId implements Serializable, ToStringable, FromStringable, Compa
 
 	/**
 	 * Simple string constructor.
-	 * 
+	 *
 	 * @param id
-	 *            UID of user, cannot be null.
+	 * 		UID of user, cannot be null.
 	 */
 	public UserId(final String id) {
 		this.id = id;
@@ -53,7 +51,7 @@ public class UserId implements Serializable, ToStringable, FromStringable, Compa
 
 	/**
 	 * Returns the String passed into the constructor.
-	 * 
+	 *
 	 * @return The String passed into the constructor.
 	 */
 	public String getId() {

@@ -15,11 +15,11 @@
  */
 package com.ajah.user.memo.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.memo.UserMemo;
 import com.ajah.user.memo.UserMemoId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link UserMemo} was expected to be found, but was not.

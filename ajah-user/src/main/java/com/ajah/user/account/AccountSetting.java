@@ -17,9 +17,9 @@ package com.ajah.user.account;
 
 import java.util.Date;
 
-import lombok.Data;
-
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 @Data
 public class AccountSetting implements Identifiable<AccountSettingId> {

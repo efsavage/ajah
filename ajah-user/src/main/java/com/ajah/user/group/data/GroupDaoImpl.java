@@ -23,11 +23,11 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.util.StringUtils;
 import com.ajah.user.group.Group;
 import com.ajah.user.group.GroupId;
 import com.ajah.user.group.GroupStatus;
 import com.ajah.user.group.GroupType;
+import com.ajah.util.StringUtils;
 
 /**
  * MySQL-based implementation of {@link GroupDao}.

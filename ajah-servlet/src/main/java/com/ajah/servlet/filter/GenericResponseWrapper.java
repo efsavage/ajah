@@ -13,9 +13,9 @@ import lombok.extern.java.Log;
 /**
  * Implementation of {@link HttpServletResponseWrapper} that holds the data for
  * manipulation typically by a {@link Filter}.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 public class GenericResponseWrapper extends HttpServletResponseWrapper {
@@ -28,7 +28,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 	 * Public constructor, calls
 	 * {@link HttpServletResponseWrapper#HttpServletResponseWrapper(HttpServletResponse)}
 	 * and creates alternate output stream.
-	 * 
+	 *
 	 * @param response
 	 */
 	public GenericResponseWrapper(final HttpServletResponse response) {
@@ -39,7 +39,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Returns the content length.
-	 * 
+	 *
 	 * @return The content length.
 	 */
 	public int getContentLength() {
@@ -48,7 +48,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Returns the content type.
-	 * 
+	 *
 	 * @see javax.servlet.ServletResponseWrapper#getContentType()
 	 */
 	@Override
@@ -58,7 +58,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Returns the captured output stream as a byte array.
-	 * 
+	 *
 	 * @return The captured output stream as a byte array.
 	 */
 	public byte[] getData() {
@@ -67,7 +67,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Wraps the output in a {@link FilterServletOutputStream}.
-	 * 
+	 *
 	 * @see javax.servlet.ServletResponseWrapper#getOutputStream()
 	 */
 	@Override
@@ -77,7 +77,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Wraps {@link #getOutputStream()} in a {@link PrintWriter}.
-	 * 
+	 *
 	 * @see javax.servlet.ServletResponseWrapper#getWriter()
 	 */
 	@Override
@@ -87,7 +87,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Sets the content length.
-	 * 
+	 *
 	 * @see javax.servlet.ServletResponseWrapper#setContentLength(int)
 	 */
 	@Override
@@ -98,7 +98,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * Sets the content type.
-	 * 
+	 *
 	 * @see javax.servlet.ServletResponseWrapper#setContentType(java.lang.String)
 	 */
 	@Override

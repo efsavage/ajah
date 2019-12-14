@@ -17,12 +17,12 @@ package com.ajah.user.account;
 
 import java.io.Serializable;
 
-import lombok.Data;
-
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
 
 /**
  * A wrapper around a String for typesafe {@link Account} IDs.

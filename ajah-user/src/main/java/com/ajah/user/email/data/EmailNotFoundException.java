@@ -15,11 +15,11 @@
  */
 package com.ajah.user.email.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.email.Email;
 import com.ajah.user.email.EmailId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link Email} was expected to be found, but was not.

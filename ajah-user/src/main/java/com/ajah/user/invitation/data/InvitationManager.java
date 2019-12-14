@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.java.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +32,8 @@ import com.ajah.user.invitation.InvitationId;
 import com.ajah.user.invitation.InvitationSender;
 import com.ajah.user.invitation.InvitationStatus;
 import com.ajah.user.invitation.InvitationType;
+
+import lombok.extern.java.Log;
 
 /**
  * Manages data operations for {@link Invitation}.

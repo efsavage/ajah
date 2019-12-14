@@ -19,11 +19,11 @@ import java.util.Date;
 
 import javax.persistence.Transient;
 
-import lombok.Data;
-
 import com.ajah.user.User;
 import com.ajah.user.info.UserInfo;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 /**
  * A login is a data record of an authentication attempt by a user. It should

@@ -15,11 +15,11 @@
  */
 package com.ajah.user.login.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.login.LogIn;
 import com.ajah.user.login.LogInId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link LogIn} was expected to be found, but was not.

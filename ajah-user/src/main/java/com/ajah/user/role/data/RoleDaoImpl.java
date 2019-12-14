@@ -23,11 +23,11 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 import com.ajah.spring.jdbc.criteria.Criteria;
 import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.util.StringUtils;
 import com.ajah.user.role.Role;
 import com.ajah.user.role.RoleId;
 import com.ajah.user.role.RoleStatus;
 import com.ajah.user.role.RoleType;
+import com.ajah.util.StringUtils;
 
 /**
  * MySQL-based implementation of {@link RoleDao}.

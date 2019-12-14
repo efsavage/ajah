@@ -19,9 +19,9 @@ import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 
-import lombok.Data;
-
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 @Data
 public class Blacklist implements Identifiable<BlacklistId> {

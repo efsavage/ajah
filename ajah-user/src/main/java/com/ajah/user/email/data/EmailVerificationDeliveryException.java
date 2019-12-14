@@ -15,11 +15,11 @@
  */
 package com.ajah.user.email.data;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import com.ajah.user.email.EmailVerification;
 import com.ajah.user.email.EmailVerificationId;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Thrown when an {@link EmailVerification} could not be sent (and therefore

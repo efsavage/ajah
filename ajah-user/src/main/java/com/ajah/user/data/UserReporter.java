@@ -1,6 +1,7 @@
 package com.ajah.user.data;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

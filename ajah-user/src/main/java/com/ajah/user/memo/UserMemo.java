@@ -19,12 +19,12 @@ import java.util.Date;
 
 import javax.persistence.Transient;
 
-import lombok.Data;
-
 import com.ajah.user.User;
 import com.ajah.user.UserId;
 import com.ajah.user.info.UserInfo;
 import com.ajah.util.Identifiable;
+
+import lombok.Data;
 
 @Data
 public class UserMemo implements Identifiable<UserMemoId> {

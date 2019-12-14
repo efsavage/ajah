@@ -17,10 +17,10 @@ package com.ajah.user.info;
 
 import java.io.Serializable;
 
-import lombok.Data;
-
 import com.ajah.util.FromStringable;
 import com.ajah.util.ToStringable;
+
+import lombok.Data;
 
 /**
  * A wrapper around a String for typesafe source IDs.
