@@ -28,8 +28,8 @@ import com.ajah.util.ToStringable;
 /**
  * Java reflection utilities.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class IntrospectionUtils {
 
@@ -50,11 +50,23 @@ public class IntrospectionUtils {
 	 * 
 	 * @param field
 	 *            The field to check the type of, required.
-	 * @return true if the field's type is a long
+	 * @return true if the field's type is a boolean
 	 */
 	public static boolean isBoolean(final Field field) {
 		AjahUtils.requireParam(field, "field");
 		return boolean.class.isAssignableFrom(field.getType());
+	}
+
+	/**
+	 * Checks to see if the field's type is a byte array.
+	 * 
+	 * @param field
+	 *            The field to check the type of, required.
+	 * @return true if the field's type is a byte array
+	 */
+	public static boolean isByteArray(final Field field) {
+		AjahUtils.requireParam(field, "field");
+		return field.getType() == byte[].class;
 	}
 
 	/**
