@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Utilities for dealing with Strings.
- * 
+ *
  * @author Eric F. Savage <code@efsavage.com>
  */
 public class StringUtils {
@@ -34,7 +36,7 @@ public class StringUtils {
 
 	/**
 	 * Shorthand method for passing varargs to methods requiring arrays.
-	 * 
+	 *
 	 * @param strings
 	 *            The array of strings.
 	 * @return The same object, but cast as an array automatically by Java.
@@ -45,7 +47,7 @@ public class StringUtils {
 
 	/**
 	 * Capitalizes first letter of a String.
-	 * 
+	 *
 	 * @see Character#toTitleCase(char)
 	 * @param string
 	 *            String to capitalized
@@ -61,7 +63,7 @@ public class StringUtils {
 	/**
 	 * Performs a {@link String#split(String)} but {@link String#trim()}s all
 	 * values and omits blank values.
-	 * 
+	 *
 	 * @param string
 	 *            The string to split. If null, an empty list will be returned.
 	 * @param regex
@@ -84,7 +86,7 @@ public class StringUtils {
 	/**
 	 * Checks a string with {@link String#endsWith(String)} against an array of
 	 * candidate strings.
-	 * 
+	 *
 	 * @param string
 	 *            The string to check.
 	 * @param suffixes
@@ -106,7 +108,7 @@ public class StringUtils {
 
 	/**
 	 * Looks for null or empty strings.
-	 * 
+	 *
 	 * @param string
 	 *            String to be tested, may be null
 	 * @return true if string is null or zero-length
@@ -124,7 +126,7 @@ public class StringUtils {
 	/**
 	 * Joins a list of strings, separating them by delimeter if they are not
 	 * blank.
-	 * 
+	 *
 	 * @param delimiter
 	 *            The delimiter to use between strings.
 	 * @param strings
@@ -152,7 +154,7 @@ public class StringUtils {
 
 	/**
 	 * Joins a list of ints, separating them by delimiter if they are not blank.
-	 * 
+	 *
 	 * @param delimiter
 	 *            The delimiter to use between numbers.
 	 * @param numbers
@@ -176,9 +178,35 @@ public class StringUtils {
 	}
 
 	/**
+	 * Joins a list of Integers, separating them by delimiter if they are not
+	 * blank.
+	 *
+	 * @param delimiter
+	 *            The delimiter to use between numbers.
+	 * @param numbers
+	 *            The list of numbers to join.
+	 * @return A joined list of numbers, may be empty or null;
+	 */
+	public static String joinNumbers(final String delimiter, final Collection<? extends Number> numbers) {
+		if (numbers == null || numbers.size() < 1) {
+			return null;
+		}
+		StringBuilder retVal = null;
+		for (final Number number : numbers) {
+			if (retVal == null) {
+				retVal = new StringBuilder();
+			} else {
+				retVal.append(delimiter);
+			}
+			retVal.append(number);
+		}
+		return retVal == null ? null : retVal.toString();
+	}
+
+	/**
 	 * Joins a list of strings, separating them by delimeter if they are not
 	 * blank.
-	 * 
+	 *
 	 * @param delimiter
 	 *            The delimiter to use between strings.
 	 * @param strings
@@ -207,20 +235,20 @@ public class StringUtils {
 	/**
 	 * Calls {@link #join(String[], String)} with a comma for a delimiter. Array
 	 * of Strings, may be empty or null.
-	 * 
+	 *
 	 * @param array
 	 *            The array to be joined, may be empty or null.
 	 * @return The joined array. If array was null or empty or contained only
 	 *         null or empty Strings, returns null.
 	 */
 	public static String join(final String[] array) {
-		return join(array, ",");
+		return join(",", array);
 	}
 
 	/**
 	 * Joins an array of Strings into a single String with the specified
 	 * delimeter.
-	 * 
+	 *
 	 * @param array
 	 *            Array of Strings, may be empty or null.
 	 * @param delimiter
@@ -257,7 +285,7 @@ public class StringUtils {
 
 	/**
 	 * Returns leftmost characters of a string.
-	 * 
+	 *
 	 * @param string
 	 *            String to be chopped, may be null.
 	 * @param length
@@ -275,7 +303,7 @@ public class StringUtils {
 
 	/**
 	 * Returns null if the supplied string is null or empty.
-	 * 
+	 *
 	 * @param string
 	 *            The string to test.
 	 * @return null if the supplied string is null or empty, otherwise returns
@@ -290,7 +318,7 @@ public class StringUtils {
 
 	/**
 	 * Returns rightmost characters of a string.
-	 * 
+	 *
 	 * @param string
 	 *            String to be chopped, may be null.
 	 * @param length
@@ -310,7 +338,7 @@ public class StringUtils {
 	/**
 	 * Returns the leftmost characters of a string. If the string is empty or
 	 * null or shorter than the requested length, returns the original string.
-	 * 
+	 *
 	 * @param string
 	 *            The string to truncate.
 	 * @param chars
@@ -326,7 +354,7 @@ public class StringUtils {
 
 	/**
 	 * Returns length of string, 0 if null.
-	 * 
+	 *
 	 * @param string
 	 *            String to be tested, may be null.
 	 * @return length of string, 0 if null.
@@ -338,7 +366,7 @@ public class StringUtils {
 	/**
 	 * Returns toString() for the object passed, if it is not null, otherwise
 	 * returns null.
-	 * 
+	 *
 	 * @see Object#toString()
 	 * @param object
 	 *            The object to check/toString()
@@ -355,7 +383,7 @@ public class StringUtils {
 	 * Trims a string, accepting null values. If a null value is passed, returns
 	 * an empty string. Useful for concatenating so you don't get literal "null"
 	 * strings.
-	 * 
+	 *
 	 * @param string
 	 *            The string to trim, may be null.
 	 * @return The trimmed string.
@@ -372,7 +400,7 @@ public class StringUtils {
 	 * "can of soda". Source: <a href=
 	 * "http://stackoverflow.com/questions/2559759/how-do-i-convert-camelcase-into-human-readable-names-in-java"
 	 * >Stack Overflow</a>
-	 * 
+	 *
 	 * @param string
 	 * @return String, de-camelcased.
 	 */
@@ -384,7 +412,7 @@ public class StringUtils {
 	 * Converts a string into a "clean" token suitable for URLs. It will be
 	 * converted to lowercase, have non-word characters replaced with hyphens,
 	 * and be split if it apepars to be camelcase.
-	 * 
+	 *
 	 * @see #splitCamelCase(String)
 	 * @param string
 	 *            The string to convert.
@@ -399,7 +427,7 @@ public class StringUtils {
 
 	/**
 	 * Truncates a string if it is longer than desired.
-	 * 
+	 *
 	 * @param string
 	 *            The string to truncate.
 	 * @param maxLength
@@ -423,7 +451,7 @@ public class StringUtils {
 	/**
 	 * Limits a string to a set of choices, with a default value if there is no
 	 * match.
-	 * 
+	 *
 	 * @param string
 	 *            The string to match.
 	 * @param validStrings
@@ -448,7 +476,7 @@ public class StringUtils {
 	/**
 	 * Wraps each string in a collection with another string, often quotes or
 	 * parentheses.
-	 * 
+	 *
 	 * @param strings
 	 *            The strings to wrap.
 	 * @param wrapper
@@ -465,6 +493,31 @@ public class StringUtils {
 			wrapped.add(wrapper + string + wrapper);
 		}
 		return wrapped;
+	}
+
+	/**
+	 * Joins an array of arrays of strings into a single array.
+	 *
+	 * @param arrays
+	 * 		The arrays of strings to union.  Empty arrays are skipped.
+	 * @return A single array of the arrays, in the same order they were passed.  If an empty or null array is passed, will return an empty array.
+	 */
+	public static String[] union(String[]... arrays) {
+		Set<String> set = new TreeSet<>();
+		if (arrays == null || arrays.length == 0) {
+			return new String[0];
+		}
+		for (String[] array : arrays) {
+			if (array.length == 0) {
+				continue;
+			}
+			for (String string : array) {
+				set.add(string);
+			}
+		}
+		String[] array = new String[set.size()];
+		set.toArray(array);
+		return array;
 	}
 
 }
