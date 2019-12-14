@@ -15,13 +15,13 @@
  */
 package com.ajah.util.data;
 
-import com.ajah.util.AjahUtils;
-
-import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.xml.bind.DatatypeConverter;
+
+import com.ajah.util.AjahUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>,
@@ -188,7 +188,7 @@ public class HashUtils {
 		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
-			md.update(string.getBytes("iso-8859-1"), 0, string.length());
+			md.update(string.getBytes("UTF-8"), 0, string.length());
 			final byte[] bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
