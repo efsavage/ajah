@@ -17,15 +17,18 @@ package com.ajah.util.lang;
 
 import java.util.Map;
 
+import lombok.Data;
+
 /**
  * Simple bean to represent a name/value pair. Useful where a {@link Map} is not
  * the best choice.
- * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ *
  * @param <T>
- *            The type of the value.
+ * 		The type of the value.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ * <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
+@Data
 public class NameValuePair<T> {
 
 	private String name;
@@ -34,11 +37,11 @@ public class NameValuePair<T> {
 
 	/**
 	 * Constructs this bean with the two fields. Either field may be null.
-	 * 
+	 *
 	 * @param name
-	 *            The name of the object/value, may be null.
+	 * 		The name of the object/value, may be null.
 	 * @param value
-	 *            The object/value, may be null.
+	 * 		The object/value, may be null.
 	 */
 	public NameValuePair(final String name, final T value) {
 		this.name = name;
@@ -47,7 +50,7 @@ public class NameValuePair<T> {
 
 	/**
 	 * Returns the name of the object/value.
-	 * 
+	 *
 	 * @return The name of the object/value.
 	 */
 	public String getName() {
@@ -56,7 +59,7 @@ public class NameValuePair<T> {
 
 	/**
 	 * Returns the object/value.
-	 * 
+	 *
 	 * @return The object/value.
 	 */
 	public T getValue() {
@@ -65,9 +68,9 @@ public class NameValuePair<T> {
 
 	/**
 	 * Sets the name of the object/value.
-	 * 
+	 *
 	 * @param name
-	 *            The name of the object/value.
+	 * 		The name of the object/value.
 	 */
 	public void setName(final String name) {
 		this.name = name;
@@ -75,9 +78,9 @@ public class NameValuePair<T> {
 
 	/**
 	 * Sets the object/value.
-	 * 
+	 *
 	 * @param value
-	 *            The object/value.
+	 * 		The object/value.
 	 */
 	public void setValue(final T value) {
 		this.value = value;
