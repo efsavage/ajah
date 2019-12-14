@@ -143,8 +143,7 @@ public class ReportGroupManager {
 		reportGroup.setName(name);
 		reportGroup.setType(type);
 		reportGroup.setStatus(status);
-		DataOperationResult<ReportGroup> result = save(reportGroup);
-		return result;
+		return save(reportGroup);
 	}
 
 	/**
@@ -162,8 +161,7 @@ public class ReportGroupManager {
 	public DataOperationResult<ReportGroup> delete(ReportGroupId reportGroupId) throws DataOperationException, ReportGroupNotFoundException {
 		ReportGroup reportGroup = load(reportGroupId);
 		reportGroup.setStatus(ReportGroupStatus.DELETED);
-		DataOperationResult<ReportGroup> result = save(reportGroup);
-		return result;
+		return save(reportGroup);
 	}
 
 	/**

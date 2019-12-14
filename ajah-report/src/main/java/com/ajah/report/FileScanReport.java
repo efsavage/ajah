@@ -42,9 +42,9 @@ public class FileScanReport {
 	private long emptyDirectories;
 	private final File root;
 	private final ReportWriter report;
-	private static long[] ranges = new long[] { 0, 1, DataSizeUnit.KIBIBYTE.getBytes() - 1, DataSizeUnit.KIBIBYTE.getAsBytes(10), DataSizeUnit.KIBIBYTE.getAsBytes(100),
+	private static final long[] ranges = new long[] { 0, 1, DataSizeUnit.KIBIBYTE.getBytes() - 1, DataSizeUnit.KIBIBYTE.getAsBytes(10), DataSizeUnit.KIBIBYTE.getAsBytes(100),
 			DataSizeUnit.MEBIBYTE.getAsBytes(1), DataSizeUnit.MEBIBYTE.getAsBytes(10), DataSizeUnit.MEBIBYTE.getAsBytes(100), Long.MAX_VALUE };
-	private static long[][] rangeCountSizes = new long[ranges.length][2];
+	private static final long[][] rangeCountSizes = new long[ranges.length][2];
 
 	/**
 	 * Scans one or more directories.
@@ -160,7 +160,7 @@ public class FileScanReport {
 		scan(this.root, depth);
 	}
 
-	private long[] scan(final File file, final int depth) throws IOException {
+	private long[] scan(final File file, final int depth) {
 		// log.info("Scanning: " + file.getAbsolutePath());
 		final long[] results = new long[4];
 		if (file.isDirectory()) {

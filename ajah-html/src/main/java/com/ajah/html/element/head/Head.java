@@ -37,7 +37,7 @@ import lombok.EqualsAndHashCode;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Head extends AbstractNestableHtmlCoreElement<Head> {
 
 	private String titleTag;

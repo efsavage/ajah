@@ -63,7 +63,7 @@ public class SwaggerWriter {
 			}
 		}
 
-		out.paths = new TreeMap<String, SwaggerPathOut>();
+		out.paths = new TreeMap<>();
 		for (SwaggerOperation operation : operations) {
 			SwaggerPathOut path = out.paths.get(operation.getPath());
 			if (path == null) {
@@ -77,7 +77,7 @@ public class SwaggerWriter {
 			}
 		}
 
-		out.definitions = new TreeMap<String, SwaggerDefinitionOut>();
+		out.definitions = new TreeMap<>();
 		for (SwaggerDefinition definition : definitions) {
 			if (CollectionUtils.isEmpty(definition.getSwaggerProperties())) {
 				log.warning("No properties defined for " + definition.getName());
@@ -137,7 +137,7 @@ public class SwaggerWriter {
 			out.items.ref = "#/definitions/" + property.getSwaggerDefinition().getName();
 		} else if (property.getType() == SwaggerPropertyType.SET) {
 			out.type = "array";
-			out.uniqueItems = true;
+			out.uniqueItems = Boolean.TRUE;
 			out.items = new SwaggerItemsOut();
 			out.items.ref = "#/definitions/" + property.getSwaggerDefinition().getName();
 		} else {

@@ -25,7 +25,7 @@ import java.util.Random;
  */
 public class RandomUtils {
 
-	private static Random random = new Random();
+	private static final Random random = new Random();
 
 	/**
 	 * Returns a randomized, lowercased String consisting of only a-z

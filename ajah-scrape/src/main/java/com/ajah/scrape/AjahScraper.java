@@ -44,15 +44,13 @@ public class AjahScraper {
 	public Document getDocument(final ScrapedLink link) throws IOException, URISyntaxException, HttpException {
 		log.fine("Fetching " + link.getText() + " at " + link.getHref());
 		final String html = DiskCache.get(new URI(link.getHref()), this.timeout);
-		final Document doc = Jsoup.parse(html, link.getHref());
-		return doc;
+		return Jsoup.parse(html, link.getHref());
 	}
 
 	public Document getDocument(final URI uri) throws IOException, HttpException {
 		log.fine("Fetching " + uri);
 		final String html = DiskCache.get(uri, this.timeout);
-		final Document doc = Jsoup.parse(html, uri.toASCIIString());
-		return doc;
+		return Jsoup.parse(html, uri.toASCIIString());
 	}
 
 	public List<ScrapedLink> scrapeLinks(final URI uri, final String linkPattern, final boolean regex, final boolean ignoreEmptyText) throws IOException, HttpException {

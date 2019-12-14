@@ -30,9 +30,9 @@ public enum HtmlVersion {
 	 */
 	HTML5("<!doctype html>");
 
-	private String prologue;
+	private final String prologue;
 
-	private HtmlVersion(final String prologue) {
+	HtmlVersion(final String prologue) {
 		this.prologue = prologue;
 	}
 

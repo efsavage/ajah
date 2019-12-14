@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Checkbox extends AbstractNestableHtmlCoreElement<Checkbox> implements Input<Checkbox> {
 
 	private final String name;

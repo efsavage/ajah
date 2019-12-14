@@ -155,8 +155,7 @@ public class SwaggerOperationManager {
 		swaggerOperation.setTags(tags);
 		swaggerOperation.setType(SwaggerOperationType.STANDARD);
 		swaggerOperation.setStatus(SwaggerOperationStatus.ACTIVE);
-		DataOperationResult<SwaggerOperation> result = save(swaggerOperation);
-		return result;
+		return save(swaggerOperation);
 	}
 
 	/**
@@ -174,8 +173,7 @@ public class SwaggerOperationManager {
 	public DataOperationResult<SwaggerOperation> delete(SwaggerOperationId swaggerOperationId) throws DataOperationException, SwaggerOperationNotFoundException {
 		SwaggerOperation swaggerOperation = load(swaggerOperationId);
 		swaggerOperation.setStatus(SwaggerOperationStatus.DELETED);
-		DataOperationResult<SwaggerOperation> result = save(swaggerOperation);
-		return result;
+		return save(swaggerOperation);
 	}
 
 	/**

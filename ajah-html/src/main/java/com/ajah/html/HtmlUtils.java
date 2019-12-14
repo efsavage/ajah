@@ -35,8 +35,7 @@ public class HtmlUtils {
 	 */
 	public static String toBodyHtml(final String plainText) {
 		// TODO handle other formatting (bulleted lists, paragraphs, etc.)
-		final String htmlText = plainText.trim().replaceAll("\n", "<br />\n");
-		return htmlText;
+		return plainText.trim().replaceAll("\n", "<br />\n");
 	}
 
 }

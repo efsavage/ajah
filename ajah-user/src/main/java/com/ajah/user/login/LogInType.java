@@ -75,7 +75,7 @@ public enum LogInType implements IdentifiableEnum<String> {
 	private final String name;
 	private final String description;
 
-	private LogInType(final String id, final String code, final String name, final String description) {
+	LogInType(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

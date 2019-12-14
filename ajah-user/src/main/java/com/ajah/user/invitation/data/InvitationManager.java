@@ -130,8 +130,7 @@ public class InvitationManager {
 	public DataOperationResult<Invitation> delete(final InvitationId invitationId) throws DataOperationException, InvitationNotFoundException {
 		final Invitation invitation = load(invitationId);
 		invitation.setStatus(InvitationStatus.DELETED);
-		final DataOperationResult<Invitation> result = save(invitation);
-		return result;
+		return save(invitation);
 	}
 
 	/**

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SwaggerItemsRef {
 
 	@JsonProperty(value = "$ref")
-	public String type;
+	public final String type;
 
 	public SwaggerItemsRef(final String type) {
 		this.type = type;

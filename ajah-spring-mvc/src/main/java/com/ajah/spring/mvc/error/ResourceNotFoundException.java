@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends Exception {
 

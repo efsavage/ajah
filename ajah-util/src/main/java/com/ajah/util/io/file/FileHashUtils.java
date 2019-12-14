@@ -61,7 +61,7 @@ public class FileHashUtils {
 	 * @return The filename with parent directories.
 	 */
 	public static String getHashedFileName(final String hash, final int depth, final int breadth) {
-		final StringBuffer name = new StringBuffer();
+		final StringBuilder name = new StringBuilder();
 		for (int i = 0; i < depth; i++) {
 			name.append(hash.substring(i * breadth, (i + 1) * breadth));
 			name.append("/");

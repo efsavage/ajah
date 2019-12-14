@@ -54,7 +54,7 @@ public class DateUtils {
 	private static final DateFormat NICE_ABSOLUTE_DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
 	private static final DateFormat NICE_ABSOLUTE_TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT);
 
-	private static DateFormat DAY_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	private static final DateFormat DAY_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
 	public static final DateFormat W3C_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
@@ -180,7 +180,7 @@ public class DateUtils {
 	 */
 	public static String formatInterval(final long intervalInMillis, final CalendarUnit largestUnit, final boolean veryShortFormat) {
 
-		if (intervalInMillis < CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
+		if (intervalInMillis < CalendarUnit.SECOND.getMillis()) {
 			return intervalInMillis + (veryShortFormat ? "ms" : " milliseconds");
 		} else if (intervalInMillis < 100 * CalendarUnit.SECOND.getMillis() || largestUnit == CalendarUnit.SECOND) {
 			return intervalInMillis / CalendarUnit.SECOND.getMillis() + (veryShortFormat ? "s" : " seconds");
@@ -237,7 +237,7 @@ public class DateUtils {
 	 * @return The formatted date.
 	 */
 	public static String niceFormatAbsolute(final Date date, final boolean capitalize) {
-		final StringBuffer string = new StringBuffer();
+		final StringBuilder string = new StringBuilder();
 		final Calendar then = Calendar.getInstance();
 		then.setTime(date);
 		final Calendar now = Calendar.getInstance();
@@ -253,12 +253,12 @@ public class DateUtils {
 			// Within the next week
 			// TODO handle the case of it being 9:00 am on tuesday and the date
 			// is 9:01 the following tuesday
-			string.append("next " + DAY_OF_WEEK_FORMAT.format(date));
+			string.append("next ").append(DAY_OF_WEEK_FORMAT.format(date));
 		} else if (interval > 0 && interval < WEEK_IN_MILLIS) {
 			// Within the past week
 			// TODO handle the case of it being 9:00 am on tuesday and the date
 			// is 8:59 the previous tuesday
-			string.append("last " + DAY_OF_WEEK_FORMAT.format(date));
+			string.append("last ").append(DAY_OF_WEEK_FORMAT.format(date));
 		} else {
 			string.append(NICE_ABSOLUTE_DATE_FORMAT.format(date));
 		}

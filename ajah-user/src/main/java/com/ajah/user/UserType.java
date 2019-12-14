@@ -71,7 +71,7 @@ public enum UserType implements IdentifiableEnum<String> {
 	private final boolean superUser;
 	private final boolean botUser;
 
-	private UserType(final String id, final String code, final String name, final String description, final boolean superUser, final boolean botUser) {
+	UserType(final String id, final String code, final String name, final String description, final boolean superUser, final boolean botUser) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

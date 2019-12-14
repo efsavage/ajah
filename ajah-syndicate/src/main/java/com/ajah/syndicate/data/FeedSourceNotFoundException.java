@@ -25,7 +25,7 @@ import com.ajah.syndicate.FeedSourceId;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class FeedSourceNotFoundException extends Exception {
 
 	private final FeedSourceId feedSourceId;

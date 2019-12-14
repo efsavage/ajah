@@ -147,8 +147,7 @@ public class RoleManager {
 		role.setDescription(description);
 		role.setType(type);
 		role.setStatus(status);
-		DataOperationResult<Role> result = save(role);
-		return result;
+		return save(role);
 	}
 
 	/**
@@ -166,8 +165,7 @@ public class RoleManager {
 	public DataOperationResult<Role> deactivate(RoleId roleId) throws DataOperationException, RoleNotFoundException {
 		Role role = load(roleId);
 		role.setStatus(RoleStatus.INACTIVE);
-		DataOperationResult<Role> result = save(role);
-		return result;
+		return save(role);
 	}
 
 	/**
@@ -185,8 +183,7 @@ public class RoleManager {
 	public DataOperationResult<Role> activate(RoleId roleId) throws DataOperationException, RoleNotFoundException {
 		Role role = load(roleId);
 		role.setStatus(RoleStatus.INACTIVE);
-		DataOperationResult<Role> result = save(role);
-		return result;
+		return save(role);
 	}
 
 	/**

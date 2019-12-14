@@ -59,11 +59,9 @@ public class MockSmsClient implements SmsClient {
 	 *            The number to send to.
 	 * @param message
 	 *            The message to send.
-	 * @throws SmsException
-	 *             If the message could not be sent.
 	 */
 	@Override
-	public void send(final String to, final String message) throws SmsException {
+	public void send(final String to, final String message) {
 		log.info("SMS from " + to + ": " + message + " (using mock client, not sent)");
 	}
 

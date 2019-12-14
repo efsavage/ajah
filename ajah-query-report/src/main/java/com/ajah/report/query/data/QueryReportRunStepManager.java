@@ -151,8 +151,7 @@ public class QueryReportRunStepManager {
 		queryReportRunStep.setName(name);
 		queryReportRunStep.setType(type);
 		queryReportRunStep.setStatus(status);
-		DataOperationResult<QueryReportRunStep> result = save(queryReportRunStep);
-		return result;
+		return save(queryReportRunStep);
 	}
 
 	/**
@@ -170,8 +169,7 @@ public class QueryReportRunStepManager {
 	public DataOperationResult<QueryReportRunStep> delete(QueryReportRunStepId queryReportRunStepId) throws DataOperationException, QueryReportRunStepNotFoundException {
 		QueryReportRunStep queryReportRunStep = load(queryReportRunStepId);
 		queryReportRunStep.setStatus(QueryReportRunStepStatus.DELETED);
-		DataOperationResult<QueryReportRunStep> result = save(queryReportRunStep);
-		return result;
+		return save(queryReportRunStep);
 	}
 
 	/**

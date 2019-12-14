@@ -35,7 +35,7 @@ import com.ajah.util.StringUtils;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class H4 extends AbstractNestableHtmlCoreElement<H4> {
 
 	private String text;

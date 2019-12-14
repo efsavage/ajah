@@ -29,7 +29,7 @@ import lombok.extern.java.Log;
 @Log
 public class NumberUtils {
 
-	public static final Integer INTEGER_ZERO = new Integer(0);
+	public static final Integer INTEGER_ZERO = Integer.valueOf(0);
 	public static final NumberFormat N_NNN;
 
 	static {
@@ -140,7 +140,7 @@ public class NumberUtils {
 		if (value == 0) {
 			return null;
 		}
-		return new Integer(value);
+		return Integer.valueOf(value);
 	}
 
 	/**

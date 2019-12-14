@@ -36,15 +36,15 @@ public interface SmsClient {
 	 * @throws SmsException
 	 *             If the message could not be sent.
 	 */
-	public void send(final String to, final String message) throws SmsException;
+	void send(final String to, final String message) throws SmsException;
 
 	/**
 	 * Fetches inbound messages.
 	 */
-	public void getInboundMessages();
+	void getInboundMessages();
 
 	/**
 	 * Fetches outbound messages.
 	 */
-	public void getOutboundMessages();
+	void getOutboundMessages();
 }

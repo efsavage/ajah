@@ -70,7 +70,7 @@ public enum Compact {
 
 	private final int level;
 
-	private Compact(final int level) {
+	Compact(final int level) {
 		this.level = level;
 	}
 

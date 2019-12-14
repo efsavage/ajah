@@ -34,7 +34,7 @@ import com.ajah.util.AjahUtils;
  */
 public class SimpleWorker<T> implements Worker<T> {
 
-	private static Logger log = Logger.getLogger(SimpleWorker.class.getName());
+	private static final Logger log = Logger.getLogger(SimpleWorker.class.getName());
 	private final FutureTask<T> task;
 	private boolean cancelRequested;
 	private ThreadQueue threadQueue;

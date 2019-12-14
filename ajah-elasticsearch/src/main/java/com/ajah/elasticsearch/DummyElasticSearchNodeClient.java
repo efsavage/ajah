@@ -43,9 +43,9 @@ import lombok.extern.java.Log;
 public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> implements ElasticSearchClient<K, T, C> {
 
 	private final ObjectMapper mapper = new ObjectMapper();
-	private String index;
-	private String type;
-	private String clusterName;
+	private final String index;
+	private final String type;
+	private final String clusterName;
 
 	/**
 	 * Public constructor with data set to false and no additional
@@ -139,7 +139,7 @@ public abstract class DummyElasticSearchNodeClient<K extends Comparable<K>, T ex
 	 * @return The results of the search.
 	 */
 	@Override
-	public SearchList<C> search(final String query) throws ElasticSearchException {
+	public SearchList<C> search(final String query) {
 		return new SearchList<>();
 	}
 

@@ -108,14 +108,7 @@ public class QueryReportRunner {
 			run.setData(FileUtils.readFile(file));
 			run.setStatus(QueryReportRunStatus.COMPLETE);
 			this.runManager.save(run);
-		} catch (DataOperationException e) {
-			if (run != null) {
-				run.setData(e.getMessage());
-				run.setStatus(QueryReportRunStatus.ERROR);
-				this.runManager.save(run);
-			}
-			throw e;
-		} catch (IOException e) {
+		} catch (DataOperationException | IOException e) {
 			if (run != null) {
 				run.setData(e.getMessage());
 				run.setStatus(QueryReportRunStatus.ERROR);

@@ -34,7 +34,7 @@ import com.ajah.util.StringUtils;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @AllArgsConstructor
 public class Meta implements HtmlElement<Meta> {
 

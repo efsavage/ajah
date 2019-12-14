@@ -163,7 +163,7 @@ public class LoremIpsum {
 	 * @param args
 	 *            Ignored.
 	 */
-	public static void main(final String args[]) {
+	public static void main(final String[] args) {
 		System.out.println(getParagraph());
 	}
 

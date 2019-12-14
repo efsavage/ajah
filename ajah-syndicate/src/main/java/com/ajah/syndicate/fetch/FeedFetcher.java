@@ -176,13 +176,10 @@ public class FeedFetcher {
 	 * any listeners needed. This will run until interrupted by a serious
 	 * exception.
 	 * 
-	 * @throws InterruptedException
-	 *             If the thread was interrupted while sleeping (while waiting
-	 *             for a feed to fetch).
 	 * @throws DataOperationException
 	 *             If a database query could not be executed.
 	 */
-	public void run() throws InterruptedException, DataOperationException {
+	public void run() throws DataOperationException {
 		while (true) {
 			poll();
 		}

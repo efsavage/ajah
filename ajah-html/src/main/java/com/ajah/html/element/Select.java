@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Select extends AbstractNestableHtmlCoreElement<Select> implements Input<Select> {
 
 	private final String name;

@@ -34,10 +34,7 @@ public class BooleanUtils {
 		}
 		try {
 			final int intVal = Integer.parseInt(value);
-			if (intVal == 0) {
-				return false;
-			}
-			return true;
+			return intVal != 0;
 		} catch (final NumberFormatException e) {
 			return defaultValue;
 		}

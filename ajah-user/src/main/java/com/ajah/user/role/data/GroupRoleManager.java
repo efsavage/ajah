@@ -148,8 +148,7 @@ public class GroupRoleManager {
 		groupRole.setRoleId(roleId);
 		groupRole.setType(type);
 		groupRole.setStatus(status);
-		DataOperationResult<GroupRole> result = save(groupRole);
-		return result;
+		return save(groupRole);
 	}
 
 	/**
@@ -167,8 +166,7 @@ public class GroupRoleManager {
 	public DataOperationResult<GroupRole> delete(GroupRoleId groupRoleId) throws DataOperationException, GroupRoleNotFoundException {
 		GroupRole groupRole = load(groupRoleId);
 		groupRole.setStatus(GroupRoleStatus.DELETED);
-		DataOperationResult<GroupRole> result = save(groupRole);
-		return result;
+		return save(groupRole);
 	}
 
 	/**

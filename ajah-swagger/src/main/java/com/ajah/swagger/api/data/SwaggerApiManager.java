@@ -154,8 +154,7 @@ public class SwaggerApiManager {
 		swaggerApi.setXml(xml);
 		swaggerApi.setType(type);
 		swaggerApi.setStatus(status);
-		DataOperationResult<SwaggerApi> result = save(swaggerApi);
-		return result;
+		return save(swaggerApi);
 	}
 
 	/**
@@ -173,8 +172,7 @@ public class SwaggerApiManager {
 	public DataOperationResult<SwaggerApi> delete(SwaggerApiId swaggerApiId) throws DataOperationException, SwaggerApiNotFoundException {
 		SwaggerApi swaggerApi = load(swaggerApiId);
 		swaggerApi.setStatus(SwaggerApiStatus.DELETED);
-		DataOperationResult<SwaggerApi> result = save(swaggerApi);
-		return result;
+		return save(swaggerApi);
 	}
 
 	/**

@@ -18,7 +18,6 @@ package com.ajah.util.log;
 import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,22 +30,22 @@ import com.ajah.util.text.Strings;
 /**
  * An atomic counter for keeping track of things, intended but not restricted to
  * tally against the values of an enum.
- * 
- * @author efsavage
+ *
  * @param <T>
+ * @author efsavage
  */
 public class Tally<T> {
 
 	protected final ConcurrentMap<T, Long> map = new ConcurrentHashMap<>();
 	protected final AtomicLong errors = new AtomicLong();
 	protected final AtomicLong successes = new AtomicLong();
-	protected PrintStream out;
+	protected final PrintStream out;
 
 	/**
 	 * Public constructor.
-	 * 
+	 *
 	 * @param out
-	 *            The output for reporting.
+	 * 		The output for reporting.
 	 */
 	public Tally(final PrintStream out) {
 		this.out = out;
@@ -61,7 +60,7 @@ public class Tally<T> {
 
 	/**
 	 * Return the error count.
-	 * 
+	 *
 	 * @return The error count.
 	 */
 	public long getErrors() {
@@ -70,7 +69,7 @@ public class Tally<T> {
 
 	/**
 	 * Return the success count.
-	 * 
+	 *
 	 * @return The success count.
 	 */
 	public long getSuccesses() {
@@ -79,7 +78,7 @@ public class Tally<T> {
 
 	/**
 	 * Return the total count.
-	 * 
+	 *
 	 * @return The total count.
 	 */
 	public long getTotal() {
@@ -89,9 +88,9 @@ public class Tally<T> {
 	/**
 	 * Generates a report only if the {@link #getTotal()} evenly divides by the
 	 * interval, and is greater than zero.
-	 * 
+	 *
 	 * @param interval
-	 *            The interval to space reports by
+	 * 		The interval to space reports by
 	 * @see #report()
 	 */
 	public void intervalReport(final int interval) {
@@ -109,9 +108,9 @@ public class Tally<T> {
 
 	/**
 	 * Write a report with totals to the configured output.
-	 * 
+	 *
 	 * @param threshold
-	 *            Only print totals of at least this value.
+	 * 		Only print totals of at least this value.
 	 */
 	public void report(final long threshold) {
 		this.out.println(Strings.HYPEN35);
@@ -127,7 +126,7 @@ public class Tally<T> {
 		this.out.println(Strings.HYPEN35);
 		this.out.println("Success/Error/Total: " + getSuccesses() + "/" + getErrors() + "/" + getTotal() + " - " + NumberFormat.getPercentInstance().format(1.0 * getSuccesses() / getTotal()));
 		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
-		Collections.sort(top, new EntryValueComparator<T, Long>());
+		top.sort(new EntryValueComparator<>());
 		if (top.size() > number) {
 			top = top.subList(0, number);
 		}
@@ -139,7 +138,7 @@ public class Tally<T> {
 	/**
 	 * Builds a simple report with a line for each keys/count.
 	 *
- 	 * @return A multi-line string with keys and current counts.
+	 * @return A multi-line string with keys and current counts.
 	 */
 	public String getReport() {
 		StringBuilder builder = new StringBuilder();
@@ -147,7 +146,7 @@ public class Tally<T> {
 			if (builder.length() > 0) {
 				builder.append("\n");
 			}
-			builder.append(t.toString() + ": " + this.map.get(t));
+			builder.append(t.toString()).append(": ").append(this.map.get(t));
 		}
 		return builder.toString();
 	}
@@ -161,9 +160,9 @@ public class Tally<T> {
 
 	/**
 	 * Tally an object with an increment of 1. This works best with enums.
-	 * 
+	 *
 	 * @param tallyObject
-	 *            The object to tally by.
+	 * 		The object to tally by.
 	 */
 	public long tally(final T tallyObject) {
 		return tally(tallyObject, 1);
@@ -171,9 +170,9 @@ public class Tally<T> {
 
 	/**
 	 * Get but do not increment the tally for an object.
-	 * 
+	 *
 	 * @param tallyObject
-	 *            The object to get the current count for.
+	 * 		The object to get the current count for.
 	 */
 	public long getValue(final T tallyObject) {
 		final Long value = this.map.get(tallyObject);
@@ -185,11 +184,11 @@ public class Tally<T> {
 
 	/**
 	 * Tally an object with a specific increment. This works best with enums.
-	 * 
+	 *
 	 * @param tallyObject
-	 *            The object to tally by.
+	 * 		The object to tally by.
 	 * @param increment
-	 *            The number to increment the tally by.
+	 * 		The number to increment the tally by.
 	 */
 	public long tally(final T tallyObject, final long increment) {
 		final Long oldValue = this.map.get(tallyObject);
@@ -212,7 +211,7 @@ public class Tally<T> {
 	public String getReport(int number) {
 		StringBuilder builder = new StringBuilder();
 		List<Entry<T, Long>> top = new ArrayList<>(this.map.entrySet());
-		Collections.sort(top, new EntryValueComparator<T, Long>());
+		top.sort(new EntryValueComparator<>());
 		if (top.size() > number) {
 			top = top.subList(0, number);
 		}
@@ -220,7 +219,7 @@ public class Tally<T> {
 			if (builder.length() > 0) {
 				builder.append("\n");
 			}
-			builder.append(entry.getKey() + ": " + entry.getValue());
+			builder.append(entry.getKey()).append(": ").append(entry.getValue());
 		}
 		return builder.toString();
 	}

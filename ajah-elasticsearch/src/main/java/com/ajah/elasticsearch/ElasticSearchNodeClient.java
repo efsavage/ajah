@@ -39,7 +39,7 @@ import lombok.extern.java.Log;
 @Log
 public abstract class ElasticSearchNodeClient<K extends Comparable<K>, T extends Identifiable<K>, C extends T> extends AbstractElasticSearchNativeClient<K, T, C> {
 
-	private Node node;
+	private final Node node;
 
 	/**
 	 * Public constructor with data set to false and no additional

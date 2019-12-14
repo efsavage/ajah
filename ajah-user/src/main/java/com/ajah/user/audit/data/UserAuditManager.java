@@ -106,8 +106,7 @@ public class UserAuditManager {
 		userAudit.setStaffComment(staffComment);
 		userAudit.setIp(ip);
 		userAudit.setHeaders(headers);
-		final DataOperationResult<UserAudit> result = save(userAudit);
-		return result;
+		return save(userAudit);
 	}
 
 	/**

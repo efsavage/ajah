@@ -31,7 +31,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class H3 extends AbstractNestableHtmlCoreElement<H3> {
 
 	private String text;

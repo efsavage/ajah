@@ -42,7 +42,7 @@ public interface AchievementAnalyzer {
 	 *            The existing achievementUser, required.
 	 * @return true if the AchievementUser was updated, otherwise false.
 	 */
-	public boolean analyze(final User user, final Achievement achievement, final AchievementUser achievementUser);
+	boolean analyze(final User user, final Achievement achievement, final AchievementUser achievementUser);
 
 	/**
 	 * Analyzes whatever is necessary to see if an {@link Achievement} needs to
@@ -58,6 +58,6 @@ public interface AchievementAnalyzer {
 	 *            The existing achievementUser, required.
 	 * @return true if the AchievementUser was updated, otherwise false.
 	 */
-	public boolean analyze(final UserId userId, final Achievement achievement, final AchievementUser achievementUser);
+	boolean analyze(final UserId userId, final Achievement achievement, final AchievementUser achievementUser);
 
 }

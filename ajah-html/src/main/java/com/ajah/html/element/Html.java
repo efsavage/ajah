@@ -32,7 +32,7 @@ import com.ajah.html.HtmlVersion;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Html extends AbstractNestableHtmlCoreElement<Html> {
 
 	private HtmlVersion version;

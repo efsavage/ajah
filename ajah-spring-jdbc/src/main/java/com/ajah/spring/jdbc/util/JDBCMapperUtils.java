@@ -61,9 +61,7 @@ public class JDBCMapperUtils {
 	 * @return Column name
 	 */
 	public static String getColumnName(final String tableName, final Field field) {
-		if (columnNameCache.get(tableName) == null) {
-			columnNameCache.put(tableName, new HashMap<Field, String>());
-		}
+		columnNameCache.computeIfAbsent(tableName, k -> new HashMap<>());
 		String columnName = columnNameCache.get(tableName).get(field);
 		if (columnName != null) {
 			return columnName;

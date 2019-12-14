@@ -79,11 +79,7 @@ public class MatchValidator implements Validator {
 						valid = field.get(target).equals(matchTargetField.get(target));
 					}
 					log.fine("Valid: " + valid);
-				} catch (final SecurityException e) {
-					throw new IllegalArgumentException(e);
-				} catch (final NoSuchFieldException e) {
-					throw new IllegalArgumentException(e);
-				} catch (final IllegalAccessException e) {
+				} catch (final SecurityException | IllegalAccessException | NoSuchFieldException e) {
 					throw new IllegalArgumentException(e);
 				}
 			}

@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class DisabledUserException extends AuthenticationException {
 
 	private UserId userId;

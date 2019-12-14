@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.logging.Level;
 
@@ -68,7 +69,7 @@ public class DiskCache implements HttpCache {
 	 * @throws InternalServerError
 	 */
 	public static String get(final URI uri, final long maxAge) throws IOException, HttpException {
-		return new String(getBytes(uri, maxAge), "UTF-8");
+		return new String(getBytes(uri, maxAge), StandardCharsets.UTF_8);
 	}
 
 	/**

@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class SwaggerModelProperty {
 
-	public String type;
+	public final String type;
 	public SwaggerItemsRef items;
-	public boolean required;
+	public final boolean required;
 	public String description;
 
 	public SwaggerModelProperty(final String type, final boolean required) {

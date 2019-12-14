@@ -36,7 +36,7 @@ import com.ajah.util.StringUtils;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Anchor extends AbstractNestableHtmlCoreElement<Anchor> {
 
 	/**

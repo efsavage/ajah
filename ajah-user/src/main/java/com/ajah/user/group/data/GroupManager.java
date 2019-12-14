@@ -143,8 +143,7 @@ public class GroupManager {
 		group.setName(name);
 		group.setType(type);
 		group.setStatus(status);
-		DataOperationResult<Group> result = save(group);
-		return result;
+		return save(group);
 	}
 
 	/**
@@ -162,8 +161,7 @@ public class GroupManager {
 	public DataOperationResult<Group> delete(GroupId groupId) throws DataOperationException, GroupNotFoundException {
 		Group group = load(groupId);
 		group.setStatus(GroupStatus.DELETED);
-		DataOperationResult<Group> result = save(group);
-		return result;
+		return save(group);
 	}
 
 	/**

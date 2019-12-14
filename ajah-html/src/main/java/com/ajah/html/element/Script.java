@@ -31,7 +31,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Script extends AbstractNestableHtmlCoreElement<Script> {
 
 	private String text;

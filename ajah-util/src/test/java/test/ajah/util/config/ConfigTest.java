@@ -61,7 +61,7 @@ public class ConfigTest {
 		}
 	}
 
-	Config config = Config.i;
+	final Config config = Config.i;
 
 	/**
 	 * Test get operations in Config

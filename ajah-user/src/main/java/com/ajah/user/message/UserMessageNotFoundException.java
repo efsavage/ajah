@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class UserMessageNotFoundException extends Exception {
 
 	private final UserMessageId id;

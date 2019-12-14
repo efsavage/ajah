@@ -29,6 +29,6 @@ public enum Direction {
 	/**
 	 * Right-to-left
 	 */
-	RTL;
+	RTL
 
 }

@@ -40,11 +40,9 @@ public interface FeedDao extends AjahDao<FeedId, Feed> {
 	 * @param feed
 	 *            The feed to update.
 	 * @return The number of rows affected by the update.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
 	 */
 	@Override
-	DataOperationResult<Feed> update(final Feed feed) throws DataOperationException;
+	DataOperationResult<Feed> update(final Feed feed);
 
 	/**
 	 * Finds the most recent feed for a feed source.

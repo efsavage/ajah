@@ -42,11 +42,9 @@ public interface FeedEntryDao extends AjahDao<FeedEntryId, FeedEntry> {
 	 * @param entry
 	 *            The entry to update.
 	 * @return The number of rows affected by the update.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
 	 */
 	@Override
-	DataOperationResult<FeedEntry> update(final FeedEntry entry) throws DataOperationException;
+	DataOperationResult<FeedEntry> update(final FeedEntry entry);
 
 	/**
 	 * Finds an entry by {@link FeedEntry#getHtmlUrlSha1()} and feed source.

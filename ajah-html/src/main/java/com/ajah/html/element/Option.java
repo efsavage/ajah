@@ -33,7 +33,7 @@ import com.ajah.util.StringUtils;
  */
 @Data
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Option extends AbstractHtmlCoreElement<Option> {
 
 	private String value;

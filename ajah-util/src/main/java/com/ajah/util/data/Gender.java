@@ -72,7 +72,7 @@ public enum Gender implements IdentifiableEnum<String> {
 	private final String name;
 	private final String[] alternates;
 
-	private Gender(final String id, final String code, final String name, final String... alternates) {
+	Gender(final String id, final String code, final String name, final String... alternates) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

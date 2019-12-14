@@ -68,7 +68,7 @@ public enum ImageFormat {
 
 	private final AjahMimeType mimeType;
 
-	private ImageFormat(final String suffix, final AjahMimeType mimeType, final String... aliases) {
+	ImageFormat(final String suffix, final AjahMimeType mimeType, final String... aliases) {
 		this.suffix = suffix;
 		this.mimeType = mimeType;
 		this.aliases = aliases;

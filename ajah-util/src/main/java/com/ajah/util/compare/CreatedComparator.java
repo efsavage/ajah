@@ -36,7 +36,7 @@ public class CreatedComparator implements Comparator<Created> {
 	 */
 	public static final CreatedComparator DESCENDING = new CreatedComparator(false);
 
-	private boolean ascending;
+	private final boolean ascending;
 
 	/**
 	 * Private constructor.

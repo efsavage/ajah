@@ -15,7 +15,7 @@ public interface Country {
 	 * 
 	 * @return The internal ID. Should never be null or empty.
 	 */
-	public String getId();
+	String getId();
 
 	/**
 	 * The public abbreviation of the country. Is not dictated by the official
@@ -27,7 +27,7 @@ public interface Country {
 	 * @return The public abbreviation of the country. Should never be null or
 	 *         empty.
 	 */
-	public String getAbbr();
+	String getAbbr();
 
 	/**
 	 * The common name of the country.
@@ -37,6 +37,6 @@ public interface Country {
 	 * 
 	 * @return The common name of the country. Should never be null or empty.
 	 */
-	public String getName();
+	String getName();
 
 }

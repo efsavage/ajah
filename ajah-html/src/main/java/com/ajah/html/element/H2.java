@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class H2 extends AbstractNestableHtmlCoreElement<H2> {
 
 	private String text;

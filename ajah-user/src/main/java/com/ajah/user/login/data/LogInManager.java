@@ -129,8 +129,7 @@ public class LogInManager {
 		logIn.setUsername(name);
 		logIn.setType(type);
 		logIn.setStatus(status);
-		final DataOperationResult<LogIn> result = save(logIn);
-		return result;
+		return save(logIn);
 	}
 
 	/**
@@ -371,8 +370,7 @@ public class LogInManager {
 	public String getUsernameByToken(String token) throws CryptoException {
 		final String decrypted = Crypto.fromAES(token);
 		log.fine("token contents: " + decrypted);
-		final String username = decrypted.split("\\|")[0];
-		return username;
+		return decrypted.split("\\|")[0];
 	}
 
 }

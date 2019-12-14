@@ -88,7 +88,7 @@ public abstract class AjahFilter implements Filter {
 	 * @see javax.servlet.Filter#init(FilterConfig)
 	 */
 	@Override
-	public void init(final FilterConfig arg0) throws ServletException {
+	public void init(final FilterConfig arg0) {
 		log.finer(getClass().getName() + " initialized");
 	}
 

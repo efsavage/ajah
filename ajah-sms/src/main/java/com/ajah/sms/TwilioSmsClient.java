@@ -38,7 +38,7 @@ import com.twilio.sdk.resource.instance.Account;
 @Log
 public class TwilioSmsClient implements SmsClient {
 
-	Account mainAccount;
+	final Account mainAccount;
 	private final String defaultSender;
 
 	/**

@@ -35,7 +35,7 @@ import com.ajah.util.StringUtils;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Italic extends AbstractNestableHtmlCoreElement<Italic> {
 
 	private String text;

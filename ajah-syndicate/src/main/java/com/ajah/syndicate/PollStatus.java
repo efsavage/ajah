@@ -65,7 +65,7 @@ public enum PollStatus implements Identifiable<String> {
 	private final String description;
 	private final boolean active;
 
-	private PollStatus(final String id, final String code, final String name, final String description, final boolean active) {
+	PollStatus(final String id, final String code, final String name, final String description, final boolean active) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

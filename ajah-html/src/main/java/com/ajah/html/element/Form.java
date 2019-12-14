@@ -33,7 +33,7 @@ import com.ajah.html.dtd.FormMethod;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Form extends AbstractNestableHtmlCoreElement<Form> {
 
 	private String action;

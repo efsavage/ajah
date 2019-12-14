@@ -34,7 +34,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Button extends AbstractNestableHtmlCoreElement<Button> implements Input<Button> {
 
 	private String text;

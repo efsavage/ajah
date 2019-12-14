@@ -95,8 +95,7 @@ public class BlacklistManager {
 		blacklist.setPart2(part2);
 		blacklist.setType(type);
 		blacklist.setStatus(status);
-		final DataOperationResult<Blacklist> result = save(blacklist);
-		return result;
+		return save(blacklist);
 	}
 
 	/**
@@ -114,8 +113,7 @@ public class BlacklistManager {
 	public DataOperationResult<Blacklist> delete(final BlacklistId blacklistId) throws DataOperationException, BlacklistNotFoundException {
 		final Blacklist blacklist = load(blacklistId);
 		blacklist.setStatus(BlacklistStatus.DELETED);
-		final DataOperationResult<Blacklist> result = save(blacklist);
-		return result;
+		return save(blacklist);
 	}
 
 	/**

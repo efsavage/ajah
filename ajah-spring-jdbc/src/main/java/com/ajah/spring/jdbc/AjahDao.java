@@ -97,9 +97,7 @@ public interface AjahDao<K extends Comparable<K>, T extends Identifiable<K>> {
 	 * @param entity
 	 *            The entity to delete.
 	 * @return The number of rows deleted or marked as deleted.
-	 * @throws DataOperationException
-	 *             if the query could not be executed.
 	 */
-	DataOperationResult<T> delete(final T entity) throws DataOperationException;
+	DataOperationResult<T> delete(final T entity);
 
 }

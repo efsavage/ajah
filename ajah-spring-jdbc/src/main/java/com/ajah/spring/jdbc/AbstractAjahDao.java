@@ -97,7 +97,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	protected static final Logger sqlVarsLog = Logger.getLogger("ajah.sql.vars");
 
 	private static String getFieldsClause(final String[] fields) {
-		final StringBuffer stringBuffer = new StringBuffer();
+		final StringBuilder stringBuffer = new StringBuilder();
 		boolean first = true;
 		for (final String field : fields) {
 			if (first) {
@@ -273,17 +273,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					log.warning("Can't handle auto-populating of column " + column + " of type " + field.getType());
 				}
 			}
-		} catch (final IntrospectionException e) {
-			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
-		} catch (final SecurityException e) {
-			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
-		} catch (final InstantiationException e) {
-			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
-		} catch (final IllegalAccessException e) {
-			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
-		} catch (final InvocationTargetException e) {
-			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
-		} catch (final NoSuchMethodException e) {
+		} catch (final IntrospectionException | SecurityException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
 			log.log(Level.SEVERE, entity.getClass().getName() + ": " + e.getMessage(), e);
 		}
 	}
@@ -348,12 +338,10 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	 * 
 	 * @see com.ajah.spring.jdbc.AjahDao#delete(com.ajah.util.Identifiable)
 	 * @see #deleteById(Comparable)
-	 * 
-	 * @throws DataOperationException
-	 *             If an error occurs executing the query.
+	 *
 	 */
 	@Override
-	public DataOperationResult<T> delete(final T entity) throws DataOperationException {
+	public DataOperationResult<T> delete(final T entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -554,7 +542,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 	public List<T> findByIds(final Collection<K> ids) throws DataOperationException {
 		AjahUtils.requireParam(ids, "ids");
 		try {
-			final StringBuffer sql = new StringBuffer();
+			final StringBuilder sql = new StringBuilder();
 			sql.append("SELECT " + getSelectFields() + " FROM `" + getTableName() + "` WHERE ");
 			boolean first = true;
 			final String[] idArray = new String[ids.size()];
@@ -1305,8 +1293,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		log.finest("Table set to : " + this.tableName);
 		final List<String> columnList = new ArrayList<>();
 		final List<String> newUpdateFields = new ArrayList<>();
-		final StringBuffer select = new StringBuffer();
-		final StringBuffer selectWithTablePrefix = new StringBuffer();
+		final StringBuilder select = new StringBuilder();
+		final StringBuilder selectWithTablePrefix = new StringBuilder();
 		log.finest(getTargetClass().getDeclaredFields().length + " declared fields for " + getTargetClass().getName());
 		for (final Field field : getTargetClass().getDeclaredFields()) {
 			if (Modifier.isStatic(field.getModifiers())) {
@@ -1369,7 +1357,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		log.finest(this.columns.size() + " columns");
 
 		if (this.updateFields == null) {
-			final StringBuffer uf = new StringBuffer();
+			final StringBuilder uf = new StringBuilder();
 			for (final String field : newUpdateFields) {
 				if (uf.length() > 0) {
 					uf.append(",");
@@ -1381,7 +1369,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			this.updateFieldsList = newUpdateFields;
 		}
 
-		final StringBuffer iph = new StringBuffer();
+		final StringBuilder iph = new StringBuilder();
 		for (int i = 0; i < this.insertColumns.size(); i++) {
 			if (i > 0) {
 				iph.append(",");
@@ -1460,7 +1448,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				throw new IllegalArgumentException("No setter found for " + prop.getName());
 			}
 			setter.invoke(entity, value);
-		} catch (final IllegalAccessException e) {
+		} catch (final IllegalAccessException | InvocationTargetException e) {
 			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		} catch (final IllegalArgumentException e) {
 			// TODO See if we're trying to set a null on a primitive
@@ -1469,8 +1457,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			} else {
 				log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 			}
-		} catch (final InvocationTargetException e) {
-			log.log(Level.SEVERE, prop.getName() + ": " + e.getMessage(), e);
 		}
 	}
 
@@ -1512,8 +1498,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 		try {
 			final String sql = "SELECT SUM(`" + field + "`) FROM `" + getTableName() + "`" + criteria.getWhere().getSql();
 			sqlLog.finest(sql);
-			final N sum = getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), clazz);
-			return sum;
+			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), clazz);
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
 			return null;

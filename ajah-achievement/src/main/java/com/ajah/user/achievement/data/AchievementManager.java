@@ -89,8 +89,7 @@ public class AchievementManager {
 		achievement.setName(name);
 		achievement.setType(type);
 		achievement.setStatus(status);
-		final DataOperationResult<Achievement> result = save(achievement);
-		return result;
+		return save(achievement);
 	}
 
 	/**
@@ -108,8 +107,7 @@ public class AchievementManager {
 	public DataOperationResult<Achievement> delete(final AchievementId achievementId) throws DataOperationException, AchievementNotFoundException {
 		final Achievement achievement = load(achievementId);
 		achievement.setStatus(AchievementStatus.DELETED);
-		final DataOperationResult<Achievement> result = save(achievement);
-		return result;
+		return save(achievement);
 	}
 
 	/**

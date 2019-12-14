@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,7 @@ public class FlatFileWriter implements Closeable {
 	public FlatFileWriter(final FlatFileFormat format, final File file) throws IOException {
 		this.format = format;
 		this.file = file;
-		this.writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+		this.writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 	}
 
 	public void addColumn(final String name) {

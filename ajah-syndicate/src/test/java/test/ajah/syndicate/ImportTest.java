@@ -67,13 +67,12 @@ public class ImportTest {
 	 * Test parsing Scoble's gigantic OPML file.
 	 * 
 	 * @throws IllegalArgumentException
-	 * @throws FeedException
 	 * @throws JDOMException
 	 * @throws IOException
 	 * @throws SyndicationException
 	 */
 	@Test
-	public void testOpmlImport() throws IllegalArgumentException, FeedException, JDOMException, IOException, SyndicationException {
+	public void testOpmlImport() throws IllegalArgumentException, JDOMException, IOException, SyndicationException {
 		final Document doc = new SAXBuilder(false).build(getClass().getResourceAsStream("/opml/subscriptions.xml"));
 		final Opml opml = OpmlUtils.parse(doc);
 		printOutlines(opml.getOutlines());

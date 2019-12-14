@@ -42,8 +42,7 @@ public class URLUtils {
 	public static String getHost(final String url) throws URISyntaxException {
 		AjahUtils.requireParam(url, "url");
 		final URI uri = new URI(url);
-		final String domain = uri.getHost();
-		return domain;
+		return uri.getHost();
 	}
 
 	/**

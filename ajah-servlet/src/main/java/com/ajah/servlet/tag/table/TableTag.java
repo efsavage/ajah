@@ -34,7 +34,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class TableTag extends TagSupport {
 
 	private String cssClass;

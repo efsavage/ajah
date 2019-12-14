@@ -93,8 +93,7 @@ public class UserFollowManager {
 		userFollow.setFollowedUserId(followedUserId);
 		userFollow.setType(type);
 		userFollow.setStatus(status);
-		final DataOperationResult<UserFollow> result = save(userFollow);
-		return result;
+		return save(userFollow);
 	}
 
 	/**
@@ -112,8 +111,7 @@ public class UserFollowManager {
 	public DataOperationResult<UserFollow> delete(final UserFollowId userFollowId) throws DataOperationException, UserFollowNotFoundException {
 		final UserFollow userFollow = load(userFollowId);
 		userFollow.setStatus(UserFollowStatus.DELETED);
-		final DataOperationResult<UserFollow> result = save(userFollow);
-		return result;
+		return save(userFollow);
 	}
 
 	/**

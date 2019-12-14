@@ -52,7 +52,7 @@ public enum Config {
 
 	private final Properties properties = new Properties();
 
-	private Config() {
+	Config() {
 		final String config = StringUtils.isBlank(System.getProperty("config")) ? "/ajah.properties" : System.getProperty("config");
 		try (final InputStream stream = getClass().getResourceAsStream(config)) {
 			if (stream != null) {

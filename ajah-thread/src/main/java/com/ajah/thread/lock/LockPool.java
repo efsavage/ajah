@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LockPool<T> {
 
-	ConcurrentHashMap<T, PooledLock<T>> pool = new ConcurrentHashMap<>();
+	final ConcurrentHashMap<T, PooledLock<T>> pool = new ConcurrentHashMap<>();
 
 	/**
 	 * Returns a object derived from the specified value to lock on.
@@ -41,7 +41,7 @@ public class LockPool<T> {
 	 */
 	public synchronized PooledLock<T> get(final T lockValue) {
 		if (!this.pool.containsKey(lockValue)) {
-			this.pool.put(lockValue, new PooledLock<T>(lockValue));
+			this.pool.put(lockValue, new PooledLock<>(lockValue));
 		}
 		return this.pool.get(lockValue);
 	}

@@ -15,6 +15,7 @@
  */
 package com.ajah.lang;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,12 +28,11 @@ import lombok.extern.java.Log;
 /**
  * Extension of {@link HashMap} that has a methods to make dealing with the
  * value lists easier.
- * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ *
  * @param <K>
  * @param <V>
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
@@ -40,12 +40,12 @@ public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
 	/**
 	 * Returns the list found at the specified key or an empty list. Avoids
 	 * {@link NullPointerException} for iterators.
-	 * 
+	 * <p>
 	 * If no list is found, {@link Collections#emptyList()} will be returned. If
 	 * an empty, mutable list is desired, use {@link #getList(Object, Class)}.
-	 * 
+	 *
 	 * @param key
-	 *            The key to look up the value list.
+	 * 		The key to look up the value list.
 	 * @return The value list, may be empty, will not be null.
 	 */
 	public List<V> getList(final K key) {
@@ -59,20 +59,20 @@ public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
 	/**
 	 * Returns the list found at the specified key or an empty list. Avoids
 	 * {@link NullPointerException} for iterators.
-	 * 
+	 *
 	 * @param key
-	 *            The key to look up the value list.
+	 * 		The key to look up the value list.
 	 * @param listClass
-	 *            The class of list to return if one needs to be created.
+	 * 		The class of list to return if one needs to be created.
 	 * @return The value list, may be empty, will not be null.
 	 */
 	public List<V> getList(final K key, final Class<? extends List<V>> listClass) {
 		List<V> list = get(key);
 		if (list == null) {
 			try {
-				list = listClass.newInstance();
+				list = listClass.getConstructor().newInstance();
 				put(key, list);
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 				log.log(Level.SEVERE, e.getMessage(), e);
 			}
 		}
@@ -82,11 +82,11 @@ public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
 	/**
 	 * Adds a value to the list for a given key, creating that list if
 	 * necessary.
-	 * 
+	 *
 	 * @param key
-	 *            The key to look up the value list.
+	 * 		The key to look up the value list.
 	 * @param value
-	 *            The value to add to the list.
+	 * 		The value to add to the list.
 	 */
 	public void putValue(final K key, final V value) {
 		List<V> list = get(key);
@@ -99,7 +99,7 @@ public class ListMap<K, V> extends ConcurrentHashMap<K, List<V>> {
 
 	/**
 	 * Returns the total number of values across all keys.
-	 * 
+	 *
 	 * @return The total number of values across all keys.
 	 */
 	public int valuesSize() {

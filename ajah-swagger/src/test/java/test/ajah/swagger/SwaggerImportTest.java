@@ -12,10 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SwaggerImportTest {
 
-	ObjectMapper objectMapper = new ObjectMapper();
+	final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	public void importTest() throws JsonParseException, JsonMappingException, IOException {
+	public void importTest() throws IOException {
 		SwaggerOut out = objectMapper.readValue(getClass().getResourceAsStream("/swagger.json"), SwaggerOut.class);
 		objectMapper.writeValue(new File("/tmp/swagger-test.json"), out);
 	}

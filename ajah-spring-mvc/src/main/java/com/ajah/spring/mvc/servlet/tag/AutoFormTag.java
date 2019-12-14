@@ -155,7 +155,7 @@ public class AutoFormTag extends SpringTag {
 			div.add(form);
 
 			final Script script = new Script();
-			final StringBuffer code = new StringBuffer();
+			final StringBuilder code = new StringBuilder();
 			code.append("\n$(document).ready(function() {\n");
 			for (final Input<?> child : form.getInputs()) {
 				if (child instanceof TextArea && ((TextArea) child).isHtml()) {
@@ -171,11 +171,7 @@ public class AutoFormTag extends SpringTag {
 			div.add(script);
 
 			div.render(out, isCompact() ? -1 : 0);
-		} catch (final IOException e) {
-			throw new JspException(e);
-		} catch (final IllegalArgumentException e) {
-			throw new JspException(e);
-		} catch (final IllegalAccessException e) {
+		} catch (final IOException | IllegalAccessException | IllegalArgumentException e) {
 			throw new JspException(e);
 		}
 		return Tag.EVAL_PAGE;

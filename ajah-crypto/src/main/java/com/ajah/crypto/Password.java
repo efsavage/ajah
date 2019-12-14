@@ -32,6 +32,6 @@ public interface Password extends ToStringable {
 	 * @return Original length of the raw password. If the raw password was null
 	 *         this should return 0.
 	 */
-	public int getOriginalLength();
+	int getOriginalLength();
 
 }

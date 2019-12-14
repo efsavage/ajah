@@ -34,7 +34,7 @@ import lombok.Getter;
 
 public class SimplePost {
 
-	private CloseableHttpClient client;
+	private final CloseableHttpClient client;
 
 	@Getter
 	private int statusCode;

@@ -152,8 +152,7 @@ public class SwaggerPropertyManager {
 		swaggerProperty.setType(type);
 		swaggerProperty.setSwaggerDefinitionId(swaggerDefinitionId);
 		swaggerProperty.setStatus(SwaggerPropertyStatus.ACTIVE);
-		DataOperationResult<SwaggerProperty> result = save(swaggerProperty);
-		return result;
+		return save(swaggerProperty);
 	}
 
 	/**
@@ -171,8 +170,7 @@ public class SwaggerPropertyManager {
 	public DataOperationResult<SwaggerProperty> delete(SwaggerPropertyId swaggerPropertyId) throws DataOperationException, SwaggerPropertyNotFoundException {
 		SwaggerProperty swaggerProperty = load(swaggerPropertyId);
 		swaggerProperty.setStatus(SwaggerPropertyStatus.DELETED);
-		DataOperationResult<SwaggerProperty> result = save(swaggerProperty);
-		return result;
+		return save(swaggerProperty);
 	}
 
 	/**

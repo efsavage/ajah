@@ -98,8 +98,7 @@ public class EmailManager {
 		email.setAddress(address);
 		email.setType(type);
 		email.setStatus(status);
-		final DataOperationResult<Email> result = save(email);
-		return result;
+		return save(email);
 	}
 
 	/**
@@ -117,8 +116,7 @@ public class EmailManager {
 	public DataOperationResult<Email> delete(final EmailId emailId) throws DataOperationException, EmailNotFoundException {
 		final Email email = load(emailId);
 		email.setStatus(EmailStatus.DELETED);
-		final DataOperationResult<Email> result = save(email);
-		return result;
+		return save(email);
 	}
 
 	/**

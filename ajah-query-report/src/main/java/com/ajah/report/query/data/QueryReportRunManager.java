@@ -146,17 +146,14 @@ public class QueryReportRunManager {
 	 *         queryReportRun at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
-	 * @throws IOException
-	 *             If the file could not be read.
 	 */
-	public DataOperationResult<QueryReportRun> create(QueryReportId queryReportId, String name, QueryReportRunType type, QueryReportRunStatus status) throws DataOperationException, IOException {
+	public DataOperationResult<QueryReportRun> create(QueryReportId queryReportId, String name, QueryReportRunType type, QueryReportRunStatus status) throws DataOperationException {
 		QueryReportRun queryReportRun = new QueryReportRun();
 		queryReportRun.setQueryReportId(queryReportId);
 		queryReportRun.setName(name);
 		queryReportRun.setType(type);
 		queryReportRun.setStatus(status);
-		DataOperationResult<QueryReportRun> result = save(queryReportRun);
-		return result;
+		return save(queryReportRun);
 	}
 
 	/**
@@ -174,8 +171,7 @@ public class QueryReportRunManager {
 	public DataOperationResult<QueryReportRun> delete(QueryReportRunId queryReportRunId) throws DataOperationException, QueryReportRunNotFoundException {
 		QueryReportRun queryReportRun = load(queryReportRunId);
 		queryReportRun.setStatus(QueryReportRunStatus.DELETED);
-		DataOperationResult<QueryReportRun> result = save(queryReportRun);
-		return result;
+		return save(queryReportRun);
 	}
 
 	/**

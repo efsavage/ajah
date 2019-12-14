@@ -30,9 +30,9 @@ import javax.sql.DataSource;
 public class DataSourceStatus {
 
 	public String schema;
-	public ServerProductInfo serverProduct = new ServerProductInfo();
+	public final ServerProductInfo serverProduct = new ServerProductInfo();
 	public Date serverTimestamp;
 	public SQLException error;
-	public DriverInfo driver = new DriverInfo();
+	public final DriverInfo driver = new DriverInfo();
 
 }

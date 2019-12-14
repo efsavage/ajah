@@ -62,10 +62,8 @@ public class BackgroundKnockout {
 	 * @param knockoutColor
 	 *            The color to replace the background with.
 	 * @return The processed image.
-	 * @throws IOException
-	 *             If the image could not be read/written to.
 	 */
-	public static BufferedImage knockout(final BufferedImage image, final Color color, final Color knockoutColor) throws IOException {
+	public static BufferedImage knockout(final BufferedImage image, final Color color, final Color knockoutColor) {
 		final ThresholdFilter filter = new ThresholdFilter();
 		final BufferedImage knocked = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		new DespeckleFilter().filter(image, knocked);

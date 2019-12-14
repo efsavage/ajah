@@ -48,7 +48,7 @@ public enum CalendarUnit {
 	private final String name;
 	private final String plural;
 
-	private CalendarUnit(final long millis, final String name, final String plural, final int calendarField) {
+	CalendarUnit(final long millis, final String name, final String plural, final int calendarField) {
 		this.millis = millis;
 		this.name = name;
 		this.plural = plural;

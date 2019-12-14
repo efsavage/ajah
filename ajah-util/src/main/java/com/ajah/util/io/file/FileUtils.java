@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +49,7 @@ public class FileUtils {
 	 * UTF-8.
 	 */
 	public static final String UTF8 = "UTF-8";
-	private static Logger log = Logger.getLogger(FileUtils.class.getName());
+	private static final Logger log = Logger.getLogger(FileUtils.class.getName());
 
 	/**
 	 * Copies a file to another file by reading and writing the data.
@@ -223,13 +224,10 @@ public class FileUtils {
 	public static Long readFileAsLong(final File file, final Long defaultValue) {
 		try {
 			return Long.valueOf(readFile(file));
-		} catch (final NumberFormatException e) {
-			log.warning(e.getMessage());
-			return defaultValue;
 		} catch (final FileNotFoundException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
-		} catch (final IOException e) {
+		} catch (final NumberFormatException | IOException e) {
 			log.warning(e.getMessage());
 			return defaultValue;
 		}
@@ -331,7 +329,7 @@ public class FileUtils {
 			file.getParentFile().mkdirs();
 		}
 		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-			final byte buf[] = new byte[1024];
+			final byte[] buf = new byte[1024];
 			int read;
 			long total = 0;
 			while ((read = in.read(buf)) != -1) {
@@ -381,7 +379,7 @@ public class FileUtils {
 			file.getParentFile().mkdirs();
 		}
 		try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-			out.write(string.getBytes(UTF8));
+			out.write(string.getBytes(StandardCharsets.UTF_8));
 			log.fine("Wrote " + string.length() + " bytes");
 			return string.length();
 		}

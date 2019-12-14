@@ -43,7 +43,7 @@ public class ConfirmationMessagesTag extends TagSupport {
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	@Override
-	public int doStartTag() throws JspException {
+	public int doStartTag() {
 		final List<String> confirmationMessages = SessionUtils.getConfirmationMessages(this.pageContext.getSession());
 		if (CollectionUtils.isEmpty(confirmationMessages)) {
 			return Tag.SKIP_BODY;

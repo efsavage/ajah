@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @Data
 public class AuthenticationRequiredException extends AuthenticationException {
 

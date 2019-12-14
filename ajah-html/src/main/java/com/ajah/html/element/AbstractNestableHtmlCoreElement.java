@@ -41,7 +41,7 @@ import com.ajah.util.StringUtils;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @Log
 public abstract class AbstractNestableHtmlCoreElement<T> extends AbstractHtmlCoreElement<T> implements Nestable {
 

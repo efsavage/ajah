@@ -32,7 +32,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class InputImpl extends AbstractNestableHtmlCoreElement<InputImpl> implements Input<InputImpl> {
 
 	private final String name;

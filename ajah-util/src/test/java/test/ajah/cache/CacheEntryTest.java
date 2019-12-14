@@ -32,7 +32,7 @@ import com.ajah.cache.CacheEntry;
 public class CacheEntryTest {
 
 	final long timestamp = new Date().getTime();
-	String str = "aString";
+	final String str = "aString";
 	final CacheEntry<String> cacheEntry = new CacheEntry<>(this.str, this.timestamp);
 
 	/**

@@ -51,10 +51,10 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 
 			@Override
 			public MapMap<LocalDate, String, Integer> extractData(final ResultSet rs) throws SQLException, DataAccessException {
-				final MapMap<LocalDate, String, Integer> mapMap = new MapMap<LocalDate, String, Integer>();
+				final MapMap<LocalDate, String, Integer> mapMap = new MapMap<>();
 				while (rs.next()) {
 					final String source = rs.getString("source") == null ? "mg" : rs.getString("source");
-					mapMap.put(LocalDate.parse(rs.getString("date")), source, rs.getInt("total"));
+					mapMap.put(LocalDate.parse(rs.getString("date")), source, Integer.valueOf(rs.getInt("total")));
 				}
 				return mapMap;
 			}
@@ -69,7 +69,8 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 
 	@Override
 	public List<UserInfo> list(String firstName, String lastName, Integer birthYear, Month birthMonth, Integer birthDay) throws DataOperationException {
-		return super.list(new Criteria().eq("first_name", firstName).eq("last_name", lastName).eq("birth_year", birthYear).eq("birth_month", birthMonth).eq("birth_day", birthDay)
+		return super.list(new Criteria().eq("first_name", firstName).eq("last_name", lastName).eq("birth_year", birthYear.longValue()).eq("birth_month", birthMonth).eq("birth_day",
+				birthDay.longValue())
 				.orderBy("created_date", Order.ASC));
 	}
 }

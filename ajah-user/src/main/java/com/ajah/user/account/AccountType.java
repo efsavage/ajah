@@ -55,7 +55,7 @@ public enum AccountType implements IdentifiableEnum<String> {
 	private final String name;
 	private final String description;
 
-	private AccountType(final String id, final String code, final String name, final String description) {
+	AccountType(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

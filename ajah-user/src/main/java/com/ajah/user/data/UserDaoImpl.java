@@ -107,7 +107,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	 * @see com.ajah.user.data.UserDao#getStatus(com.ajah.user.UserId)
 	 */
 	@Override
-	public UserStatus getStatus(final UserId userId) throws UserNotFoundException, DataOperationException {
+	public UserStatus getStatus(final UserId userId) throws DataOperationException {
 		try {
 			final String value = this.jdbcTemplate.queryForObject("SELECT status from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
 			return UserStatus.get(value);

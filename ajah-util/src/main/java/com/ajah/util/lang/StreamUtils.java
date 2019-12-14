@@ -18,6 +18,7 @@ package com.ajah.util.lang;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import com.ajah.util.AjahUtils;
 
@@ -64,7 +65,7 @@ public class StreamUtils {
 		while ((read = inputStream.read(buffer)) != -1) {
 			output.write(buffer, 0, read);
 		}
-		return new String(output.toByteArray(), "UTF-8");
+		return new String(output.toByteArray(), StandardCharsets.UTF_8);
 	}
 
 }

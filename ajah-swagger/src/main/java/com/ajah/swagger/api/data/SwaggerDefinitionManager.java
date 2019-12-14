@@ -143,8 +143,7 @@ public class SwaggerDefinitionManager {
 		swaggerDefinition.setName(name);
 		swaggerDefinition.setType(SwaggerDefinitionType.STANDARD);
 		swaggerDefinition.setStatus(SwaggerDefinitionStatus.ACTIVE);
-		DataOperationResult<SwaggerDefinition> result = save(swaggerDefinition);
-		return result;
+		return save(swaggerDefinition);
 	}
 
 	/**
@@ -162,8 +161,7 @@ public class SwaggerDefinitionManager {
 	public DataOperationResult<SwaggerDefinition> delete(SwaggerDefinitionId swaggerDefinitionId) throws DataOperationException, SwaggerDefinitionNotFoundException {
 		SwaggerDefinition swaggerDefinition = load(swaggerDefinitionId);
 		swaggerDefinition.setStatus(SwaggerDefinitionStatus.DELETED);
-		DataOperationResult<SwaggerDefinition> result = save(swaggerDefinition);
-		return result;
+		return save(swaggerDefinition);
 	}
 
 	/**

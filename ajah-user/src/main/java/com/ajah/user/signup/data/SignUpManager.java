@@ -100,8 +100,7 @@ public class SignUpManager {
 	public DataOperationResult<SignUp> delete(final SignUpId signUpId) throws DataOperationException, SignUpNotFoundException {
 		final SignUp signUp = load(signUpId);
 		signUp.setStatus(SignUpStatus.DELETED);
-		final DataOperationResult<SignUp> result = save(signUp);
-		return result;
+		return save(signUp);
 	}
 
 	/**

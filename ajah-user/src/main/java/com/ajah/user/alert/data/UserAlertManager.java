@@ -105,8 +105,7 @@ public class UserAlertManager {
 		userAlert.setResponseType(responseType);
 		userAlert.setExpiration(expiration);
 		userAlert.setPreserve(preserve);
-		final DataOperationResult<UserAlert> result = save(userAlert);
-		return result;
+		return save(userAlert);
 	}
 
 	/**
@@ -124,8 +123,7 @@ public class UserAlertManager {
 	public DataOperationResult<UserAlert> delete(final UserAlertId userAlertId) throws DataOperationException, UserAlertNotFoundException {
 		final UserAlert userAlert = load(userAlertId);
 		userAlert.setStatus(UserAlertStatus.DELETED);
-		final DataOperationResult<UserAlert> result = save(userAlert);
-		return result;
+		return save(userAlert);
 	}
 
 	/**

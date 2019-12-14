@@ -66,8 +66,7 @@ public class AccountUserManager {
 		accountUser.setUserId(userId);
 		accountUser.setType(type);
 		accountUser.setStatus(status);
-		final DataOperationResult<AccountUser> result = save(accountUser);
-		return result;
+		return save(accountUser);
 	}
 
 	/**
@@ -85,8 +84,7 @@ public class AccountUserManager {
 	public DataOperationResult<AccountUser> delete(final AccountUserId accountUserId) throws DataOperationException, AccountUserNotFoundException {
 		final AccountUser accountUser = load(accountUserId);
 		accountUser.setStatus(AccountUserStatus.DELETED);
-		final DataOperationResult<AccountUser> result = save(accountUser);
-		return result;
+		return save(accountUser);
 	}
 
 	/**
@@ -215,8 +213,7 @@ public class AccountUserManager {
 		if (create) {
 			return this.accountUserDao.insert(accountUser);
 		}
-		final DataOperationResult<AccountUser> result = this.accountUserDao.update(accountUser);
-		return result;
+		return this.accountUserDao.update(accountUser);
 	}
 
 }

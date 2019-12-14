@@ -35,7 +35,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class Span extends AbstractNestableHtmlCoreElement<Span> {
 
 	private String text;

@@ -79,15 +79,7 @@ public class Crypto {
 
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 			return new String(cipher.doFinal(new BigInteger(encrypted, 16).toByteArray()));
-		} catch (final InvalidKeyException e) {
-			throw new CryptoException(e);
-		} catch (final IllegalBlockSizeException e) {
-			throw new CryptoException(e);
-		} catch (final BadPaddingException e) {
-			throw new CryptoException(e);
-		} catch (final NoSuchAlgorithmException e) {
-			throw new CryptoException(e);
-		} catch (final NoSuchPaddingException e) {
+		} catch (final InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException e) {
 			throw new CryptoException(e);
 		}
 	}
@@ -112,9 +104,7 @@ public class Crypto {
 			m.init(key);
 			m.update(secret);
 			return m.doFinal();
-		} catch (final NoSuchAlgorithmException e) {
-			throw new CryptoException(e);
-		} catch (final InvalidKeyException e) {
+		} catch (final NoSuchAlgorithmException | InvalidKeyException e) {
 			throw new CryptoException(e);
 		}
 	}
@@ -227,15 +217,7 @@ public class Crypto {
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
 			final byte[] encrypted = cipher.doFinal(secret.getBytes());
 			return new BigInteger(encrypted).toString(16);
-		} catch (final InvalidKeyException e) {
-			throw new CryptoException(e);
-		} catch (final IllegalBlockSizeException e) {
-			throw new CryptoException(e);
-		} catch (final BadPaddingException e) {
-			throw new CryptoException(e);
-		} catch (final NoSuchAlgorithmException e) {
-			throw new CryptoException(e);
-		} catch (final NoSuchPaddingException e) {
+		} catch (final InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException e) {
 			throw new CryptoException(e);
 		}
 	}

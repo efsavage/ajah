@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class UserNotFoundException extends Exception {
 
 	private static final long serialVersionUID = -1591254351139322758L;

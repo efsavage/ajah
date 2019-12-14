@@ -151,8 +151,7 @@ public class SwaggerParameterManager {
 		swaggerParameter.setType(type);
 		swaggerParameter.setStatus(SwaggerParameterStatus.ACTIVE);
 		swaggerParameter.setDescription(description);
-		DataOperationResult<SwaggerParameter> result = save(swaggerParameter);
-		return result;
+		return save(swaggerParameter);
 	}
 
 	/**
@@ -170,8 +169,7 @@ public class SwaggerParameterManager {
 	public DataOperationResult<SwaggerParameter> delete(SwaggerParameterId swaggerParameterId) throws DataOperationException, SwaggerParameterNotFoundException {
 		SwaggerParameter swaggerParameter = load(swaggerParameterId);
 		swaggerParameter.setStatus(SwaggerParameterStatus.DELETED);
-		DataOperationResult<SwaggerParameter> result = save(swaggerParameter);
-		return result;
+		return save(swaggerParameter);
 	}
 
 	/**

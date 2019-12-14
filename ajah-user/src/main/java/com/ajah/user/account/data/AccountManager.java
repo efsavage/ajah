@@ -88,8 +88,7 @@ public class AccountManager {
 		account.setUrlToken(StringUtils.toCleanUrlToken(name));
 		account.setType(type);
 		account.setStatus(status);
-		final DataOperationResult<Account> result = save(account);
-		return result;
+		return save(account);
 	}
 
 	/**
@@ -107,8 +106,7 @@ public class AccountManager {
 	public DataOperationResult<Account> delete(final AccountId accountId) throws DataOperationException, AccountNotFoundException {
 		final Account account = load(accountId);
 		account.setStatus(AccountStatus.DELETED);
-		final DataOperationResult<Account> result = save(account);
-		return result;
+		return save(account);
 	}
 
 	/**
@@ -198,8 +196,7 @@ public class AccountManager {
 		if (create) {
 			return this.accountDao.insert(account);
 		}
-		final DataOperationResult<Account> result = this.accountDao.update(account);
-		return result;
+		return this.accountDao.update(account);
 	}
 
 }

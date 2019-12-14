@@ -66,7 +66,7 @@ public enum AchievementTagStatus implements IdentifiableEnum<String> {
 	private final boolean error;
 	private final boolean deleted;
 
-	private AchievementTagStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
+	AchievementTagStatus(final String id, final String code, final String name, final String description, final boolean active, final boolean error, final boolean deleted) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

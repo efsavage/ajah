@@ -85,7 +85,7 @@ public enum HttpMethod implements IdentifiableEnum<String> {
 
 	private final String name;
 
-	private HttpMethod(final String id, final String code, final String name) {
+	HttpMethod(final String id, final String code, final String name) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

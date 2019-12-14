@@ -17,8 +17,8 @@ package com.ajah.swagger;
 
 public class SwaggerResponseMessage {
 
-	public int code;
-	public String message;
+	public final int code;
+	public final String message;
 
 	public SwaggerResponseMessage(final int code, final int apiCode, final String message) {
 		this.code = code;

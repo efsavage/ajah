@@ -158,8 +158,7 @@ public class SwaggerResponseManager {
 		swaggerResponse.setCode(code);
 		swaggerResponse.setType(type);
 		swaggerResponse.setStatus(SwaggerResponseStatus.ACTIVE);
-		DataOperationResult<SwaggerResponse> result = save(swaggerResponse);
-		return result;
+		return save(swaggerResponse);
 	}
 
 	/**
@@ -177,8 +176,7 @@ public class SwaggerResponseManager {
 	public DataOperationResult<SwaggerResponse> delete(SwaggerResponseId swaggerResponseId) throws DataOperationException, SwaggerResponseNotFoundException {
 		SwaggerResponse swaggerResponse = load(swaggerResponseId);
 		swaggerResponse.setStatus(SwaggerResponseStatus.DELETED);
-		DataOperationResult<SwaggerResponse> result = save(swaggerResponse);
-		return result;
+		return save(swaggerResponse);
 	}
 
 	/**

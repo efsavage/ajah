@@ -176,7 +176,7 @@ public enum LargeDataSizeUnit {
 
 	private final String abbreviation;
 
-	private LargeDataSizeUnit(final BigInteger bits, final String name, final String abbreviation) {
+	LargeDataSizeUnit(final BigInteger bits, final String name, final String abbreviation) {
 		this.bits = bits;
 		this.bytes = bits.divide(BigInteger.valueOf(8));
 		if (this.bits.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) <= 0) {

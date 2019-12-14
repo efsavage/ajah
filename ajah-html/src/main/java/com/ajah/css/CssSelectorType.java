@@ -56,7 +56,7 @@ public enum CssSelectorType {
 
 	private final int specificity;
 
-	private CssSelectorType(final int priority) {
+	CssSelectorType(final int priority) {
 		this.specificity = priority;
 	}
 

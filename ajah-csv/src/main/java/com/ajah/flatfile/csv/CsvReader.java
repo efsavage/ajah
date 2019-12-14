@@ -33,7 +33,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public class CsvReader implements AutoCloseable, Iterable<CsvRow>, Iterator<CsvRow> {
 
 	CSVReader reader = null;
-	List<String> fieldNames = new ArrayList<>();
+	final List<String> fieldNames = new ArrayList<>();
 	String[] next;
 
 	/**

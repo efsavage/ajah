@@ -88,7 +88,7 @@ public class HttpURLBuilder {
 			return this;
 		}
 		if (this.parameters == null) {
-			this.parameters = new ListMap<String, String>();
+			this.parameters = new ListMap<>();
 		}
 		this.parameters.putValue(name, value);
 		return this;

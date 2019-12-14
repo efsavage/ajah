@@ -60,10 +60,7 @@ public class AccessLoggerFilter extends AjahFilter {
 			return Boolean.TRUE.equals(request.getAttribute("logMe"));
 		}
 		final String uri = request.getRequestURI();
-		if (uri.equals("/favicon.ico") || uri.endsWith(".css") || uri.endsWith(".js")) {
-			return false;
-		}
-		return true;
+		return !uri.equals("/favicon.ico") && !uri.endsWith(".css") && !uri.endsWith(".js");
 	}
 
 	@Autowired

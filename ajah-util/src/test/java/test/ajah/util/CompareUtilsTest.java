@@ -29,7 +29,7 @@ import com.ajah.util.compare.CompareUtils;
  */
 public class CompareUtilsTest {
 
-	private static enum TestEnum {
+	private enum TestEnum {
 		FOO, BAR, BYE
 	}
 

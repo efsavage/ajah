@@ -85,7 +85,7 @@ public class IntegerMap<K> extends HashMap<K, Integer> {
 	 *            The value to set.
 	 */
 	public void setInt(final K key, final int value) {
-		put(key, new Integer(value));
+		put(key, Integer.valueOf(value));
 	}
 
 }

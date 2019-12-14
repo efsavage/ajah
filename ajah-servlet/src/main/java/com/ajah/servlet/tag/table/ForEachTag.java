@@ -40,7 +40,7 @@ import com.ajah.util.StringUtils;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @Log
 public class ForEachTag extends TagSupport {
 
@@ -65,7 +65,7 @@ public class ForEachTag extends TagSupport {
 	private Iterator<?> iterator = null;
 
 	@Override
-	public int doAfterBody() throws JspException {
+	public int doAfterBody() {
 		log.finest("doAfterBody");
 		if (this.iterator != null && this.iterator.hasNext()) {
 			final Object item = this.iterator.next();

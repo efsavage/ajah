@@ -45,7 +45,7 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * @throws ElasticSearchException
 	 *             If the index could not be completed.
 	 */
-	public IndexResponse index(final T entity) throws ElasticSearchException;
+	IndexResponse index(final T entity) throws ElasticSearchException;
 
 	/**
 	 * Searches the default set of fields with the given query.
@@ -56,7 +56,7 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * @throws ElasticSearchException
 	 *             If the search could not be executed.
 	 */
-	public SearchList<C> search(final String query) throws ElasticSearchException;
+	SearchList<C> search(final String query) throws ElasticSearchException;
 
 	/**
 	 * Loads an entity by its ID.
@@ -67,7 +67,7 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * @throws ElasticSearchException
 	 *             If the search could not be executed.
 	 */
-	public C load(final K id) throws ElasticSearchException;
+	C load(final K id) throws ElasticSearchException;
 
 	/**
 	 * Executes a search based on builders.
@@ -84,7 +84,7 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * @throws ElasticSearchException
 	 *             If the search could not be executed.
 	 */
-	public SearchList<C> search(final QueryBuilder queryBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException;
+	SearchList<C> search(final QueryBuilder queryBuilder, final SortBuilder[] sortBuilders, final int page, final int count) throws ElasticSearchException;
 
 	/**
 	 * Closes the client.
@@ -92,6 +92,6 @@ public interface ElasticSearchClient<K extends Comparable<K>, T extends Identifi
 	 * @see java.lang.AutoCloseable#close()
 	 */
 	@Override
-	public void close() throws ElasticSearchException;
+	void close() throws ElasticSearchException;
 
 }

@@ -106,11 +106,7 @@ public class ReflectionUtils {
 				return getter.invoke(instance);
 			}
 			log.log(Level.SEVERE, "No read method found for " + propertyDescriptor.getName() + " on class " + instance.getClass().getName());
-		} catch (final RuntimeException e) {
-			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		} catch (final IllegalAccessException e) {
-			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
-		} catch (final InvocationTargetException e) {
+		} catch (final RuntimeException | InvocationTargetException | IllegalAccessException e) {
 			log.log(Level.SEVERE, propertyDescriptor.getName() + ": " + e.getMessage(), e);
 		}
 		return null;

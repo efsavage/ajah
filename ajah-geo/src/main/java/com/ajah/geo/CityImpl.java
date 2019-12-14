@@ -14,7 +14,7 @@ public class CityImpl implements City {
 
 	protected State state;
 
-	protected Country country = null;
+	protected final Country country = null;
 
 	/**
 	 * If state is set, will return state.getCountry(), otherwise will return

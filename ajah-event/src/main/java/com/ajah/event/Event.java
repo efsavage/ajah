@@ -35,6 +35,6 @@ public interface Event<K extends Comparable<K>> extends Identifiable<K> {
 	 * Consider this event complete. If the event has children, they may remain
 	 * active.
 	 */
-	public void complete();
+	void complete();
 
 }

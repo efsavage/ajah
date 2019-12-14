@@ -95,8 +95,7 @@ public class UserSettingManager {
 		userSetting.setName(name);
 		userSetting.setType(type);
 		userSetting.setStatus(status);
-		final DataOperationResult<UserSetting> result = save(userSetting);
-		return result;
+		return save(userSetting);
 	}
 
 	/**
@@ -114,8 +113,7 @@ public class UserSettingManager {
 	public DataOperationResult<UserSetting> delete(final UserSettingId userSettingId) throws DataOperationException, UserSettingNotFoundException {
 		final UserSetting userSetting = load(userSettingId);
 		userSetting.setStatus(UserSettingStatus.DELETED);
-		final DataOperationResult<UserSetting> result = save(userSetting);
-		return result;
+		return save(userSetting);
 	}
 
 	public UserSetting find(final UserId userId, final String name) throws DataOperationException {
@@ -187,8 +185,7 @@ public class UserSettingManager {
 		if (create) {
 			return this.userSettingDao.insert(userSetting);
 		}
-		final DataOperationResult<UserSetting> result = this.userSettingDao.update(userSetting);
-		return result;
+		return this.userSettingDao.update(userSetting);
 	}
 
 	public UserSetting set(final UserId userId, final String name, final boolean value, final UserId staffUserId, String userComment, String staffComment, String ip, String headers)

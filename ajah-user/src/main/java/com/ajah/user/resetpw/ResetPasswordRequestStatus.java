@@ -62,7 +62,7 @@ public enum ResetPasswordRequestStatus implements Identifiable<String> {
 	private final String description;
 	private final boolean redeemable;
 
-	private ResetPasswordRequestStatus(final String id, final String code, final String name, final String description, final boolean redeemable) {
+	ResetPasswordRequestStatus(final String id, final String code, final String name, final String description, final boolean redeemable) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

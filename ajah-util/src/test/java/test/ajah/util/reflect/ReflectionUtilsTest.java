@@ -56,9 +56,7 @@ public class ReflectionUtilsTest {
 			for (final PropertyDescriptor prop : props) {
 				Assert.assertNotNull(ReflectionUtils.propGetSafe(new ReflectionUtilsTest(), prop));
 			}
-		} catch (final ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (final IntrospectionException e) {
+		} catch (final ClassNotFoundException | IntrospectionException e) {
 			e.printStackTrace();
 		}
 

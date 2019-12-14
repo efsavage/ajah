@@ -39,6 +39,6 @@ public enum InputType {
 	/**
 	 * "hidden"
 	 */
-	HIDDEN;
+	HIDDEN
 
 }

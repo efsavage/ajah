@@ -62,7 +62,7 @@ public enum AchievementUserStatus implements IdentifiableEnum<String> {
 	private final boolean inProgress;
 	private final boolean completed;
 
-	private AchievementUserStatus(final String id, final String code, final String name, final String description, final boolean started, final boolean inProgress, final boolean completed) {
+	AchievementUserStatus(final String id, final String code, final String name, final String description, final boolean started, final boolean inProgress, final boolean completed) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

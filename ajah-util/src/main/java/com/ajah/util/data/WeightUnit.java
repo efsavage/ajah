@@ -51,7 +51,7 @@ public enum WeightUnit {
 
 	private final long nanograms;
 
-	private WeightUnit(final long nanograms) {
+	WeightUnit(final long nanograms) {
 		this.nanograms = nanograms;
 	}
 

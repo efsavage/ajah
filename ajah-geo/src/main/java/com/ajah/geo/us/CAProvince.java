@@ -84,7 +84,7 @@ public enum CAProvince implements State {
 
 	private final String name;
 
-	private CAProvince(final String abbr, final String name) {
+	CAProvince(final String abbr, final String name) {
 		this.id = abbr.toLowerCase();
 		this.abbr = abbr;
 		this.name = name;

@@ -65,7 +65,7 @@ public class LongMap<K> extends HashMap<K, Long> {
 	 *            The value to set.
 	 */
 	public void setLong(final K key, final long value) {
-		put(key, new Long(value));
+		put(key, Long.valueOf(value));
 	}
 
 }

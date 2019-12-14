@@ -26,13 +26,11 @@ import org.springframework.stereotype.Service;
 
 import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
-import com.ajah.user.UserId;
 import com.ajah.user.achievement.AchievementId;
 import com.ajah.user.achievement.AchievementTag;
 import com.ajah.user.achievement.AchievementTagId;
 import com.ajah.user.achievement.AchievementTagStatus;
 import com.ajah.user.achievement.AchievementTagType;
-import com.ajah.user.achievement.AchievementUser;
 
 /**
  * Manages data operations for {@link AchievementTag}.
@@ -92,8 +90,7 @@ public class AchievementTagManager {
 		achievementTag.setName(name);
 		achievementTag.setType(type);
 		achievementTag.setStatus(status);
-		final DataOperationResult<AchievementTag> result = save(achievementTag);
-		return result;
+		return save(achievementTag);
 	}
 
 	/**
@@ -111,8 +108,7 @@ public class AchievementTagManager {
 	public DataOperationResult<AchievementTag> delete(final AchievementTagId achievementTagId) throws DataOperationException, AchievementTagNotFoundException {
 		final AchievementTag achievementTag = load(achievementTagId);
 		achievementTag.setStatus(AchievementTagStatus.DELETED);
-		final DataOperationResult<AchievementTag> result = save(achievementTag);
-		return result;
+		return save(achievementTag);
 	}
 
 	/**

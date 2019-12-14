@@ -147,8 +147,8 @@ public class CssParser {
 		}
 		CssRule currentRule = null;
 		boolean inComment = false;
-		for (int i = 0; i < lines.size(); i++) {
-			final String trimmed = trim(lines.get(i));
+		for (String line : lines) {
+			final String trimmed = trim(line);
 			if (StringUtils.isBlank(trimmed)) {
 				// Blank line
 			} else if (trimmed.startsWith("//")) {
@@ -191,7 +191,7 @@ public class CssParser {
 		for (final CssRule rule : rules) {
 			rule.add(parseSelector(rule.getRaw(), i++));
 		}
-		Collections.sort(rules, RuleComparator.INSTANCE);
+		rules.sort(RuleComparator.INSTANCE);
 		return new CssDocument().addAll(rules);
 	}
 

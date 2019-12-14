@@ -125,7 +125,7 @@ public enum Browser implements IdentifiableEnum<String> {
 	private final String abbreviation;
 	private final boolean bot;
 
-	private Browser(final String id, final String name, final String abbreviation, final boolean bot) {
+	Browser(final String id, final String name, final String abbreviation, final boolean bot) {
 		this.id = id;
 		this.name = name;
 		this.abbreviation = abbreviation;

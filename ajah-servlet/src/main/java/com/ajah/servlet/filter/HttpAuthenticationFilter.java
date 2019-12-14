@@ -43,7 +43,7 @@ import java.util.Base64;
 public class HttpAuthenticationFilter extends BaseFilter {
 
 	@SuppressWarnings("restriction")
-	protected static boolean allowUser(final String auth, final String username, final String password) throws IOException {
+	protected static boolean allowUser(final String auth, final String username, final String password) {
 
 		if (auth == null) {
 			return false; // no auth

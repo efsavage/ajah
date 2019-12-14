@@ -27,7 +27,7 @@ package com.ajah.util.io;
  */
 public class AjahStringBuilder {
 
-	StringBuilder builder = new StringBuilder();
+	final StringBuilder builder = new StringBuilder();
 	private final Compact compact;
 
 	/**

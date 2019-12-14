@@ -64,7 +64,7 @@ public class MandrillTransport implements EmailTransport {
 	 * @see com.ajah.email.data.EmailTransport#send(com.ajah.email.EmailMessage)
 	 */
 	@Override
-	public synchronized void send(final EmailMessage emailMessage) throws AddressException, MessagingException {
+	public synchronized void send(final EmailMessage emailMessage) {
 		final MandrillMessage message = new MandrillMessage();
 		message.setSubject(emailMessage.getSubject());
 		message.setHtml(StringUtils.isBlank(emailMessage.getHtml()) ? "" : emailMessage.getHtml());
@@ -83,7 +83,7 @@ public class MandrillTransport implements EmailTransport {
 			// recipients and set the "Preserve Recipients" flag to disclosed
 			// them or not.
 			if (message.getTo() == null) {
-				message.setTo(new ArrayList<Recipient>());
+				message.setTo(new ArrayList<>());
 			}
 			final Recipient recipient = new Recipient();
 			recipient.setEmail(emailRecipient.getAddress().toString());

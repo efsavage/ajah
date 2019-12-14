@@ -98,7 +98,7 @@ public enum Month implements IdentifiableEnum<String> {
 	private final String name;
 	private final String shortName;
 
-	private Month(final String id, final int intId, final String name, final String shortName) {
+	Month(final String id, final int intId, final String name, final String shortName) {
 		this.id = id;
 		this.intId = intId;
 		this.name = name;

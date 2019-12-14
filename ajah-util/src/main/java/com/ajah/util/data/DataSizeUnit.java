@@ -172,7 +172,7 @@ public enum DataSizeUnit {
 
 	private final String abbreviation;
 
-	private DataSizeUnit(final long bits, final String name, final String abbreviation) {
+	DataSizeUnit(final long bits, final String name, final String abbreviation) {
 		this.bits = bits;
 		this.bytes = bits / 8;
 		this.name = name;

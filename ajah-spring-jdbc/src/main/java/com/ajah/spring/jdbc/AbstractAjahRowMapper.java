@@ -15,6 +15,7 @@
  */
 package com.ajah.spring.jdbc;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,13 +24,12 @@ import org.springframework.jdbc.core.RowMapper;
 import com.ajah.util.Identifiable;
 
 /**
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
  * @param <K>
- *            The type of the unique key of the entity this DAO manages.
+ * 		The type of the unique key of the entity this DAO manages.
  * @param <T>
- *            The type of entity this DAO manages.
- * 
+ * 		The type of entity this DAO manages.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public abstract class AbstractAjahRowMapper<K extends Comparable<K>, T extends Identifiable<K>> implements RowMapper<T> {
 
@@ -41,9 +41,8 @@ public abstract class AbstractAjahRowMapper<K extends Comparable<K>, T extends I
 
 	/**
 	 * The DAO that will be calling this mapper.
-	 * 
+	 *
 	 * @return The DAO that will be calling this mapper.
-	 * 
 	 */
 	public AjahDao<K, T> getDao() {
 		return this.dao;
@@ -56,22 +55,19 @@ public abstract class AbstractAjahRowMapper<K extends Comparable<K>, T extends I
 	public T mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 		T entity;
 		try {
-			entity = this.dao.getTargetClass().newInstance();
+			entity = this.dao.getTargetClass().getConstructor().newInstance();
 			this.dao.autoPopulate(entity, rs);
 			return entity;
-		} catch (final InstantiationException e) {
-			throw new SQLException(e);
-		} catch (final IllegalAccessException e) {
+		} catch (final InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			throw new SQLException(e);
 		}
 	}
 
 	/**
 	 * The DAO that will be calling this mapper.
-	 * 
+	 *
 	 * @param dao
-	 *            The DAO that will be calling this mapper.
-	 * 
+	 * 		The DAO that will be calling this mapper.
 	 */
 	public void setDao(final AjahDao<K, T> dao) {
 		this.dao = dao;

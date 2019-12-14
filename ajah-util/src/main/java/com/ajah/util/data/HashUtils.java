@@ -15,8 +15,8 @@
  */
 package com.ajah.util.data;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
@@ -106,12 +106,10 @@ public class HashUtils {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] bytes = new byte[32];
-			md.update(string.getBytes("iso-8859-1"), 0, string.length());
+			md.update(string.getBytes(StandardCharsets.ISO_8859_1), 0, string.length());
 			bytes = md.digest();
 			return DatatypeConverter.printBase64Binary(bytes);
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
@@ -128,12 +126,10 @@ public class HashUtils {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] bytes = new byte[32];
-			md.update(string.getBytes("iso-8859-1"), 0, string.length());
+			md.update(string.getBytes(StandardCharsets.ISO_8859_1), 0, string.length());
 			bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
@@ -188,12 +184,10 @@ public class HashUtils {
 		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-1");
-			md.update(string.getBytes("UTF-8"), 0, string.length());
+			md.update(string.getBytes(StandardCharsets.UTF_8), 0, string.length());
 			final byte[] bytes = md.digest();
 			return String.format("%0" + (bytes.length << 1) + "x", new BigInteger(1, bytes));
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}
@@ -210,11 +204,9 @@ public class HashUtils {
 		AjahUtils.requireParam(string, "string");
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-256");
-			md.update(string.getBytes("iso-8859-1"), 0, string.length());
+			md.update(string.getBytes(StandardCharsets.ISO_8859_1), 0, string.length());
 			return md.digest();
 		} catch (final NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		} catch (final UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
 	}

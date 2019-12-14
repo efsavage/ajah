@@ -24,7 +24,7 @@ package com.ajah.amazon.s3;
  */
 public class S3 {
 
-	private static S3Client defaultClient = S3Client.getDefaultClient();
+	private static final S3Client defaultClient = S3Client.getDefaultClient();
 
 	/**
 	 * Puts an object using the default client.

@@ -20,22 +20,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 
+import com.ajah.http.err.*;
 import lombok.extern.java.Log;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-
-import com.ajah.http.err.BadRequestException;
-import com.ajah.http.err.HttpException;
-import com.ajah.http.err.InternalServerError;
-import com.ajah.http.err.NotFoundException;
-import com.ajah.http.err.UnexpectedResponseCode;
 
 /**
  * Offers a simple interface to HTTP client operations with sensible default
@@ -129,22 +122,18 @@ public class Http {
 	public static String getSafe(final String uri) {
 		try {
 			return get(uri);
-		} catch (final IOException e) {
-			log.log(Level.WARNING, e.getMessage(), e);
-			return null;
-		} catch (final HttpException e) {
+		} catch (final IOException | HttpException e) {
 			log.log(Level.WARNING, e.getMessage(), e);
 			return null;
 		}
 	}
 
-	private static HttpEntity internalGet(final URI uri) throws IOException, ClientProtocolException, NotFoundException, UnexpectedResponseCode, InternalServerError {
+	private static HttpEntity internalGet(final URI uri) throws IOException, NotFoundException, UnexpectedResponseCode, InternalServerError {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		final HttpGet httpget = new HttpGet(uri);
 		final HttpResponse response = client.execute(httpget);
 		if (response.getStatusLine().getStatusCode() == 200) {
-			final HttpEntity entity = response.getEntity();
-			return entity;
+			return response.getEntity();
 		} else if (response.getStatusLine().getStatusCode() == 404) {
 			throw new NotFoundException(response.getStatusLine().getStatusCode() + " - " + response.getStatusLine().getReasonPhrase());
 		} else if (response.getStatusLine().getStatusCode() == 500) {

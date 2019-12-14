@@ -59,7 +59,7 @@ public enum LogInSource implements IdentifiableEnum<String> {
 	private final String name;
 	private final String description;
 
-	private LogInSource(final String id, final String code, final String name, final String description) {
+	LogInSource(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

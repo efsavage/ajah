@@ -39,11 +39,9 @@ public interface FeedSourceDao extends AjahDao<FeedSourceId, FeedSource> {
 	 * @param feedSource
 	 *            The feed source to update.
 	 * @return The number of rows affected by the update.
-	 * @throws DataOperationException
-	 *             If the query could not be executed.
 	 */
 	@Override
-	DataOperationResult<FeedSource> update(final FeedSource feedSource) throws DataOperationException;
+	DataOperationResult<FeedSource> update(final FeedSource feedSource);
 
 	/**
 	 * Finds an active, stale feed source that needs to be polled.

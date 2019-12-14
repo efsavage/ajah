@@ -148,8 +148,7 @@ public class GroupUserManager {
 		groupUser.setUserId(userId);
 		groupUser.setType(type);
 		groupUser.setStatus(status);
-		DataOperationResult<GroupUser> result = save(groupUser);
-		return result;
+		return save(groupUser);
 	}
 
 	/**
@@ -167,8 +166,7 @@ public class GroupUserManager {
 	public DataOperationResult<GroupUser> delete(GroupUserId groupUserId) throws DataOperationException, GroupUserNotFoundException {
 		GroupUser groupUser = load(groupUserId);
 		groupUser.setStatus(GroupUserStatus.DELETED);
-		DataOperationResult<GroupUser> result = save(groupUser);
-		return result;
+		return save(groupUser);
 	}
 
 	/**

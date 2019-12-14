@@ -96,8 +96,7 @@ public class EmailVerificationManager {
 		emailVerification.setStatus(EmailVerificationStatus.NEW);
 		emailVerification.setType(EmailVerificationType.STANDARD);
 		emailVerification.setCode(HashUtils.sha1Hex(userId.toString() + emailId.toString() + UUID.randomUUID().toString()));
-		final DataOperationResult<EmailVerification> result = save(emailVerification);
-		return result;
+		return save(emailVerification);
 	}
 
 	/**
@@ -116,11 +115,10 @@ public class EmailVerificationManager {
 		final EmailVerification emailVerification = load(emailVerificationId);
 		if (emailVerification.getStatus() == EmailVerificationStatus.REDEEEMED) {
 			log.warning("Attempt to flag email verification " + emailVerification.getId() + " as error, but it has already been redeemed");
-			return new DataOperationResult<EmailVerification>(emailVerification, 0);
+			return new DataOperationResult<>(emailVerification, 0);
 		}
 		emailVerification.setStatus(EmailVerificationStatus.ERROR);
-		final DataOperationResult<EmailVerification> result = save(emailVerification);
-		return result;
+		return save(emailVerification);
 	}
 
 	/**

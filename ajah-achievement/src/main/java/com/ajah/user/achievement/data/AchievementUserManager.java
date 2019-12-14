@@ -54,8 +54,7 @@ public class AchievementUserManager {
 	private AchievementManager achievementManager;
 
 	public List<AchievementUser> checkAcheivements(final User user, final String tag) {
-		final List<AchievementUser> achievementUsers = new ArrayList<>();
-		return achievementUsers;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -114,8 +113,7 @@ public class AchievementUserManager {
 		} catch (DuplicateKeyException e) {
 			log.fine(e.getCause().getCause().getMessage());
 			achievementUser = find(userId, achievementId);
-			DataOperationResult<AchievementUser> result = new DataOperationResult<>(achievementUser, 0);
-			return result;
+			return new DataOperationResult<>(achievementUser, 0);
 		}
 	}
 

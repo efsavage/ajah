@@ -26,7 +26,7 @@ public class RestClient<C> implements AutoCloseable {
 	public RestClient(String hostname, int port) {
 	}
 
-	public void close() throws IOException {
+	public void close() {
 	}
 
 	public SearchRequestBuilder prepareSearch(String index) {
@@ -56,9 +56,7 @@ public class RestClient<C> implements AutoCloseable {
 			} catch (IOException e) {
 				throw new ElasticSearchException(e);
 			}
-		} catch (URISyntaxException e) {
-			throw new ElasticSearchException(e);
-		} catch (UnsupportedEncodingException e) {
+		} catch (URISyntaxException | UnsupportedEncodingException e) {
 			throw new ElasticSearchException(e);
 		}
 	}

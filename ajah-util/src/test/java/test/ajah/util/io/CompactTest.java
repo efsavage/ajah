@@ -28,8 +28,8 @@ import com.ajah.util.io.Compact;
  */
 
 public class CompactTest {
-	Compact compactH = Compact.HIGH;
-	Compact compactL = Compact.LOW;
+	final Compact compactH = Compact.HIGH;
+	final Compact compactL = Compact.LOW;
 
 	/**
 	 * Test Equals operations in Compact class

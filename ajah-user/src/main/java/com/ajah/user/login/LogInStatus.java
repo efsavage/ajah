@@ -67,7 +67,7 @@ public enum LogInStatus implements IdentifiableEnum<String> {
 	private final boolean failed;
 	private final boolean completed;
 
-	private LogInStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean failed, boolean completed) {
+	LogInStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean failed, boolean completed) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

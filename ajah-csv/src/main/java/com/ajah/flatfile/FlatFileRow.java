@@ -36,7 +36,7 @@ import lombok.extern.java.Log;
 @Log
 public class FlatFileRow {
 
-	private static DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+	private static final DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
 
 	private final Map<String, FlatFileColumn> columns;
 	private final Map<FlatFileColumn, String> values = new HashMap<>();

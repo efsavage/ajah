@@ -207,7 +207,7 @@ public enum AjahMimeType implements Identifiable<String> {
 
 	private final String[] fileExtensions;
 
-	private AjahMimeType(final String primaryType, final String subType) {
+	AjahMimeType(final String primaryType, final String subType) {
 		this.primaryType = primaryType;
 		this.subType = subType;
 		this.fileExtensions = null;
@@ -215,7 +215,7 @@ public enum AjahMimeType implements Identifiable<String> {
 		this.text = false;
 	}
 
-	private AjahMimeType(final String primaryType, final String subType, final boolean text, final String... fileExtensions) {
+	AjahMimeType(final String primaryType, final String subType, final boolean text, final String... fileExtensions) {
 		this.primaryType = primaryType;
 		this.subType = subType;
 		this.baseType = primaryType + "/" + subType;

@@ -38,7 +38,7 @@ import com.ajah.util.AjahUtils;
  */
 public class ImageUtils {
 
-	private static Logger log = Logger.getLogger(ImageUtils.class.getName());
+	private static final Logger log = Logger.getLogger(ImageUtils.class.getName());
 
 	/**
 	 * Blends two colors with a given alpha value.

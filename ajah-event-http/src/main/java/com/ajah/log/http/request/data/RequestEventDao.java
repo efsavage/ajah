@@ -39,9 +39,7 @@ public interface RequestEventDao extends AjahDao<RequestEventId, RequestEvent> {
 	 *            Should the insert be delayed?
 	 * @return The result of the operation. If delayed is true the number of
 	 *         rows affected will always be zero.
-	 * @throws DataOperationException
-	 *             If the record could not be inserted.
 	 */
-	DataOperationResult<RequestEvent> insert(final RequestEvent requestEvent, final boolean delayed) throws DataOperationException;
+	DataOperationResult<RequestEvent> insert(final RequestEvent requestEvent, final boolean delayed);
 
 }

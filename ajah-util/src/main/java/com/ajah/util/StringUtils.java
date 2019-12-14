@@ -265,16 +265,16 @@ public class StringUtils {
 		} else if (array.length == 1) {
 			return array[0];
 		}
-		final StringBuffer buf = new StringBuffer();
+		final StringBuilder buf = new StringBuilder();
 		boolean first = delimiter != null;
-		for (int i = 0; i < array.length; i++) {
-			if (!StringUtils.isBlank(array[i])) {
+		for (String s : array) {
+			if (!StringUtils.isBlank(s)) {
 				if (!first) {
 					buf.append(delimiter);
 				} else {
 					first = false;
 				}
-				buf.append(array[i]);
+				buf.append(s);
 			}
 		}
 		if (buf.length() > 0) {

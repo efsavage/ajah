@@ -53,9 +53,6 @@ public class OpmlImporter {
 	 * 
 	 * @param file
 	 *            The file to import
-	 * @throws InterruptedException
-	 *             If the thread was interrupted while sleeping (while waiting
-	 *             for a feed to fetch).
 	 * @throws DataOperationException
 	 *             If a database query could not be executed.
 	 * @throws IOException
@@ -63,9 +60,8 @@ public class OpmlImporter {
 	 * @throws SyndicationException
 	 *             If there was an error parsing the feed.
 	 * @throws JDOMException
-	 * @throws FeedException
 	 */
-	public void importFile(final File file) throws InterruptedException, DataOperationException, IOException, SyndicationException, JDOMException, FeedException {
+	public void importFile(final File file) throws DataOperationException, IOException, SyndicationException, JDOMException {
 		final Document doc = new SAXBuilder(false).build(file);
 		final Opml opml = OpmlUtils.parse(doc);
 		final List<FeedSource> feedSources = OpmlUtils.extractFeedSources(opml);

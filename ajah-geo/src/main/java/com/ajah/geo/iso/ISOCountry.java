@@ -580,14 +580,14 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 
 	private final String name;
 
-	private final Continent continent;;
+	private final Continent continent;
 
 	private final ISOCountry parent;
 
 	@Getter
 	private final String[] aliases;
 
-	private ISOCountry(final String id, final String abbr3, final String name, final Continent continent, final String... aliases) {
+	ISOCountry(final String id, final String abbr3, final String name, final Continent continent, final String... aliases) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;
@@ -597,7 +597,7 @@ public enum ISOCountry implements Country, IdentifiableEnum<String> {
 		this.continent = continent;
 	}
 
-	private ISOCountry(final String id, final String abbr3, final String name, final ISOCountry parent) {
+	ISOCountry(final String id, final String abbr3, final String name, final ISOCountry parent) {
 		this.id = id;
 		this.abbr2 = id.toUpperCase();
 		this.abbr3 = abbr3;

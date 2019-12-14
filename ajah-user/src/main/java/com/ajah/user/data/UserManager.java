@@ -362,12 +362,10 @@ public class UserManager {
 	 *         null.
 	 * @throws AuthenticationFailureException
 	 *             If the password was not correct
-	 * @throws UserNotFoundException
-	 *             If no user could be found for the username supplied
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User getUser(final String username, final Password password) throws AuthenticationFailureException, UserNotFoundException, DataOperationException {
+	public User getUser(final String username, final Password password) throws AuthenticationFailureException, DataOperationException {
 		AjahUtils.requireParam(username, "username");
 		final User user = this.userDao.findByUsernameAndPassword(username, password.toString());
 		if (user != null) {
@@ -390,12 +388,10 @@ public class UserManager {
 	 *         null.
 	 * @throws AuthenticationFailureException
 	 *             If the password was not correct
-	 * @throws UserNotFoundException
-	 *             If no user could be found for the username supplied
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User getUser(final UserId userId, final Password password) throws AuthenticationFailureException, UserNotFoundException, DataOperationException {
+	public User getUser(final UserId userId, final Password password) throws AuthenticationFailureException, DataOperationException {
 		AjahUtils.requireParam(userId, "userId");
 		final User user = this.userDao.findByUserIdAndPassword(userId, password.toString());
 		if (user != null) {
@@ -435,7 +431,7 @@ public class UserManager {
 
 	public List<User> load(final List<UserId> userIds) throws UserNotFoundException, DataOperationException {
 		// TODO Optimize this to a single query?
-		final List<User> users = new ArrayList<User>();
+		final List<User> users = new ArrayList<>();
 		for (final UserId userId : userIds) {
 			users.add(load(userId));
 		}
@@ -465,8 +461,7 @@ public class UserManager {
 		if (userInfo.getCreated() == null) {
 			userInfo.setCreated(new Date());
 		}
-		final DataOperationResult<UserInfo> result = this.userInfoDao.update(userInfo);
-		return result;
+		return this.userInfoDao.update(userInfo);
 	}
 
 	public int searchCount(final String username, final String firstName, final String lastName, final UserStatus status) throws DataOperationException {

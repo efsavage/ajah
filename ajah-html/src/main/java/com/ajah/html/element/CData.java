@@ -31,7 +31,7 @@ import com.ajah.html.HtmlElement;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class CData implements HtmlElement<CData> {
 
 	private String value;

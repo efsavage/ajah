@@ -46,7 +46,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	public int insert(final User user, final Password password) throws DataOperationException;
+	int insert(final User user, final Password password) throws DataOperationException;
 
 	/**
 	 * Updates a user's password in the database.
@@ -59,7 +59,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	public int updatePassword(final UserId userId, final Password password) throws DataOperationException;
+	int updatePassword(final UserId userId, final Password password) throws DataOperationException;
 
 	/**
 	 * Updates a user's password in the database.
@@ -72,7 +72,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the record could not be inserted.
 	 */
-	public int updateUsername(final UserId userId, final String username) throws DataOperationException;
+	int updateUsername(final UserId userId, final String username) throws DataOperationException;
 
 	/**
 	 * Finds a user by username field.
@@ -83,7 +83,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findByUsername(final String username) throws DataOperationException;
+	User findByUsername(final String username) throws DataOperationException;
 
 	/**
 	 * Finds a user by username and password.
@@ -96,7 +96,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findByUsernameAndPassword(final String username, final String password) throws DataOperationException;
+	User findByUsernameAndPassword(final String username, final String password) throws DataOperationException;
 
 	/**
 	 * Finds a user by user ID and password.
@@ -109,7 +109,7 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public User findByUserIdAndPassword(final UserId userId, final String password) throws DataOperationException;
+	User findByUserIdAndPassword(final UserId userId, final String password) throws DataOperationException;
 
 	/**
 	 * Counts the records available that match the criteria.
@@ -155,12 +155,10 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @param userId
 	 *            The ID of the user to fetch the status of.
 	 * @return The user's status.
-	 * @throws UserNotFoundException
-	 *             If the user could not be found.
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public UserStatus getStatus(final UserId userId) throws UserNotFoundException, DataOperationException;
+	UserStatus getStatus(final UserId userId) throws DataOperationException;
 
 	/**
 	 * Fetches a user's username.
@@ -171,13 +169,13 @@ public interface UserDao extends AjahDao<UserId, User> {
 	 * @throws DataOperationException
 	 *             If the query could not be executed.
 	 */
-	public String getUsername(final UserId userId) throws DataOperationException;
+	String getUsername(final UserId userId) throws DataOperationException;
 
-	public List<User> list(final String sortField, final Order order, final int page, final int count) throws DataOperationException;
+	List<User> list(final String sortField, final Order order, final int page, final int count) throws DataOperationException;
 
-	public int searchCount(final String username, final String firstName, final String lastName, final UserStatus status) throws DataOperationException;
+	int searchCount(final String username, final String firstName, final String lastName, final UserStatus status) throws DataOperationException;
 
-	public List<User> list(final String username, final String firstName, final String lastName, final UserStatus status, final String sort, final Order order, final int page, final int count)
+	List<User> list(final String username, final String firstName, final String lastName, final UserStatus status, final String sort, final Order order, final int page, final int count)
 			throws DataOperationException;
 
 }

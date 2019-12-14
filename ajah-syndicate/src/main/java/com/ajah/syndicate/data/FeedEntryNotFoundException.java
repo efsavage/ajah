@@ -25,7 +25,7 @@ import com.ajah.syndicate.FeedEntryId;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class FeedEntryNotFoundException extends Exception {
 
 	private final FeedEntryId entryId;

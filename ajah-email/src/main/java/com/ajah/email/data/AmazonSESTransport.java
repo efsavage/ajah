@@ -31,8 +31,6 @@ import javax.mail.internet.MimeMultipart;
 
 import lombok.extern.java.Log;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ajah.email.EmailMessage;
 import com.ajah.email.EmailRecipient;
 import com.ajah.util.AjahUtils;

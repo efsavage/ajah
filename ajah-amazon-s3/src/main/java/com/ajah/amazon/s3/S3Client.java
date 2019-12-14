@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import lombok.extern.java.Log;
 
@@ -201,11 +202,7 @@ public class S3Client {
 		AjahUtils.requireParam(name, "name");
 		AjahUtils.requireParam(data, "data");
 		byte[] input;
-		try {
-			input = data.getBytes("UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			throw new ConfigException(e);
-		}
+		input = data.getBytes(StandardCharsets.UTF_8);
 		put(bucket, name, input, true, true, AjahMimeType.TEXT_PLAIN, S3ACL.PRIVATE);
 	}
 
@@ -214,11 +211,7 @@ public class S3Client {
 		AjahUtils.requireParam(name, "name");
 		AjahUtils.requireParam(data, "data");
 		byte[] input;
-		try {
-			input = data.getBytes("UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			throw new ConfigException(e);
-		}
+		input = data.getBytes(StandardCharsets.UTF_8);
 		put(bucket, name, input, overwrite, gzip, mimeType, acl);
 	}
 

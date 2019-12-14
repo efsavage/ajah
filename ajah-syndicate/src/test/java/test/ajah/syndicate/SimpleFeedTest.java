@@ -41,18 +41,17 @@ import com.sun.syndication.io.FeedException;
 @SuppressWarnings("static-method")
 public class SimpleFeedTest {
 
-	private static String TEST_FEED = "http://efsavage.com/blog/feed/";
+	private static final String TEST_FEED = "http://efsavage.com/blog/feed/";
 
 	/**
 	 * Test getting a feed.
 	 * 
 	 * @throws IllegalArgumentException
-	 * @throws FeedException
 	 * @throws IOException
 	 * @throws SyndicationException
 	 */
 	@Test
-	public void getFeed() throws IllegalArgumentException, FeedException, IOException, SyndicationException {
+	public void getFeed() throws IllegalArgumentException, IOException, SyndicationException {
 		final FeedSource feedSource = new FeedSource();
 		final XmlString xml = HttpClient.getXml(TEST_FEED);
 		System.out.println("FEED");

@@ -88,8 +88,7 @@ public class AccountSettingManager {
 		accountSetting.setName(name);
 		accountSetting.setType(type);
 		accountSetting.setStatus(status);
-		final DataOperationResult<AccountSetting> result = save(accountSetting);
-		return result;
+		return save(accountSetting);
 	}
 
 	/**
@@ -107,8 +106,7 @@ public class AccountSettingManager {
 	public DataOperationResult<AccountSetting> delete(final AccountSettingId accountSettingId) throws DataOperationException, AccountSettingNotFoundException {
 		final AccountSetting accountSetting = load(accountSettingId);
 		accountSetting.setStatus(AccountSettingStatus.DELETED);
-		final DataOperationResult<AccountSetting> result = save(accountSetting);
-		return result;
+		return save(accountSetting);
 	}
 
 	private AccountSetting find(final AccountId accountId, final String name) throws DataOperationException {
@@ -191,7 +189,6 @@ public class AccountSettingManager {
 		if (create) {
 			return this.accountSettingDao.insert(accountSetting);
 		}
-		final DataOperationResult<AccountSetting> result = this.accountSettingDao.update(accountSetting);
-		return result;
+		return this.accountSettingDao.update(accountSetting);
 	}
 }

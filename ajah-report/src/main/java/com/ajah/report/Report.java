@@ -27,7 +27,7 @@ import com.ajah.util.text.Strings;
  */
 public class Report {
 
-	ListMap<String, String> sections = new ListMap<>();
+	final ListMap<String, String> sections = new ListMap<>();
 
 	public void add(final String section, final String message) {
 		add(section, message, false);

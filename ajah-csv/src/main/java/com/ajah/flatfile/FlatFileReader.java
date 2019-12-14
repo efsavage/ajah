@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,7 +102,7 @@ public class FlatFileReader implements Closeable, Iterable<FlatFileRow>, Iterato
 	 */
 	@SuppressWarnings("resource")
 	public FlatFileReader(final FlatFileFormat format, final File file) throws IOException {
-		this(format, new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8")));
+		this(format, new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)));
 	}
 
 	/**

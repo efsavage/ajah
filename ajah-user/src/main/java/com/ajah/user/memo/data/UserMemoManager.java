@@ -143,8 +143,7 @@ public class UserMemoManager {
 		userMemo.setMemo(memo);
 		userMemo.setType(UserMemoType.STANDARD);
 		userMemo.setStatus(UserMemoStatus.ACTIVE);
-		DataOperationResult<UserMemo> result = save(userMemo);
-		return result;
+		return save(userMemo);
 	}
 
 	/**
@@ -162,8 +161,7 @@ public class UserMemoManager {
 	public DataOperationResult<UserMemo> delete(UserMemoId userMemoId) throws DataOperationException, UserMemoNotFoundException {
 		UserMemo userMemo = load(userMemoId);
 		userMemo.setStatus(UserMemoStatus.DELETED);
-		DataOperationResult<UserMemo> result = save(userMemo);
-		return result;
+		return save(userMemo);
 	}
 
 	/**

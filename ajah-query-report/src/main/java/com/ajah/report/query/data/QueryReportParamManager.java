@@ -143,8 +143,7 @@ public class QueryReportParamManager {
 		queryReportParam.setName(name);
 		queryReportParam.setType(type);
 		queryReportParam.setStatus(status);
-		DataOperationResult<QueryReportParam> result = save(queryReportParam);
-		return result;
+		return save(queryReportParam);
 	}
 
 	/**
@@ -162,8 +161,7 @@ public class QueryReportParamManager {
 	public DataOperationResult<QueryReportParam> delete(QueryReportParamId queryReportParamId) throws DataOperationException, QueryReportParamNotFoundException {
 		QueryReportParam queryReportParam = load(queryReportParamId);
 		queryReportParam.setStatus(QueryReportParamStatus.DELETED);
-		DataOperationResult<QueryReportParam> result = save(queryReportParam);
-		return result;
+		return save(queryReportParam);
 	}
 
 	/**

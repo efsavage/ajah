@@ -36,7 +36,7 @@ public class HttpClientTest {
 	byte[] bytes;
 	String string;
 	XmlString xmlString;
-	String url = "http://efsavage.com/";
+	final String url = "http://efsavage.com/";
 
 	/**
 	 * Initialization required for running tests
@@ -59,11 +59,10 @@ public class HttpClientTest {
 
 	/**
 	 * Null Check
-	 * 
-	 * @throws IOException
+	 *
 	 */
 	@Test
-	public void testHttpClient() throws IOException {
+	public void testHttpClient() {
 		Assert.assertNotNull(this.client);
 	}
 

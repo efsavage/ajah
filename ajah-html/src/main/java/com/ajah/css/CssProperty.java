@@ -462,7 +462,7 @@ public enum CssProperty {
 
 	private final String name;
 
-	private CssProperty(final String name) {
+	CssProperty(final String name) {
 		this.name = name;
 	}
 

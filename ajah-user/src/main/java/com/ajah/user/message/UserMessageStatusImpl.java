@@ -81,7 +81,7 @@ public enum UserMessageStatusImpl implements UserMessageStatus {
 	private final String name;
 	private final String description;
 
-	private UserMessageStatusImpl(final String id, final String code, final String name, final String description) {
+	UserMessageStatusImpl(final String id, final String code, final String name, final String description) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

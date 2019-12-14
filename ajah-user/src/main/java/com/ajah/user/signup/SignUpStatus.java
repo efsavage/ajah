@@ -63,7 +63,7 @@ public enum SignUpStatus implements IdentifiableEnum<String> {
 	private final boolean deleted;
 	private final boolean completed;
 
-	private SignUpStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean deleted, boolean completed) {
+	SignUpStatus(final String id, final String code, final String name, final String description, final boolean success, final boolean error, final boolean deleted, boolean completed) {
 		this.id = id;
 		this.code = code;
 		this.name = name;

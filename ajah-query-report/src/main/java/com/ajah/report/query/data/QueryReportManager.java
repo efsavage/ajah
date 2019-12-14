@@ -143,8 +143,7 @@ public class QueryReportManager {
 		queryReport.setName(name);
 		queryReport.setType(type);
 		queryReport.setStatus(status);
-		DataOperationResult<QueryReport> result = save(queryReport);
-		return result;
+		return save(queryReport);
 	}
 
 	/**
@@ -162,8 +161,7 @@ public class QueryReportManager {
 	public DataOperationResult<QueryReport> delete(QueryReportId queryReportId) throws DataOperationException, QueryReportNotFoundException {
 		QueryReport queryReport = load(queryReportId);
 		queryReport.setStatus(QueryReportStatus.DELETED);
-		DataOperationResult<QueryReport> result = save(queryReport);
-		return result;
+		return save(queryReport);
 	}
 
 	/**

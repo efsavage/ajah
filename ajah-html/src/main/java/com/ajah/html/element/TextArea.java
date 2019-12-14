@@ -31,7 +31,7 @@ import com.ajah.html.dtd.InputType;
  * 
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 public class TextArea extends AbstractNestableHtmlCoreElement<TextArea> implements Input<TextArea> {
 
 	private final String name;

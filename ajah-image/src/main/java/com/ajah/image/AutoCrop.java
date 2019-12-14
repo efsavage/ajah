@@ -33,7 +33,7 @@ import javax.imageio.ImageIO;
  */
 public class AutoCrop {
 
-	private static Logger log = Logger.getLogger(AutoCrop.class.getName());
+	private static final Logger log = Logger.getLogger(AutoCrop.class.getName());
 
 	/**
 	 * Crops an image based on the value of the top left pixel.
@@ -44,10 +44,8 @@ public class AutoCrop {
 	 *            The fuzziness allowed for minor deviations (~5 is
 	 *            recommended).
 	 * @return The new image data, cropped.
-	 * @throws IOException
-	 *             If the image could not be read.
 	 */
-	public static BufferedImage autoCrop(final BufferedImage image, final int fuzziness) throws IOException {
+	public static BufferedImage autoCrop(final BufferedImage image, final int fuzziness) {
 		final Color color = new Color(image.getRGB(0, 0));
 		boolean stop = false;
 		int cropTop = 0;
@@ -125,8 +123,7 @@ public class AutoCrop {
 
 		log.finest("Cropping right " + (image.getWidth() - cropRight) + " rows");
 
-		final BufferedImage cropped = image.getSubimage(cropLeft, cropTop, cropRight - cropLeft, cropBot - cropTop);
-		return cropped;
+		return image.getSubimage(cropLeft, cropTop, cropRight - cropLeft, cropBot - cropTop);
 	}
 
 	/**

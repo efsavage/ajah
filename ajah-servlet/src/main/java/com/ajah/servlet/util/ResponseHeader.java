@@ -58,7 +58,7 @@ public enum ResponseHeader {
 
 	private final String header;
 
-	private ResponseHeader(final String header) {
+	ResponseHeader(final String header) {
 		this.header = header;
 
 	}

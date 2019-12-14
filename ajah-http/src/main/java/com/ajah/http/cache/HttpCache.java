@@ -50,7 +50,7 @@ public interface HttpCache {
 	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
-	public byte[] getBytes(final URI uri) throws IOException, HttpException;
+	byte[] getBytes(final URI uri) throws IOException, HttpException;
 
 	/**
 	 * Attempts to find a cached response of a URI. If not found, fetches the
@@ -67,7 +67,7 @@ public interface HttpCache {
 	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
-	public String get(final URI uri) throws IOException, HttpException;
+	String get(final URI uri) throws IOException, HttpException;
 
 	/**
 	 * Attempts to find a cached response of a URI. If not found, fetches the
@@ -85,6 +85,6 @@ public interface HttpCache {
 	 * 
 	 * @see com.ajah.http.cache.HttpCache#getBytes(java.net.URI)
 	 */
-	public byte[] getBytes(final String uri) throws IOException, HttpException, URISyntaxException;
+	byte[] getBytes(final String uri) throws IOException, HttpException, URISyntaxException;
 
 }
