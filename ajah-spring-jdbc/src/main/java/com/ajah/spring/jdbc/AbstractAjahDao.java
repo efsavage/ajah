@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,9 +47,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -69,6 +67,7 @@ import com.ajah.spring.jdbc.util.JDBCMapperUtils;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.ArrayUtils;
 import com.ajah.util.Identifiable;
+import com.ajah.util.NumberUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.ToStringable;
 import com.ajah.util.data.Audited;
@@ -96,8 +95,6 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	protected static final Logger sqlLog = Logger.getLogger("ajah.sql");
 	protected static final Logger sqlVarsLog = Logger.getLogger("ajah.sql.vars");
-
-	private static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
 	private static String getFieldsClause(final String[] fields) {
 		final StringBuffer stringBuffer = new StringBuffer();
@@ -174,6 +171,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			ps.setLong(index, ((Long) value).longValue());
 		} else if (BigDecimal.class.isAssignableFrom(value.getClass())) {
 			ps.setBigDecimal(index, (BigDecimal) value);
+		} else if (byte[].class.isAssignableFrom(value.getClass())) {
+			ps.setBytes(index, (byte[]) value);
 		} else {
 			log.warning("Unhandled type: " + value.getClass() + ", using toString()");
 			ps.setString(index, value.toString());
@@ -223,8 +222,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			final BeanInfo componentBeanInfo = Introspector.getBeanInfo(entity.getClass());
 			final PropertyDescriptor[] props = componentBeanInfo.getPropertyDescriptors();
 			for (final PropertyDescriptor prop : props) {
-				log.finest("PropertyDescriptor: " + prop.getName() + ", Setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()) + " Getter: " + (prop
-						.getReadMethod() == null ? null : prop.getReadMethod().getName()));
+				log.finest("PropertyDescriptor: " + prop.getName() + ", Setter: " + (prop.getWriteMethod() == null ? null : prop.getWriteMethod().getName()) + " Getter: "
+						+ (prop.getReadMethod() == null ? null : prop.getReadMethod().getName()));
 			}
 			for (final String column : getColumns()) {
 				final Field field = this.colMap.get(column);
@@ -261,10 +260,13 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				} else if (BigDecimal.class.isAssignableFrom(field.getType())) {
 					final BigDecimal bigDecimal = rs.getBigDecimal(column);
 					propSet(entity, getProp(field, props), bigDecimal);
+				} else if (byte[].class.isAssignableFrom(field.getType())) {
+					final byte[] bytes = rs.getBytes(column);
+					propSet(entity, getProp(field, props), bytes);
 				} else if (LocalDate.class.isAssignableFrom(field.getType())) {
 					if (!StringUtils.isBlank(rs.getString(column))) {
 						final int[] parts = ArrayUtils.parseInt(rs.getString(column).split("-"));
-						final LocalDate localDate = new LocalDate(parts[0], parts[1], parts[2]);
+						final LocalDate localDate = LocalDate.of(parts[0], parts[1], parts[2]);
 						propSet(entity, getProp(field, props), localDate);
 					}
 				} else {
@@ -292,8 +294,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 
 	protected int count(final Criteria criteria, final String[] additionalTables) throws DataOperationException {
 		try {
-			
-			boolean tablePrefix = (additionalTables != null && additionalTables.length > 0);
+
 			final StringBuilder sql = new StringBuilder();
 
 			sql.append("SELECT COUNT(*)");
@@ -467,8 +468,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			throw new IllegalArgumentException("Cannot use singular find method with a limit greater than 1 (" + limit.getCount() + ")");
 		}
 		try {
-			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + where.getSql() + (StringUtils.isBlank(orderBySql) ? "" : orderBySql) + (limit == null ? " LIMIT 1"
-					: " " + limit.getSql());
+			final String sql = "SELECT " + getSelectFields() + " FROM `" + getTableName() + "`" + where.getSql() + (StringUtils.isBlank(orderBySql) ? "" : orderBySql)
+					+ (limit == null ? " LIMIT 1" : " " + limit.getSql());
 			final Object[] values = where.getValues().toArray();
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
@@ -669,7 +670,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				if (LocalDate.class.isAssignableFrom(field.getType())) {
 					final LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
 					if (localDate != null) {
-						values[i] = localDate.toString(LOCAL_DATE_FORMAT);
+						values[i] = localDate.toString();
 					} else {
 						values[i] = null;
 					}
@@ -772,7 +773,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 				if (LocalDate.class.isAssignableFrom(field.getType())) {
 					final LocalDate localDate = (LocalDate) ReflectionUtils.propGetSafe(entity, getProp(field, props));
 					if (localDate != null) {
-						values[i] = localDate.toString(LOCAL_DATE_FORMAT);
+						values[i] = localDate.toString();
 					} else {
 						values[i] = null;
 					}
@@ -1088,8 +1089,8 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 					orderBySql += " " + order.name();
 				}
 			}
-			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(additionalTables) + " WHERE " + where + orderBySql + (limit == null ? ""
-					: limit.getSql());
+			final String sql = "SELECT " + getSelectFields(true) + " FROM `" + getTableName() + "`," + StringUtils.join(additionalTables) + " WHERE " + where + orderBySql
+					+ (limit == null ? "" : limit.getSql());
 			if (sqlLog.isLoggable(Level.FINEST)) {
 				sqlLog.finest(sql);
 			}
@@ -1400,7 +1401,7 @@ public abstract class AbstractAjahDao<K extends Comparable<K>, T extends Identif
 			return getJdbcTemplate().queryForObject(sql, criteria.getWhere().getValues().toArray(), Integer.class);
 		} catch (final EmptyResultDataAccessException e) {
 			log.fine(e.getMessage());
-			return 0;
+			return NumberUtils.INTEGER_ZERO;
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, getTableName());
 		}

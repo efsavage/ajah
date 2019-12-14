@@ -17,9 +17,9 @@ package com.ajah.user.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
@@ -54,7 +54,7 @@ public class UserInfoDaoImpl extends AbstractAjahDao<UserId, UserInfo, UserInfoI
 				final MapMap<LocalDate, String, Integer> mapMap = new MapMap<LocalDate, String, Integer>();
 				while (rs.next()) {
 					final String source = rs.getString("source") == null ? "mg" : rs.getString("source");
-					mapMap.put(new LocalDate(rs.getString("date")), source, rs.getInt("total"));
+					mapMap.put(LocalDate.parse(rs.getString("date")), source, rs.getInt("total"));
 				}
 				return mapMap;
 			}

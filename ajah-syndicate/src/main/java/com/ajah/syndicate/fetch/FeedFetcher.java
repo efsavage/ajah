@@ -8,12 +8,12 @@
 package com.ajah.syndicate.fetch;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-
-import lombok.extern.java.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,8 +21,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ajah.spring.jdbc.err.DataOperationException;
@@ -39,11 +37,13 @@ import com.ajah.util.StringUtils;
 import com.ajah.util.data.XmlString;
 import com.ajah.util.date.DateUtils;
 
+import lombok.extern.java.Log;
+
 /**
  * Simple fetcher that will pull feeds and save entries.
  * 
- * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * @author <a href="http://efsavage.com">Eric F. Savage</a>,
+ *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 public class FeedFetcher {
@@ -52,7 +52,7 @@ public class FeedFetcher {
 		if (feedSource.getPollStatus() == PollStatus.ERROR_TMP) {
 			if (feedSource.getPollStatusSince() == null) {
 				feedSource.setPollStatusSince(new Date());
-			} else if (Days.daysBetween(new DateTime(feedSource.getPollStatus()), new DateTime()).getDays() > 7) {
+			} else if (ChronoUnit.DAYS.between(feedSource.getPollStatusSince().toInstant(), Instant.now()) > 7) {
 				// We've failed for over a week, kill it.
 				feedSource.setNextPoll(null);
 				feedSource.setPollStatus(PollStatus.ERROR_PERM);
