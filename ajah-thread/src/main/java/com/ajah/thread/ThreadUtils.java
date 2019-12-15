@@ -60,7 +60,6 @@ public class ThreadUtils {
 		} catch (final InterruptedException e) {
 			log.log(Level.FINE, e.getMessage(), e);
 		}
-		return;
 	}
 
 	/**

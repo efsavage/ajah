@@ -18,18 +18,16 @@ package com.ajah.css;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.extern.java.Log;
-
 import com.ajah.css.util.RuleComparator;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
 import com.ajah.util.io.file.FileUtils;
+import lombok.extern.java.Log;
 
 /**
  * Parses a raw CSS file into a {@link CssDocument}. Very much alpha quality!
@@ -85,9 +83,7 @@ public class CssParser {
 				line = new StringBuffer();
 				break;
 			case '\r':
-				break;
 			case '_':
-				break;
 			case '\n':
 				break;
 			default:

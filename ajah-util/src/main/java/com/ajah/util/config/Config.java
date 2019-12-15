@@ -71,7 +71,7 @@ public enum Config {
 		for (final Object propKey : this.properties.keySet()) {
 			final String sysProp = System.getProperty((String) propKey);
 			if (!StringUtils.isBlank(sysProp)) {
-				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Overriding property " + (String) propKey + " with System property value of " + sysProp);
+				Logger.getLogger(Config.class.getName()).log(Level.CONFIG, "Overriding property " + propKey + " with System property value of " + sysProp);
 				this.properties.setProperty((String) propKey, sysProp);
 			}
 		}

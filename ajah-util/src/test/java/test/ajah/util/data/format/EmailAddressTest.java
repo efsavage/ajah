@@ -23,9 +23,9 @@ import com.ajah.util.data.format.EmailAddress;
 
 /**
  * Tests {@link EmailAddress}.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 
 public class EmailAddressTest {
@@ -36,7 +36,7 @@ public class EmailAddressTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void badEmail() {
 		final String emailString = "person@badurl";
-		EmailAddress emailAddress = null;
+		EmailAddress emailAddress;
 		emailAddress = new EmailAddress(emailString);
 		Assert.assertNull(emailAddress);
 	}
@@ -49,7 +49,7 @@ public class EmailAddressTest {
 		final String emailString = "person@yahoo.com";
 		final EmailAddress emailAddress = new EmailAddress(emailString);
 		Assert.assertNotNull(emailAddress);
-		Assert.assertEquals(emailString, emailString.toString());
+		Assert.assertEquals(emailString, emailAddress.toString());
 	}
 
 	/**
@@ -58,8 +58,7 @@ public class EmailAddressTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void nullEmail() {
 		final String emailString = null;
-		EmailAddress emailAddress = null;
-		emailAddress = new EmailAddress(emailString);
+		EmailAddress emailAddress = new EmailAddress(null);
 		Assert.assertNull(emailAddress);
 	}
 }

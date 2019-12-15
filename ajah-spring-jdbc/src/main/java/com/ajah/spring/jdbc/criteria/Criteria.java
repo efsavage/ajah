@@ -571,7 +571,7 @@ public class Criteria extends AbstractCriteria<Criteria> {
 		if (this.orderBys == null) {
 			this.orderBys = new ArrayList<>();
 		}
-		this.orderBys.add(new NameValuePair<>("RAND()", (Order) null));
+		this.orderBys.add(new NameValuePair<>("RAND()", null));
 		return this;
 	}
 

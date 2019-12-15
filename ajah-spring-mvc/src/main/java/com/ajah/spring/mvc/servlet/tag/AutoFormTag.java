@@ -190,7 +190,7 @@ public class AutoFormTag extends SpringTag {
 
 		final String label = AutoFormUtils.getLabel(field);
 
-		Input<?> input = null;
+		Input<?> input;
 		log.fine(field.getType().toString());
 		// TODO handle type="email" and such http://diveintohtml5.org/forms.html
 		if (field.getType().equals(String.class)) {

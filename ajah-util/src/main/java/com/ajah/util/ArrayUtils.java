@@ -353,7 +353,7 @@ public class ArrayUtils {
 	 * method returns void. Also requires a comparable object, which the Arrays
 	 * method does not.
 	 * 
-	 * @See {@link Arrays#sort(Object[]))}
+	 * @see {@link Arrays#sort(Object[]))}
 	 * @param array
 	 *            The array to sort.
 	 * @return The sorted array.

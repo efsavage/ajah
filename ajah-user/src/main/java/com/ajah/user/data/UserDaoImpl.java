@@ -17,11 +17,6 @@ package com.ajah.user.data;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Repository;
-
 import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.HmacSha1Password;
 import com.ajah.crypto.Password;
@@ -31,14 +26,13 @@ import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.criteria.SubCriteria;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.spring.jdbc.err.DataOperationExceptionUtils;
-import com.ajah.user.User;
-import com.ajah.user.UserId;
-import com.ajah.user.UserImpl;
-import com.ajah.user.UserNotFoundException;
-import com.ajah.user.UserStatus;
-import com.ajah.user.UserType;
+import com.ajah.user.*;
 import com.ajah.util.AjahUtils;
 import com.ajah.util.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 
 /**
  * Data operations on the "user" table.
@@ -86,7 +80,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	@Override
 	public Password getPassword(final UserId userId) throws CryptoException, DataOperationException {
 		try {
-			final String value = this.jdbcTemplate.queryForObject("SELECT password from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
+			final String value = this.jdbcTemplate.queryForObject("SELECT password from user WHERE user_id=?", String.class, userId.toString());
 			return new HmacSha1Password(value, true);
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
@@ -109,7 +103,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	@Override
 	public UserStatus getStatus(final UserId userId) throws DataOperationException {
 		try {
-			final String value = this.jdbcTemplate.queryForObject("SELECT status from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
+			final String value = this.jdbcTemplate.queryForObject("SELECT status from user WHERE user_id=?", String.class, userId.toString());
 			return UserStatus.get(value);
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
@@ -122,7 +116,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 	@Override
 	public String getUsername(final UserId userId) throws DataOperationException {
 		try {
-			return this.jdbcTemplate.queryForObject("SELECT username from user WHERE user_id=?", String.class, new Object[] { userId.toString() });
+			return this.jdbcTemplate.queryForObject("SELECT username from user WHERE user_id=?", String.class, userId.toString());
 		} catch (final EmptyResultDataAccessException e) {
 			return null;
 		} catch (final DataAccessException e) {
@@ -148,8 +142,8 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			return this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)",
-					new Object[] { user.getId().toString(), user.getUsername(), password.toString(), user.getStatus().getId() + "", user.getType().getId() + "" });
+			return this.jdbcTemplate.update("INSERT INTO user (user_id, username, password, status, type) VALUES (?,?,?,?,?)", user.getId().toString(), user.getUsername(), password.toString(),
+					user.getStatus().getId() + "", user.getType().getId() + "");
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
@@ -203,7 +197,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		AjahUtils.requireParam(password, "password");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			return this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", new Object[] { password.toString(), userId.toString() });
+			return this.jdbcTemplate.update("UPDATE user SET password = ? WHERE user_id = ?", password.toString(), userId.toString());
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}
@@ -219,7 +213,7 @@ public class UserDaoImpl extends AbstractAjahDao<UserId, User, UserImpl> impleme
 		AjahUtils.requireParam(username, "username");
 		AjahUtils.requireParam(this.jdbcTemplate, "this.jdbcTemplate");
 		try {
-			return this.jdbcTemplate.update("UPDATE user SET username = ? WHERE user_id = ?", new Object[] { username, userId.toString() });
+			return this.jdbcTemplate.update("UPDATE user SET username = ? WHERE user_id = ?", username, userId.toString());
 		} catch (final DataAccessException e) {
 			throw DataOperationExceptionUtils.translate(e, "user");
 		}

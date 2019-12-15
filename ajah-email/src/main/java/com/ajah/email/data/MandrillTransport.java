@@ -20,14 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-
-import lombok.Data;
-import lombok.extern.java.Log;
-
-import org.apache.commons.collections.CollectionUtils;
-
 import com.ajah.email.EmailMessage;
 import com.ajah.email.EmailRecipient;
 import com.ajah.util.StringUtils;
@@ -36,14 +28,16 @@ import com.microtripit.mandrillapp.lutung.model.MandrillApiError;
 import com.microtripit.mandrillapp.lutung.view.MandrillMessage;
 import com.microtripit.mandrillapp.lutung.view.MandrillMessage.Recipient;
 import com.microtripit.mandrillapp.lutung.view.MandrillMessageStatus;
+import lombok.Data;
+import lombok.extern.java.Log;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * Transport for the Mandrill service. See {@link MandrillApi} for more
  * information.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Log
 @Data

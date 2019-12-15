@@ -28,7 +28,6 @@ import com.ajah.syndicate.SyndicationException;
 import com.ajah.syndicate.rome.RomeUtils;
 import com.ajah.util.data.XmlString;
 import com.ajah.util.net.HttpClient;
-import com.sun.syndication.io.FeedException;
 
 /**
  * Test basic feed operations.

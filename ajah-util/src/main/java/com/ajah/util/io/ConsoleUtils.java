@@ -22,18 +22,18 @@ import com.ajah.util.StringUtils;
 
 /**
  * Methods for reading input out of a command-line console.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class ConsoleUtils {
 
 	/**
 	 * Asks a question with a text answer, appending the default value if
 	 * present.
-	 * 
+	 *
 	 * @param message
-	 *            The question to ask, required.
+	 * 		The question to ask, required.
 	 * @return The response to the question.
 	 */
 	@SuppressWarnings("resource")
@@ -50,18 +50,18 @@ public class ConsoleUtils {
 
 	/**
 	 * Asks a yes or no question, appending the default value.
-	 * 
+	 *
 	 * @param message
-	 *            The question to ask.
+	 * 		The question to ask.
 	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
+	 * 		The answer if someone just hits enter.
 	 * @return The response to the question.
 	 */
 	@SuppressWarnings("resource")
 	// Don't need to close System.in
 	public static boolean ask(final String message, final boolean defaultAnswer) {
 		while (true) {
-			boolean answer = defaultAnswer;
+			boolean answer;
 			final Scanner in = new Scanner(System.in);
 			System.out.println(message + " [" + (defaultAnswer ? 'y' : 'n') + "]");
 			final String response = in.nextLine().trim();
@@ -82,18 +82,18 @@ public class ConsoleUtils {
 	/**
 	 * Asks a question, requiring a numerical answer, appending the default
 	 * value.
-	 * 
+	 *
 	 * @param message
-	 *            The question to ask.
+	 * 		The question to ask.
 	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
+	 * 		The answer if someone just hits enter.
 	 * @return The response to the question.
 	 */
 	@SuppressWarnings("resource")
 	// Don't need to close System.in
 	public static double ask(final String message, final double defaultAnswer) {
 		while (true) {
-			double answer = defaultAnswer;
+			double answer;
 			final Scanner in = new Scanner(System.in);
 			System.out.println(message + " [" + defaultAnswer + "]");
 			final String response = in.nextLine().trim();
@@ -114,11 +114,11 @@ public class ConsoleUtils {
 	/**
 	 * Asks a question, requiring a numerical answer, appending the default
 	 * value.
-	 * 
+	 *
 	 * @param message
-	 *            The question to ask.
+	 * 		The question to ask.
 	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
+	 * 		The answer if someone just hits enter.
 	 * @return The response to the question.
 	 */
 	@SuppressWarnings("resource")
@@ -129,9 +129,7 @@ public class ConsoleUtils {
 			final Scanner in = new Scanner(System.in);
 			System.out.println(message + " [" + defaultAnswer + "]");
 			final String response = in.nextLine().trim();
-			if (StringUtils.isBlank(response)) {
-				answer = defaultAnswer;
-			} else {
+			if (!StringUtils.isBlank(response)) {
 				try {
 					answer = Integer.parseInt(response);
 				} catch (final NumberFormatException e) {
@@ -146,11 +144,11 @@ public class ConsoleUtils {
 	/**
 	 * Asks a question with a text answer, appending the default value if
 	 * present.
-	 * 
+	 *
 	 * @param message
-	 *            The question to ask, required.
+	 * 		The question to ask, required.
 	 * @param defaultAnswer
-	 *            The answer if someone just hits enter.
+	 * 		The answer if someone just hits enter.
 	 * @return The response to the question.
 	 */
 	@SuppressWarnings("resource")

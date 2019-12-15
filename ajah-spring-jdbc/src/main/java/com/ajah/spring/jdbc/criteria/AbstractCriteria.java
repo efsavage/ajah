@@ -176,7 +176,7 @@ public abstract class AbstractCriteria<C> {
 	 */
 	public C isNotNull(final String field) {
 		AjahUtils.requireParam(field, "field");
-		return neq(field, (String) null);
+		return neq(field, null);
 	}
 
 	protected abstract C getThis();

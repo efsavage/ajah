@@ -6,8 +6,6 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.ajah.swagger.out.SwaggerOut;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SwaggerImportTest {

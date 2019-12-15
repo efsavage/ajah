@@ -25,8 +25,7 @@ import com.ajah.util.AjahUtils;
 
 /**
  * @author <a href="http://efsavage.com">Eric F. Savage</a>,
- *         <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * <a href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public class HashUtils {
 
@@ -34,9 +33,9 @@ public class HashUtils {
 	 * Calls {@link #getHashedFileName(String, int, int)} with depth of 3 and
 	 * breadth of 2, which should provide enough separation for most
 	 * applications.
-	 * 
+	 *
 	 * @param name
-	 *            The name to hash.
+	 * 		The name to hash.
 	 * @return The hashed name with directory path.
 	 */
 	public static String getHashedFileName(final String name) {
@@ -45,27 +44,27 @@ public class HashUtils {
 
 	/**
 	 * Creates a hashed name with directory path for a given name.
-	 * 
+	 * <p>
 	 * Example: abcdefghijklmnop with depth of 3 and breadth of 2 would return
 	 * "ab/cd/ef/abcdefghijklmnop". Example: abcdefghijklmnop with depth of 2
 	 * and breadth of 5 would return "abcde/efghi/abcdefghijklmnop".
-	 * 
+	 *
 	 * @param name
-	 *            The name to hash.
+	 * 		The name to hash.
 	 * @param depth
-	 *            The number of subdirectories to split. A higher number will
-	 *            yield more directories but fewer files within each directory.
+	 * 		The number of subdirectories to split. A higher number will
+	 * 		yield more directories but fewer files within each directory.
 	 * @param breadth
-	 *            The number of characters to use when creating the
-	 *            subdirectories. A higher number will yield fewer directories
-	 *            but more files within each directory.
+	 * 		The number of characters to use when creating the
+	 * 		subdirectories. A higher number will yield fewer directories
+	 * 		but more files within each directory.
 	 * @return The hashed name with directory path.
 	 */
 	public static String getHashedFileName(final String name, final int depth, final int breadth) {
 		AjahUtils.requireParam(name, "name");
 		final StringBuilder hashed = new StringBuilder();
 		for (int i = 0; i < depth; i++) {
-			hashed.append(name.substring(i * breadth, (i + 1) * breadth));
+			hashed.append(name, i * breadth, (i + 1) * breadth);
 			hashed.append("/");
 		}
 		hashed.append(name);
@@ -75,9 +74,9 @@ public class HashUtils {
 	/**
 	 * Creates an MD5 digest of byte array and returns it as a Base 64 encoded
 	 * number.
-	 * 
+	 *
 	 * @param bytes
-	 *            The bytes to digest.
+	 * 		The bytes to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String md5Base64(final byte[] bytes) {
@@ -96,9 +95,9 @@ public class HashUtils {
 	/**
 	 * Creates an MD5 digest of string and returns it as a Base 64 encoded
 	 * number.
-	 * 
+	 *
 	 * @param string
-	 *            The string to digest.
+	 * 		The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String md5Base64(final String string) {
@@ -116,9 +115,9 @@ public class HashUtils {
 
 	/**
 	 * Creates an MD5 digest of string and returns it as a hexadecimal number.
-	 * 
+	 *
 	 * @param string
-	 *            The string to digest.
+	 * 		The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String md5Hex(final String string) {
@@ -136,9 +135,9 @@ public class HashUtils {
 
 	/**
 	 * Creates an MD5 digest of string and returns it as a hexadecimal number.
-	 * 
-	 * @param string
-	 *            The string to digest.
+	 *
+	 * @param data
+	 * 		The data to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String md5Hex(final byte[] data) {
@@ -156,9 +155,9 @@ public class HashUtils {
 	/**
 	 * Creates a SHA-1 digest of byte array and returns it as a hexadecimal
 	 * number.
-	 * 
+	 *
 	 * @param data
-	 *            The data to digest.
+	 * 		The data to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String sha1Hex(final byte[] data) {
@@ -175,9 +174,9 @@ public class HashUtils {
 
 	/**
 	 * Creates a SHA-1 digest of string and returns it as a hexadecimal number.
-	 * 
+	 *
 	 * @param string
-	 *            The string to digest.
+	 * 		The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String sha1Hex(final String string) {
@@ -195,9 +194,9 @@ public class HashUtils {
 	/**
 	 * Creates a SHA-256 digest of string and returns it as a hexadecimal
 	 * number.
-	 * 
+	 *
 	 * @param string
-	 *            The string to digest.
+	 * 		The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static byte[] sha256(final String string) {
@@ -214,9 +213,9 @@ public class HashUtils {
 	/**
 	 * Creates a SHA-256 digest of string and returns it as a hexadecimal
 	 * number.
-	 * 
+	 *
 	 * @param string
-	 *            The string to digest.
+	 * 		The string to digest.
 	 * @return The hexadecimal result of the digest.
 	 */
 	public static String sha256Hex(final String string) {

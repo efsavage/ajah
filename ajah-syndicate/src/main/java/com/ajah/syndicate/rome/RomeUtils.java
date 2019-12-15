@@ -121,7 +121,7 @@ public class RomeUtils {
 		}
 
 		if (syndEntry.getDescription() != null) {
-			AjahMimeType descriptionType = null;
+			AjahMimeType descriptionType;
 			if (syndEntry.getDescription().getType() == null) {
 				// TODO see if it's actually html
 				descriptionType = AjahMimeType.TEXT_PLAIN;

@@ -23,7 +23,6 @@ import com.ajah.spring.jdbc.criteria.Order;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
-import com.ajah.user.UserNotFoundException;
 import com.ajah.user.UserStatus;
 import com.ajah.user.UserType;
 

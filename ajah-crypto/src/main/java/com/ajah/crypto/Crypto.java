@@ -162,7 +162,6 @@ public class Crypto {
 		}
 		if ("list".equals(args[0])) {
 			listProviders();
-			return;
 		} else if ("keygen".equals(args[0])) {
 			keyGen();
 		} else if ("to-aes".equals(args[0])) {

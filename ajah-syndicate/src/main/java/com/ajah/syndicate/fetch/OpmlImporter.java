@@ -26,7 +26,6 @@ import com.ajah.syndicate.data.FeedManager;
 import com.ajah.syndicate.data.FeedSourceManager;
 import com.ajah.syndicate.opml.Opml;
 import com.ajah.syndicate.rome.OpmlUtils;
-import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SAXBuilder;
 
 /**

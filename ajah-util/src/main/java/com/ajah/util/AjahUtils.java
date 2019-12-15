@@ -232,10 +232,7 @@ public class AjahUtils {
 		if (retVal < minValue) {
 			return minValue;
 		}
-		if (retVal > maxValue) {
-			return maxValue;
-		}
-		return retVal;
+		return Math.min(retVal, maxValue);
 	}
 
 	/**

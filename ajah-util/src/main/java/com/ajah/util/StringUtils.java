@@ -38,7 +38,7 @@ public class StringUtils {
 	 * Shorthand method for passing varargs to methods requiring arrays.
 	 *
 	 * @param strings
-	 *            The array of strings.
+	 * 		The array of strings.
 	 * @return The same object, but cast as an array automatically by Java.
 	 */
 	public static String[] asArray(final String... strings) {
@@ -48,10 +48,10 @@ public class StringUtils {
 	/**
 	 * Capitalizes first letter of a String.
 	 *
-	 * @see Character#toTitleCase(char)
 	 * @param string
-	 *            String to capitalized
+	 * 		String to capitalized
 	 * @return String, capitalized, may be null if null is passed in.
+	 * @see Character#toTitleCase(char)
 	 */
 	public static String capitalize(final String string) {
 		if (StringUtils.isBlank(string)) {
@@ -65,9 +65,9 @@ public class StringUtils {
 	 * values and omits blank values.
 	 *
 	 * @param string
-	 *            The string to split. If null, an empty list will be returned.
+	 * 		The string to split. If null, an empty list will be returned.
 	 * @param regex
-	 *            The pattern to split on. This should not contain whitespace.
+	 * 		The pattern to split on. This should not contain whitespace.
 	 * @return List of trimmed, non-blank tokens.
 	 */
 	public static List<String> cleanSplit(final String string, final String regex) {
@@ -88,11 +88,11 @@ public class StringUtils {
 	 * candidate strings.
 	 *
 	 * @param string
-	 *            The string to check.
+	 * 		The string to check.
 	 * @param suffixes
-	 *            The array of suffixes to use.
+	 * 		The array of suffixes to use.
 	 * @return true if the string ends with any of the suffixes, otherwise
-	 *         false.
+	 * false.
 	 */
 	public static boolean endsWith(final String string, final String[] suffixes) {
 		if (isBlank(string) || suffixes == null || suffixes.length == 0) {
@@ -110,7 +110,7 @@ public class StringUtils {
 	 * Looks for null or empty strings.
 	 *
 	 * @param string
-	 *            String to be tested, may be null
+	 * 		String to be tested, may be null
 	 * @return true if string is null or zero-length
 	 */
 	public static boolean isBlank(final String string) {
@@ -128,9 +128,9 @@ public class StringUtils {
 	 * blank.
 	 *
 	 * @param delimiter
-	 *            The delimiter to use between strings.
+	 * 		The delimiter to use between strings.
 	 * @param strings
-	 *            The list of strings to join.
+	 * 		The list of strings to join.
 	 * @return A joined list of strings, may be empty or null;
 	 */
 	public static String join(final String delimiter, final Collection<String> strings) {
@@ -156,9 +156,9 @@ public class StringUtils {
 	 * Joins a list of ints, separating them by delimiter if they are not blank.
 	 *
 	 * @param delimiter
-	 *            The delimiter to use between numbers.
+	 * 		The delimiter to use between numbers.
 	 * @param numbers
-	 *            The list of numbers to join.
+	 * 		The list of numbers to join.
 	 * @return A joined list of numbers, may be empty or null;
 	 */
 	public static String join(final String delimiter, final int... numbers) {
@@ -174,7 +174,7 @@ public class StringUtils {
 			}
 			retVal.append(number);
 		}
-		return retVal == null ? null : retVal.toString();
+		return retVal.toString();
 	}
 
 	/**
@@ -182,9 +182,9 @@ public class StringUtils {
 	 * blank.
 	 *
 	 * @param delimiter
-	 *            The delimiter to use between numbers.
+	 * 		The delimiter to use between numbers.
 	 * @param numbers
-	 *            The list of numbers to join.
+	 * 		The list of numbers to join.
 	 * @return A joined list of numbers, may be empty or null;
 	 */
 	public static String joinNumbers(final String delimiter, final Collection<? extends Number> numbers) {
@@ -200,7 +200,7 @@ public class StringUtils {
 			}
 			retVal.append(number);
 		}
-		return retVal == null ? null : retVal.toString();
+		return retVal.toString();
 	}
 
 	/**
@@ -208,9 +208,9 @@ public class StringUtils {
 	 * blank.
 	 *
 	 * @param delimiter
-	 *            The delimiter to use between strings.
+	 * 		The delimiter to use between strings.
 	 * @param strings
-	 *            The list of strings to join.
+	 * 		The list of strings to join.
 	 * @return A joined list of strings, may be empty or null;
 	 */
 	public static String join(final String delimiter, final String... strings) {
@@ -237,9 +237,9 @@ public class StringUtils {
 	 * of Strings, may be empty or null.
 	 *
 	 * @param array
-	 *            The array to be joined, may be empty or null.
+	 * 		The array to be joined, may be empty or null.
 	 * @return The joined array. If array was null or empty or contained only
-	 *         null or empty Strings, returns null.
+	 * null or empty Strings, returns null.
 	 */
 	public static String join(final String[] array) {
 		return join(",", array);
@@ -250,13 +250,13 @@ public class StringUtils {
 	 * delimeter.
 	 *
 	 * @param array
-	 *            Array of Strings, may be empty or null.
+	 * 		Array of Strings, may be empty or null.
 	 * @param delimiter
-	 *            The delimiter to put between the joined Strings, may be empty
-	 *            or null.
+	 * 		The delimiter to put between the joined Strings, may be empty
+	 * 		or null.
 	 * @return The joined array with delimiter in between joined Strings. If
-	 *         array was null or empty or contained only null or empty Strings,
-	 *         returns null.
+	 * array was null or empty or contained only null or empty Strings,
+	 * returns null.
 	 */
 	@Deprecated
 	public static String join(final String[] array, final String delimiter) {
@@ -287,12 +287,12 @@ public class StringUtils {
 	 * Returns leftmost characters of a string.
 	 *
 	 * @param string
-	 *            String to be chopped, may be null.
+	 * 		String to be chopped, may be null.
 	 * @param length
-	 *            The maximum length of the string to return.
+	 * 		The maximum length of the string to return.
 	 * @return The leftmost characters of a string. If the string was null, or
-	 *         shorter than the specified lenght, the original string will be
-	 *         returned.
+	 * shorter than the specified lenght, the original string will be
+	 * returned.
 	 */
 	public static String left(final String string, final int length) {
 		if (string == null || string.length() < length) {
@@ -305,9 +305,9 @@ public class StringUtils {
 	 * Returns null if the supplied string is null or empty.
 	 *
 	 * @param string
-	 *            The string to test.
+	 * 		The string to test.
 	 * @return null if the supplied string is null or empty, otherwise returns
-	 *         the original string.
+	 * the original string.
 	 */
 	public static String nullIfEmpty(final String string) {
 		if (string == null || string.length() == 0) {
@@ -320,12 +320,12 @@ public class StringUtils {
 	 * Returns rightmost characters of a string.
 	 *
 	 * @param string
-	 *            String to be chopped, may be null.
+	 * 		String to be chopped, may be null.
 	 * @param length
-	 *            The maximum length of the string to return.
+	 * 		The maximum length of the string to return.
 	 * @return The leftmost characters of a string. If the string was null, or
-	 *         shorter than the specified lenght, the original string will be
-	 *         returned.
+	 * shorter than the specified lenght, the original string will be
+	 * returned.
 	 */
 	public static String right(final String string, final int length) {
 		if (string == null || string.length() < length) {
@@ -340,9 +340,9 @@ public class StringUtils {
 	 * null or shorter than the requested length, returns the original string.
 	 *
 	 * @param string
-	 *            The string to truncate.
+	 * 		The string to truncate.
 	 * @param chars
-	 *            The number characters to truncate to.
+	 * 		The number characters to truncate to.
 	 * @return A string that is no longer than the length specified.
 	 */
 	public static String safeLeft(final String string, final int chars) {
@@ -356,7 +356,7 @@ public class StringUtils {
 	 * Returns length of string, 0 if null.
 	 *
 	 * @param string
-	 *            String to be tested, may be null.
+	 * 		String to be tested, may be null.
 	 * @return length of string, 0 if null.
 	 */
 	public static int safeLength(final String string) {
@@ -367,10 +367,10 @@ public class StringUtils {
 	 * Returns toString() for the object passed, if it is not null, otherwise
 	 * returns null.
 	 *
-	 * @see Object#toString()
 	 * @param object
-	 *            The object to check/toString()
+	 * 		The object to check/toString()
 	 * @return object.toString() or null
+	 * @see Object#toString()
 	 */
 	public static String safeToString(final Object object) {
 		if (object == null) {
@@ -385,7 +385,7 @@ public class StringUtils {
 	 * strings.
 	 *
 	 * @param string
-	 *            The string to trim, may be null.
+	 * 		The string to trim, may be null.
 	 * @return The trimmed string.
 	 */
 	public static String safeTrim(final String string) {
@@ -402,9 +402,13 @@ public class StringUtils {
 	 * >Stack Overflow</a>
 	 *
 	 * @param string
+	 * 		The string to convert.
 	 * @return String, de-camelcased.
 	 */
 	public static String splitCamelCase(final String string) {
+		if (StringUtils.isBlank(string)) {
+			return "";
+		}
 		return string.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 
@@ -413,10 +417,10 @@ public class StringUtils {
 	 * converted to lowercase, have non-word characters replaced with hyphens,
 	 * and be split if it apepars to be camelcase.
 	 *
-	 * @see #splitCamelCase(String)
 	 * @param string
-	 *            The string to convert.
+	 * 		The string to convert.
 	 * @return The converted string.
+	 * @see #splitCamelCase(String)
 	 */
 	public static String toCleanUrlToken(final String string) {
 		if (StringUtils.isBlank(string)) {
@@ -429,11 +433,11 @@ public class StringUtils {
 	 * Truncates a string if it is longer than desired.
 	 *
 	 * @param string
-	 *            The string to truncate.
+	 * 		The string to truncate.
 	 * @param maxLength
-	 *            The maximum length of the string, must be greater than 1.
+	 * 		The maximum length of the string, must be greater than 1.
 	 * @return The string truncated to maxLength characters if necessary,
-	 *         otherwise will return the original string, including null.
+	 * otherwise will return the original string, including null.
 	 */
 	public static String truncate(final String string, final int maxLength) {
 		if (StringUtils.isBlank(string)) {
@@ -453,11 +457,11 @@ public class StringUtils {
 	 * match.
 	 *
 	 * @param string
-	 *            The string to match.
+	 * 		The string to match.
 	 * @param validStrings
-	 *            The array of valid strings.
+	 * 		The array of valid strings.
 	 * @param defaultValue
-	 *            The default value if there is no match.
+	 * 		The default value if there is no match.
 	 * @return The string if it is valid, otherwise the default value.
 	 */
 	public static String whitelist(final String string, final String[] validStrings, final String defaultValue) {
@@ -478,11 +482,11 @@ public class StringUtils {
 	 * parentheses.
 	 *
 	 * @param strings
-	 *            The strings to wrap.
+	 * 		The strings to wrap.
 	 * @param wrapper
-	 *            The wrapper to prepend and append.
+	 * 		The wrapper to prepend and append.
 	 * @return A new collection of the same size, with the wrapper prepended and
-	 *         appended to each member.
+	 * appended to each member.
 	 */
 	public static List<String> wrap(final List<String> strings, final String wrapper) {
 		if (strings == null) {
@@ -511,9 +515,7 @@ public class StringUtils {
 			if (array.length == 0) {
 				continue;
 			}
-			for (String string : array) {
-				set.add(string);
-			}
+			Collections.addAll(set, array);
 		}
 		String[] array = new String[set.size()];
 		set.toArray(array);

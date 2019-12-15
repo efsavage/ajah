@@ -42,7 +42,7 @@ public class MathUtils {
 		if (strict && array1.length != array2.length) {
 			throw new IllegalArgumentException("Strict mode enabled: the two arrays must be of the same length");
 		}
-		final long[] result = new long[array1.length > array2.length ? array1.length : array2.length];
+		final long[] result = new long[Math.max(array1.length, array2.length)];
 		for (int i = 0; i < result.length; i++) {
 			if (array1.length < i) {
 				if (array2.length < i) {

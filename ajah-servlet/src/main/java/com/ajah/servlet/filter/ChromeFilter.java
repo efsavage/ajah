@@ -51,7 +51,7 @@ public class ChromeFilter extends BaseFilter {
 		final Browser browser = RequestUtils.getUserAgent((HttpServletRequest) request).getBrowser();
 		if (browser != Browser.CHROME) {
 			log.finest("Browser " + browser.getName() + " blocked");
-			((HttpServletRequest) request).getRequestDispatcher(this.failureUrl).forward(request, response);
+			request.getRequestDispatcher(this.failureUrl).forward(request, response);
 			return;
 		}
 		log.finest("Browser " + browser.getName() + " allowed");

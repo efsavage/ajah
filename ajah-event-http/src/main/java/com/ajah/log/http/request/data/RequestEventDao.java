@@ -19,7 +19,6 @@ import com.ajah.log.http.request.RequestEvent;
 import com.ajah.log.http.request.RequestEventId;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.DataOperationResult;
-import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Data operations on the "request_event" table.

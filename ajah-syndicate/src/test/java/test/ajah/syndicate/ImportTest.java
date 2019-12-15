@@ -18,19 +18,16 @@ package test.ajah.syndicate;
 import java.io.IOException;
 import java.util.List;
 
-import lombok.extern.java.Log;
-
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.junit.Test;
-
 import com.ajah.syndicate.SyndicationException;
 import com.ajah.syndicate.opml.Opml;
 import com.ajah.syndicate.opml.Outline;
 import com.ajah.syndicate.rome.OpmlUtils;
 import com.ajah.util.CollectionUtils;
-import com.sun.syndication.io.FeedException;
+import lombok.extern.java.Log;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.junit.Test;
 
 /**
  * Test parsing and importing an OPML file.
@@ -53,12 +50,12 @@ public class ImportTest {
 			return;
 		}
 		for (final Outline outline : outlines) {
-			String line = "";
+			StringBuilder line = new StringBuilder();
 			for (int i = 0; i < outline.getDepth(); i++) {
-				line += "--";
+				line.append("--");
 			}
-			line += outline.getTitle();
-			log.fine(line);
+			line.append(outline.getTitle());
+			log.fine(line.toString());
 			printOutlines(outline.getOutlines());
 		}
 	}
