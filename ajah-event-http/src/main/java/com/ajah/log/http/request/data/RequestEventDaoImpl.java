@@ -23,10 +23,9 @@ import com.ajah.spring.jdbc.AbstractAjahDao;
 
 /**
  * Data operations on the "request_event" table.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Repository
 public class RequestEventDaoImpl extends AbstractAjahDao<RequestEventId, RequestEvent, RequestEvent> implements RequestEventDao {

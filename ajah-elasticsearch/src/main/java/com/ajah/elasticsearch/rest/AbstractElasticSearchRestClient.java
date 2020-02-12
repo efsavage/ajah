@@ -84,11 +84,7 @@ public abstract class AbstractElasticSearchRestClient<K extends Comparable<K>, T
 	 */
 	@Override
 	public void close() throws ElasticSearchException {
-		try {
-			this.client.close();
-		} catch (IOException e) {
-			throw new ElasticSearchException(e);
-		}
+		this.client.close();
 	}
 
 	@SuppressWarnings("static-method")

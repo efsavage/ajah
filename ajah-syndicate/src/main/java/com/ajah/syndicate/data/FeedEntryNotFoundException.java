@@ -21,20 +21,19 @@ import com.ajah.syndicate.FeedEntryId;
 
 /**
  * Thrown when a entry is requested that does not exist.
- * 
+ *
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
-@EqualsAndHashCode()
+@EqualsAndHashCode(callSuper = true)
 public class FeedEntryNotFoundException extends Exception {
 
 	private final FeedEntryId entryId;
 
 	/**
 	 * Thrown when a entry is requested by an ID that does not exist.
-	 * 
+	 *
 	 * @param entryId
-	 *            Entry ID that was sought.
+	 * 		Entry ID that was sought.
 	 */
 	public FeedEntryNotFoundException(final FeedEntryId entryId) {
 		super("id: " + entryId + " not found");

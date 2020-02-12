@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ajah.crypto.Crypto;
 import com.ajah.crypto.CryptoException;
 import com.ajah.crypto.HmacSha1Password;
@@ -33,7 +30,6 @@ import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.user.AuthenticationFailureException;
 import com.ajah.user.User;
 import com.ajah.user.UserId;
-import com.ajah.user.UserNotFoundException;
 import com.ajah.user.UserStatus;
 import com.ajah.user.data.UserManager;
 import com.ajah.user.login.LogIn;
@@ -41,14 +37,14 @@ import com.ajah.user.login.LogInId;
 import com.ajah.user.login.LogInSource;
 import com.ajah.user.login.LogInStatus;
 import com.ajah.user.login.LogInType;
-
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Manages data operations for {@link LogIn}.
- * 
+ *
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
 @Service
 @Log
@@ -59,16 +55,16 @@ public class LogInManager {
 	 * The actual scheme of token generation should be encapsulated fully here
 	 * so it can be changed. Currently the only available scheme is to encrypt
 	 * the username and password hash.
-	 * 
+	 * <p>
 	 * Note: Tokens should always expire when a user changes their password.
-	 * 
+	 *
 	 * @param user
-	 *            The user to generate a token for.
+	 * 		The user to generate a token for.
 	 * @param password
-	 *            Password object for user to include in the token.
+	 * 		Password object for user to include in the token.
 	 * @return Token that can be used to authenticate.
 	 * @throws ConfigException
-	 *             If there is a cryptographic error.
+	 * 		If there is a cryptographic error.
 	 */
 	public static String getTokenValue(final User user, final Password password) {
 		try {
@@ -78,18 +74,16 @@ public class LogInManager {
 		}
 	}
 
-	@Autowired
-	private LogInDao logInDao;
+	@Autowired private LogInDao logInDao;
 
-	@Autowired
-	private UserManager userManager;
+	@Autowired private UserManager userManager;
 
 	/**
 	 * Returns a count of all records.
-	 * 
+	 *
 	 * @return Count of all records.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public long count() throws DataOperationException {
 		return count(null, null);
@@ -97,14 +91,14 @@ public class LogInManager {
 
 	/**
 	 * Counts the records available that match the criteria.
-	 * 
+	 *
 	 * @param type
-	 *            The logIn type to limit to, optional.
+	 * 		The logIn type to limit to, optional.
 	 * @param status
-	 *            The status to limit to, optional.
+	 * 		The status to limit to, optional.
 	 * @return The number of matching records.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public long count(final LogInType type, final LogInStatus status) throws DataOperationException {
 		return this.logInDao.count(type, status);
@@ -112,17 +106,17 @@ public class LogInManager {
 
 	/**
 	 * Creates a new {@link LogIn} with the given properties.
-	 * 
+	 *
 	 * @param name
-	 *            The name of the logIn, required.
+	 * 		The name of the logIn, required.
 	 * @param type
-	 *            The type of logIn, required.
+	 * 		The type of logIn, required.
 	 * @param status
-	 *            The status of the logIn, required.
+	 * 		The status of the logIn, required.
 	 * @return The result of the creation, which will include the new logIn at
-	 *         {@link DataOperationResult#getEntity()}.
+	 * {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public DataOperationResult<LogIn> create(final String name, final LogInType type, final LogInStatus status) throws DataOperationException {
 		final LogIn logIn = new LogIn();
@@ -134,18 +128,18 @@ public class LogInManager {
 
 	/**
 	 * Returns a list of {@link LogIn}s that match the specified criteria.
-	 * 
+	 *
 	 * @param type
-	 *            The type of logIn, optional.
+	 * 		The type of logIn, optional.
 	 * @param status
-	 *            The status of the logIn, optional.
+	 * 		The status of the logIn, optional.
 	 * @param page
-	 *            The page of results to fetch.
+	 * 		The page of results to fetch.
 	 * @param count
-	 *            The number of results per page.
+	 * 		The number of results per page.
 	 * @return A list of {@link LogIn}s, which may be empty.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public List<LogIn> list(final LogInType type, final LogInStatus status, final long page, final long count) throws DataOperationException {
 		return this.logInDao.list(type, status, page, count);
@@ -153,14 +147,14 @@ public class LogInManager {
 
 	/**
 	 * Loads an {@link LogIn} by it's ID.
-	 * 
+	 *
 	 * @param logInId
-	 *            The ID to load, required.
+	 * 		The ID to load, required.
 	 * @return The matching logIn, if found. Will not return null.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 * @throws LogInNotFoundException
-	 *             If the ID specified did not match any logIns.
+	 * 		If the ID specified did not match any logIns.
 	 */
 	public LogIn load(final LogInId logInId) throws DataOperationException, LogInNotFoundException {
 		final LogIn logIn = this.logInDao.load(logInId);
@@ -172,20 +166,20 @@ public class LogInManager {
 
 	/**
 	 * Returns a login record for a user.
-	 * 
+	 *
 	 * @param username
-	 *            Username or email of the user logging in.
+	 * 		Username or email of the user logging in.
 	 * @param password
-	 *            Password of the user logging in, unencrypted.
+	 * 		Password of the user logging in, unencrypted.
 	 * @param ip
-	 *            IP of requesting user
+	 * 		IP of requesting user
 	 * @param source
-	 *            Source of login attempt
+	 * 		Source of login attempt
 	 * @param type
-	 *            Type of login attempt
+	 * 		Type of login attempt
 	 * @return Login record, will never return null.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public LogIn login(final String username, final Password password, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by user/pass attempt for: " + username);
@@ -207,9 +201,6 @@ public class LogInManager {
 			log.log(Level.INFO, e.getMessage());
 			login.setUsername(e.getUsername());
 			login.setStatus(LogInStatus.FAIL);
-		} catch (final UserNotFoundException e) {
-			log.log(Level.INFO, e.getMessage());
-			login.setStatus(LogInStatus.FAIL);
 		}
 		try {
 			save(login);
@@ -223,20 +214,20 @@ public class LogInManager {
 
 	/**
 	 * Returns a login record for a user.
-	 * 
+	 *
 	 * @param userId
-	 *            The ID of the user attempting to log in.
+	 * 		The ID of the user attempting to log in.
 	 * @param password
-	 *            Password of the user logging in, unencrypted.
+	 * 		Password of the user logging in, unencrypted.
 	 * @param ip
-	 *            IP of requesting user
+	 * 		IP of requesting user
 	 * @param source
-	 *            Source of login attempt
+	 * 		Source of login attempt
 	 * @param type
-	 *            Type of login attempt
+	 * 		Type of login attempt
 	 * @return Login record, will never return null.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public LogIn login(final UserId userId, final Password password, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by user/pass attempt for: " + userId);
@@ -263,9 +254,6 @@ public class LogInManager {
 			log.log(Level.INFO, e.getMessage());
 			login.setUsername(e.getUsername());
 			login.setStatus(LogInStatus.FAIL);
-		} catch (final UserNotFoundException e) {
-			log.log(Level.INFO, e.getMessage());
-			login.setStatus(LogInStatus.FAIL);
 		}
 		try {
 			save(login);
@@ -280,18 +268,18 @@ public class LogInManager {
 	/**
 	 * Logs a user in by token value. Common usage would be to store token in a
 	 * cookie.
-	 * 
+	 *
 	 * @param token
-	 *            Token value
+	 * 		Token value
 	 * @param ip
-	 *            IP of requesting user
+	 * 		IP of requesting user
 	 * @param source
-	 *            Source of login attempt
+	 * 		Source of login attempt
 	 * @param type
-	 *            Type of login attempt
+	 * 		Type of login attempt
 	 * @return Login record, will never be null.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public LogIn loginByToken(final String token, final String ip, final LogInSource source, final LogInType type) throws DataOperationException {
 		log.fine("Login by token attempt for: " + token);
@@ -319,13 +307,13 @@ public class LogInManager {
 	 * Saves an {@link LogIn}. Assigns a new ID ({@link UUID}) and sets the
 	 * creation date if necessary. If either of these elements are set, will
 	 * perform an insert. Otherwise will perform an update.
-	 * 
+	 *
 	 * @param logIn
-	 *            The logIn to save.
+	 * 		The logIn to save.
 	 * @return The result of the save operation, which will include the new
-	 *         logIn at {@link DataOperationResult#getEntity()}.
+	 * logIn at {@link DataOperationResult#getEntity()}.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public DataOperationResult<LogIn> save(final LogIn logIn) throws DataOperationException {
 		boolean create = false;
@@ -351,12 +339,12 @@ public class LogInManager {
 
 	/**
 	 * Counts the records available that match the search criteria.
-	 * 
+	 *
 	 * @param search
-	 *            The search query.
+	 * 		The search query.
 	 * @return The number of matching records.
 	 * @throws DataOperationException
-	 *             If the query could not be executed.
+	 * 		If the query could not be executed.
 	 */
 	public int searchCount(final String search) throws DataOperationException {
 		return this.logInDao.searchCount(search);

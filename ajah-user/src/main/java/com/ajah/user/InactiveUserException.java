@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * 
  */
 @Data
-@EqualsAndHashCode()
+@EqualsAndHashCode(callSuper = true)
 public class InactiveUserException extends AuthenticationException {
 
 	private UserId userId;

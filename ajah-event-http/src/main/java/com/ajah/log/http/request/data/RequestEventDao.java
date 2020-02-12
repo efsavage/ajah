@@ -19,26 +19,15 @@ import com.ajah.log.http.request.RequestEvent;
 import com.ajah.log.http.request.RequestEventId;
 import com.ajah.spring.jdbc.AjahDao;
 import com.ajah.spring.jdbc.DataOperationResult;
+import com.ajah.spring.jdbc.err.DataOperationException;
 
 /**
  * Data operations on the "request_event" table.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 public interface RequestEventDao extends AjahDao<RequestEventId, RequestEvent> {
 
-	/**
-	 * Inserts a RequestEvent into the database.
-	 * 
-	 * @param requestEvent
-	 *            The requestEvent to insert.
-	 * @param delayed
-	 *            Should the insert be delayed?
-	 * @return The result of the operation. If delayed is true the number of
-	 *         rows affected will always be zero.
-	 */
-	DataOperationResult<RequestEvent> insert(final RequestEvent requestEvent, final boolean delayed);
-
+	public DataOperationResult<RequestEvent> insert(final RequestEvent entity, final boolean delayed) throws DataOperationException;
 }

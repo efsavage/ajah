@@ -17,42 +17,29 @@ package com.ajah.syndicate.data;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.FeedEntry;
 import com.ajah.syndicate.FeedEntryId;
 import com.ajah.syndicate.FeedSourceId;
+import org.springframework.stereotype.Repository;
 
 /**
  * Dao for {@link FeedEntry}s.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Repository
 public interface FeedEntryDao extends AjahDao<FeedEntryId, FeedEntry> {
 
 	/**
-	 * Update an entry that already exists.
-	 * 
-	 * @param entry
-	 *            The entry to update.
-	 * @return The number of rows affected by the update.
-	 */
-	@Override
-	DataOperationResult<FeedEntry> update(final FeedEntry entry);
-
-	/**
 	 * Finds an entry by {@link FeedEntry#getHtmlUrlSha1()} and feed source.
-	 * 
+	 *
 	 * @param feedSourceId
-	 *            The feed source.
+	 * 		The feed source.
 	 * @param htmlUrlSha1
-	 *            The SHA-1 of the URL.
+	 * 		The SHA-1 of the URL.
 	 * @return The matching entry, if found, otherwise null.
 	 * @throws DataOperationException
 	 */

@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
  * @author Eric F. Savage <code@efsavage.com>
  * 
  */
-@EqualsAndHashCode()
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class PermissionDeniedException extends Exception {
 

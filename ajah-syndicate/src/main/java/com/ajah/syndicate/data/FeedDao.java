@@ -15,43 +15,30 @@
  */
 package com.ajah.syndicate.data;
 
-import org.springframework.stereotype.Repository;
-
 import com.ajah.spring.jdbc.AjahDao;
-import com.ajah.spring.jdbc.DataOperationResult;
 import com.ajah.spring.jdbc.err.DataOperationException;
 import com.ajah.syndicate.Feed;
 import com.ajah.syndicate.FeedId;
 import com.ajah.syndicate.FeedSource;
+import org.springframework.stereotype.Repository;
 
 /**
  * DAO for {@link Feed}s.
- * 
+ *
  * @author <a href="http://efsavage.com">Eric F. Savage</a>, <a
- *         href="mailto:code@efsavage.com">code@efsavage.com</a>.
- * 
+ * href="mailto:code@efsavage.com">code@efsavage.com</a>.
  */
 @Repository
 public interface FeedDao extends AjahDao<FeedId, Feed> {
 
 	/**
-	 * Updates an existing Feed.
-	 * 
-	 * @param feed
-	 *            The feed to update.
-	 * @return The number of rows affected by the update.
-	 */
-	@Override
-	DataOperationResult<Feed> update(final Feed feed);
-
-	/**
 	 * Finds the most recent feed for a feed source.
-	 * 
+	 *
 	 * @param feedSource
-	 *            The feed source to match on.
+	 * 		The feed source to match on.
 	 * @return The latest feed, if found, otherwise null.
 	 * @throws DataOperationException
-	 *             If the query could not be executed
+	 * 		If the query could not be executed
 	 */
 	Feed getLatestFeed(final FeedSource feedSource) throws DataOperationException;
 

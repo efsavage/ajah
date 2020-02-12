@@ -21,20 +21,19 @@ import com.ajah.syndicate.FeedSourceId;
 
 /**
  * Thrown when a feed source is requested that does not exist.
- * 
+ *
  * @author Eric F. Savage <code@efsavage.com>
- * 
  */
-@EqualsAndHashCode()
+@EqualsAndHashCode(callSuper = true)
 public class FeedSourceNotFoundException extends Exception {
 
 	private final FeedSourceId feedSourceId;
 
 	/**
 	 * Thrown when a feed source is requested by an ID that does not exist.
-	 * 
+	 *
 	 * @param feedSourceId
-	 *            FeedSource ID that was sought.
+	 * 		FeedSource ID that was sought.
 	 */
 	public FeedSourceNotFoundException(final FeedSourceId feedSourceId) {
 		super("id: " + feedSourceId + " not found");
